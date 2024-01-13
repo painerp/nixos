@@ -36,6 +36,7 @@ in
         environment = {
           TS3SERVER_LICENSE = "accept";
         };
+        ports = [ "9987:9987/udp" "30033:30033/tcp" ];
         env_file = [ config.age.secrets.teamspeak-env.path ];
         volumes = [
           "${config.lib.server.mkConfigDir "teamspeak"}:/var/ts3server"
