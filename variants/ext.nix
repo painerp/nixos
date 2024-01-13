@@ -67,7 +67,7 @@ in
     traefik = {
       enabled = true;
       subdomain = "t";
-      nextloud-talk-proxy = true;
+      nextcloud-talk-proxy = true;
     };
     uptime-kuma = {
       enabled = true;
