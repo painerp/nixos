@@ -63,7 +63,10 @@ in
     };
     pihole.enabled = true;
     protonbridge.enabled = true;
-    teamspeak.enabled = true;
+    teamspeak = {
+      enabled = true;
+      expose = true;
+    };
     traefik = {
       enabled = true;
       subdomain = "t";

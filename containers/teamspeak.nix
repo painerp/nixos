@@ -9,11 +9,10 @@ in
       type = lib.types.bool;
       default = false;
     };
-    query = lib.mkOption {
-			type = lib.types.bool;
-			description = "Enable the query port";
-			default = false;
-		};
+    expose = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   config = lib.mkIf (cfg.enabled) {
@@ -36,13 +35,18 @@ in
         environment = {
           TS3SERVER_LICENSE = "accept";
         };
-        ports = [ "9987:9987/udp" "30033:30033/tcp" ];
+        ports = lib.mkIf (cfg.expose) [ "9987:9987/udp" "30033:30033/tcp" ];
         env_file = [ config.age.secrets.teamspeak-env.path ];
         volumes = [
           "${config.lib.server.mkConfigDir "teamspeak"}:/var/ts3server"
         ];
         restart = "unless-stopped";
       };
+    };
+
+    networking.firewall = {
+      allowedUDPPorts = lib.mkIf (cfg.expose) [ 9987 ];
+      allowedTCPPorts = lib.mkIf (cfg.expose) [ 30033 ];
     };
   };
 }
