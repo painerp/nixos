@@ -46,7 +46,7 @@ let
         };
         http3.advertisedPort = 443;
       };
-    } // lib.attrsets.optionalAttrs (cfg.nextloud-talk-proxy) {
+    } // lib.attrsets.optionalAttrs (cfg.nextcloud-talk-proxy) {
       talktcp.address = ":3478";
       talkudp.address = ":3478/udp";
 		};
@@ -84,7 +84,7 @@ in
       description = "Enable wildcard certificate";
       default = false;
     };
-	  nextloud-talk-proxy = lib.mkOption {
+	  nextcloud-talk-proxy = lib.mkOption {
 	    type = lib.types.bool;
 	    description = "Enable proxy for nextcloud talk";
 	    default = false;
