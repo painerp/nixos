@@ -41,6 +41,12 @@ in
       after = [ "network-online.target" ];
     };
 
+    server.traefik.aliases = config.lib.server.mkTraefikAlias {
+      subdomain = cfg.subdomain;
+      domain = cfg.domain;
+      root = cfg.root;
+    };
+
     virtualisation.arion.projects.bachelor.settings = {
       project.name = "bachelor";
       networks.proxy.external = true;

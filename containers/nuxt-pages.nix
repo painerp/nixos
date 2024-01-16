@@ -65,6 +65,15 @@ in
       after = [ "network-online.target" ];
     };
 
+    server.traefik.aliases = with config.lib.server; mkTraefikAlias {
+      subdomain = cfg.app.subdomain;
+      root = cfg.app.root;
+    } ++ mkTraefikAlias {
+      subdomain = cfg.g2g.subdomain;
+    } ++ mkTraefikAlias {
+      subdomain = cfg.pma.subdomain;
+    };
+
     virtualisation.arion.projects.nuxt-pages.settings = {
       project.name = "nuxt-pages";
       networks.proxy.external = true;
