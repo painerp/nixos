@@ -28,7 +28,11 @@ in
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
     };
-    
+
+    server.traefik.aliases = config.lib.server.mkTraefikAlias {
+      subdomain = cfg.subdomain;
+    };
+
     virtualisation.arion.projects.pihole.settings = {
       project.name = "pihole";
 

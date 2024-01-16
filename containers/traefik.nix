@@ -79,6 +79,11 @@ in
       type = lib.types.bool;
       default = config.server.authentik.enabled;
     };
+    aliases = lib.mkOption {
+      type = with lib.types; listOf str;
+      default = [];
+      internal = true;
+    };
     wildcard = lib.mkOption {
       type = lib.types.bool;
       description = "Enable wildcard certificate";
@@ -128,8 +133,19 @@ in
         "traefik.http.routers.${name}.tls.certresolver" = "hetzner";
       }
     );
+    lib.server.mkTraefikAlias = options: (
+      let
+        domain = if builtins.hasAttr "domain" options then options.domain else config.server.domain;
+        host = if (builtins.hasAttr "root" options && options.root) then domain else "${options.subdomain}.${domain}";
+      in
+      [ "${host}" ]
+    );
 
     age.secrets.traefik-env.file = secrets.traefik-env;
+
+    server.traefik.aliases = config.lib.server.mkTraefikAlias {
+      subdomain = cfg.subdomain;
+    };
 
     virtualisation.arion.projects.traefik.settings = {
       project.name = "traefik";
@@ -139,7 +155,7 @@ in
         image = "traefik:latest";
         container_name = "traefik";
         hostname = config.networking.hostName;
-        networks = [ "proxy" ];
+        networks.proxy.aliases = cfg.aliases;
         stop_signal = "SIGINT";
         ports = [
           "80:80/tcp"

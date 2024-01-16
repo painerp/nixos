@@ -25,6 +25,10 @@ in
 			after = [ "network-online.target" ];
 		};
 
+    server.traefik.aliases = config.lib.server.mkTraefikAlias {
+      subdomain = cfg.subdomain;
+    };
+
 		virtualisation.arion.projects.authentik.settings = {
 			project.name = "authentik";
 			networks.proxy.external = true;
