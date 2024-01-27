@@ -66,7 +66,7 @@ in
     };
   };
 
-  config = lib.mkIf (cfg.enable) {
+  config = lib.mkIf (cfg.grafana.enable || cfg.prometheus.enable || cfg.node-exporter.enable || cfg.cadvisor.enable) {
     age.secrets.grafana-env.file = lib.mkIf (cfg.grafana.enable) cfg.grafana.env-file;
 
     systemd.services.arion-monitoring = {
