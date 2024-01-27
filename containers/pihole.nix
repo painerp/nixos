@@ -54,7 +54,11 @@ in
           PIHOLE_DNS_ = "dnscrypt#5053;9.9.9.9";
           SKIPGRAVITYONBOOT = "true";
         };
-        ports = lib.mkIf (cfg.expose) [ "53:53/tcp" "53:53/udp" ] ++ lib.mkIf (cfg.internal) [ "${config.server.tailscale-ip}:53:53/tcp" "${config.server.tailscale-ip}:53:53/udp" ];
+        ports = (if (cfg.expose) then [ "53:53/tcp" "53:53/udp" ] else []) ++
+                (if (cfg.internal) then [
+                  "${config.server.tailscale-ip}:53:53/tcp"
+                  "${config.server.tailscale-ip}:53:53/udp"
+                ] else []);
         labels = config.lib.server.mkTraefikLabels {
           name = "pihole";
           port = "80";

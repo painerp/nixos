@@ -102,7 +102,8 @@ in
         image = "quay.io/prometheus/node-exporter:latest";
         container_name = "node-exporter";
         networks = lib.mkIf (cfg.prometheus.enable) [ "exporter" ];
-        ports = lib.mkIf (cfg.node-exporter.expose) [ "9100:9100/tcp" ] ++ lib.mkIf (cfg.node-exporter.internal) [ "${config.server.tailscale-ip}:20001:9100/tcp" ];
+        ports = (if (cfg.node-exporter.expose) then [ "9100:9100/tcp" ] else []) ++
+                (if (cfg.node-exporter.internal) then [ "${config.server.tailscale-ip}:20001:9100/tcp" ] else []);
         command = [ "--path.rootfs=/host" ];
         volumes = [ "/:/host:ro,rslave" ];
         restart = "unless-stopped";
@@ -116,7 +117,8 @@ in
           "--docker_only"
           "--store_container_labels=false"
         ];
-        ports = lib.mkIf (cfg.cadvisor.expose) [ "8080:8080/tcp" ] ++ lib.mkIf (cfg.cadvisor.internal) [ "${config.server.tailscale-ip}:20000:8080/tcp" ];
+        ports = (if (cfg.cadvisor.expose) then [ "8080:8080/tcp" ] else []) ++
+                (if (cfg.cadvisor.internal) then [ "${config.server.tailscale-ip}:20000:8080/tcp" ] else []);
         volumes = [
           "/:/rootfs:ro"
           "/var/run:/var/run:ro"

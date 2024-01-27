@@ -34,7 +34,8 @@ in
         container_name = "protonbridge";
         hostname = config.networking.hostName;
         networks = [ "smtp" ];
-        ports = lib.mkIf (cfg.expose) [ "25:25/tcp" ] ++ lib.mkIf (cfg.internal) [ "${config.server.tailscale-ip}:25:25/tcp" ];
+        ports = (if (cfg.expose) then [ "25:25/tcp" ] else []) ++
+                (if (cfg.internal) then [ "${config.server.tailscale-ip}:25:25/tcp" ] else []);
         volumes = [
           "${config.lib.server.mkConfigDir "protonbridge"}:/root"
         ];
