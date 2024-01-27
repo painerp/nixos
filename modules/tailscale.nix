@@ -1,7 +1,7 @@
 { lib, pkgs, config, secrets, ... }:
 
 let
- ssh-field = if config.options.server.tailscale.ssh then " --ssh" else "";
+ ssh-field = if config.server.tailscale.ssh then " --ssh" else "";
 in {
   options.server.tailscale = {
 	  ssh = lib.mkOption {
