@@ -1,5 +1,9 @@
 { config, secrets, ... }:
 
+let
+  hostname = "nixbpi";
+  tailscale-ip = "100.116.126.150";
+in
 {
   imports = [ ./secrets ./secrets/bpi.nix ];
   # secrets
@@ -8,33 +12,28 @@
 
   # wlan
   networking = {
-    hostName = "nixbpi";
+    hostName = "${hostname}";
     wireless.environmentFile = config.age.secrets.wifi.path;
   };
 
   server = {
     base-domain = "redacted";
     subdomain = "bi";
+    inherit tailscale-ip;
     pihole = {
-      enabled = true;
+      enable = true;
       expose = true;
     };
     traefik = {
-      enabled = true;
+      enable = true;
+      expose = true;
       wildcard = true;
     };
-    watchtower.enabled = true;
+    watchtower.enable = true;
   };
 
   # users
-  users = {
-    mutableUsers = false;
-    users.user = {
-      isNormalUser = true;
-      hashedPasswordFile = config.age.secrets.user-pw.path;
-      extraGroups = [ "wheel" ];
-    };
-  };
+  users.mutableUsers = false;
   nix.settings.trusted-users = [ "@wheel" ];
 
   # docker

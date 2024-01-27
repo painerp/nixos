@@ -7,11 +7,6 @@ in
 {
   imports = [ ./secrets ./secrets/ext.nix ];
 
-  # secrets
-  age.secrets.user-pw.file = secrets.ext-user-pw;
-  age.secrets.root-pw.file = secrets.ext-root-pw;
-
-
   networking.hostName = "${hostname}";
 
   fileSystems."/" =
@@ -31,74 +26,78 @@ in
   # services
   server = {
     base-domain = "redacted";
+    inherit tailscale-ip;
     short-subdomain = true;
     authentik = {
-      enabled = true;
+      enable = true;
       subdomain = "auth";
+      env-file = secrets.ext-authentik-env;
+      postgres.env-file = secrets.ext-authentik-pg-env;
     };
     bachelor = {
-      enabled = true;
+      enable = true;
       domain = "redacted";
       root = true;
       auth = false;
       image = "redacted";
+      env-file = secrets.ext-bachelor-env;
+      postgres.env-file = secrets.ext-bachelor-pg-env;
     };
     gotify = {
-      enabled = true;
+      enable = true;
       subdomain = "got";
       auth = false;
     };
-    monitoring.enabled = true;
+    monitoring = {
+      node-exporter.enable = true;
+      cadvisor.enable = true;
+    };
     nuxt-pages = {
-      enabled = true;
+      mysql.env-file = secrets.ext-nuxt-pages-mysql-env;
+      pma = {
+        enable = true;
+        env-file = secrets.ext-nuxt-pages-pma-env;
+      };
       app = {
+        enable = true;
         root = true;
         auth = false;
         image = "redacted";
+        env-file = secrets.ext-nuxt-pages-env;
       };
       g2g = {
+        enable = true;
         auth = false;
         image = "redacted";
+        env-file = secrets.ext-nuxt-pages-g2g-env;
       };
     };
-    pihole.enabled = true;
-    protonbridge.enabled = true;
+    pihole.enable = true;
+    protonbridge.enable = true;
     teamspeak = {
-      enabled = true;
+      enable = true;
       expose = true;
+      env-file = secrets.ext-teamspeak-env;
     };
     traefik = {
-      enabled = true;
+      enable = true;
       subdomain = "t";
+      expose = true;
       nextcloud-talk-proxy = true;
     };
     uptime-kuma = {
-      enabled = true;
+      enable = true;
       subdomain = "st";
     };
-    watchtower.enabled = true;
+    watchtower.enable = true;
   };
 
   # users
-  users = {
-    mutableUsers = false;
-    users.user = {
-      isNormalUser = true;
-      hashedPasswordFile = config.age.secrets.user-pw.path;
-      extraGroups = [ "wheel" ];
-    };
-    users.root = {
-      hashedPasswordFile = config.age.secrets.root-pw.path;
-    };
-  };
+  users.mutableUsers = false;
   nix.settings.trusted-users = [ "@wheel" ];
 
   # docker
   virtualisation.arion.projects = {
-    pihole.settings.services.pihole.service.ports = [ "${tailscale-ip}:53:53/tcp" "${tailscale-ip}:53:53/udp" ];
-    protonbridge.settings.services.protonbridge.service.ports = [ "${tailscale-ip}:25:25/tcp" ];
-    monitoring.settings.services.node-exporter.service.ports = [ "${tailscale-ip}:20000:9100/tcp" ];
-    monitoring.settings.services.cadvisor.service.ports = [ "${tailscale-ip}:20001:8080/tcp" ];
     traefik.settings.services.traefik.service.ports = [ "3478:3478/tcp" "3478:3478/udp" ];
     bachelor.settings.services.postgres.service.ports = [ "${tailscale-ip}:5432:5432/tcp" ];
   };
