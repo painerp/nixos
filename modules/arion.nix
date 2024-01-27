@@ -10,8 +10,6 @@
     liveRestore = false;
   };
 
-  users.extraUsers.user.extraGroups = [ "docker" ];
-
   virtualisation.arion = {
     backend = "docker";
   };
