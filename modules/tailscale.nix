@@ -1,4 +1,4 @@
-{ pkgs, config, secrets, ... }:
+{ lib, pkgs, config, secrets, ... }:
 
 let
  ssh-field = if config.options.server.tailscale.ssh then " --ssh" else "";
