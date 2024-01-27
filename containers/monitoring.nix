@@ -47,7 +47,7 @@ in
       };
       internal = lib.mkOption {
         type = lib.types.bool;
-        default = !cfg.cadvisor.expose;
+        default = !cfg.node-exporter.expose;
       };
     };
     cadvisor = {
