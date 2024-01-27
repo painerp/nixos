@@ -59,7 +59,7 @@ in
           USER_UID = 1050;
           USER_GID = 1050;
         };
-        env-file = [ config.age.secrets.gitea-env.path ];
+        env_file = [ config.age.secrets.gitea-env.path ];
         volumes = [
           "${config.lib.server.mkConfigDir "gitea"}:/data"
           "/home/git/.ssh/:/data/git/.ssh"
