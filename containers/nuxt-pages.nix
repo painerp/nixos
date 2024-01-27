@@ -74,7 +74,7 @@ in
     };
   };
 
-  config = lib.mkIf (cfg.enable) {
+  config = lib.mkIf (cfg.pma.enable || cfg.app.enable || cfg.g2g.enable) {
     age.secrets.nuxt-pages-mysql-env.file = lib.mkIf (cfg.pma.enable || cfg.app.enable || cfg.g2g.enable) cfg.mysql.env-file;
     age.secrets.nuxt-pages-env.file = lib.mkIf (cfg.app.enable) cfg.app.env-file;
     age.secrets.nuxt-pages-pma-env.file = lib.mkIf (cfg.pma.enable) cfg.pma.env-file;
