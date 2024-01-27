@@ -18,10 +18,10 @@ in
       default = config.server.authentik.enable;
     };
     env-file = lib.mkOption {
-      type = lib.types.str;
+      type = lib.types.path;
     };
     postgres.env-file = lib.mkOption {
-      type = lib.types.str;
+      type = lib.types.path;
     };
   };
 

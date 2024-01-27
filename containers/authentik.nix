@@ -30,17 +30,20 @@ in
       default = "protonbridge";
     };
 		env-file = lib.mkOption {
-      type = lib.types.str;
+      type = lib.types.path;
     };
     postgres.env-file = lib.mkOption {
-      type = lib.types.str;
+      type = lib.types.path;
     };
   };
 
   config = lib.mkIf (cfg.enable) {
-		age.secrets.authentik-env.file = lib.mkIf (!cfg.proxy) cfg.env-file;
-		age.secrets.authentik-pg-env.file = lib.mkIf (!cfg.proxy) cfg.postgres.env-file;
-		age.secrets.authentik-proxy-env.file = lib.mkIf (cfg.proxy) cfg.env-file;
+		age.secrets = lib.mkIf (!cfg.proxy) {
+		  authentik-env.file = cfg.env-file;
+		  authentik-pg-env.file = cfg.postgres.env-file;
+		} // lib.mkIf (cfg.proxy) {
+      authentik-proxy-env.file = cfg.env-file;
+    };
 
 		systemd.services.arion-authentik = {
 			wants = [ "network-online.target" ];

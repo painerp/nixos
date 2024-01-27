@@ -20,7 +20,7 @@ in
         default = config.server.authentik.enable;
       };
       env-file = lib.mkOption {
-        type = lib.types.str;
+        type = lib.types.path;
       };
     };
     app = {
@@ -45,7 +45,7 @@ in
 				description = "The docker image to use for the nuxt app";
 			};
       env-file = lib.mkOption {
-        type = lib.types.str;
+        type = lib.types.path;
       };
     };
     g2g = {
@@ -66,19 +66,24 @@ in
 	      description = "The docker image to use for the g2g app";
       };
       env-file = lib.mkOption {
-        type = lib.types.str;
+        type = lib.types.path;
       };
     };
     mysql.env-file = lib.mkOption {
-      type = lib.types.str;
+      type = lib.types.path;
     };
   };
 
   config = lib.mkIf (cfg.pma.enable || cfg.app.enable || cfg.g2g.enable) {
-    age.secrets.nuxt-pages-mysql-env.file = lib.mkIf (cfg.pma.enable || cfg.app.enable || cfg.g2g.enable) cfg.mysql.env-file;
-    age.secrets.nuxt-pages-env.file = lib.mkIf (cfg.app.enable) cfg.app.env-file;
-    age.secrets.nuxt-pages-pma-env.file = lib.mkIf (cfg.pma.enable) cfg.pma.env-file;
-    age.secrets.nuxt-pages-g2g-env.file = lib.mkIf (cfg.g2g.enable) cfg.g2g.env-file;
+    age.secrets = {
+      nuxt-pages-mysql-env.file = cfg.mysql.env-file;
+    } // lib.mkIf (cfg.app.enable) {
+      nuxt-pages-env.file = cfg.app.env-file;
+    } // lib.mkIf (cfg.pma.enable) {
+      nuxt-pages-pma-env.file = cfg.pma.env-file;
+    } // lib.mkIf (cfg.g2g.enable) {
+      nuxt-pages-g2g-env.file = cfg.g2g.env-file;
+    };
 
     systemd.services.arion-nuxt-pages = {
       wants = [ "network-online.target" ];

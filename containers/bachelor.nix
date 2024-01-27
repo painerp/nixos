@@ -31,10 +31,10 @@ in
 			description = "The docker image to use for the service";
 		};
 		env-file = lib.mkOption {
-      type = lib.types.str;
+      type = lib.types.path;
     };
     postgres.env-file = lib.mkOption {
-      type = lib.types.str;
+      type = lib.types.path;
     };
   };
 

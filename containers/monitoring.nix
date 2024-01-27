@@ -19,7 +19,7 @@ in
         default = config.server.authentik.enable;
       };
       env-file = lib.mkOption {
-        type = lib.types.str;
+        type = lib.types.path;
       };
     };
     prometheus = {
@@ -67,7 +67,9 @@ in
   };
 
   config = lib.mkIf (cfg.grafana.enable || cfg.prometheus.enable || cfg.node-exporter.enable || cfg.cadvisor.enable) {
-    age.secrets.grafana-env.file = lib.mkIf (cfg.grafana.enable) cfg.grafana.env-file;
+    age.secrets = lib.mkIf (cfg.grafana.enable) {
+      grafana-env.file = cfg.grafana.env-file;
+    };
 
     systemd.services.arion-monitoring = {
       wants = [ "network-online.target" ];

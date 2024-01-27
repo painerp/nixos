@@ -13,7 +13,7 @@ in
       type = lib.types.str;
     };
     env-file = lib.mkOption {
-      type = lib.types.str;
+      type = lib.types.path;
     };
   };
 
