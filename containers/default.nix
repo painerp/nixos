@@ -42,15 +42,28 @@ in
 		};
   };
 
-  imports = [ 
+  imports = [
+    ./act-runner.nix
 		./authentik.nix
 		./bachelor.nix
+		./bazarr.nix
+		./dashboard.nix
+		./gitea.nix
+		./gluetun.nix
 		./gotify.nix
+		./jellyfin.nix
 		./jellyfin-vue.nix
+		./jellystat.nix
 		./monitoring.nix
+		./nextcloud.nix
 		./nuxt-pages.nix
 		./pihole.nix
+		./pledo.nix
+		./prdl.nix
 		./protonbridge.nix
+		./radarr.nix
+		./sonarr.nix
+		./syncthing.nix
 		./teamspeak.nix
 		./traefik.nix
 		./uptime-kuma.nix
