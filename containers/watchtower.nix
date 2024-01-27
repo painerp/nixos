@@ -9,6 +9,10 @@ in
       type = lib.types.bool;
       default = false;
     };
+    internal-services = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   config = lib.mkIf (cfg.enable) {
@@ -33,9 +37,9 @@ in
         env_file = [ config.age.secrets.watchtower-env.path ];
         volumes = [
           "/var/run/docker.sock:/var/run/docker.sock"
-          "/root/.docker/config.json:/config.json"
           "/etc/localtime:/etc/localtime:ro"
-        ];
+        ] ++
+        (if (cfg.internal-services) then [ "/root/.docker/config.json:/config.json" ] else []);
         restart = "unless-stopped";
       };
     };

@@ -89,7 +89,10 @@ in
       enable = true;
       subdomain = "st";
     };
-    watchtower.enable = true;
+    watchtower = {
+      enable = true;
+      internal-services = true;
+    };
   };
 
   # users
