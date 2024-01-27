@@ -1,6 +1,4 @@
 {
-  tailscale-api-key = ./tailscale-api-key.age;
-
   # containers
   traefik-env = ./containers/traefik.env.age;
   watchtower-env = ./containers/watchtower.env.age;
