@@ -26,7 +26,7 @@ in
       default = !cfg.expose;
     };
     env-file = lib.mkOption {
-      type = lib.types.str;
+      type = lib.types.path;
     };
     internal-ip = lib.mkOption {
       type = lib.types.str;
