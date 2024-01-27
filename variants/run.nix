@@ -23,7 +23,7 @@ in
     inherit tailscale-ip;
     act-runner = {
       enable = true;
-      env-file = secrets.act-runner-env;
+      env-file = secrets.run-act-runner-env;
     };
     monitoring = {
       node-exporter.enable = true;
