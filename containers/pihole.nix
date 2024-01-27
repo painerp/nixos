@@ -5,7 +5,7 @@ let
 in
 {
   options.server.pihole = {
-    enabled = lib.mkOption {
+    enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
     };
@@ -17,13 +17,17 @@ in
       type = lib.types.bool;
       default = false;
     };
+    internal = lib.mkOption {
+      type = lib.types.bool;
+      default = !cfg.cadvisor.expose;
+    };
     auth = lib.mkOption {
       type = lib.types.bool;
-      default = config.server.authentik.enabled;
+      default = config.server.authentik.enable;
     };
   };
 
-  config = lib.mkIf (cfg.enabled) {
+  config = lib.mkIf (cfg.enable) {
     systemd.services.arion-pihole = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
@@ -50,7 +54,7 @@ in
           PIHOLE_DNS_ = "dnscrypt#5053;9.9.9.9";
           SKIPGRAVITYONBOOT = "true";
         };
-        ports = lib.mkIf (cfg.expose) [ "53:53/tcp" "53:53/udp" ];
+        ports = lib.mkIf (cfg.expose) [ "53:53/tcp" "53:53/udp" ] ++ lib.mkIf (cfg.internal) [ "${config.server.tailscale-ip}:53:53/tcp" "${config.server.tailscale-ip}:53:53/udp" ];
         labels = config.lib.server.mkTraefikLabels {
           name = "pihole";
           port = "80";

@@ -5,7 +5,7 @@ let
 in
 {
   options.server.protonbridge = {
-    enabled = lib.mkOption {
+    enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
     };
@@ -13,9 +13,13 @@ in
       type = lib.types.bool;
       default = false;
     };
+    internal = lib.mkOption {
+      type = lib.types.bool;
+      default = !cfg.expose;
+    };
   };
 
-  config = lib.mkIf (cfg.enabled) {
+  config = lib.mkIf (cfg.enable) {
     systemd.services.arion-protonbridge = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
@@ -30,7 +34,7 @@ in
         container_name = "protonbridge";
         hostname = config.networking.hostName;
         networks = [ "smtp" ];
-        ports = lib.mkIf (cfg.expose) [ "25:25/tcp" ];
+        ports = lib.mkIf (cfg.expose) [ "25:25/tcp" ] ++ lib.mkIf (cfg.internal) [ "${config.server.tailscale-ip}:25:25/tcp" ];
         volumes = [
           "${config.lib.server.mkConfigDir "protonbridge"}:/root"
         ];

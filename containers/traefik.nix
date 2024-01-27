@@ -67,7 +67,7 @@ let
 in
 {
   options.server.traefik = {
-    enabled = lib.mkOption {
+    enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
     };
@@ -77,7 +77,15 @@ in
     };
     auth = lib.mkOption {
       type = lib.types.bool;
-      default = config.server.authentik.enabled;
+      default = config.server.authentik.enable;
+    };
+    expose = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
+    internal = lib.mkOption {
+      type = lib.types.bool;
+      default = !cfg.expose;
     };
     aliases = lib.mkOption {
       type = with lib.types; listOf str;
@@ -96,7 +104,7 @@ in
 	  };
   };
 
-  config = lib.mkIf (cfg.enabled) {
+  config = lib.mkIf (cfg.enable) {
     lib.server.mkTraefikLabels = options: (
       let
         name = options.name;
@@ -157,10 +165,14 @@ in
         hostname = config.networking.hostName;
         networks.proxy.aliases = cfg.aliases;
         stop_signal = "SIGINT";
-        ports = [
+        ports = lib.mkIf (cfg.expose) [
           "80:80/tcp"
           "443:443/tcp"
           "443:443/udp"
+        ] ++ lib.mkIf (cfg.internal) [
+          "${config.server.tailscale-ip}:80:80/tcp"
+          "${config.server.tailscale-ip}:443:443/tcp"
+          "${config.server.tailscale-ip}:443:443/udp"
         ];
         volumes = [
           "${staticConfigFile}:/traefik.yaml"

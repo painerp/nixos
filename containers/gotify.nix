@@ -5,7 +5,7 @@ let
 in
 {
   options.server.gotify = {
-    enabled = lib.mkOption {
+    enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
     };
@@ -15,11 +15,11 @@ in
     };
     auth = lib.mkOption {
       type = lib.types.bool;
-      default = config.server.authentik.enabled;
+      default = config.server.authentik.enable;
     };
   };
 
-  config = lib.mkIf (cfg.enabled) {
+  config = lib.mkIf (cfg.enable) {
     systemd.services.arion-gotify = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];

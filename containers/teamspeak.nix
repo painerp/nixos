@@ -5,7 +5,7 @@ let
 in
 {
   options.server.teamspeak = {
-    enabled = lib.mkOption {
+    enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
     };
@@ -13,10 +13,13 @@ in
       type = lib.types.bool;
       default = false;
     };
+    env-file = lib.mkOption {
+      type = lib.types.str;
+    };
   };
 
-  config = lib.mkIf (cfg.enabled) {
-    age.secrets.teamspeak-env.file = secrets.teamspeak-env;
+  config = lib.mkIf (cfg.enable) {
+    age.secrets.teamspeak-env.file = cfg.env-file;
 
     systemd.services.arion-teamspeak = {
       wants = [ "network-online.target" ];
