@@ -98,7 +98,7 @@ in
         restart = "unless-stopped";
       };
 
-      services.node-exporter.service = lib.mkIf(cfg.node-exporter) {
+      services.node-exporter.service = lib.mkIf (cfg.node-exporter.enable) {
         image = "quay.io/prometheus/node-exporter:latest";
         container_name = "node-exporter";
         networks = lib.mkIf (cfg.prometheus.enable) [ "exporter" ];
@@ -108,7 +108,7 @@ in
         restart = "unless-stopped";
       };
 
-      services.cadvisor.service = lib.mkIf(cfg.cadvisor) {
+      services.cadvisor.service = lib.mkIf (cfg.cadvisor.enable) {
         image = "gcr.io/cadvisor/cadvisor:latest";
         container_name = "cadvisor";
         command = [
