@@ -52,7 +52,7 @@ in
         environment = {
           POSTGRES_USER = "postgres";
         };
-        envFile = [ age.secrets.jellystat-pg-env.path ];
+        envFile = [ config.age.secrets.jellystat-pg-env.path ];
         volumes = [
           "${config.lib.server.mkConfigDir "jellystat"}:/var/lib/postgresql/data"
         ];
@@ -70,7 +70,7 @@ in
           POSTGRES_PORT = 5432;
           TZ = config.time.timeZone;
         };
-        envFile = [ age.secrets.jellystat-env.path ];
+        envFile = [ config.age.secrets.jellystat-env.path ];
         depends_on = [ "jellystat-pg" ];
         labels = config.lib.server.mkTraefikLabels {
           name = "jellystat";

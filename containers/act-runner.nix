@@ -29,7 +29,7 @@ in
         image = "gitea/act_runner:latest";
         container_name = "act-runner";
         hostname = config.networking.hostName;
-        env-file = [ age.secrets.act-runner-env.path ];
+        env-file = [ config.age.secrets.act-runner-env.path ];
         volumes = [
           "${config.lib.server.mkConfigDir "act-runner"}:/data"
           "/var/run/docker.sock:/var/run/docker.sock"
