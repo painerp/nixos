@@ -66,11 +66,8 @@ in
           "/etc/timezone:/etc/timezone:ro"
           "/etc/localtime:/etc/localtime:ro"
         ];
-        ports = [
-          "127.0.0.1:2222:22/tcp"
-        ] ++ lib.mkIf (cfg.internal) [
-          "${cfg.internal-ip}:3000:3000/tcp"
-        ];
+        ports = [ "127.0.0.1:2222:22/tcp"] ++
+                (if (cfg.internal) then [ "${cfg.internal-ip}:3000:3000/tcp" ] else []);
         labels = config.lib.server.mkTraefikLabels {
           name = "gitea";
           port = "3000";

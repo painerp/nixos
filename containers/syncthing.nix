@@ -56,15 +56,16 @@ in
           PGID = 1000;
         };
         volumes = [ "${cfg.path}:/var/syncthing" ];
-        ports = lib.mkIf (cfg.expose) [
+        ports = (if (cfg.expose) then [
           "22000:22000/tcp" # TCP file transfers
           "22000:22000/udp" # QUIC file transfers
           "21027:21027/udp" # Receive local discovery broadcasts
-        ] ++ lib.mkIf (cfg.internal) [
+        ] else []) ++
+        (if (cfg.internal) then [
           "${config.server.tailscape-ip}:22000:22000/tcp"
           "${config.server.tailscape-ip}:22000:22000/udp"
           "${config.server.tailscape-ip}:21027:21027/udp"
-        ];
+        ] else []);
         labels = config.lib.server.mkTraefikLabels {
           name = "syncthing";
           port = "8384";

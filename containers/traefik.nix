@@ -165,15 +165,16 @@ in
         hostname = config.networking.hostName;
         networks.proxy.aliases = cfg.aliases;
         stop_signal = "SIGINT";
-        ports = lib.mkIf (cfg.expose) [
+        ports = (if (cfg.expose) then [
           "80:80/tcp"
           "443:443/tcp"
           "443:443/udp"
-        ] ++ lib.mkIf (cfg.internal) [
+        ] else []) ++
+        (if (cfg.internal) then [
           "${config.server.tailscale-ip}:80:80/tcp"
           "${config.server.tailscale-ip}:443:443/tcp"
           "${config.server.tailscale-ip}:443:443/udp"
-        ];
+        ] else []);
         volumes = [
           "${staticConfigFile}:/traefik.yaml"
           "${config.lib.server.mkConfigDir "traefik" }/acme.json:/acme.json"
