@@ -14,9 +14,6 @@ let
   systems = [ jpi bpi ext log run inf cit arr ];
 in
 {
-  # general
-  "tailscale-api-key.age".publicKeys = users ++ systems;
-
   # containers
   "containers/traefik.env.age".publicKeys = users ++ systems;
   "containers/watchtower.env.age".publicKeys = users ++ systems;
