@@ -61,7 +61,7 @@ in
           GUID = 1050;
           UPDATER_PERIOD = "24h";
         };
-        env-file = [ age.secrets.gluetun-env.path ];
+        env-file = [ config.age.secrets.gluetun-env.path ];
         volumes = [ "${config.lib.server.mkConfigDir "gluetun"}:/gluetun" ];
         labels = config.lib.server.mkTraefikLabels {
           name = "gluetun";
