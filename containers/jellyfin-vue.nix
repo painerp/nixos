@@ -5,7 +5,7 @@ let
 in
 {
   options.server.jellyfin-vue = {
-    enabled = lib.mkOption {
+    enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
     };
@@ -15,7 +15,7 @@ in
     };
     auth = lib.mkOption {
       type = lib.types.bool;
-      default = config.server.authentik.enabled;
+      default = config.server.authentik.enable;
     };
     server = lib.mkOption {
       type = lib.types.str;
@@ -24,7 +24,7 @@ in
     };
   };
 
-  config = lib.mkIf (cfg.enabled) {
+  config = lib.mkIf (cfg.enable) {
     systemd.services.arion-jellyfin-vue = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];

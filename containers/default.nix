@@ -24,6 +24,11 @@ in
       readOnly = true;
     };
 
+    tailscale-ip = lib.mkOption {
+      type = lib.types.str;
+      description = "The IP address of the Tailscale interface";
+    };
+
 	  config-dir = lib.mkOption {
 	    type = lib.types.str;
 	    description = "The configuration directory";

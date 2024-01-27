@@ -5,13 +5,13 @@ let
 in
 {
   options.server.watchtower = {
-    enabled = lib.mkOption {
+    enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
     };
   };
 
-  config = lib.mkIf (cfg.enabled) {
+  config = lib.mkIf (cfg.enable) {
     age.secrets.watchtower-env.file = secrets.watchtower-env;
 
     systemd.services.arion-watchtower = {

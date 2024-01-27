@@ -5,7 +5,7 @@ let
 in
 {
   options.server.uptime-kuma = {
-    enabled = lib.mkOption {
+    enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
     };
@@ -15,11 +15,11 @@ in
     };
     auth = lib.mkOption {
       type = lib.types.bool;
-      default = config.server.authentik.enabled;
+      default = config.server.authentik.enable;
     };
   };
 
-  config = lib.mkIf (cfg.enabled) {
+  config = lib.mkIf (cfg.enable) {
     systemd.services.arion-uptime-kuma = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];

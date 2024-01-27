@@ -6,7 +6,7 @@ let
 in
 {
   options.server.bachelor = {
-    enabled = lib.mkOption {
+    enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
     };
@@ -24,17 +24,23 @@ in
     };
     auth = lib.mkOption {
       type = lib.types.bool;
-      default = config.server.authentik.enabled;
+      default = config.server.authentik.enable;
     };
     image = lib.mkOption {
 			type = lib.types.str;
 			description = "The docker image to use for the service";
 		};
+		env-file = lib.mkOption {
+      type = lib.types.str;
+    };
+    postgres.env-file = lib.mkOption {
+      type = lib.types.str;
+    };
   };
 
-  config = lib.mkIf (cfg.enabled) {
-    age.secrets.bachelor-env.file = secrets.bachelor-env;
-    age.secrets.bachelor-pg-env.file = secrets.bachelor-pg-env;
+  config = lib.mkIf (cfg.enable) {
+    age.secrets.bachelor-env.file = cfg.env-file;
+    age.secrets.bachelor-pg-env.file = cfg.postgres.env-file;
 
     systemd.services.arion-bachelor = {
       wants = [ "network-online.target" ];
