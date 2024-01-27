@@ -6,21 +6,28 @@ let
 in
 {
   options.server.nuxt-pages = {
-    enabled = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-    };
     pma = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
       subdomain = lib.mkOption {
         type = lib.types.str;
         default = if config.server.short-subdomain then "pa" else "phpmyadmin";
       };
       auth = lib.mkOption {
         type = lib.types.bool;
-        default = config.server.authentik.enabled;
+        default = config.server.authentik.enable;
+      };
+      env-file = lib.mkOption {
+        type = lib.types.str;
       };
     };
     app = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
       subdomain = lib.mkOption {
         type = lib.types.str;
         default = if config.server.short-subdomain then "nu" else "nuxt";
@@ -31,34 +38,47 @@ in
       };
       auth = lib.mkOption {
         type = lib.types.bool;
-        default = config.server.authentik.enabled;
+        default = config.server.authentik.enable;
       };
       image = lib.mkOption {
 				type = lib.types.str;
 				description = "The docker image to use for the nuxt app";
 			};
+      env-file = lib.mkOption {
+        type = lib.types.str;
+      };
     };
     g2g = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
       subdomain = lib.mkOption {
         type = lib.types.str;
         default = if config.server.short-subdomain then "d4" else "diablo4";
       };
       auth = lib.mkOption {
         type = lib.types.bool;
-        default = config.server.authentik.enabled;
+        default = config.server.authentik.enable;
       };
       image = lib.mkOption {
 	      type = lib.types.str;
 	      description = "The docker image to use for the g2g app";
       };
+      env-file = lib.mkOption {
+        type = lib.types.str;
+      };
+    };
+    mysql.env-file = lib.mkOption {
+      type = lib.types.str;
     };
   };
 
-  config = lib.mkIf (cfg.enabled) {
-    age.secrets.nuxt-pages-env.file = secrets.nuxt-pages-env;
-    age.secrets.nuxt-pages-mysql-env.file = secrets.nuxt-pages-mysql-env;
-    age.secrets.nuxt-pages-pma-env.file = secrets.nuxt-pages-pma-env;
-    age.secrets.nuxt-pages-g2g-env.file = secrets.nuxt-pages-g2g-env;
+  config = lib.mkIf (cfg.enable) {
+    age.secrets.nuxt-pages-mysql-env.file = lib.mkIf (cfg.pma.enable || cfg.app.enable || cfg.g2g.enable) cfg.mysql.env-file;
+    age.secrets.nuxt-pages-env.file = lib.mkIf (cfg.app.enable) cfg.app.env-file;
+    age.secrets.nuxt-pages-pma-env.file = lib.mkIf (cfg.pma.enable) cfg.pma.env-file;
+    age.secrets.nuxt-pages-g2g-env.file = lib.mkIf (cfg.g2g.enable) cfg.g2g.env-file;
 
     systemd.services.arion-nuxt-pages = {
       wants = [ "network-online.target" ];
@@ -80,7 +100,7 @@ in
       networks.teamspeak.external = true;
       networks.backend.internal = true;
 
-      services.mysql.service = {
+      services.mysql.service = lib.mkIf (cfg.pma.enable || cfg.app.enable || cfg.g2g.enable) {
         image = "mariadb:latest";
         container_name = "nuxt-mysql";
         networks = [ "backend" ];
@@ -92,7 +112,7 @@ in
         restart = "unless-stopped";
       };
 
-      services.phpmyadmin.service = {
+      services.phpmyadmin.service = lib.mkIf (cfg.pma.enable) {
         image = "phpmyadmin:latest";
         container_name = "nuxt-pma";
         networks = [ "backend" "proxy" ];
@@ -114,7 +134,7 @@ in
         restart = "unless-stopped";
       };
 
-      services.app.service = {
+      services.app.service = lib.mkIf (cfg.app.enable) {
         image = "${cfg.app.image}";
         container_name = "nuxt-app";
         depends_on = [ "mysql" ];
@@ -134,7 +154,7 @@ in
         restart = "unless-stopped";
       };
 
-      services.g2g.service = {
+      services.g2g.service = lib.mkIf (cfg.g2g.enable) {
         image = "${cfg.g2g.image}";
         container_name = "nuxt-g2g";
         depends_on = [ "mysql" ];
