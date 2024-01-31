@@ -2,19 +2,21 @@
 
 let
   hostname = "nixrun";
-  tailscale-ip = "100.85.82.52";
+  tailscale-ip = "100.113.149.64";
 in
 {
   imports = [ ./secrets ];
 
   networking.hostName = "${hostname}";
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/9232ef87-cb22-4b0c-a54b-cfff0767ff64";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/6b1b23b8-f684-4e29-8680-78e5214ae4b6";
+    fsType = "ext4";
+  };
 
-  swapDevices = [];
+  swapDevices = [
+    { device = "/dev/disk/by-uuid/e0150fb6-eead-4bb7-a5e6-30c3ed675907"; }
+  ];
 
   # services
   server = {
