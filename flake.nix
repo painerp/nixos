@@ -68,6 +68,13 @@
           pkgs = (import nixpkgs) { system = "x86_64-linux"; };
           modules = server-modules ++ [ ./containers ] ++ [ ./variants/run.nix ./hardware/int-vps.nix ];
         };
+
+        log = nixpkgs.lib.nixosSystem {
+          inherit specialArgs;
+          system = "x86_64-linux";
+          pkgs = (import nixpkgs) { system = "x86_64-linux"; };
+          modules = server-modules ++ [ ./containers ] ++ [ ./variants/log.nix ./hardware/int-vps.nix ];
+        };
       };
     };
 }
