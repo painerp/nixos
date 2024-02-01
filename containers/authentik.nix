@@ -51,12 +51,12 @@ in {
   };
 
   config = lib.mkIf (cfg.enable) {
-    age.secrets =
-      lib.mkIf (cfg.proxy) { authentik-proxy-env.file = cfg.env-file; }
-      // lib.mkIf (!cfg.proxy) {
-        authentik-env.file = cfg.env-file;
-        authentik-pg-env.file = cfg.postgres.env-file;
-      };
+    age.secrets = if (cfg.proxy) then {
+      authentik-proxy-env.file = cfg.env-file;
+    } else {
+      authentik-env.file = cfg.env-file;
+      authentik-pg-env.file = cfg.postgres.env-file;
+    };
 
     systemd.services.arion-authentik = {
       wants = [ "network-online.target" ];
@@ -72,7 +72,7 @@ in {
       networks.smtp.external = lib.mkIf (!cfg.proxy || use-smtp) true;
       networks.authentik-internal.internal = lib.mkIf (!cfg.proxy) true;
 
-      services = lib.mkIf (cfg.proxy) {
+      services = if (cfg.proxy) then {
         authentik-proxy.service = {
           image = "ghcr.io/goauthentik/proxy:latest";
           container_name = "authentik-proxy";
@@ -82,7 +82,7 @@ in {
           inherit labels;
           restart = "unless-stopped";
         };
-      } // lib.mkIf (!cfg.proxy) {
+      } else {
         postgresql.service = {
           image = "docker.io/library/postgres:12-alpine";
           container_name = "authentik-pg";
