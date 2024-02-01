@@ -1,9 +1,7 @@
 { lib, config, ... }:
 
-let
-  cfg = config.server.gotify;
-in
-{
+let cfg = config.server.gotify;
+in {
   options.server.gotify = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -25,9 +23,8 @@ in
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases = config.lib.server.mkTraefikAlias {
-      subdomain = cfg.subdomain;
-    };
+    server.traefik.aliases =
+      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.gotify.settings = {
       project.name = "gotify";
@@ -38,12 +35,8 @@ in
         container_name = "gotify";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];
-        environment = {
-          TZ = "Europe/Berlin";
-        };
-        volumes = [
-          "${config.lib.server.mkConfigDir "gotify"}:/app/data"
-        ];
+        environment = { TZ = "Europe/Berlin"; };
+        volumes = [ "${config.lib.server.mkConfigDir "gotify"}:/app/data" ];
         labels = config.lib.server.mkTraefikLabels {
           name = "gotify";
           port = "80";

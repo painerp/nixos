@@ -10,7 +10,5 @@
     liveRestore = false;
   };
 
-  virtualisation.arion = {
-    backend = "docker";
-  };
+  virtualisation.arion = { backend = "docker"; };
 }

@@ -1,9 +1,7 @@
 { lib, config, secrets, ... }:
 
-let
-  cfg = config.server.watchtower;
-in
-{
+let cfg = config.server.watchtower;
+in {
   options.server.watchtower = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -38,8 +36,10 @@ in
         volumes = [
           "/var/run/docker.sock:/var/run/docker.sock"
           "/etc/localtime:/etc/localtime:ro"
-        ] ++
-        (if (cfg.internal-services) then [ "/root/.docker/config.json:/config.json" ] else []);
+        ] ++ (if (cfg.internal-services) then
+          [ "/root/.docker/config.json:/config.json" ]
+        else
+          [ ]);
         restart = "unless-stopped";
       };
     };

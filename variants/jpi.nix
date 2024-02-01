@@ -3,8 +3,7 @@
 let
   hostname = "nixjpi";
   tailscale-ip = "100.81.246.82";
-in
-{
+in {
   imports = [ ./secrets ./secrets/jpi.nix ];
   # secrets
   age.secrets.user-pw.file = secrets.jpi-user-pw;
@@ -38,7 +37,8 @@ in
 
   # docker
   virtualisation.arion.projects = {
-    watchtower.settings.services.watchtower.service.environment.WATCHTOWER_SCHEDULE = "0 0 3 * * *";
+    watchtower.settings.services.watchtower.service.environment.WATCHTOWER_SCHEDULE =
+      "0 0 3 * * *";
   };
 
 }

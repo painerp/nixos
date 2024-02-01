@@ -31,20 +31,20 @@
 
   sound.enable = true;
 
-#  hardware.pulseaudio.enable = true;
-#  hardware.pulseaudio.support32Bit = true;
-#  hardware.raspberry-pi."4".audio.enable = true;
-#  hardware.raspberry-pi."4".fkms-3d.enable = true;
+  #  hardware.pulseaudio.enable = true;
+  #  hardware.pulseaudio.support32Bit = true;
+  #  hardware.raspberry-pi."4".audio.enable = true;
+  #  hardware.raspberry-pi."4".fkms-3d.enable = true;
   hardware.enableRedistributableFirmware = true;
 
   # tries to enable hdmi-cec support
   nixpkgs.overlays = [
-    (self: super: { libcec = super.libcec.override { withLibraspberrypi = true; }; })
+    (self: super: {
+      libcec = super.libcec.override { withLibraspberrypi = true; };
+    })
   ];
 
-  environment.systemPackages = with pkgs; [
-    libcec
-  ];
+  environment.systemPackages = with pkgs; [ libcec ];
 
   services.udev.extraRules = ''
     # allow access to raspi cec device for video group (and optionally register it as a systemd device, used below)

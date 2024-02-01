@@ -1,17 +1,13 @@
 { lib, config, ... }:
 
-let
-  cfg = config.server.act-runner;
-in
-{
+let cfg = config.server.act-runner;
+in {
   options.server.act-runner = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
     };
-    env-file = lib.mkOption {
-      type = lib.types.path;
-    };
+    env-file = lib.mkOption { type = lib.types.path; };
   };
 
   config = lib.mkIf (cfg.enable) {

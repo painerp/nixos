@@ -1,9 +1,7 @@
 { lib, config, secrets, ... }:
 
-let
-  cfg = config.server.teamspeak;
-in
-{
+let cfg = config.server.teamspeak;
+in {
   options.server.teamspeak = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -13,9 +11,7 @@ in
       type = lib.types.bool;
       default = false;
     };
-    env-file = lib.mkOption {
-      type = lib.types.path;
-    };
+    env-file = lib.mkOption { type = lib.types.path; };
   };
 
   config = lib.mkIf (cfg.enable) {
@@ -35,14 +31,11 @@ in
         container_name = "teamspeak";
         hostname = config.networking.hostName;
         networks = [ "teamspeak" ];
-        environment = {
-          TS3SERVER_LICENSE = "accept";
-        };
+        environment = { TS3SERVER_LICENSE = "accept"; };
         ports = lib.mkIf (cfg.expose) [ "9987:9987/udp" "30033:30033/tcp" ];
         env_file = [ config.age.secrets.teamspeak-env.path ];
-        volumes = [
-          "${config.lib.server.mkConfigDir "teamspeak"}:/var/ts3server"
-        ];
+        volumes =
+          [ "${config.lib.server.mkConfigDir "teamspeak"}:/var/ts3server" ];
         restart = "unless-stopped";
       };
     };

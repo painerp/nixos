@@ -1,9 +1,7 @@
 { lib, config, ... }:
 
-let
-  cfg = config.server.jellyfin;
-in
-{
+let cfg = config.server.jellyfin;
+in {
   options.server.jellyfin = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -33,9 +31,8 @@ in
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases = config.lib.server.mkTraefikAlias {
-      subdomain = cfg.subdomain;
-    };
+    server.traefik.aliases =
+      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.jellyfin.settings = {
       project.name = "jellyfin";
@@ -43,9 +40,8 @@ in
 
       services.jellyfin = {
         out.service = {
-          deploy.resources.reservations.devices = [{
-            capabilities = [ "gpu" ];
-          }];
+          deploy.resources.reservations.devices =
+            [{ capabilities = [ "gpu" ]; }];
           runtime = "nvidia";
         };
         service = {
@@ -59,9 +55,8 @@ in
             TZ = config.time.timeZone;
             NVIDIA_VISIBLE_DEVICES = "all";
           };
-          ports = lib.mkIf (cfg.internal) [
-            "${config.server.tailscale-ip}:8096:8096"
-          ];
+          ports = lib.mkIf (cfg.internal)
+            [ "${config.server.tailscale-ip}:8096:8096" ];
           volumes = [
             "${cfg.path}/JellyfinConfig:/config"
             "${cfg.path}/Serien:/data/tvshows"

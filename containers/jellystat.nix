@@ -1,9 +1,7 @@
 { lib, config, ... }:
 
-let
-  cfg = config.server.jellystat;
-in
-{
+let cfg = config.server.jellystat;
+in {
   options.server.jellystat = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -17,12 +15,8 @@ in
       type = lib.types.bool;
       default = config.server.authentik.enable;
     };
-    env-file = lib.mkOption {
-      type = lib.types.path;
-    };
-    postgres.env-file = lib.mkOption {
-      type = lib.types.path;
-    };
+    env-file = lib.mkOption { type = lib.types.path; };
+    postgres.env-file = lib.mkOption { type = lib.types.path; };
   };
 
   config = lib.mkIf (cfg.enable) {
@@ -34,9 +28,8 @@ in
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases = config.lib.server.mkTraefikAlias {
-      subdomain = cfg.subdomain;
-    };
+    server.traefik.aliases =
+      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.jellystat.settings = {
       project.name = "jellystat";
@@ -49,12 +42,12 @@ in
         container_name = "jellystat-pg";
         hostname = config.networking.hostName;
         networks = [ "internal" ];
-        environment = {
-          POSTGRES_USER = "postgres";
-        };
+        environment = { POSTGRES_USER = "postgres"; };
         envFile = [ config.age.secrets.jellystat-pg-env.path ];
         volumes = [
-          "${config.lib.server.mkConfigDir "jellystat"}:/var/lib/postgresql/data"
+          "${
+            config.lib.server.mkConfigDir "jellystat"
+          }:/var/lib/postgresql/data"
         ];
         restart = "unless-stopped";
       };
