@@ -1,9 +1,7 @@
 { lib, config, ... }:
 
-let
-  cfg = config.server.gluetun;
-in
-{
+let cfg = config.server.gluetun;
+in {
   options.server.gluetun = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -25,12 +23,10 @@ in
       type = lib.types.bool;
       default = !cfg.expose;
     };
-    env-file = lib.mkOption {
-      type = lib.types.path;
-    };
+    env-file = lib.mkOption { type = lib.types.path; };
     internal-ip = lib.mkOption {
       type = lib.types.str;
-      default = "${config.server.tailscape-ip}";
+      default = "${config.server.tailscale-ip}";
     };
   };
 
@@ -42,9 +38,8 @@ in
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases = config.lib.server.mkTraefikAlias {
-      subdomain = cfg.subdomain;
-    };
+    server.traefik.aliases =
+      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.gluetun.settings = {
       project.name = "gluetun";
