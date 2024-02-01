@@ -1,9 +1,7 @@
 { lib, config, ... }:
 
-let
-  cfg = config.server.pihole;
-in
-{
+let cfg = config.server.pihole;
+in {
   options.server.pihole = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -33,9 +31,8 @@ in
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases = config.lib.server.mkTraefikAlias {
-      subdomain = cfg.subdomain;
-    };
+    server.traefik.aliases =
+      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.pihole.settings = {
       project.name = "pihole";
@@ -48,17 +45,21 @@ in
         container_name = "pihole";
         hostname = config.networking.hostName;
         networks = [ "proxy" "dnscrypt" ];
-        volumes = [ "${config.lib.server.mkConfigDir "pihole/data"}:/etc/pihole" "${config.lib.server.mkConfigDir "pihole/dnsmasq.d"}:/etc/dnsmasq.d" ];
+        volumes = [
+          "${config.lib.server.mkConfigDir "pihole/data"}:/etc/pihole"
+          "${config.lib.server.mkConfigDir "pihole/dnsmasq.d"}:/etc/dnsmasq.d"
+        ];
         environment = {
           TZ = "Europe/Berlin";
           PIHOLE_DNS_ = "dnscrypt#5053;9.9.9.9";
           SKIPGRAVITYONBOOT = "true";
         };
-        ports = (if (cfg.expose) then [ "53:53/tcp" "53:53/udp" ] else []) ++
-                (if (cfg.internal) then [
-                  "${config.server.tailscale-ip}:53:53/tcp"
-                  "${config.server.tailscale-ip}:53:53/udp"
-                ] else []);
+        ports = (if (cfg.expose) then [ "53:53/tcp" "53:53/udp" ] else [ ])
+          ++ (if (cfg.internal) then [
+            "${config.server.tailscale-ip}:53:53/tcp"
+            "${config.server.tailscale-ip}:53:53/udp"
+          ] else
+            [ ]);
         labels = config.lib.server.mkTraefikLabels {
           name = "pihole";
           port = "80";
@@ -72,7 +73,8 @@ in
         image = "klutchell/dnscrypt-proxy:latest";
         container_name = "dnscrypt";
         networks = [ "proxy" "dnscrypt" ];
-        volumes = [ "${config.lib.server.mkConfigDir "pihole/dnscrypt"}:/config" ];
+        volumes =
+          [ "${config.lib.server.mkConfigDir "pihole/dnscrypt"}:/config" ];
         restart = "unless-stopped";
       };
     };

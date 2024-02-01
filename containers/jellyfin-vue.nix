@@ -1,9 +1,7 @@
 { lib, config, ... }:
 
-let
-  cfg = config.server.jellyfin-vue;
-in
-{
+let cfg = config.server.jellyfin-vue;
+in {
   options.server.jellyfin-vue = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -30,9 +28,8 @@ in
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases = config.lib.server.mkTraefikAlias {
-      subdomain = cfg.subdomain;
-    };
+    server.traefik.aliases =
+      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.jellyfin-vue.settings = {
       project.name = "jellyfin-vue";

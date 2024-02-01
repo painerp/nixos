@@ -1,9 +1,7 @@
 { lib, config, ... }:
 
-let
-  cfg = config.server.pledo;
-in
-{
+let cfg = config.server.pledo;
+in {
   options.server.pledo = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -20,9 +18,8 @@ in
   };
 
   config = lib.mkIf (cfg.enable) {
-    server.traefik.aliases = config.lib.server.mkTraefikAlias {
-      subdomain = cfg.subdomain;
-    };
+    server.traefik.aliases =
+      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.gluetun.settings = {
       services.gluetun.service.labels = config.lib.server.mkTraefikLabels {

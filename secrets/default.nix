@@ -4,9 +4,9 @@
   watchtower-env = ./containers/watchtower.env.age;
 
   # variants
-	bpi-wifi = ./bpi/wifi.age;
+  bpi-wifi = ./bpi/wifi.age;
 
-	jpi-wifi = ./jpi/wifi.age;
+  jpi-wifi = ./jpi/wifi.age;
 
   ext-authentik-env = ./ext/authentik.env.age;
   ext-authentik-pg-env = ./ext/authentik-pg.env.age;

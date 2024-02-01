@@ -3,8 +3,7 @@
 let
   cfg = config.server.nuxt-pages;
   config-dir = config.lib.server.mkConfigDir "nuxt-pages";
-in
-{
+in {
   options.server.nuxt-pages = {
     pma = {
       enable = lib.mkOption {
@@ -19,9 +18,7 @@ in
         type = lib.types.bool;
         default = config.server.authentik.enable;
       };
-      env-file = lib.mkOption {
-        type = lib.types.path;
-      };
+      env-file = lib.mkOption { type = lib.types.path; };
     };
     app = {
       enable = lib.mkOption {
@@ -41,12 +38,10 @@ in
         default = config.server.authentik.enable;
       };
       image = lib.mkOption {
-				type = lib.types.str;
-				description = "The docker image to use for the nuxt app";
-			};
-      env-file = lib.mkOption {
-        type = lib.types.path;
+        type = lib.types.str;
+        description = "The docker image to use for the nuxt app";
       };
+      env-file = lib.mkOption { type = lib.types.path; };
     };
     g2g = {
       enable = lib.mkOption {
@@ -62,42 +57,35 @@ in
         default = config.server.authentik.enable;
       };
       image = lib.mkOption {
-	      type = lib.types.str;
-	      description = "The docker image to use for the g2g app";
+        type = lib.types.str;
+        description = "The docker image to use for the g2g app";
       };
-      env-file = lib.mkOption {
-        type = lib.types.path;
-      };
+      env-file = lib.mkOption { type = lib.types.path; };
     };
-    mysql.env-file = lib.mkOption {
-      type = lib.types.path;
-    };
+    mysql.env-file = lib.mkOption { type = lib.types.path; };
   };
 
   config = lib.mkIf (cfg.pma.enable || cfg.app.enable || cfg.g2g.enable) {
     age.secrets = {
       nuxt-pages-mysql-env.file = cfg.mysql.env-file;
-    } // lib.mkIf (cfg.app.enable) {
-      nuxt-pages-env.file = cfg.app.env-file;
-    } // lib.mkIf (cfg.pma.enable) {
-      nuxt-pages-pma-env.file = cfg.pma.env-file;
-    } // lib.mkIf (cfg.g2g.enable) {
-      nuxt-pages-g2g-env.file = cfg.g2g.env-file;
-    };
+    } // lib.mkIf (cfg.app.enable) { nuxt-pages-env.file = cfg.app.env-file; }
+      // lib.mkIf (cfg.pma.enable) {
+        nuxt-pages-pma-env.file = cfg.pma.env-file;
+      } // lib.mkIf (cfg.g2g.enable) {
+        nuxt-pages-g2g-env.file = cfg.g2g.env-file;
+      };
 
     systemd.services.arion-nuxt-pages = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases = with config.lib.server; mkTraefikAlias {
-      subdomain = cfg.app.subdomain;
-      root = cfg.app.root;
-    } ++ mkTraefikAlias {
-      subdomain = cfg.g2g.subdomain;
-    } ++ mkTraefikAlias {
-      subdomain = cfg.pma.subdomain;
-    };
+    server.traefik.aliases = with config.lib.server;
+      mkTraefikAlias {
+        subdomain = cfg.app.subdomain;
+        root = cfg.app.root;
+      } ++ mkTraefikAlias { subdomain = cfg.g2g.subdomain; }
+      ++ mkTraefikAlias { subdomain = cfg.pma.subdomain; };
 
     virtualisation.arion.projects.nuxt-pages.settings = {
       project.name = "nuxt-pages";
@@ -110,16 +98,14 @@ in
           image = "mariadb:latest";
           container_name = "nuxt-mysql";
           networks = [ "backend" ];
-          environment = {
-            MARIADB_AUTO_UPGRADE = "yes";
-          };
+          environment = { MARIADB_AUTO_UPGRADE = "yes"; };
           env_file = [ config.age.secrets.nuxt-pages-mysql-env.path ];
           volumes = [ "${config-dir}/mysql:/var/lib/mysql" ];
           restart = "unless-stopped";
         };
 
       } // lib.attrsets.optionalAttrs (cfg.pma.enable) {
-        phpmyadmin.service =  {
+        phpmyadmin.service = {
           image = "phpmyadmin:latest";
           container_name = "nuxt-pma";
           networks = [ "backend" "proxy" ];
@@ -142,7 +128,7 @@ in
         };
 
       } // lib.attrsets.optionalAttrs (cfg.app.enable) {
-        app.service =  {
+        app.service = {
           image = "${cfg.app.image}";
           container_name = "nuxt-app";
           depends_on = [ "mysql" ];
@@ -163,7 +149,7 @@ in
         };
 
       } // lib.attrsets.optionalAttrs (cfg.g2g.enable) {
-        g2g.service =  {
+        g2g.service = {
           image = "${cfg.g2g.image}";
           container_name = "nuxt-g2g";
           depends_on = [ "mysql" ];

@@ -3,8 +3,7 @@
 let
   cfg = config.server.bachelor;
   config-dir = config.lib.server.mkConfigDir "bachelor";
-in
-{
+in {
   options.server.bachelor = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -27,15 +26,11 @@ in
       default = config.server.authentik.enable;
     };
     image = lib.mkOption {
-			type = lib.types.str;
-			description = "The docker image to use for the service";
-		};
-		env-file = lib.mkOption {
-      type = lib.types.path;
+      type = lib.types.str;
+      description = "The docker image to use for the service";
     };
-    postgres.env-file = lib.mkOption {
-      type = lib.types.path;
-    };
+    env-file = lib.mkOption { type = lib.types.path; };
+    postgres.env-file = lib.mkOption { type = lib.types.path; };
   };
 
   config = lib.mkIf (cfg.enable) {
@@ -75,7 +70,7 @@ in
         image = "redis:alpine";
         container_name = "bachelor-redis";
         networks = [ "backend" ];
-        volumes = [ "${config-dir}/redis:/data"];
+        volumes = [ "${config-dir}/redis:/data" ];
         restart = "unless-stopped";
       };
 
@@ -84,7 +79,7 @@ in
         container_name = "bachelor-ip";
         networks = [ "backend" "proxy" ];
         env_file = [ config.age.secrets.bachelor-env.path ];
-        volumes = [ "${config-dir}/logs:/var/log/apache2"];
+        volumes = [ "${config-dir}/logs:/var/log/apache2" ];
         labels = config.lib.server.mkTraefikLabels {
           name = "bachelor";
           port = "80";

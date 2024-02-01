@@ -3,25 +3,23 @@
 let
   hostname = "nixext";
   tailscale-ip = "100.86.37.30";
-in
-{
+in {
   imports = [ ./secrets ./secrets/ext.nix ];
 
   networking.hostName = "${hostname}";
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/ea881f84-b512-47e8-af97-4260a2fb4e51";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/ea881f84-b512-47e8-af97-4260a2fb4e51";
+    fsType = "ext4";
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/E900-FD3F";
-      fsType = "vfat";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/E900-FD3F";
+    fsType = "vfat";
+  };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/55f7d97a-a438-4ac9-8909-2e08a78e3ef5"; }
-    ];
+    [{ device = "/dev/disk/by-uuid/55f7d97a-a438-4ac9-8909-2e08a78e3ef5"; }];
 
   # services
   server = {
@@ -101,7 +99,9 @@ in
 
   # docker
   virtualisation.arion.projects = {
-    traefik.settings.services.traefik.service.ports = [ "3478:3478/tcp" "3478:3478/udp" ];
-    bachelor.settings.services.postgres.service.ports = [ "${tailscale-ip}:5432:5432/tcp" ];
+    traefik.settings.services.traefik.service.ports =
+      [ "3478:3478/tcp" "3478:3478/udp" ];
+    bachelor.settings.services.postgres.service.ports =
+      [ "${tailscale-ip}:5432:5432/tcp" ];
   };
 }
