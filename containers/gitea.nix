@@ -1,9 +1,7 @@
 { lib, config, ... }:
 
-let
-  cfg = config.server.gitea;
-in
-{
+let cfg = config.server.gitea;
+in {
   options.server.gitea = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -25,26 +23,20 @@ in
       type = lib.types.bool;
       default = !cfg.expose;
     };
-    env-file = lib.mkOption {
-      type = lib.types.path;
-    };
     internal-ip = lib.mkOption {
       type = lib.types.str;
-      default = "${config.server.tailscape-ip}";
+      default = "${config.server.tailscale-ip}";
     };
   };
 
   config = lib.mkIf (cfg.enable) {
-    age.secrets.gitea-env.file = cfg.env-file;
-
     systemd.services.arion-gitea = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases = config.lib.server.mkTraefikAlias {
-      subdomain = cfg.subdomain;
-    };
+    server.traefik.aliases =
+      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.gitea.settings = {
       project.name = "gitea";
@@ -59,15 +51,16 @@ in
           USER_UID = 1050;
           USER_GID = 1050;
         };
-        env_file = [ config.age.secrets.gitea-env.path ];
         volumes = [
           "${config.lib.server.mkConfigDir "gitea"}:/data"
           "/home/git/.ssh/:/data/git/.ssh"
           "/etc/timezone:/etc/timezone:ro"
           "/etc/localtime:/etc/localtime:ro"
         ];
-        ports = [ "127.0.0.1:2222:22/tcp"] ++
-                (if (cfg.internal) then [ "${cfg.internal-ip}:3000:3000/tcp" ] else []);
+        ports = [ "127.0.0.1:2222:22/tcp" ] ++ (if (cfg.internal) then
+          [ "${cfg.internal-ip}:3000:3000/tcp" ]
+        else
+          [ ]);
         labels = config.lib.server.mkTraefikLabels {
           name = "gitea";
           port = "3000";
