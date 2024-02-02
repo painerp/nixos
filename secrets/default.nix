@@ -22,7 +22,7 @@
   inf-jellystat-env = ./inf/jellystat.env.age;
   inf-jellystat-pg-env = ./inf/jellystat-pg.env.age;
 
-  gra-authentik-proxy-env = ./gra/authentik.env.age;
+  gra-authentik-proxy-env = ./gra/authentik-proxy.env.age;
 
   cit-git-pw = ./cit/git-pw.age;
   cit-authentik-env = ./cit/authentik.env.age;
