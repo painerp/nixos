@@ -21,13 +21,9 @@ in {
     };
     internal = lib.mkOption {
       type = lib.types.bool;
-      default = false;
+      default = !cfg.expose;
     };
-    data-dir = lib.mkOption {
-      type = lib.types.str;
-      default = "${config.lib.server.mkConfigDir "nextcloud"}/data";
-    };
-    mount = lib.mkOption {
+    path = lib.mkOption {
       type = lib.types.str;
       default = "${config.lib.server.mkConfigDir "nextcloud"}";
     };
@@ -63,8 +59,8 @@ in {
           else
             "";
           AUTOMATIC_UPDATES = 1;
-          NEXTCLOUD_DATADIR = "${cfg.data-dir}";
-          NEXTCLOUD_MOUNT = "${cfg.mount}";
+          NEXTCLOUD_DATADIR = "${cfg.path}/data";
+          NEXTCLOUD_MOUNT = "${cfg.path}";
           NEXTCLOUD_ADDITIONAL_APKS =
             "imagemagick bash ffmpeg libva-utils libva-vdpau-driver libva-intel-driver intel-media-driver mesa-va-gallium";
           NEXTCLOUD_ENABLE_DRI_DEVICE = "true";
