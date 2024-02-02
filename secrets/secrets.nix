@@ -21,7 +21,7 @@ let
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL9kVFMfWDbqbzfFaOnEHSlofWUKZAJUATkHN+nlUK/X";
   arr =
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGF1rLbYjyiGRfdPHKxmuiTd650+Iy0VR2/qM5T06PAv";
-  systems = [ jpi bpi ext log run inf cit arr ];
+  systems = [ jpi bpi ext log run inf cit gra arr ];
 in {
   # containers
   "containers/traefik.env.age".publicKeys = users ++ systems;
