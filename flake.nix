@@ -45,42 +45,56 @@
           inherit specialArgs;
           system = "aarch64-linux";
           pkgs = (import nixpkgs) { system = "aarch64-linux"; };
-          modules = server-modules ++ [ ./containers ./modules/kodi.nix ] ++ [ ./variants/jpi.nix ./hardware/rpi.nix ];
+          modules = server-modules ++ [ ./containers ./modules/kodi.nix ]
+            ++ [ ./variants/jpi.nix ./hardware/rpi.nix ];
         };
 
         bpi = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           system = "aarch64-linux";
           pkgs = (import nixpkgs) { system = "aarch64-linux"; };
-          modules = server-modules ++ [ ./containers ] ++ [ ./variants/bpi.nix ./hardware/rpi.nix ];
+          modules = server-modules ++ [ ./containers ]
+            ++ [ ./variants/bpi.nix ./hardware/rpi.nix ];
         };
 
         ext = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           system = "x86_64-linux";
           pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules = server-modules ++ [ ./containers ] ++ [ ./variants/ext.nix ./hardware/vps.nix ];
+          modules = server-modules ++ [ ./containers ]
+            ++ [ ./variants/ext.nix ./hardware/vps.nix ];
         };
 
         run = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           system = "x86_64-linux";
           pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules = server-modules ++ [ ./containers ] ++ [ ./variants/run.nix ./hardware/int-vps.nix ];
+          modules = server-modules ++ [ ./containers ]
+            ++ [ ./variants/run.nix ./hardware/int-vps.nix ];
         };
 
         log = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           system = "x86_64-linux";
           pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules = server-modules ++ [ ./containers ] ++ [ ./variants/log.nix ./hardware/int-vps.nix ];
+          modules = server-modules ++ [ ./containers ]
+            ++ [ ./variants/log.nix ./hardware/int-vps.nix ];
         };
 
         cit = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           system = "x86_64-linux";
           pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules = server-modules ++ [ ./containers ] ++ [ ./variants/cit.nix ./hardware/int-vps.nix ];
+          modules = server-modules ++ [ ./containers ]
+            ++ [ ./variants/cit.nix ./hardware/int-vps.nix ];
+        };
+
+        inf = nixpkgs.lib.nixosSystem {
+          inherit specialArgs;
+          system = "x86_64-linux";
+          pkgs = (import nixpkgs) { system = "x86_64-linux"; };
+          modules = server-modules ++ [ ./containers ]
+            ++ [ ./variants/inf.nix ./hardware/int-vps.nix ];
         };
       };
     };
