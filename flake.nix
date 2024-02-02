@@ -96,6 +96,14 @@
           modules = server-modules ++ [ ./containers ]
             ++ [ ./variants/inf.nix ./hardware/int-vps.nix ];
         };
+
+        gra = nixpkgs.lib.nixosSystem {
+          inherit specialArgs;
+          system = "x86_64-linux";
+          pkgs = (import nixpkgs) { system = "x86_64-linux"; };
+          modules = server-modules ++ [ ./containers ]
+            ++ [ ./variants/gra.nix ./hardware/int-vps.nix ];
+        };
       };
     };
 }
