@@ -8,7 +8,7 @@ in {
 
   networking = {
     hostName = "${hostname}";
-    interfaces.ens19.ipv4.addresses = [{
+    interfaces.enp6s19.ipv4.addresses = [{
       address = "10.0.10.15";
       prefixLength = 24;
     }];
