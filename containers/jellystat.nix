@@ -43,7 +43,7 @@ in {
         hostname = config.networking.hostName;
         networks = [ "internal" ];
         environment = { POSTGRES_USER = "postgres"; };
-        envFile = [ config.age.secrets.jellystat-pg-env.path ];
+        env_file = [ config.age.secrets.jellystat-pg-env.path ];
         volumes = [
           "${
             config.lib.server.mkConfigDir "jellystat"
@@ -63,7 +63,7 @@ in {
           POSTGRES_PORT = 5432;
           TZ = config.time.timeZone;
         };
-        envFile = [ config.age.secrets.jellystat-env.path ];
+        env_file = [ config.age.secrets.jellystat-env.path ];
         depends_on = [ "jellystat-pg" ];
         labels = config.lib.server.mkTraefikLabels {
           name = "jellystat";
