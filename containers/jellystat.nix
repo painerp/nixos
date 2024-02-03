@@ -19,7 +19,7 @@ in {
     postgres.env-file = lib.mkOption { type = lib.types.path; };
     extra-hosts = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
+      default = [ ];
     };
   };
 
