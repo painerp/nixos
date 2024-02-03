@@ -34,6 +34,12 @@ in {
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
 
+  fileSystems."/mnt/backup" = {
+    device = "10.0.10.1:/mnt/main/backup/nextcloud";
+    fsType = "nfs";
+    options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
+  };
+
   # nvidia
   config.nixpkgs.config.allowUnfree = true;
   services.xserver.videoDrivers = [ "nvidia" ];
