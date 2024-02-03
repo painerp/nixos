@@ -4,7 +4,7 @@ let
   hostname = "nixinf";
   tailscale-ip = "100.115.5.117";
 in {
-  imports = [ ./secrets ];
+  imports = [ ./secrets ./secrets/inf.nix ];
 
   networking.hostName = "${hostname}";
 

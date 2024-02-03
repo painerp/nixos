@@ -17,6 +17,10 @@ in {
     };
     env-file = lib.mkOption { type = lib.types.path; };
     postgres.env-file = lib.mkOption { type = lib.types.path; };
+    extra-hosts = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [];
+    };
   };
 
   config = lib.mkIf (cfg.enable) {
@@ -64,6 +68,7 @@ in {
           TZ = config.time.timeZone;
         };
         env_file = [ config.age.secrets.jellystat-env.path ];
+        extra_hosts = cfg.extra-hosts;
         depends_on = [ "jellystat-pg" ];
         labels = config.lib.server.mkTraefikLabels {
           name = "jellystat";
