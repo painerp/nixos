@@ -40,9 +40,11 @@ in {
 
       services.jellyfin = {
         out.service = {
-          deploy.resources.reservations.devices =
-            [{ capabilities = [ "gpu" ]; }];
-          runtime = "nvidia";
+          deploy.resources.reservations.devices = [{
+            driver = "nvidia";
+            count = 1;
+            capabilities = [ "gpu" ];
+          }];
         };
         service = {
           image = "lscr.io/linuxserver/jellyfin:latest";
