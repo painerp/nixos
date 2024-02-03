@@ -105,6 +105,14 @@
             ++ [ ./variants/gra.nix ./hardware/int-vps.nix ];
         };
 
+        gam = nixpkgs.lib.nixosSystem {
+          inherit specialArgs;
+          system = "x86_64-linux";
+          pkgs = (import nixpkgs) { system = "x86_64-linux"; };
+          modules = server-modules ++ [ ./containers ]
+            ++ [ ./variants/gam.nix ./hardware/int-vps.nix ];
+        };
+
         arr = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           system = "x86_64-linux";
