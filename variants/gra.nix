@@ -34,6 +34,24 @@ in {
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
 
+  # nvidia
+  config.nixpkgs.config.allowUnfree = true;
+  services.xserver.videoDrivers = [ "nvidia" ];
+  virtualisation.docker = { enableNvidia = true; };
+  systemd.enableUnifiedCgroupHierarchy = false;
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+  };
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    open = false;
+    nvidiaSettings = false;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
   # services
   server = {
     base-domain = "redacted";
@@ -52,6 +70,7 @@ in {
       enable = true;
       internal = true;
       path = "/mnt/motion";
+      auth = false;
     };
     monitoring = {
       node-exporter.enable = true;
