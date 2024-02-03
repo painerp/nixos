@@ -73,6 +73,8 @@ in {
         labels = config.lib.server.mkTraefikLabels {
           name = "nextcloudaio";
           port = "8080";
+          scheme = "https";
+          transport = "skip-verify@file";
           subdomain = "${cfg.subdomain}";
           forwardAuth = cfg.auth;
         };
