@@ -28,6 +28,8 @@
   cit-authentik-env = ./cit/authentik.env.age;
   cit-authentik-pg-env = ./cit/authentik-pg.env.age;
 
+  gam-palworld-env = ./gam/palworld.env.age;
+
   arr-authentik-proxy-env = ./arr/authentik-proxy.env.age;
   arr-gluetun-env = ./arr/gluetun.env.age;
   arr-prdl-env = ./arr/prdl.env.age;
