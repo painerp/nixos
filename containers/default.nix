@@ -58,6 +58,7 @@ in {
     ./monitoring.nix
     ./nextcloud.nix
     ./nuxt-pages.nix
+    ./palworld.nix
     ./pihole.nix
     ./pledo.nix
     ./prdl.nix
