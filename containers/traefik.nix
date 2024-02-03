@@ -135,17 +135,17 @@ in {
         "traefik.http.routers.${name}.rule" = "${rule}";
         "traefik.http.routers.${name}.entrypoints" = "https";
         "traefik.http.routers.${name}.tls" = "true";
+        "traefik.http.routers.${name}.service" = service;
         "traefik.docker.network" = "proxy";
       } // lib.attrsets.optionalAttrs (builtins.hasAttr "port" options) {
-        "traefik.http.routers.${name}.service" = service;
         "traefik.http.services.${service}.loadbalancer.server.port" =
           "${options.port}";
       } // lib.attrsets.optionalAttrs (builtins.hasAttr "scheme" options) {
-        "traefik.http.routers.${name}.service" = service;
         "traefik.http.services.${service}.loadbalancer.server.scheme" =
           "${options.scheme}";
-      } // lib.attrsets.optionalAttrs (builtins.hasAttr "service" options) {
-        "traefik.http.routers.${name}.service" = service;
+      } // lib.attrsets.optionalAttrs (builtins.hasAttr "transport" options) {
+        "traefik.http.services.${name}.loadbalancer.serverstransport" =
+          "${options.transport}";
       } // lib.attrsets.optionalAttrs (builtins.hasAttr "middleware" options) {
         "traefik.http.routers.${name}.middlewares" = "${options.middleware}";
       } // lib.attrsets.optionalAttrs forwardAuth {
