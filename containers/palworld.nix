@@ -39,11 +39,11 @@ in {
           GUID = 1050;
           PORT = "8211";
           PLAYERS = "16";
-          MULTITHREADING = true;
-          RCON_ENABLED = true;
+          MULTITHREADING = "true";
+          RCON_ENABLED = "true";
           RCON_PORT = "25575";
           TZ = "UTC";
-          COMMUNITY = false;
+          COMMUNITY = "false";
         };
         env_file = [ config.age.secrets.palworld-env.path ];
         ports = (if cfg.expose then [ "8211:8211/udp" ] else [ ])
