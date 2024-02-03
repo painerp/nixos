@@ -46,7 +46,11 @@ in {
           COMMUNITY = false;
         };
         env_file = [ config.age.secrets.palworld-env.path ];
-        ports = (if cfg.expose then [ "8211:8211/udp" ] else []) ++ (if cfg.internal then [ "${config.server.tailscale-ip}:8211:8211/udp" ] else []);
+        ports = (if cfg.expose then [ "8211:8211/udp" ] else [ ])
+          ++ (if cfg.internal then
+            [ "${config.server.tailscale-ip}:8211:8211/udp" ]
+          else
+            [ ]);
         volumes = [ "${config.lib.server.mkConfigDir "palworld"}:/palworld" ];
         restart = "unless-stopped";
       };
