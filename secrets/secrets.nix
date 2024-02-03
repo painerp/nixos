@@ -17,11 +17,13 @@ let
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID+uAHS+HxLB0UnSoi64GYFO4KE9ypNdiL0AR6+R5sKN";
   gra =
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINBDDnSDmPNDQemH321BQZSxBESYZRE6mzXEJCTtdxtJ";
+  gam =
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINeMjHcHigAw7K5OAemN4vu3vFEwKfHZ5HCVXfpSmKbk";
   cit =
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL9kVFMfWDbqbzfFaOnEHSlofWUKZAJUATkHN+nlUK/X";
   arr =
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGF1rLbYjyiGRfdPHKxmuiTd650+Iy0VR2/qM5T06PAv";
-  systems = [ jpi bpi ext log run inf cit gra arr ];
+  systems = [ jpi bpi ext log run inf gam cit gra arr ];
 in {
   # containers
   "containers/traefik.env.age".publicKeys = users ++ systems;
@@ -50,6 +52,8 @@ in {
   "cit/authentik-pg.env.age".publicKeys = users ++ [ cit ];
 
   "gra/authentik-proxy.env.age".publicKeys = users ++ [ gra ];
+
+  "gam/palworld.env.age".publicKeys = users ++ [ gam ];
 
   "arr/authentik-proxy.env.age".publicKeys = users ++ [ arr ];
   "arr/gluetun.env.age".publicKeys = users ++ [ arr ];
