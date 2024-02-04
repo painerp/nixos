@@ -37,6 +37,7 @@ in {
       env-file = secrets.arr-gluetun-env;
     };
     bazarr.enable = true;
+    pledo.enable = true;
     prdl = {
       enable = true;
       image = "redacted";
