@@ -68,12 +68,16 @@ in {
   config = lib.mkIf (cfg.pma.enable || cfg.app.enable || cfg.g2g.enable) {
     age.secrets = {
       nuxt-pages-mysql-env.file = cfg.mysql.env-file;
-    } // lib.mkIf (cfg.app.enable) { nuxt-pages-env.file = cfg.app.env-file; }
-      // lib.mkIf (cfg.pma.enable) {
+    } // (if (cfg.app.enable) then {
+      nuxt-pages-env.file = cfg.app.env-file;
+    } else
+      { }) // (if (cfg.pma.enable) then {
         nuxt-pages-pma-env.file = cfg.pma.env-file;
-      } // lib.mkIf (cfg.g2g.enable) {
-        nuxt-pages-g2g-env.file = cfg.g2g.env-file;
-      };
+      } else
+        { }) // (if (cfg.g2g.enable) then {
+          nuxt-pages-g2g-env.file = cfg.g2g.env-file;
+        } else
+          { });
 
     systemd.services.arion-nuxt-pages = {
       wants = [ "network-online.target" ];
