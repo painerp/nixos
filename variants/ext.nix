@@ -81,7 +81,12 @@ in {
       enable = true;
       subdomain = "t";
       expose = true;
-      nextcloud-talk-proxy = true;
+      extra-entrypoints = {
+        talk-tcp.address = ":3478";
+        talk-udp.address = ":3478/udp";
+        palworld-udp.address = ":9987/udp";
+      };
+      extra-ports = [ "3478:3478/tcp" "3478:3478/udp" "9987:9987/udp" ];
     };
     uptime-kuma = {
       enable = true;
