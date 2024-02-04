@@ -44,7 +44,8 @@ let
         http.tls = { certResolver = "hetzner"; };
         http3.advertisedPort = 443;
       };
-    } // lib.attrsets.optionalAttrs (cfg.extra-entrypoints != {}) cfg.extra-entrypoints;
+    } // lib.attrsets.optionalAttrs (cfg.extra-entrypoints != { })
+      cfg.extra-entrypoints;
     certificatesResolvers = {
       hetzner = {
         acme = {
