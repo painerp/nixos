@@ -104,8 +104,6 @@ in {
 
   # docker
   virtualisation.arion.projects = {
-    traefik.settings.services.traefik.service.ports =
-      [ "3478:3478/tcp" "3478:3478/udp" ];
     bachelor.settings.services.postgres.service.ports =
       [ "${tailscale-ip}:5432:5432/tcp" ];
   };
