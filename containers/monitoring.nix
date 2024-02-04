@@ -111,7 +111,7 @@ in {
             volumes = [
               "${
                 config.lib.server.mkConfigDir "prometheus"
-              }/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro"
+              }/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
               "${config.lib.server.mkConfigDir "prometheus/data"}:/prometheus"
             ];
             labels = config.lib.server.mkTraefikLabels {
