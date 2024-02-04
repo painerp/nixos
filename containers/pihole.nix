@@ -17,7 +17,7 @@ in {
     };
     internal = lib.mkOption {
       type = lib.types.bool;
-      default = !cfg.cadvisor.expose;
+      default = !cfg.expose;
     };
     auth = lib.mkOption {
       type = lib.types.bool;
