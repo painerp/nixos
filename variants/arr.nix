@@ -6,7 +6,13 @@ let
 in {
   imports = [ ./secrets ./secrets/arr.nix ];
 
-  networking.hostName = "${hostname}";
+  networking = {
+    hostName = "${hostname}";
+    interfaces.ens19.ipv4.addresses = [{
+      address = "10.0.10.80";
+      prefixLength = 24;
+    }];
+  };
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/5f9a25d7-4fd8-48ab-a510-3c00bdfd3edf";
@@ -15,14 +21,6 @@ in {
 
   swapDevices =
     [{ device = "/dev/disk/by-uuid/b11cb3df-2e66-466c-9910-ef30b104612f"; }];
-
-  networking = {
-    hostName = "${hostname}";
-    interfaces.ens19.ipv4.addresses = [{
-      address = "10.0.10.80";
-      prefixLength = 24;
-    }];
-  };
 
   # services
   server = {
