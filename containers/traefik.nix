@@ -44,10 +44,7 @@ let
         http.tls = { certResolver = "hetzner"; };
         http3.advertisedPort = 443;
       };
-    } // lib.attrsets.optionalAttrs (cfg.nextcloud-talk-proxy) {
-      talktcp.address = ":3478";
-      talkudp.address = ":3478/udp";
-    };
+    } // lib.attrsets.optionalAttrs (cfg.extra-entrypoints != {}) cfg.extra-entrypoints;
     certificatesResolvers = {
       hetzner = {
         acme = {
@@ -96,10 +93,15 @@ in {
       description = "Enable wildcard certificate";
       default = false;
     };
-    nextcloud-talk-proxy = lib.mkOption {
-      type = lib.types.bool;
-      description = "Enable proxy for nextcloud talk";
-      default = false;
+    extra-entrypoints = lib.mkOption {
+      type = lib.types.attrs;
+      description = "add extra entrypoints to static traefik config";
+      default = { };
+    };
+    extra-ports = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      description = "add extra ports to traefik service";
+      default = [ ];
     };
   };
 
@@ -201,7 +203,7 @@ in {
             "${config.server.tailscale-ip}:443:443/tcp"
             "${config.server.tailscale-ip}:443:443/udp"
           ] else
-            [ ]);
+            [ ]) ++ cfg.extra-ports;
         volumes = [
           "${staticConfigFile}:/traefik.yaml"
           "${config.lib.server.mkConfigDir "traefik"}/acme.json:/acme.json"
