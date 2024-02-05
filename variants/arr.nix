@@ -22,6 +22,12 @@ in {
   swapDevices =
     [{ device = "/dev/disk/by-uuid/b11cb3df-2e66-466c-9910-ef30b104612f"; }];
 
+  fileSystems."/mnt/motion" = {
+    device = "10.0.10.1:/mnt/main/motion";
+    fsType = "nfs";
+    options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
+  };
+
   # services
   server = {
     base-domain = "redacted";
