@@ -73,6 +73,15 @@ in {
         after = [ "network-online.target" ];
       };
 
+      server.traefik.aliases = with config.lib.server;
+        (if cfg.grafana.enable then
+          mkTraefikAlias { subdomain = cfg.grafana.subdomain; }
+        else
+          [ ]) ++ (if cfg.prometheus.enable then
+            mkTraefikAlias { subdomain = cfg.prometheus.subdomain; }
+          else
+            [ ]);
+
       virtualisation.arion.projects.monitoring.settings = {
         project.name = "monitoring";
         networks.proxy.external =
