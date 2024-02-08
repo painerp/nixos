@@ -97,6 +97,11 @@ in {
             user = "0:0";
             volumes =
               [ "${config.lib.server.mkConfigDir "grafana"}:/var/lib/grafana" ];
+            environment = {
+              GF_SERVER_DOMAIN = config.server.domain;
+              GF_SERVER_ROOT_URL =
+                "https://${cfg.grafana.subdomain}.${config.server.domain}";
+            };
             env_file = [ config.age.secrets.grafana-env.path ];
             labels = config.lib.server.mkTraefikLabels {
               name = "grafana";
