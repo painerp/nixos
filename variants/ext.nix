@@ -32,15 +32,6 @@ in {
       env-file = secrets.ext-authentik-env;
       postgres.env-file = secrets.ext-authentik-pg-env;
     };
-    bachelor = {
-      enable = true;
-      domain = "redacted";
-      root = true;
-      auth = false;
-      image = "redacted";
-      env-file = secrets.ext-bachelor-env;
-      postgres.env-file = secrets.ext-bachelor-pg-env;
-    };
     gotify = {
       enable = true;
       subdomain = "got";
@@ -101,10 +92,4 @@ in {
   # users
   users.mutableUsers = false;
   nix.settings.trusted-users = [ "@wheel" ];
-
-  # docker
-  virtualisation.arion.projects = {
-    bachelor.settings.services.postgres.service.ports =
-      [ "${tailscale-ip}:5432:5432/tcp" ];
-  };
 }
