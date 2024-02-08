@@ -65,6 +65,7 @@ in {
     authentik = {
       enable = true;
       proxy = true;
+      subdomain = "auth";
       env-file = secrets.gra-authentik-proxy-env;
     };
     nextcloud = {

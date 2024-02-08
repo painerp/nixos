@@ -24,6 +24,7 @@ in {
     authentik = {
       enable = true;
       proxy = true;
+      subdomain = "auth";
       env-file = secrets.inf-authentik-proxy-env;
     };
     dashboard.enable = true;
