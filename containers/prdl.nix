@@ -25,6 +25,7 @@ in {
           RATELIMIT = 8;
           DOWNLOAD_PATH = "/motion";
           DOWNLOAD_AMOUNT = 2;
+          SCHEDULE = "10 */2 * * *";
           TZ = config.time.timeZone;
         };
         env_file = [ config.age.secrets.prdl-env.path ];
