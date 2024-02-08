@@ -36,7 +36,6 @@ in {
     authentik = {
       enable = true;
       proxy = true;
-      subdomain = "auth";
       env-file = secrets.arr-authentik-proxy-env;
     };
     gluetun = {
