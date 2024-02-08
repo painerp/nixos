@@ -5,12 +5,13 @@ let
   config-dir = config.lib.server.mkConfigDir "authentik";
   address = if cfg.proxy then "authentik-proxy" else "authentik-server";
   use-smtp = if cfg.email-host == "protonbridge" then true else false;
+  subdomain = if cfg.proxy then "auth-proxy" else cfg.subdomain;
   labels = config.lib.server.mkTraefikLabels {
     name = "authentik";
     port = "9000";
-    subdomain = "${cfg.subdomain}";
+    subdomain = "${subdomain}";
     rule =
-      "(Host(`${cfg.subdomain}.${config.server.domain}`) || HostRegexp(`{subdomain:[a-z0-9]+}.${config.server.domain}`) && PathPrefix(`/outpost.goauthentik.io/`))";
+      "(Host(`${subdomain}.${config.server.domain}`) || HostRegexp(`{subdomain:[a-z0-9]+}.${config.server.domain}`) && PathPrefix(`/outpost.goauthentik.io/`))";
   } // {
     "traefik.http.middlewares.authentik.forwardauth.address" =
       "http://${address}:9000/outpost.goauthentik.io/auth/traefik";
@@ -64,7 +65,7 @@ in {
     };
 
     server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+      config.lib.server.mkTraefikAlias { subdomain = subdomain; };
 
     virtualisation.arion.projects.authentik.settings = {
       project.name = "authentik";
