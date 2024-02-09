@@ -60,13 +60,47 @@ in {
         default = !cfg.cadvisor.expose;
       };
     };
+    pve-exporter = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
+      expose = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
+      internal = lib.mkOption {
+        type = lib.types.bool;
+        default = !cfg.pve-exporter.expose;
+      };
+      env-file = lib.mkOption { type = lib.types.path; };
+    };
+    alertmanager = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
+      subdomain = lib.mkOption {
+        type = lib.types.str;
+        default = if config.server.short-subdomain then "am" else "alertmanager";
+      };
+      auth = lib.mkOption {
+        type = lib.types.bool;
+        default = config.server.authentik.enable;
+      };
+    };
   };
 
   config = lib.mkIf (cfg.grafana.enable || cfg.prometheus.enable
-    || cfg.node-exporter.enable || cfg.cadvisor.enable) {
-      age.secrets = lib.mkIf (cfg.grafana.enable) {
+    || cfg.node-exporter.enable || cfg.cadvisor.enable
+    || cfg.pve-exporter.enable || cfg.alertmanager.enable) {
+      age.secrets = (if cfg.grafana.enable then {
         grafana-env.file = cfg.grafana.env-file;
-      };
+      } else
+        { }) // (if cfg.pve-exporter.enable then {
+          pve-exporter-env.file = cfg.pve-exporter.env-file;
+        } else
+          { });
 
       systemd.services.arion-monitoring = {
         wants = [ "network-online.target" ];
@@ -137,6 +171,22 @@ in {
             restart = "unless-stopped";
           };
 
+        } // lib.attrsets.optionalAttrs (cfg.node-exporter.enable) {
+          node-exporter.service = {
+            image = "quay.io/prometheus/node-exporter:latest";
+            container_name = "node-exporter";
+            networks = lib.mkIf (cfg.prometheus.enable) [ "exporter" ];
+            ports =
+              (if (cfg.node-exporter.expose) then [ "9100:9100/tcp" ] else [ ])
+              ++ (if (cfg.node-exporter.internal) then
+                [ "${config.server.tailscale-ip}:20001:9100/tcp" ]
+              else
+                [ ]);
+            command = [ "--path.rootfs=/host" ];
+            volumes = [ "/:/host:ro,rslave" ];
+            restart = "unless-stopped";
+          };
+
         } // lib.attrsets.optionalAttrs (cfg.cadvisor.enable) {
           cadvisor.service = {
             image = "gcr.io/cadvisor/cadvisor:latest";
@@ -164,19 +214,35 @@ in {
             restart = "unless-stopped";
           };
 
-        } // lib.attrsets.optionalAttrs (cfg.node-exporter.enable) {
-          node-exporter.service = {
-            image = "quay.io/prometheus/node-exporter:latest";
-            container_name = "node-exporter";
+        } // lib.attrsets.optionalAttrs (cfg.pve-exporter.enable) {
+          pve-exporter.service = {
+            image = "prompve/prometheus-pve-exporter:latest";
+            container_name = "pve-exporter";
             networks = lib.mkIf (cfg.prometheus.enable) [ "exporter" ];
             ports =
-              (if (cfg.node-exporter.expose) then [ "9100:9100/tcp" ] else [ ])
+              (if (cfg.pve-exporter.expose) then [ "9221:9221/tcp" ] else [ ])
               ++ (if (cfg.node-exporter.internal) then
-                [ "${config.server.tailscale-ip}:20001:9100/tcp" ]
+                [ "${config.server.tailscale-ip}:20002:9221/tcp" ]
               else
                 [ ]);
-            command = [ "--path.rootfs=/host" ];
-            volumes = [ "/:/host:ro,rslave" ];
+            env_file = [ config.age.secrets.pve-exporter-env.path ];
+            restart = "unless-stopped";
+          };
+
+        } // lib.attrsets.optionalAttrs (cfg.alertmanager.enable) {
+          alertmanager.service = {
+            image = "prom/alertmanager:latest";
+            container_name = "alertmanager";
+            networks = lib.mkIf (cfg.prometheus.enable) [ "exporter" ];
+            volumes = [
+              "${config.lib.server.mkConfigDir "alertmanager"}:/etc/alertmanager"
+            ];
+            labels = config.lib.server.mkTraefikLabels {
+              name = "alertmanager";
+              subdomain = "${cfg.alertmanager.subdomain}";
+              port = "9093";
+              forwardAuth = cfg.alertmanager.auth;
+            };
             restart = "unless-stopped";
           };
         };

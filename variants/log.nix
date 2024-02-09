@@ -33,7 +33,11 @@ in {
         env-file = secrets.log-grafana-env;
       };
       prometheus.enable = true;
-      node-exporter.enable = true;
+      node-exporter = {
+        enable = true;
+        internal = false;
+      };
+      alertmanager.enable = true;
     };
     traefik = {
       enable = true;
