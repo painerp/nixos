@@ -63,4 +63,5 @@ in {
 
   "log/authentik-proxy.env.age".publicKeys = users ++ [ log ];
   "log/grafana.env.age".publicKeys = users ++ [ log ];
+  "log/pve-exporter.env.age".publicKeys = users ++ [ log ];
 }
