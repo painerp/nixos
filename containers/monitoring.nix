@@ -159,7 +159,13 @@ in {
               else
                 [ ]);
             user = "0:0";
-            command = [ "--web.enable-admin-api" ];
+            command = [
+              "--web.enable-admin-api"
+              "--config.file=/etc/prometheus/prometheus.yml"
+              "--storage.tsdb.path=/prometheus"
+              "--web.console.libraries=/usr/share/prometheus/console_libraries"
+              "--web.console.templates=/usr/share/prometheus/consoles"
+            ];
             volumes = [
               "${
                 config.lib.server.mkConfigDir "prometheus"
