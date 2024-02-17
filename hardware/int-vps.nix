@@ -12,7 +12,12 @@
     "virtio_blk"
   ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
+  boot.kernelModules = [
+    "kvm-amd"
+    "cgroup_enable=memory"
+    "cgroup_enable=cpuset"
+    "cgroup_memory=1"
+  ];
   boot.extraModulePackages = [ ];
 
   boot.loader.grub.enable = true;
