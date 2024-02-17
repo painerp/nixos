@@ -159,6 +159,7 @@ in {
               else
                 [ ]);
             user = "0:0";
+            command = [ "--web.enable-admin-api" ];
             volumes = [
               "${
                 config.lib.server.mkConfigDir "prometheus"
