@@ -33,6 +33,7 @@
         ./modules/auto-update.nix
         ./modules/firewall.nix
         ./modules/micro.nix
+        ./modules/optimize.nix
         ./modules/packages.nix
         ./modules/ssh-server.nix
         ./modules/shell.nix
