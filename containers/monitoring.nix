@@ -82,7 +82,8 @@ in {
       };
       subdomain = lib.mkOption {
         type = lib.types.str;
-        default = if config.server.short-subdomain then "am" else "alertmanager";
+        default =
+          if config.server.short-subdomain then "am" else "alertmanager";
       };
       auth = lib.mkOption {
         type = lib.types.bool;
@@ -121,7 +122,9 @@ in {
         networks.proxy.external =
           lib.mkIf (cfg.grafana.enable || cfg.prometheus.enable) true;
         networks.exporter.internal = lib.mkIf (cfg.prometheus.enable
-          && (cfg.cadvisor.enable || cfg.node-exporter.enable)) true;
+          && (cfg.cadvisor.enable || cfg.pve-exporter.enable
+            || cfg.node-exporter.enable)) true;
+        networks.external.name = lib.mkIf (cfg.pve-exporter.enable) "external";
 
         services = lib.attrsets.optionalAttrs (cfg.grafana.enable) {
           grafana.service = {
@@ -218,7 +221,8 @@ in {
           pve-exporter.service = {
             image = "prompve/prometheus-pve-exporter:latest";
             container_name = "pve-exporter";
-            networks = lib.mkIf (cfg.prometheus.enable) [ "exporter" ];
+            networks = [ "external" ]
+              ++ (if (cfg.prometheus.enable) then [ "exporter" ] else [ ]);
             ports =
               (if (cfg.pve-exporter.expose) then [ "9221:9221/tcp" ] else [ ])
               ++ (if (cfg.node-exporter.internal) then
@@ -235,7 +239,9 @@ in {
             container_name = "alertmanager";
             networks = lib.mkIf (cfg.prometheus.enable) [ "exporter" ];
             volumes = [
-              "${config.lib.server.mkConfigDir "alertmanager"}:/etc/alertmanager"
+              "${
+                config.lib.server.mkConfigDir "alertmanager"
+              }:/etc/alertmanager"
             ];
             labels = config.lib.server.mkTraefikLabels {
               name = "alertmanager";
