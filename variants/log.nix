@@ -38,6 +38,11 @@ in {
         enable = true;
         internal = false;
       };
+      pve-exporter = {
+        enable = true;
+        internal = false;
+        env-file = secrets.log-pve-exporter-env;
+      };
       alertmanager.enable = true;
     };
     traefik = {
