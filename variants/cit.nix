@@ -1,7 +1,7 @@
 { config, modulesPath, secrets, lib, ... }:
 
 let
-  hostname = "nixcit";
+  flake = "cit";
   tailscale-ip = "100.77.215.64";
 in {
   imports = [ ./secrets ];
@@ -9,8 +9,9 @@ in {
   # secrets
   age.secrets.git-pw.file = secrets.cit-git-pw;
 
+  system.flake = flake;
   networking = {
-    hostName = "${hostname}";
+    hostName = "nix${flake}";
     interfaces.ens19.ipv4.addresses = [{
       address = "10.0.10.10";
       prefixLength = 24;

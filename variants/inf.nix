@@ -1,12 +1,13 @@
 { config, modulesPath, secrets, lib, ... }:
 
 let
-  hostname = "nixinf";
+  flake = "inf";
   tailscale-ip = "100.115.5.117";
 in {
   imports = [ ./secrets ./secrets/inf.nix ];
 
-  networking.hostName = "${hostname}";
+  system.flake = flake;
+  networking.hostName = "nix${flake}";
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/84ccc144-81ac-471e-82e3-ca4ce6a5100e";

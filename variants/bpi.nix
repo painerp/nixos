@@ -1,7 +1,7 @@
 { config, secrets, ... }:
 
 let
-  hostname = "nixbpi";
+  flake = "bpi";
   tailscale-ip = "100.116.126.150";
 in {
   imports = [ ./secrets ./secrets/bpi.nix ];
@@ -9,9 +9,10 @@ in {
   age.secrets.user-pw.file = secrets.bpi-user-pw;
   age.secrets.wifi.file = secrets.bpi-wifi;
 
+  system.flake = flake;
   # wlan
   networking = {
-    hostName = "${hostname}";
+    hostName = "nix${flake}";
     wireless.environmentFile = config.age.secrets.wifi.path;
   };
 

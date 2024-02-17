@@ -1,13 +1,14 @@
 { config, modulesPath, secrets, lib, ... }:
 
 let
-  hostname = "nixarr";
+  flake = "arr";
   tailscale-ip = "100.95.215.11";
 in {
   imports = [ ./secrets ./secrets/arr.nix ];
 
+  system.flake = flake;
   networking = {
-    hostName = "${hostname}";
+    hostName = "nix${flake}";
     interfaces.ens19.ipv4.addresses = [{
       address = "10.0.10.80";
       prefixLength = 24;

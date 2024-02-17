@@ -1,13 +1,14 @@
 { config, modulesPath, secrets, lib, ... }:
 
 let
-  hostname = "nixgra";
+  flake = "gra";
   tailscale-ip = "100.118.176.61";
 in {
   imports = [ ./secrets ];
 
+  system.flake = flake;
   networking = {
-    hostName = "${hostname}";
+    hostName = "nix${flake}";
     interfaces.enp6s19.ipv4.addresses = [{
       address = "10.0.10.15";
       prefixLength = 24;
