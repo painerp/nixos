@@ -1,7 +1,7 @@
 { config, secrets, ... }:
 
 let
-  hostname = "nixjpi";
+  flake = "jpi";
   tailscale-ip = "100.81.246.82";
 in {
   imports = [ ./secrets ./secrets/jpi.nix ];
@@ -9,9 +9,10 @@ in {
   age.secrets.user-pw.file = secrets.jpi-user-pw;
   age.secrets.wifi.file = secrets.jpi-wifi;
 
+  system.flake = flake;
   # wlan
   networking = {
-    hostName = "${hostname}";
+    hostName = "nix${flake}";
     wireless.environmentFile = config.age.secrets.wifi.path;
   };
 

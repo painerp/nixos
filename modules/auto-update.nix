@@ -1,16 +1,23 @@
-{ inputs, ... }:
+{ inputs, lib, config, ... }:
 
 {
-  system.autoUpgrade = {
-    enable = true;
-    flake = inputs.self.outPath;
-    flags = [
-      "--update-input"
-      "nixpkgs"
-      "--no-write-lock-file"
-      "-L" # print build logs
-    ];
-    dates = "04:00";
-    randomizedDelaySec = "45min";
+  options.system.flake = lib.mkOption {
+    description = "The flake to use for system configuration";
+    type = lib.types.str;
+  };
+
+  config = {
+    system.autoUpgrade = {
+      enable = true;
+      flake = "github:painerp/nixos#${config.system.flake}";
+      flags = [
+        "--update-input"
+        "nixpkgs"
+        "--no-write-lock-file"
+        "-L" # print build logs
+      ];
+      dates = "04:00";
+      randomizedDelaySec = "45min";
+    };
   };
 }

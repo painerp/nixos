@@ -1,12 +1,13 @@
 { config, modulesPath, secrets, lib, ... }:
 
 let
-  hostname = "nixlog";
+  flake = "log";
   tailscale-ip = "100.73.203.96";
 in {
   imports = [ ./secrets ];
 
-  networking.hostName = "${hostname}";
+  system.flake = flake;
+  networking.hostName = "nix${flake}";
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/264b716c-0b9a-4e6c-b5e0-b72df598628e";
