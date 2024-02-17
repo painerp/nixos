@@ -43,7 +43,6 @@ in {
   # nvidia
   services.xserver.videoDrivers = [ "nvidia" ];
   virtualisation.docker = { enableNvidia = true; };
-  systemd.enableUnifiedCgroupHierarchy = false;
   hardware.opengl = {
     enable = true;
     driSupport = true;
