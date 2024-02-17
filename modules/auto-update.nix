@@ -9,7 +9,7 @@
   config = {
     system.autoUpgrade = {
       enable = true;
-      flake = "github:painerp/nixos#${config.system.flake}";
+      flake = "${inputs.self.outPath}#${config.system.flake}";
       flags = [
         "--update-input"
         "nixpkgs"
