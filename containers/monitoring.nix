@@ -195,7 +195,10 @@ in {
                 [ "${config.server.tailscale-ip}:20001:9100/tcp" ]
               else
                 [ ]);
-            command = [ "--path.rootfs=/host" ];
+            command = [
+              "--path.rootfs=/host"
+              "--collector.filesystem.ignored-mount-points='^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)'"
+            ];
             volumes = [ "/:/host:ro,rslave" ];
             restart = "unless-stopped";
           };
