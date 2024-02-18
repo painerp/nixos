@@ -196,10 +196,16 @@ in {
               else
                 [ ]);
             command = [
-              "--path.rootfs=/host"
+              "--path.rootfs=/rootfs"
+              "--path.procfs=/host/proc"
+              "--path.sysfs=/host/sys"
               "--collector.filesystem.ignored-mount-points='^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)'"
             ];
-            volumes = [ "/:/host:ro,rslave" ];
+            volumes = [
+              "/proc:/host/proc:ro"
+              "/sys:/host/sys:ro"
+              "/:/rootfs:ro,rslave"
+            ];
             restart = "unless-stopped";
           };
 
