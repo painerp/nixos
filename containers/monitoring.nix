@@ -170,6 +170,9 @@ in {
               "${
                 config.lib.server.mkConfigDir "prometheus"
               }/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+              "${
+                config.lib.server.mkConfigDir "prometheus"
+              }/rules.yml:/etc/prometheus/rules.yml:ro"
               "${config.lib.server.mkConfigDir "prometheus/data"}:/prometheus"
             ];
             labels = config.lib.server.mkTraefikLabels {
