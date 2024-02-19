@@ -1,8 +1,8 @@
 { lib, inputs, config, pkgs, ... }:
 
-let cfg = config.modules.autoUpdate;
+let cfg = config.modules.autoUpgrade;
 in {
-  options.modules.autoUpdate = {
+  options.modules.autoUpgrade = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;
