@@ -1,3 +1,5 @@
+{ lib }:
+
 {
   options.system = {
     flake = lib.mkOption {
