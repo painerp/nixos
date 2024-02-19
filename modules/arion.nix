@@ -9,10 +9,11 @@ in {
     };
   };
 
+  imports =
+    lib.mkIf (cfg.enable) [ inputs.arion.nixosModules.arion ../containers ];
+
   config = lib.mkIf (cfg.enable) {
     environment.systemPackages = [ pkgs.arion ];
-
-    imports = [ inputs.arion.nixosModules.arion ../containers ];
 
     virtualisation.docker = {
       enable = true;
