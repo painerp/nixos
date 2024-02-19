@@ -256,7 +256,8 @@ in {
           alertmanager.service = {
             image = "prom/alertmanager:latest";
             container_name = "alertmanager";
-            networks = lib.mkIf (cfg.prometheus.enable) [ "exporter" ];
+            networks = [ "external" ]
+              ++ (if (cfg.prometheus.enable) then [ "exporter" ] else [ ]);
             volumes = [
               "${
                 config.lib.server.mkConfigDir "alertmanager"
