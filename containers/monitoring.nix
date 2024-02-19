@@ -256,7 +256,7 @@ in {
           alertmanager.service = {
             image = "prom/alertmanager:latest";
             container_name = "alertmanager";
-            networks = [ "external" ]
+            networks = [ "proxy" ]
               ++ (if (cfg.prometheus.enable) then [ "exporter" ] else [ ]);
             volumes = [
               "${
