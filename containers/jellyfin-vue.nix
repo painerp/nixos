@@ -22,7 +22,7 @@ in {
     };
   };
 
-  config = lib.mkIf (cfg.enable) {
+  config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
     systemd.services.arion-jellyfin-vue = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];

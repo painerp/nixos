@@ -9,8 +9,7 @@ in {
     };
   };
 
-  imports =
-    lib.mkIf (cfg.enable) [ inputs.arion.nixosModules.arion ../containers ];
+  imports = [ inputs.arion.nixosModules.arion ../containers ];
 
   config = lib.mkIf (cfg.enable) {
     environment.systemPackages = [ pkgs.arion ];

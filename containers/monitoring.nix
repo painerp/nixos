@@ -92,9 +92,9 @@ in {
     };
   };
 
-  config = lib.mkIf (cfg.grafana.enable || cfg.prometheus.enable
-    || cfg.node-exporter.enable || cfg.cadvisor.enable
-    || cfg.pve-exporter.enable || cfg.alertmanager.enable) {
+  config = lib.mkIf (config.modules.arion.enable && (cfg.grafana.enable
+    || cfg.prometheus.enable || cfg.node-exporter.enable || cfg.cadvisor.enable
+    || cfg.pve-exporter.enable || cfg.alertmanager.enable)) {
       age.secrets = (if cfg.grafana.enable then {
         grafana-env.file = cfg.grafana.env-file;
       } else
