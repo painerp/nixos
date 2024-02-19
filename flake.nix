@@ -27,26 +27,14 @@
     let
       secrets = import ./secrets;
       specialArgs = { inherit inputs secrets; };
-      server-modules = [
-        agenix.nixosModules.default
-        ./modules/arion.nix
-        ./modules/auto-update.nix
-        ./modules/firewall.nix
-        ./modules/micro.nix
-        ./modules/optimize.nix
-        ./modules/packages.nix
-        ./modules/ssh-server.nix
-        ./modules/shell.nix
-        ./modules/tailscale.nix
-        ./modules/system.nix
-      ];
+      server-modules = [ agenix.nixosModules.default ./modules ];
     in {
       nixosConfigurations = {
         jpi = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           system = "aarch64-linux";
           pkgs = (import nixpkgs) { system = "aarch64-linux"; };
-          modules = server-modules ++ [ ./containers ./modules/kodi.nix ]
+          modules = server-modules ++ [ ./containers ]
             ++ [ ./variants/jpi.nix ./hardware/rpi.nix ];
         };
 
@@ -94,7 +82,7 @@
           inherit specialArgs;
           system = "x86_64-linux";
           pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules = server-modules ++ [ ./containers ]
+          modules = server-modules
             ++ [ ./variants/inf.nix ./hardware/int-vps.nix ];
         };
 

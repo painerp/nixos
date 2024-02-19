@@ -14,7 +14,7 @@ in {
     env-file = lib.mkOption { type = lib.types.path; };
   };
 
-  config = lib.mkIf (cfg.enable) {
+  config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
     age.secrets.teamspeak-env.file = cfg.env-file;
 
     systemd.services.arion-teamspeak = {

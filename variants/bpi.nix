@@ -9,12 +9,15 @@ in {
   age.secrets.user-pw.file = secrets.bpi-user-pw;
   age.secrets.wifi.file = secrets.bpi-wifi;
 
-  system.flake = flake;
   # wlan
   networking = {
     hostName = "nix${flake}";
     wireless.environmentFile = config.age.secrets.wifi.path;
   };
+
+  # system
+  system = { inherit flake; };
+  modules = { arion.enable = true; };
 
   server = {
     base-domain = "redacted";

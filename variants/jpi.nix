@@ -9,13 +9,20 @@ in {
   age.secrets.user-pw.file = secrets.jpi-user-pw;
   age.secrets.wifi.file = secrets.jpi-wifi;
 
-  system.flake = flake;
   # wlan
   networking = {
     hostName = "nix${flake}";
     wireless.environmentFile = config.age.secrets.wifi.path;
   };
 
+  # system
+  system = { inherit flake; };
+  modules = {
+    arion.enable = true;
+    kodi.enable = true;
+  };
+
+  # services
   server = {
     base-domain = "redacted";
     subdomain = "ju";
