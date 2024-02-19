@@ -33,7 +33,7 @@ in {
     postgres.env-file = lib.mkOption { type = lib.types.path; };
   };
 
-  config = lib.mkIf (cfg.enable) {
+  config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
     age.secrets.bachelor-env.file = cfg.env-file;
     age.secrets.bachelor-pg-env.file = cfg.postgres.env-file;
 

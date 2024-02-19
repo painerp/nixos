@@ -1,14 +1,23 @@
-{ inputs, pkgs, ... }:
+{ lib, inputs, config, pkgs, ... }:
 
-{
-  environment.systemPackages = [ pkgs.arion ];
-
-  imports = [ inputs.arion.nixosModules.arion ];
-
-  virtualisation.docker = {
-    enable = true;
-    liveRestore = false;
+let cfg = config.modules.arion;
+in {
+  options.modules.arion = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
-  virtualisation.arion = { backend = "docker"; };
+  imports = [ inputs.arion.nixosModules.arion ../containers ];
+
+  config = lib.mkIf (cfg.enable) {
+    environment.systemPackages = [ pkgs.arion ];
+
+    virtualisation.docker = {
+      enable = true;
+      liveRestore = false;
+    };
+    virtualisation.arion = { backend = "docker"; };
+  };
 }

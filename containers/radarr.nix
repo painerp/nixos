@@ -17,7 +17,7 @@ in {
     };
   };
 
-  config = lib.mkIf (cfg.enable) {
+  config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
     server.traefik.aliases =
       config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 

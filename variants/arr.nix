@@ -6,7 +6,6 @@ let
 in {
   imports = [ ./secrets ./secrets/arr.nix ];
 
-  system.flake = flake;
   networking = {
     hostName = "nix${flake}";
     interfaces.ens19.ipv4.addresses = [{
@@ -28,6 +27,10 @@ in {
     fsType = "nfs";
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
+
+  # system
+  system = { inherit flake; };
+  modules = { arion.enable = true; };
 
   # services
   server = {

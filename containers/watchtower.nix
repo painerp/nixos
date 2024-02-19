@@ -13,7 +13,7 @@ in {
     };
   };
 
-  config = lib.mkIf (cfg.enable) {
+  config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
     age.secrets.watchtower-env.file = secrets.watchtower-env;
 
     systemd.services.arion-watchtower = {
