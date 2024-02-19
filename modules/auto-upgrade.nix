@@ -61,7 +61,7 @@ in {
       in ''
         cd /etc/nixos
         ${git} pull
-        ${nixos-rebuild} --flake "/etc/nixos#${config.system.flake}" --upgrade --update-input nixpkgs --no-write-lock-file -L
+        ${nixos-rebuild} switch --flake "/etc/nixos#${config.system.flake}" --upgrade --update-input nixpkgs --no-write-lock-file -L
       '';
 
       startAt = cfg.dates;
