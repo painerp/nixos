@@ -80,6 +80,7 @@ in {
       path = "/mnt/motion";
       auth = false;
     };
+    ollama.enable = true;
     monitoring = {
       node-exporter.enable = true;
       cadvisor.enable = true;
