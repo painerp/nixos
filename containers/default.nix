@@ -43,7 +43,7 @@ in {
     };
   };
 
-  imports = [
+  imports = lib.mkIf (config.modules.arion) [
     ./act-runner.nix
     ./authentik.nix
     ./bachelor.nix
