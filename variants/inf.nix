@@ -17,10 +17,8 @@ in {
     [{ device = "/dev/disk/by-uuid/bb391dc3-1cc6-40ff-8463-6b378d285f11"; }];
 
   # system
-  system = {
-    inherit flake;
-    modules = { arion.enable = true; };
-  };
+  system = { inherit flake; };
+  modules = { arion.enable = true; };
 
   # services
   server = {
