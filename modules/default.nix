@@ -10,7 +10,7 @@
 
   imports = [
     ./arion.nix
-    ./auto-update.nix
+    ./auto-upgrade.nix
     ./firewall.nix
     ./kodi.nix
     ./micro.nix
