@@ -60,8 +60,9 @@ in {
         git = "${pkgs.git}/bin/git";
       in ''
         cd /etc/nixos
-        ${git} pull
-        ${nixos-rebuild} switch --flake "/etc/nixos#${config.system.flake}" --upgrade --update-input nixpkgs --no-write-lock-file -L
+        if ! git pull | grep -q 'Already up to date.'; then
+          ${nixos-rebuild} switch --flake "/etc/nixos#${config.system.flake}" --no-write-lock-file -L
+        fi
       '';
 
       startAt = cfg.dates;
