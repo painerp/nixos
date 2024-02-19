@@ -6,7 +6,6 @@ let
 in {
   imports = [ ./secrets ./secrets/ext.nix ];
 
-  system.flake = flake;
   networking.hostName = "nix${flake}";
 
   fileSystems."/" = {
@@ -21,6 +20,10 @@ in {
 
   swapDevices =
     [{ device = "/dev/disk/by-uuid/55f7d97a-a438-4ac9-8909-2e08a78e3ef5"; }];
+
+  # system
+  system = { inherit flake; };
+  modules = { arion.enable = true; };
 
   # services
   server = {

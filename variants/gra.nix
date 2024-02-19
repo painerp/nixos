@@ -6,7 +6,6 @@ let
 in {
   imports = [ ./secrets ];
 
-  system.flake = flake;
   networking = {
     hostName = "nix${flake}";
     interfaces.enp6s19.ipv4.addresses = [{
@@ -56,6 +55,10 @@ in {
     nvidiaSettings = false;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
+
+  # system
+  system = { inherit flake; };
+  modules = { arion.enable = true; };
 
   # services
   server = {
