@@ -1,4 +1,4 @@
-{ lib, inputs, config, ... }:
+{ lib, inputs, config, pkgs, ... }:
 
 let cfg = config.system.autoUpgrade;
 in {
