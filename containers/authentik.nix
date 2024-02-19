@@ -51,7 +51,7 @@ in {
     postgres.env-file = lib.mkOption { type = lib.types.path; };
   };
 
-  config = lib.mkIf (cfg.enable) {
+  config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
     age.secrets = if (cfg.proxy) then {
       authentik-proxy-env.file = cfg.env-file;
     } else {

@@ -23,7 +23,7 @@ in {
     };
   };
 
-  config = lib.mkIf (cfg.enable) {
+  config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
     age.secrets.jellystat-env.file = cfg.env-file;
     age.secrets.jellystat-pg-env.file = cfg.postgres.env-file;
 
