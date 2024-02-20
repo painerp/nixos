@@ -43,6 +43,10 @@ in {
           container_name = "ollama";
           hostname = config.networking.hostName;
           networks = [ "proxy" ];
+          environment = {
+            OLLAMA_ORIGINS = "*";
+            HTTPS_PROXY = "${cfg.subdomain}.${config.server.domain}";
+          };
           volumes =
             [ "${config.lib.server.mkConfigDir "ollama"}:/root/.ollama" ];
           labels = config.lib.server.mkTraefikLabels {
