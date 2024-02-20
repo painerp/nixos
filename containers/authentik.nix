@@ -4,7 +4,6 @@ let
   cfg = config.server.authentik;
   config-dir = config.lib.server.mkConfigDir "authentik";
   address = if cfg.proxy then "authentik-proxy" else "authentik-server";
-  use-smtp = if cfg.email-host == "protonbridge" then true else false;
   subdomain = if cfg.proxy then "auth-proxy" else cfg.subdomain;
   labels = config.lib.server.mkTraefikLabels {
     name = "authentik";
@@ -45,7 +44,7 @@ in {
     };
     email-host = lib.mkOption {
       type = lib.types.str;
-      default = "protonbridge";
+      default = config.server.tailscale-ip;
     };
     env-file = lib.mkOption { type = lib.types.path; };
     postgres.env-file = lib.mkOption { type = lib.types.path; };
@@ -70,7 +69,6 @@ in {
     virtualisation.arion.projects.authentik.settings = {
       project.name = "authentik";
       networks.proxy.external = true;
-      networks.smtp.external = lib.mkIf (!cfg.proxy || use-smtp) true;
       networks.authentik-internal.internal = lib.mkIf (!cfg.proxy) true;
 
       services = if (cfg.proxy) then {
@@ -131,8 +129,7 @@ in {
           ];
           env_file = [ config.age.secrets.authentik-env.path ];
           depends_on = [ "postgresql" "redis" ];
-          networks = [ "proxy" "authentik-internal" ]
-            ++ (if use-smtp then [ "smtp" ] else [ ]);
+          networks = [ "proxy" "authentik-internal" ];
           inherit labels;
           restart = "unless-stopped";
         };
@@ -142,8 +139,7 @@ in {
           container_name = "authentik-worker";
           command = "worker";
           user = "root";
-          networks = [ "authentik-internal" ]
-            ++ (if use-smtp then [ "smtp" ] else [ ]);
+          networks = [ "authentik-internal" ];
           environment = env-auth;
           env_file = [ config.age.secrets.authentik-env.path ];
           volumes = [

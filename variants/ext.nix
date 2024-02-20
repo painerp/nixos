@@ -66,7 +66,10 @@ in {
       };
     };
     pihole.enable = true;
-    protonbridge.enable = true;
+    protonbridge = {
+      enable = true;
+      internal = false;
+    };
     teamspeak = {
       enable = true;
       expose = true;
@@ -77,11 +80,17 @@ in {
       subdomain = "t";
       expose = true;
       extra-entrypoints = {
+        smtp.address = ":25";
         talk-tcp.address = ":3478";
         talk-udp.address = ":3478/udp";
         palworld-udp.address = ":8211/udp";
       };
-      extra-ports = [ "3478:3478/tcp" "3478:3478/udp" "8211:8211/udp" ];
+      extra-ports = [
+        "${tailscale-ip}:25:25/tcp"
+        "3478:3478/tcp"
+        "3478:3478/udp"
+        "8211:8211/udp"
+      ];
     };
     uptime-kuma = {
       enable = true;
