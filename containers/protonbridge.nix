@@ -25,19 +25,26 @@ in {
 
     virtualisation.arion.projects.protonbridge.settings = {
       project.name = "protonbridge";
-      networks.smtp.name = "smtp";
 
       services.protonbridge.service = {
         image = "shenxn/protonmail-bridge:latest";
         container_name = "protonbridge";
         hostname = config.networking.hostName;
-        networks = [ "smtp" ];
         ports = (if (cfg.expose) then [ "25:25/tcp" ] else [ ])
           ++ (if (cfg.internal) then
             [ "${config.server.tailscale-ip}:25:25/tcp" ]
           else
             [ ]);
         volumes = [ "${config.lib.server.mkConfigDir "protonbridge"}:/root" ];
+        labels = {
+          "traefik.enable" = "true";
+          "traefik.tcp.routers.protonbridge.rule" = "HostSNI(`*`)";
+          "traefik.tcp.routers.protonbridge.entrypoints" = "smtp";
+          "traefik.tcp.routers.protonbridge.service" = "protonbridge";
+          "traefik.tcp.services.protonbridge.loadbalancer.server.port" = "25";
+          "traefik.tcp.services.protonbridge.loadbalancer.proxyProtocol.version" =
+            "2";
+        };
         restart = "unless-stopped";
       };
     };
