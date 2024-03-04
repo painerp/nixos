@@ -16,6 +16,7 @@
   ext-nuxt-pages-mysql-env = ./ext/nuxt-pages-mysql.env.age;
   ext-nuxt-pages-pma-env = ./ext/nuxt-pages-pma.env.age;
   ext-nuxt-pages-g2g-env = ./ext/nuxt-pages-g2g.env.age;
+  ext-open-webui-env = ./ext/open-webui.env.age;
   ext-teamspeak-env = ./ext/teamspeak.env.age;
 
   inf-authentik-proxy-env = ./inf/authentik-proxy.env.age;

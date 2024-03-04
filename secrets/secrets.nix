@@ -41,6 +41,7 @@ in {
   "ext/nuxt-pages-pma.env.age".publicKeys = users ++ [ ext ];
   "ext/nuxt-pages-mysql.env.age".publicKeys = users ++ [ ext ];
   "ext/nuxt-pages-g2g.env.age".publicKeys = users ++ [ ext ];
+  "ext/open-webui.env.age".publicKeys = users ++ [ ext ];
   "ext/teamspeak.env.age".publicKeys = users ++ [ ext ];
 
   "inf/authentik-proxy.env.age".publicKeys = users ++ [ inf ];
