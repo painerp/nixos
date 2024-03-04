@@ -65,6 +65,10 @@ in {
         env-file = secrets.ext-nuxt-pages-g2g-env;
       };
     };
+    open-webui = {
+      enable = true;
+      subdomain = "chat";
+    };
     pihole.enable = true;
     protonbridge = {
       enable = true;

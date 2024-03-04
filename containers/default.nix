@@ -59,6 +59,7 @@ in {
     ./nextcloud.nix
     ./nuxt-pages.nix
     ./ollama.nix
+    ./open-webui.nix
     ./palworld.nix
     ./pihole.nix
     ./pledo.nix
