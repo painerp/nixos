@@ -15,9 +15,12 @@ in {
       type = lib.types.bool;
       default = config.server.authentik.enable;
     };
+    env-file = lib.mkOption { type = lib.types.path; };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
+    age.secrets.open-webui-env.file = cfg.env-file;
+
     systemd.services.arion-open-webui = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
@@ -32,9 +35,10 @@ in {
 
       services.open-webui.service = {
         image = "ghcr.io/open-webui/open-webui:main";
-        container_name = "ollama";
+        container_name = "open-webui";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];
+        env_file = [ config.age.secrets.open-webui-env.path ];
         volumes =
           [ "${config.lib.server.mkConfigDir "open-webui"}:/app/backend/data" ];
         labels = config.lib.server.mkTraefikLabels {

@@ -68,6 +68,7 @@ in {
     open-webui = {
       enable = true;
       subdomain = "chat";
+      env-file = secrets.ext-open-webui-env;
     };
     pihole.enable = true;
     protonbridge = {
