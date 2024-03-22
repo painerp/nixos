@@ -47,6 +47,8 @@ in {
   "inf/authentik-proxy.env.age".publicKeys = users ++ [ inf ];
   "inf/jellystat.env.age".publicKeys = users ++ [ inf ];
   "inf/jellystat-pg.env.age".publicKeys = users ++ [ inf ];
+  "inf/linkwarden.env.age".publicKeys = users ++ [ inf ];
+  "inf/linkwarden-pg.env.age".publicKeys = users ++ [ inf ];
 
   "cit/git-pw.age".publicKeys = users ++ [ cit ];
   "cit/authentik.env.age".publicKeys = users ++ [ cit ];
