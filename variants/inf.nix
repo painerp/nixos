@@ -36,6 +36,11 @@ in {
       env-file = secrets.inf-jellystat-env;
       postgres.env-file = secrets.inf-jellystat-pg-env;
     };
+    linkwarden = {
+      enable = true;
+      env-file = secrets.inf-linkwarden-env;
+      postgres.env-file = secrets.inf-linkwarden-pg-env;
+    };
     monitoring = {
       node-exporter.enable = true;
       cadvisor.enable = true;
