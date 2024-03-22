@@ -22,6 +22,8 @@
   inf-authentik-proxy-env = ./inf/authentik-proxy.env.age;
   inf-jellystat-env = ./inf/jellystat.env.age;
   inf-jellystat-pg-env = ./inf/jellystat-pg.env.age;
+  inf-linkwarden-env = ./inf/linkwarden.env.age;
+  inf-linkwarden-pg-env = ./inf/linkwarden-pg.env.age;
 
   gra-authentik-proxy-env = ./gra/authentik-proxy.env.age;
 
