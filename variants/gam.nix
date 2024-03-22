@@ -26,7 +26,7 @@ in {
     subdomain = "local";
     inherit tailscale-ip;
     palworld = {
-      enable = true;
+      enable = false;
       env-file = secrets.gam-palworld-env;
     };
     monitoring = {
