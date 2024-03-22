@@ -57,7 +57,11 @@ in {
         container_name = "linkwarden";
         hostname = config.networking.hostName;
         networks = [ "proxy" "internal" ];
-        environment = { NEXT_PUBLIC_DISABLE_REGISTRATION = "true"; };
+        environment = {
+          NEXT_PUBLIC_DISABLE_REGISTRATION = "true";
+          NEXTAUTH_URL =
+            "https://${cfg.subdomain}.${config.server.domain}/api/v1/auth";
+        };
         volumes =
           [ "${config.lib.server.mkConfigDir "linkwarden/data"}:/data/data" ];
         env_file = [ config.age.secrets.linkwarden-env.path ];
