@@ -57,10 +57,6 @@ in {
         container_name = "linkwarden";
         hostname = config.networking.hostName;
         networks = [ "proxy" "internal" ];
-        environment = {
-          DATABASE_URL =
-            "postgresql://postgres:\${POSTGRES_PASSWORD}@linkwarden-pg:5432/postgres";
-        };
         volumes =
           [ "${config.lib.server.mkConfigDir "linkwarden/data"}:/data/data" ];
         env_file = [ config.age.secrets.linkwarden-env.path ];

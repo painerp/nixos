@@ -40,6 +40,7 @@ in {
       enable = true;
       env-file = secrets.inf-linkwarden-env;
       postgres.env-file = secrets.inf-linkwarden-pg-env;
+      auth = false;
     };
     monitoring = {
       node-exporter.enable = true;
