@@ -55,6 +55,7 @@ in {
     ./jellyfin.nix
     ./jellyfin-vue.nix
     ./jellystat.nix
+    ./linkwarden.nix
     ./monitoring.nix
     ./nextcloud.nix
     ./nuxt-pages.nix
