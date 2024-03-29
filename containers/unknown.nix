@@ -85,8 +85,8 @@ in {
           networks = [ "backend" "proxy" ];
           env_file = [ config.age.secrets.unknown-env.path ];
           volumes = [
-            "${cfg.extras-dir}:/srv/extras/files"
-            "${config-dir}/thumbnails:/srv/extras/thumbnails"
+            "${cfg.extras-dir}/files:/srv/extras/files"
+            "${cfg.extras-dir}/thumbnails:/srv/extras/thumbnails"
           ];
           labels = config.lib.server.mkTraefikLabels {
             name = "unknown";
