@@ -84,7 +84,10 @@ in {
           depends_on = [ "mysql" ];
           networks = [ "backend" "proxy" ];
           env_file = [ config.age.secrets.unknown-env.path ];
-          volumes = [ "${cfg.extras-dir}:/srv/extras/files" ];
+          volumes = [
+            "${cfg.extras-dir}:/srv/extras/files"
+            "${config-dir}/thumbnails:/srv/extras/thumbnails"
+          ];
           labels = config.lib.server.mkTraefikLabels {
             name = "unknown";
             port = "3000";
