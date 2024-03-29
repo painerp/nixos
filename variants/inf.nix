@@ -8,7 +8,7 @@ in {
 
   networking = {
     hostName = "nix${flake}";
-    interfaces.enp0s19.ipv4.addresses = [{
+    interfaces.ens19.ipv4.addresses = [{
       address = "10.0.10.20";
       prefixLength = 24;
     }];
