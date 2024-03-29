@@ -78,7 +78,7 @@ in {
           restart = "unless-stopped";
         };
 
-        app.service = {
+        unknown.service = {
           image = "${cfg.image}";
           container_name = "unknown";
           depends_on = [ "mysql" ];
