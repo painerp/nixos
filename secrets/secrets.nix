@@ -49,6 +49,9 @@ in {
   "inf/jellystat-pg.env.age".publicKeys = users ++ [ inf ];
   "inf/linkwarden.env.age".publicKeys = users ++ [ inf ];
   "inf/linkwarden-pg.env.age".publicKeys = users ++ [ inf ];
+  "inf/unknown.env.age".publicKeys = users ++ [ inf ];
+  "inf/unknown-mysql.env.age".publicKeys = users ++ [ inf ];
+  "inf/unknown-pma.env.age".publicKeys = users ++ [ inf ];
 
   "cit/git-pw.age".publicKeys = users ++ [ cit ];
   "cit/authentik.env.age".publicKeys = users ++ [ cit ];

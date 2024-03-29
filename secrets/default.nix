@@ -24,6 +24,9 @@
   inf-jellystat-pg-env = ./inf/jellystat-pg.env.age;
   inf-linkwarden-env = ./inf/linkwarden.env.age;
   inf-linkwarden-pg-env = ./inf/linkwarden-pg.env.age;
+  inf-unknown-env = ./inf/unknown.env.age;
+  inf-unknown-mysql-env = ./ext/unknown-mysql.env.age;
+  inf-unknown-pma-env = ./inf/unknown-pma.env.age;
 
   gra-authentik-proxy-env = ./gra/authentik-proxy.env.age;
 
