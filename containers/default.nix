@@ -71,6 +71,7 @@ in {
     ./syncthing.nix
     ./teamspeak.nix
     ./traefik.nix
+    ./unknown.nix
     ./uptime-kuma.nix
     ./watchtower.nix
   ];
