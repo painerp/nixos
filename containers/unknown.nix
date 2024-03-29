@@ -24,7 +24,7 @@ in {
     extras-dir = lib.mkOption {
       type = lib.types.path;
       description = "The directory to mount as /srv/extras/files";
-      default = "${config-dir}/unknown/extras";
+      default = "${config-dir}/extras";
     };
     env-file = lib.mkOption { type = lib.types.path; };
     mysql.env-file = lib.mkOption { type = lib.types.path; };
@@ -84,7 +84,7 @@ in {
           depends_on = [ "mysql" ];
           networks = [ "backend" "proxy" ];
           env_file = [ config.age.secrets.unknown-env.path ];
-          volumes = [ "${extra-dir}:/srv/extras/files" ];
+          volumes = [ "${cfg.extras-dir}:/srv/extras/files" ];
           labels = config.lib.server.mkTraefikLabels {
             name = "unknown";
             port = "3000";
