@@ -73,7 +73,10 @@ in {
       enable = true;
       subdomain = "t-inf";
     };
-    watchtower.enable = true;
+    watchtower = {
+      enable = true;
+      internal-services = true;
+    };
   };
 
   # users
