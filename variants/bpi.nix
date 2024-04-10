@@ -41,6 +41,6 @@ in {
   # docker
   virtualisation.arion.projects = {
     watchtower.settings.services.watchtower.service.environment.WATCHTOWER_SCHEDULE =
-      "0 0 3 * * *";
+      lib.mkForce "0 0 3 * * *";
   };
 }
