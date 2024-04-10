@@ -1,4 +1,4 @@
-{ config, secrets, ... }:
+{ lib, config, secrets, ... }:
 
 let
   flake = "bpi";
