@@ -1,4 +1,4 @@
-{ config, secrets, ... }:
+{ lib, config, secrets, ... }:
 
 let
   flake = "jpi";
@@ -6,7 +6,6 @@ let
 in {
   imports = [ ./secrets ./secrets/jpi.nix ];
   # secrets
-  age.secrets.user-pw.file = secrets.jpi-user-pw;
   age.secrets.wifi.file = secrets.jpi-wifi;
 
   # wlan
@@ -46,7 +45,7 @@ in {
   # docker
   virtualisation.arion.projects = {
     watchtower.settings.services.watchtower.service.environment.WATCHTOWER_SCHEDULE =
-      "0 0 3 * * *";
+      lib.mkForce "0 0 3 * * *";
   };
 
 }

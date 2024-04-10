@@ -6,7 +6,7 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   boot = {
-    kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
+    kernelPackages = pkgs.linuxPackages_latest;
     initrd.availableKernelModules = [ "xhci_pci" "usbhid" "usb_storage" ];
     loader = {
       grub.enable = false;
@@ -30,11 +30,6 @@
   };
 
   sound.enable = true;
-
-  #  hardware.pulseaudio.enable = true;
-  #  hardware.pulseaudio.support32Bit = true;
-  #  hardware.raspberry-pi."4".audio.enable = true;
-  #  hardware.raspberry-pi."4".fkms-3d.enable = true;
   hardware.enableRedistributableFirmware = true;
 
   # tries to enable hdmi-cec support
