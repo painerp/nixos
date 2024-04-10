@@ -6,7 +6,6 @@ let
 in {
   imports = [ ./secrets ./secrets/bpi.nix ];
   # secrets
-  age.secrets.user-pw.file = secrets.bpi-user-pw;
   age.secrets.wifi.file = secrets.bpi-wifi;
 
   # wlan
