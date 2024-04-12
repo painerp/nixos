@@ -47,5 +47,4 @@ in {
     watchtower.settings.services.watchtower.service.environment.WATCHTOWER_SCHEDULE =
       lib.mkForce "0 0 3 * * *";
   };
-
 }
