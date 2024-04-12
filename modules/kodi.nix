@@ -38,7 +38,7 @@ in {
         PassEnvironment = "DISPLAY";
       };
       environment = { DISPLAY = ":0"; };
-      script = "${pkgs.xorg.xset}/bin/xset s off -dpms";
+      script = "sleep 30; ${pkgs.xorg.xset}/bin/xset s off -dpms";
       wantedBy = [ "multi-user.target" ];
     };
 

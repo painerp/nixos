@@ -138,6 +138,7 @@ in {
         "traefik.http.routers.${name}.rule" = "${rule}";
         "traefik.http.routers.${name}.entrypoints" = "https";
         "traefik.http.routers.${name}.tls" = "true";
+        "traefik.http.routers.${name}.tls.certresolver" = "hetzner";
         "traefik.http.routers.${name}.service" = service;
         "traefik.docker.network" = "proxy";
       } // lib.attrsets.optionalAttrs (builtins.hasAttr "port" options) {
@@ -159,8 +160,6 @@ in {
           "${config.server.domain}";
         "traefik.http.routers.${name}.tls.domains[0].sans" =
           "*.${config.server.domain}";
-      } // lib.attrsets.optionalAttrs (!config.server.traefik.wildcard) {
-        "traefik.http.routers.${name}.tls.certresolver" = "hetzner";
       });
     lib.server.mkTraefikAlias = options:
       (let
