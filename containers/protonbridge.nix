@@ -15,6 +15,10 @@ in {
       type = lib.types.bool;
       default = !cfg.expose;
     };
+    image = lib.mkOption {
+      type = lib.types.string;
+      default = "shenxn/protonmail-bridge:latest";
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -27,7 +31,7 @@ in {
       project.name = "protonbridge";
 
       services.protonbridge.service = {
-        image = "shenxn/protonmail-bridge:build";
+        image = "${cfg.image}";
         container_name = "protonbridge";
         hostname = config.networking.hostName;
         ports = (if (cfg.expose) then [ "25:25/tcp" ] else [ ])
