@@ -27,7 +27,7 @@ in {
       project.name = "protonbridge";
 
       services.protonbridge.service = {
-        image = "shenxn/protonmail-bridge:latest";
+        image = "shenxn/protonmail-bridge:build";
         container_name = "protonbridge";
         hostname = config.networking.hostName;
         ports = (if (cfg.expose) then [ "25:25/tcp" ] else [ ])
