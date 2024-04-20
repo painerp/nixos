@@ -26,6 +26,7 @@ in {
       enable = true;
       expose = true;
     };
+    protonbridge.enable = true;
     traefik = {
       enable = true;
       expose = true;

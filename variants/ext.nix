@@ -71,7 +71,6 @@ in {
       env-file = secrets.ext-open-webui-env;
     };
     pihole.enable = true;
-    protonbridge.enable = true;
     teamspeak = {
       enable = true;
       expose = true;

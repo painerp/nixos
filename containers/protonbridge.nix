@@ -36,19 +36,8 @@ in {
           else
             [ ]);
         volumes = [ "${config.lib.server.mkConfigDir "protonbridge"}:/root" ];
-        labels = {
-          "traefik.enable" = "true";
-          "traefik.tcp.routers.protonbridge.rule" = "HostSNI(`*`)";
-          "traefik.tcp.routers.protonbridge.entrypoints" = "smtp";
-          "traefik.tcp.routers.protonbridge.service" = "protonbridge";
-          "traefik.tcp.services.protonbridge.loadbalancer.server.port" = "25";
-          "traefik.tcp.services.protonbridge.loadbalancer.proxyProtocol.version" =
-            "2";
-        };
         restart = "unless-stopped";
       };
     };
-
-    networking.firewall.allowedTCPPorts = lib.mkIf (cfg.expose) [ 25 ];
   };
 }
