@@ -24,9 +24,6 @@ let
     AUTHENTIK_POSTGRESQL__HOST = "authentik-pg";
     AUTHENTIK_POSTGRESQL__USER = "authentik";
     AUTHENTIK_POSTGRESQL__NAME = "authentik";
-    AUTHENTIK_EMAIL__HOST = "${cfg.email-host}";
-    AUTHENTIK_EMAIL__PORT = 25;
-    AUTHENTIK_EMAIL__TIMEOUT = 10;
   };
 in {
   options.server.authentik = {
@@ -41,10 +38,6 @@ in {
     proxy = lib.mkOption {
       type = lib.types.bool;
       default = false;
-    };
-    email-host = lib.mkOption {
-      type = lib.types.str;
-      default = config.server.tailscale-ip;
     };
     env-file = lib.mkOption { type = lib.types.path; };
     postgres.env-file = lib.mkOption { type = lib.types.path; };
