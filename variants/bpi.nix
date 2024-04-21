@@ -32,7 +32,10 @@ in {
       expose = true;
       wildcard = true;
     };
-    watchtower.enable = true;
+    watchtower = {
+      enable = true;
+      internal-services = true;
+    };
   };
 
   # users
