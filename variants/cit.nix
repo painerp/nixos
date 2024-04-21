@@ -43,7 +43,6 @@ in {
     authentik = {
       enable = true;
       subdomain = "auth";
-      email-host = "100.86.37.30";
       env-file = secrets.cit-authentik-env;
       postgres.env-file = secrets.cit-authentik-pg-env;
     };
