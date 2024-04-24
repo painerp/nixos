@@ -36,8 +36,8 @@ in {
         depends_on = [ "gluetun" ];
         volumes = [
           "${config.lib.server.mkConfigDir "pledo"}:/config"
-          "/mnt/motion/Filme:/movies"
-          "/mnt/motion/Serien:/tvshows"
+          "/mnt/motion/Downloads/Filme:/movies"
+          "/mnt/motion/Downloads/Serien:/tvshows"
         ];
         restart = "unless-stopped";
       };
