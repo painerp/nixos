@@ -42,6 +42,7 @@ in {
         volumes = [
           "${config.lib.server.mkConfigDir "radarr"}:/config"
           "/mnt/motion/Filme:/movies"
+          "/mnt/motion/Downloads/Filme:/downloads"
         ];
         restart = "unless-stopped";
       };
