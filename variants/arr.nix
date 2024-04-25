@@ -50,6 +50,7 @@ in {
     pledo.enable = true;
     prdl = {
       enable = true;
+      auth = false;
       image = "redacted";
       env-file = secrets.arr-prdl-env;
     };
