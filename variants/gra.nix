@@ -80,7 +80,10 @@ in {
       path = "/mnt/motion";
       auth = false;
     };
-    tdarr.enable = true;
+    tdarr = {
+      enable = true;
+      internal = true;
+    };
     ollama = {
       enable = true;
       auth = false;
