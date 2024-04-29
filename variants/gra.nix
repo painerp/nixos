@@ -20,7 +20,7 @@ in {
   };
 
   swapDevices =
-    [{ device = "/dev/disk/by-uuid/4a6b0055-10ec-45b7-b07e-3cfcb2a57915"; }];
+    [{ device = "/dev/disk/by-uuid/0c680e6b-a520-4d4a-87e7-15d21b709e5b"; }];
 
   fileSystems."/mnt/nextcloud" = {
     device = "10.0.10.1:/mnt/main/nextcloud";
