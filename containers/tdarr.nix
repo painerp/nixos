@@ -17,6 +17,10 @@ in {
       type = lib.types.bool;
       default = config.server.authentik.enable;
     };
+    internal = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -48,7 +52,7 @@ in {
             PUID = 1000;
             PGID = 1000;
             TZ = config.time.timeZone;
-            internalNode = true;
+            internalNode = "true";
             NVIDIA_DRIVER_CAPABILITIES = "all";
             NVIDIA_VISIBLE_DEVICES = "all";
           };
@@ -59,6 +63,8 @@ in {
             "/mnt/motion:/media"
             "${config-dir}/temp:/temp"
           ];
+          ports = lib.mkIf (cfg.internal)
+            [ "${config.server.tailscale-ip}:8266:8266" ];
           labels = config.lib.server.mkTraefikLabels {
             name = "tdarr";
             port = "8265";
