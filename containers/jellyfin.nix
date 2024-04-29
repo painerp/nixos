@@ -60,7 +60,7 @@ in {
           ports = lib.mkIf (cfg.internal)
             [ "${config.server.tailscale-ip}:8096:8096" ];
           volumes = [
-            "${cfg.path}/JellyfinConfig:/config"
+            "${config.lib.server.mkConfigDir "jellyfin"}:/config"
             "${cfg.path}/Serien:/data/tvshows"
             "${cfg.path}/Filme:/data/movies"
           ];
