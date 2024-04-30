@@ -6,7 +6,6 @@ let
       checkNewVersion = false;
       sendAnonymousUsage = false;
     };
-    experimental.http3 = true;
     api = {
       dashboard = true;
       insecure = true;
