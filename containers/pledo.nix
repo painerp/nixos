@@ -16,7 +16,7 @@ in {
       default = config.server.authentik.enable;
     };
     volumes = lib.mkOption {
-      type = lib.types.list;
+      type = lib.types.listOf lib.types.str;
       default = [ ];
     };
   };
