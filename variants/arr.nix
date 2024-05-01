@@ -3,6 +3,9 @@
 let
   flake = "arr";
   tailscale-ip = "100.95.215.11";
+  motion = "/mnt/motion";
+  unprocessed = "${motion}/temp/unprocessed";
+  processed = "${motion}/temp/processed";
 in {
   imports = [ ./secrets ./secrets/arr.nix ];
 
@@ -22,7 +25,7 @@ in {
   swapDevices =
     [{ device = "/dev/disk/by-uuid/b11cb3df-2e66-466c-9910-ef30b104612f"; }];
 
-  fileSystems."/mnt/motion" = {
+  fileSystems."${motion}" = {
     device = "10.0.10.1:/mnt/main/motion";
     fsType = "nfs";
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
@@ -46,15 +49,27 @@ in {
       enable = true;
       env-file = secrets.arr-gluetun-env;
     };
-    bazarr.enable = true;
-    pledo.enable = true;
+    bazarr = {
+      enable = true;
+      volumes = [ "${motion}/movies:/movies" "${motion}/shows:/tv" ];
+    };
+    pledo = {
+      enable = true;
+      volumes =
+        [ "${unprocessed}/movies:/movies" "${unprocessed}/shows:/tvshows" ];
+    };
     prdl = {
       enable = true;
       auth = false;
       image = "redacted";
       env-file = secrets.arr-prdl-env;
+      volumes =
+        [ "${unprocessed}/movies:/movies" "${unprocessed}/shows:/tvshows" ];
     };
-    radarr.enable = true;
+    radarr = {
+      enable = true;
+      volumes = [ "${processed}/movies:/processed" "${motion}/movies:/movies" ];
+    };
     sonarr.enable = true;
     monitoring = {
       node-exporter.enable = true;

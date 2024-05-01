@@ -15,6 +15,10 @@ in {
       type = lib.types.bool;
       default = config.server.authentik.enable;
     };
+    volumes = lib.mkOption {
+      type = lib.types.list;
+      default = [ ];
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -39,11 +43,8 @@ in {
           PGID = 1000;
           TZ = config.time.timeZone;
         };
-        volumes = [
-          "${config.lib.server.mkConfigDir "bazarr"}:/config"
-          "/mnt/motion/Filme:/movies"
-          "/mnt/motion/Serien:/tv"
-        ];
+        volumes = [ "${config.lib.server.mkConfigDir "bazarr"}:/config" ]
+          ++ cfg.volumes;
         restart = "unless-stopped";
       };
     };

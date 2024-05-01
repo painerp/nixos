@@ -15,6 +15,10 @@ in {
       type = lib.types.bool;
       default = config.server.authentik.enable;
     };
+    volumes = lib.mkOption {
+      type = lib.types.list;
+      default = [ ];
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -34,11 +38,8 @@ in {
         container_name = "pledo";
         network_mode = "service:gluetun";
         depends_on = [ "gluetun" ];
-        volumes = [
-          "${config.lib.server.mkConfigDir "pledo"}:/config"
-          "/mnt/motion/Downloads/Filme:/movies"
-          "/mnt/motion/Downloads/Serien:/tvshows"
-        ];
+        volumes = [ "${config.lib.server.mkConfigDir "pledo"}:/config" ]
+          ++ cfg.volumes;
         restart = "unless-stopped";
       };
     };

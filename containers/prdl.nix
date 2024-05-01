@@ -1,6 +1,8 @@
 { lib, config, ... }:
 
-let cfg = config.server.prdl;
+let
+  cfg = config.server.prdl;
+  config-dir = "${config.lib.server.mkConfigDir "prdl"}";
 in {
   options.server.prdl = {
     enable = lib.mkOption {
@@ -17,6 +19,10 @@ in {
     };
     image = lib.mkOption { type = lib.types.str; };
     env-file = lib.mkOption { type = lib.types.path; };
+    volumes = lib.mkOption {
+      type = lib.types.list;
+      default = [ ];
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -45,11 +51,9 @@ in {
         };
         env_file = [ config.age.secrets.prdl-env.path ];
         volumes = [
-          "${config.lib.server.mkConfigDir "prdl"}/db.sqlite:/app/db.sqlite"
-          "${config.lib.server.mkConfigDir "prdl"}/log.txt:/app/log.txt"
-          "/mnt/motion/Downloads/Filme:/movies"
-          "/mnt/motion/Downloads/Serien:/tvshows"
-        ];
+          "${config-dir}/db.sqlite:/app/db.sqlite"
+          "${config-dir}/log.txt:/app/log.txt"
+        ] ++ cfg.volumes;
         restart = "unless-stopped";
       };
     };
