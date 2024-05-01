@@ -20,7 +20,7 @@ in {
     image = lib.mkOption { type = lib.types.str; };
     env-file = lib.mkOption { type = lib.types.path; };
     volumes = lib.mkOption {
-      type = lib.types.list;
+      type = lib.types.listOf lib.types.str;
       default = [ ];
     };
   };
