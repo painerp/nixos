@@ -70,7 +70,10 @@ in {
       enable = true;
       volumes = [ "${processed}/movies:/processed" "${motion}/movies:/movies" ];
     };
-    sonarr.enable = true;
+    sonarr = {
+      enable = true;
+      volumes = [ "${motion}/shows:/tv" ];
+    };
     monitoring = {
       node-exporter.enable = true;
       cadvisor.enable = true;
