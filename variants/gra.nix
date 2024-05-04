@@ -79,8 +79,9 @@ in {
     jellyfin = {
       enable = true;
       internal = true;
-      path = "/mnt/motion";
       auth = false;
+      volumes =
+        [ "${motion}/shows:/data/tvshows" "${motion}/movies:/data/movies" ];
     };
     tdarr = {
       enable = true;

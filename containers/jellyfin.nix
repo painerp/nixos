@@ -19,9 +19,9 @@ in {
       type = lib.types.bool;
       default = false;
     };
-    path = lib.mkOption {
-      type = lib.types.str;
-      default = "${config.lib.server.mkConfigDir "jellyfin"}";
+    volumes = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
     };
   };
 
@@ -59,11 +59,8 @@ in {
           };
           ports = lib.mkIf (cfg.internal)
             [ "${config.server.tailscale-ip}:8096:8096" ];
-          volumes = [
-            "${config.lib.server.mkConfigDir "jellyfin"}:/config"
-            "${cfg.path}/Serien:/data/tvshows"
-            "${cfg.path}/Filme:/data/movies"
-          ];
+          volumes = [ "${config.lib.server.mkConfigDir "jellyfin"}:/config" ]
+            ++ cfg.volumes;
           labels = config.lib.server.mkTraefikLabels {
             name = "jellyfin";
             port = "8096";
