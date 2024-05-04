@@ -21,6 +21,10 @@ in {
       type = lib.types.bool;
       default = false;
     };
+    volumes = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -60,11 +64,12 @@ in {
             "${config-dir}/server:/app/server"
             "${config-dir}/configs:/app/configs"
             "${config-dir}/logs:/app/logs"
-            "/mnt/motion:/media"
             "${config-dir}/temp:/temp"
+          ] ++ cfg.volumes;
+          ports = lib.mkIf (cfg.internal) [
+            "${config.server.tailscale-ip}:8265:8265"
+            "${config.server.tailscale-ip}:8266:8266"
           ];
-          ports = lib.mkIf (cfg.internal)
-            [ "${config.server.tailscale-ip}:8266:8266" ];
           labels = config.lib.server.mkTraefikLabels {
             name = "tdarr";
             port = "8265";

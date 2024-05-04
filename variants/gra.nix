@@ -3,6 +3,8 @@
 let
   flake = "gra";
   tailscale-ip = "100.118.176.61";
+  motion = "/mnt/motion";
+  mtemp = "${motion}/temp";
 in {
   imports = [ ./secrets ];
 
@@ -28,7 +30,7 @@ in {
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
 
-  fileSystems."/mnt/motion" = {
+  fileSystems."${motion}" = {
     device = "10.0.10.1:/mnt/main/motion";
     fsType = "nfs";
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
@@ -83,6 +85,8 @@ in {
     tdarr = {
       enable = true;
       internal = true;
+      volumes =
+        [ "${mtemp}/unprocessed:/unprocessed" "${mtemp}/processed:/processed" ];
     };
     ollama = {
       enable = true;
