@@ -72,7 +72,7 @@ in {
     };
     sonarr = {
       enable = true;
-      volumes = [ "${motion}/shows:/tv" ];
+      volumes = [ "${processed}/shows:/processed" "${motion}/shows:/tv" ];
     };
     monitoring = {
       node-exporter.enable = true;
