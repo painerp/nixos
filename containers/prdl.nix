@@ -50,10 +50,8 @@ in {
           TZ = config.time.timeZone;
         };
         env_file = [ config.age.secrets.prdl-env.path ];
-        volumes = [
-          "${config-dir}/db.sqlite:/app/db.sqlite"
-          "${config-dir}/log.txt:/app/log.txt"
-        ] ++ cfg.volumes;
+        volumes = [ "${config.lib.server.mkConfigDir "prdl"}/data:/app/data" ]
+          ++ cfg.volumes;
         restart = "unless-stopped";
       };
     };
