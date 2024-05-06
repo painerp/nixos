@@ -63,8 +63,11 @@ in {
       auth = false;
       image = "redacted";
       env-file = secrets.arr-prdl-env;
-      volumes =
-        [ "${unprocessed}/movies:/movies" "${unprocessed}/shows:/tvshows" ];
+      volumes = [
+        "${unprocessed}/movies:/movies"
+        "${unprocessed}/shows:/tvshows"
+        "${processed}:/processed"
+      ];
     };
     radarr = {
       enable = true;
