@@ -101,6 +101,7 @@ in {
     };
     immich = {
       enable = true;
+      auth = false;
       version = "v1.103.1";
       volumes = [ "/mnt/immich:/usr/src/app/upload" ];
       env-file = secrets.gra-immich-env;
