@@ -114,6 +114,7 @@ in {
             "ghcr.io/immich-app/immich-machine-learning:${cfg.version}-cuda";
           container_name = "immich_machine_learning";
           hostname = config.networking.hostName;
+          networks = [ "backend" ];
           volumes = [ "${config-dir}/model-cache:/cache" ];
           labels = { "com.centurylinklabs.watchtower.enable" = "false"; };
           restart = "unless-stopped";
@@ -124,6 +125,7 @@ in {
         image = "${cfg.redis.image}";
         container_name = "immich_redis";
         hostname = config.networking.hostName;
+        networks = [ "backend" ];
         labels = { "com.centurylinklabs.watchtower.enable" = "false"; };
         restart = "unless-stopped";
       };
@@ -132,6 +134,7 @@ in {
         image = "${cfg.postgres.image}";
         container_name = "immich_postgres";
         hostname = config.networking.hostName;
+        networks = [ "backend" ];
         environment = {
           POSTGRES_USER = "${default-env.DB_USERNAME}";
           POSTGRES_DB = "${default-env.DB_DATABASE_NAME}";
