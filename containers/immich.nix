@@ -17,10 +17,6 @@ in {
       type = lib.types.bool;
       default = config.server.authentik.enable;
     };
-    internal = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-    };
     env-file = lib.mkOption { type = lib.types.path; };
     volumes = lib.mkOption {
       type = lib.types.listOf lib.types.str;
@@ -41,6 +37,9 @@ in {
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
+    age.secrets.immich-env.file = cfg.env-file;
+    age.secrets.immich-pg-env.file = cfg.postgres.env-file;
+
     systemd.services.arion-immich = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
