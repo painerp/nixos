@@ -54,6 +54,7 @@ in {
 
     virtualisation.arion.projects.immich.settings = {
       project.name = "immich";
+      networks.outbound.name = "outbound";
       networks.proxy.external = true;
       networks.backend.internal = true;
 
@@ -91,7 +92,7 @@ in {
           container_name = "immich_microservices";
           hostname = config.networking.hostName;
           command = "start.sh microservices";
-          networks = [ "backend" ];
+          networks = [ "backend" "outbound" ];
           environment = default-env;
           env_file = [ config.age.secrets.immich-env.path ];
           volumes = [ "/etc/localtime:/etc/localtime:ro" ] ++ cfg.volumes;
@@ -114,7 +115,7 @@ in {
             "ghcr.io/immich-app/immich-machine-learning:${cfg.version}-cuda";
           container_name = "immich_machine_learning";
           hostname = config.networking.hostName;
-          networks = [ "backend" ];
+          networks = [ "backend" "outbound" ];
           volumes = [ "${config-dir}/model-cache:/cache" ];
           labels = { "com.centurylinklabs.watchtower.enable" = "false"; };
           restart = "unless-stopped";
