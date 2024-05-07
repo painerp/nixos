@@ -30,6 +30,12 @@ in {
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
 
+  fileSystems."/mnt/immich" = {
+    device = "10.0.10.1:/mnt/main/immich";
+    fsType = "nfs";
+    options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
+  };
+
   fileSystems."${motion}" = {
     device = "10.0.10.1:/mnt/main/motion";
     fsType = "nfs";
@@ -92,6 +98,19 @@ in {
     ollama = {
       enable = true;
       auth = false;
+    };
+    immich = {
+      enable = true;
+      version = "v1.103.1";
+      volumes = [ "/mnt/immich:/usr/src/app/upload" ];
+      env-file = secrets.gra-immich-env;
+      redis.image =
+        "registry.hub.docker.com/library/redis:6.2-alpine@sha256:84882e87b54734154586e5f8abd4dce69fe7311315e2fc6d67c29614c8de2672";
+      postgres = {
+        image =
+          "registry.hub.docker.com/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0";
+        env-file = secrets.gra-immich-pg-env;
+      };
     };
     monitoring = {
       node-exporter.enable = true;
