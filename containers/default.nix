@@ -52,6 +52,7 @@ in {
     ./gitea.nix
     ./gluetun.nix
     ./gotify.nix
+    ./immich.nix
     ./jellyfin.nix
     ./jellyfin-vue.nix
     ./jellystat.nix
