@@ -30,6 +30,7 @@ in {
         hostname = config.networking.hostName;
         environment = {
           WATCHTOWER_CLEANUP = "true";
+          WATCHTOWER_LABEL_ENABLE = "true";
           WATCHTOWER_SCHEDULE = "0 0 */6 * * *";
         };
         env_file = [ config.age.secrets.watchtower-env.path ];
