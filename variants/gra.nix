@@ -103,7 +103,10 @@ in {
       enable = true;
       auth = false;
       version = "v1.103.1";
-      volumes = [ "/mnt/immich:/usr/src/app/upload" ];
+      volumes = [
+        "/mnt/immich:/usr/src/app/upload"
+        "/mnt/nextcloud/data/painerp/files/Bilder:/library"
+      ];
       env-file = secrets.gra-immich-env;
       redis.image =
         "registry.hub.docker.com/library/redis:6.2-alpine@sha256:84882e87b54734154586e5f8abd4dce69fe7311315e2fc6d67c29614c8de2672";
