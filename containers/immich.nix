@@ -68,7 +68,7 @@ in {
           subdomain = "${cfg.subdomain}";
           forwardAuth = cfg.auth;
         } // {
-          com.centurylinklabs.watchtower.enable = "false";
+          "com.centurylinklabs.watchtower.enable" = "false";
         };
         restart = "unless-stopped";
       };
@@ -89,7 +89,7 @@ in {
           networks = [ "backend" ];
           env_file = [ config.age.secrets.immich-env.path ];
           volumes = [ "/etc/localtime:/etc/localtime:ro" ] ++ cfg.volumes;
-          labels = { com.centurylinklabs.watchtower.enable = "false"; };
+          labels = { "com.centurylinklabs.watchtower.enable" = "false"; };
           depends_on = [ "database" "redis" ];
           restart = "unless-stopped";
         };
@@ -109,7 +109,7 @@ in {
           container_name = "immich_machine_learning";
           hostname = config.networking.hostName;
           volumes = [ "${config-dir}/model-cache:/cache" ];
-          labels = { com.centurylinklabs.watchtower.enable = "false"; };
+          labels = { "com.centurylinklabs.watchtower.enable" = "false"; };
           restart = "unless-stopped";
         };
       };
@@ -118,7 +118,7 @@ in {
         image = "${cfg.redis.image}";
         container_name = "immich_redis";
         hostname = config.networking.hostName;
-        labels = { com.centurylinklabs.watchtower.enable = "false"; };
+        labels = { "com.centurylinklabs.watchtower.enable" = "false"; };
         restart = "unless-stopped";
       };
 
@@ -132,7 +132,7 @@ in {
         };
         env_file = [ config.age.secrets.immich-pg-env.path ];
         volumes = [ "${config-dir}/postgres:/var/lib/postgresql/data" ];
-        labels = { com.centurylinklabs.watchtower.enable = "false"; };
+        labels = { "com.centurylinklabs.watchtower.enable" = "false"; };
         restart = "unless-stopped";
       };
     };
