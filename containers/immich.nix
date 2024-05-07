@@ -3,6 +3,10 @@
 let
   cfg = config.server.immich;
   config-dir = "${config.lib.server.mkConfigDir "immich"}";
+  default-env = {
+    DB_USERNAME = "postgres";
+    DB_DATABASE_NAME = "immich";
+  };
 in {
   options.server.immich = {
     enable = lib.mkOption {
@@ -59,6 +63,7 @@ in {
         hostname = config.networking.hostName;
         command = "start.sh immich";
         networks = [ "proxy" "backend" ];
+        environment = default-env;
         env_file = [ config.age.secrets.immich-env.path ];
         volumes = [ "/etc/localtime:/etc/localtime:ro" ] ++ cfg.volumes;
         depends_on = [ "database" "redis" ];
@@ -87,6 +92,7 @@ in {
           hostname = config.networking.hostName;
           command = "start.sh microservices";
           networks = [ "backend" ];
+          environment = default-env;
           env_file = [ config.age.secrets.immich-env.path ];
           volumes = [ "/etc/localtime:/etc/localtime:ro" ] ++ cfg.volumes;
           labels = { "com.centurylinklabs.watchtower.enable" = "false"; };
@@ -127,8 +133,8 @@ in {
         container_name = "immich_postgres";
         hostname = config.networking.hostName;
         environment = {
-          POSTGRES_USER = "postgres";
-          POSTGRES_DB = "immich";
+          POSTGRES_USER = "${default-env.DB_USERNAME}";
+          POSTGRES_DB = "${default-env.DB_DATABASE_NAME}";
         };
         env_file = [ config.age.secrets.immich-pg-env.path ];
         volumes = [ "${config-dir}/postgres:/var/lib/postgresql/data" ];
