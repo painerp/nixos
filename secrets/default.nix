@@ -29,6 +29,8 @@
   inf-unknown-pma-env = ./inf/unknown-pma.env.age;
 
   gra-authentik-proxy-env = ./gra/authentik-proxy.env.age;
+  gra-immich-env = ./gra/immich.env.age;
+  gra-immich-pg-env = ./gra/immich-pg.env.age;
 
   cit-git-pw = ./cit/git-pw.age;
   cit-authentik-env = ./cit/authentik.env.age;

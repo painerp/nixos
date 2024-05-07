@@ -58,6 +58,8 @@ in {
   "cit/authentik-pg.env.age".publicKeys = users ++ [ cit ];
 
   "gra/authentik-proxy.env.age".publicKeys = users ++ [ gra ];
+  "gra/immich.env.age".publicKeys = users ++ [ gra ];
+  "gra/immich-pg.env.age".publicKeys = users ++ [ gra ];
 
   "gam/palworld.env.age".publicKeys = users ++ [ gam ];
 
