@@ -65,7 +65,7 @@ in {
       env-file = secrets.arr-prdl-env;
       volumes = [
         "${unprocessed}/movies:/movies"
-        "${unprocessed}/shows:/tvshows"
+        "${unprocessed}/shows:/shows"
         "${processed}:/processed"
       ];
     };
