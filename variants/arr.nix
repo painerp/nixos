@@ -66,13 +66,17 @@ in {
       volumes = [
         "${unprocessed}/movies:/movies"
         "${unprocessed}/shows:/shows"
-        "${processed}:/processed"
+        "${motion}/movies:/processed/movies"
+        "${motion}/shows:/processed/shows"
       ];
     };
     prowlarr.enable = true;
     radarr = {
       enable = true;
-      volumes = [ "${processed}/movies:/processed" "${motion}/movies:/movies" ];
+      volumes = [
+        "${unprocessed}/movies:/unprocessed/movies"
+        "${motion}/movies:/movies"
+      ];
     };
     sabnzbd = {
       enable = true;
@@ -80,7 +84,8 @@ in {
     };
     sonarr = {
       enable = true;
-      volumes = [ "${processed}/shows:/processed" "${motion}/shows:/tv" ];
+      volumes =
+        [ "${unprocessed}/shows:/unprocessed/shows" "${motion}/shows:/tv" ];
     };
     monitoring = {
       node-exporter.enable = true;
