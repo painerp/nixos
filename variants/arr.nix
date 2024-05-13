@@ -69,9 +69,17 @@ in {
         "${processed}:/processed"
       ];
     };
+    prowlarr.enable = true;
     radarr = {
       enable = true;
       volumes = [ "${processed}/movies:/processed" "${motion}/movies:/movies" ];
+    };
+    sabnzbd = {
+      enable = true;
+      volumes = [
+        "${unprocessed}/downloads:/downloads"
+        "${unprocessed}/incomplete-downloads:/incomplete-downloads"
+      ];
     };
     sonarr = {
       enable = true;
