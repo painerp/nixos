@@ -76,10 +76,7 @@ in {
     };
     sabnzbd = {
       enable = true;
-      volumes = [
-        "${unprocessed}/downloads:/downloads"
-        "${unprocessed}/incomplete-downloads:/incomplete-downloads"
-      ];
+      volumes = [ "${unprocessed}:/unprocessed" ];
     };
     sonarr = {
       enable = true;
