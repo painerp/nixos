@@ -67,7 +67,9 @@ in {
     ./pledo.nix
     ./prdl.nix
     ./protonbridge.nix
+    ./prowlarr.nix
     ./radarr.nix
+    ./sabnzbd.nix
     ./sonarr.nix
     ./syncthing.nix
     ./teamspeak.nix
