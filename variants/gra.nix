@@ -4,7 +4,6 @@ let
   flake = "gra";
   tailscale-ip = "100.118.176.61";
   motion = "/mnt/motion";
-  mtemp = "${motion}/temp";
 in {
   imports = [ ./secrets ];
 
@@ -92,8 +91,11 @@ in {
     tdarr = {
       enable = true;
       internal = true;
-      volumes =
-        [ "${mtemp}/unprocessed:/unprocessed" "${mtemp}/processed:/processed" ];
+      volumes = [
+        "${motion}/temp/unprocessed:/unprocessed"
+        "${motion}/movies:/movies"
+        "${motion}/shows:/shows"
+      ];
     };
     ollama = {
       enable = true;
