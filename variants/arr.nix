@@ -6,6 +6,7 @@ let
   motion = "/mnt/motion";
   unprocessed = "${motion}/temp/unprocessed";
   processed = "${motion}/temp/processed";
+  temp = "/tmp/unprocessed";
 in {
   imports = [ ./secrets ./secrets/arr.nix ];
 
@@ -23,7 +24,7 @@ in {
   };
 
   swapDevices =
-    [{ device = "/dev/disk/by-uuid/b11cb3df-2e66-466c-9910-ef30b104612f"; }];
+    [{ device = "/dev/disk/by-uuid/df24b726-f5d4-42b8-b96f-7e0155678a73"; }];
 
   fileSystems."${motion}" = {
     device = "10.0.10.1:/mnt/main/motion";
@@ -73,24 +74,20 @@ in {
     prowlarr.enable = true;
     radarr = {
       enable = true;
-      volumes = [
-        "${unprocessed}/movies:/unprocessed/movies"
-        "${motion}/movies:/movies"
-      ];
+      volumes =
+        [ "${temp}/movies:/unprocessed/movies" "${motion}/movies:/movies" ];
     };
     sabnzbd = {
       enable = true;
-      volumes = [ "${unprocessed}:/unprocessed" ];
+      volumes = [ "${temp}:/unprocessed" ];
     };
     sonarr = {
       enable = true;
-      volumes =
-        [ "${unprocessed}/shows:/unprocessed/shows" "${motion}/shows:/tv" ];
+      volumes = [ "${temp}/shows:/unprocessed/shows" "${motion}/shows:/tv" ];
     };
     lidarr = {
       enable = true;
-      volumes =
-        [ "${unprocessed}/music:/unprocessed/music" "${motion}/music:/music" ];
+      volumes = [ "${temp}/music:/unprocessed/music" "${motion}/music:/music" ];
     };
     monitoring = {
       node-exporter.enable = true;
