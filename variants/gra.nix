@@ -85,8 +85,11 @@ in {
       enable = true;
       internal = true;
       auth = false;
-      volumes =
-        [ "${motion}/shows:/data/tvshows" "${motion}/movies:/data/movies" ];
+      volumes = [
+        "${motion}/shows:/data/tvshows"
+        "${motion}/movies:/data/movies"
+        "${motion}/music:/data/music"
+      ];
     };
     tdarr = {
       enable = true;
