@@ -87,6 +87,11 @@ in {
       volumes =
         [ "${unprocessed}/shows:/unprocessed/shows" "${motion}/shows:/tv" ];
     };
+    lidarr = {
+      enable = true;
+      volumes =
+        [ "${unprocessed}/music:/unprocessed/music" "${motion}/music:/music" ];
+    };
     monitoring = {
       node-exporter.enable = true;
       cadvisor.enable = true;
