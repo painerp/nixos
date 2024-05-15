@@ -79,7 +79,7 @@ in {
     };
     sabnzbd = {
       enable = true;
-      volumes = [ "${temp}:/unprocessed" ];
+      volumes = [ "${unprocessed}/downloads:/downloads" "${temp}:/temp" ];
     };
     sonarr = {
       enable = true;
