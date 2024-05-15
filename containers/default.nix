@@ -56,6 +56,7 @@ in {
     ./jellyfin.nix
     ./jellyfin-vue.nix
     ./jellystat.nix
+    ./lidarr.nix
     ./linkwarden.nix
     ./monitoring.nix
     ./nextcloud.nix
