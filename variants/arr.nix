@@ -5,7 +5,6 @@ let
   tailscale-ip = "100.95.215.11";
   motion = "/mnt/motion";
   unprocessed = "${motion}/temp/unprocessed";
-  processed = "${motion}/temp/processed";
   temp = "/tmp/unprocessed";
 in {
   imports = [ ./secrets ./secrets/arr.nix ];
@@ -74,8 +73,7 @@ in {
     prowlarr.enable = true;
     radarr = {
       enable = true;
-      volumes =
-        [ "${temp}/movies:/unprocessed/movies" "${motion}/movies:/movies" ];
+      volumes = [ "${temp}/movies:/temp/movies" "${motion}/movies:/movies" ];
     };
     sabnzbd = {
       enable = true;
@@ -83,11 +81,11 @@ in {
     };
     sonarr = {
       enable = true;
-      volumes = [ "${temp}/shows:/unprocessed/shows" "${motion}/shows:/tv" ];
+      volumes = [ "${temp}/shows:/temp/shows" "${motion}/shows:/tv" ];
     };
     lidarr = {
       enable = true;
-      volumes = [ "${temp}/music:/unprocessed/music" "${motion}/music:/music" ];
+      volumes = [ "${temp}/music:/temp/music" "${motion}/music:/music" ];
     };
     monitoring = {
       node-exporter.enable = true;
