@@ -23,7 +23,7 @@ in {
   };
 
   swapDevices =
-    [{ device = "/dev/disk/by-uuid/df24b726-f5d4-42b8-b96f-7e0155678a73"; }];
+    [{ device = "/dev/disk/by-uuid/449b2af4-f258-4eb8-9c39-5a35c91fe9f3"; }];
 
   fileSystems."${motion}" = {
     device = "10.0.10.1:/mnt/main/motion";
