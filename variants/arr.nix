@@ -25,6 +25,11 @@ in {
   swapDevices =
     [{ device = "/dev/disk/by-uuid/449b2af4-f258-4eb8-9c39-5a35c91fe9f3"; }];
 
+  fileSystems."/tmp/unprocessed" = {
+    device = "/dev/disk/by-uuid/e98ab9e9-6add-4298-a78b-6bdb55cde4d5";
+    fsType = "ext4";
+  };
+
   fileSystems."${motion}" = {
     device = "10.0.10.1:/mnt/main/motion";
     fsType = "nfs";
