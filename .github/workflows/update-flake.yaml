@@ -1,4 +1,4 @@
-name: Update Flake
+name: Update Flake Lock
 
 on:
   workflow_dispatch:
@@ -11,19 +11,13 @@ on:
 
 jobs:
   flake:
-    name: Update Flake
-    runs-on: ubuntu-latest
+    name: Update Flake Lock
+    runs-on: nix-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v11
+
       - name: Update flake.lock
-        uses: DeterminateSystems/update-flake-lock@v21
-        with:
-          pr-title: "Update flake.lock"
-          pr-labels: |
-            dependencies
-            automated
+        run: nix flake update
