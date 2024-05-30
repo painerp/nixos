@@ -19,7 +19,7 @@ in {
     };
     randomizedDelaySec = lib.mkOption {
       type = lib.types.str;
-      default = "45min";
+      default = "60min";
       description = "Randomized delay before running the upgrade";
     };
     persistent = lib.mkOption {
