@@ -58,11 +58,6 @@ in {
       enable = true;
       volumes = [ "${motion}/movies:/movies" "${motion}/shows:/tv" ];
     };
-    pledo = {
-      enable = true;
-      volumes =
-        [ "${unprocessed}/movies:/movies" "${unprocessed}/shows:/tvshows" ];
-    };
     prdl = {
       enable = true;
       auth = false;
