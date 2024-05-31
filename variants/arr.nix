@@ -87,6 +87,10 @@ in {
       enable = true;
       volumes = [ "${temp}/music:/temp/music" "${motion}/music:/music" ];
     };
+    stash = {
+      enable = true;
+      volumes = [ "${motion}/xtra:/data" ];
+    };
     monitoring = {
       node-exporter.enable = true;
       cadvisor.enable = true;
