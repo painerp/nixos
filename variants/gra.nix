@@ -98,6 +98,7 @@ in {
         "${motion}/temp/unprocessed:/unprocessed"
         "${motion}/movies:/movies"
         "${motion}/shows:/shows"
+        "${motion}/xtra:/xtra"
       ];
     };
     ollama = {
