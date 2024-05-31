@@ -72,6 +72,7 @@ in {
     ./radarr.nix
     ./sabnzbd.nix
     ./sonarr.nix
+    ./stash.nix
     ./syncthing.nix
     ./teamspeak.nix
     ./traefik.nix
