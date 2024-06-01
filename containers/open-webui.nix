@@ -38,7 +38,11 @@ in {
         container_name = "open-webui";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];
-        environment = { ENABLE_SIGNUP = "false"; };
+        environment = {
+          ENABLE_SIGNUP = "false";
+        } // lib.attrsets.optionalAttrs (cfg.auth) {
+          WEBUI_AUTH_TRUSTED_EMAIL_HEADER = "X-authentik-email";
+        };
         env_file = [ config.age.secrets.open-webui-env.path ];
         volumes =
           [ "${config.lib.server.mkConfigDir "open-webui"}:/app/backend/data" ];
