@@ -38,6 +38,7 @@ in {
         container_name = "open-webui";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];
+        environment = { ENABLE_SIGNUP = "false"; };
         env_file = [ config.age.secrets.open-webui-env.path ];
         volumes =
           [ "${config.lib.server.mkConfigDir "open-webui"}:/app/backend/data" ];
