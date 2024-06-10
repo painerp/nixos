@@ -34,7 +34,7 @@ in {
       };
 
       services.readarr.service = {
-        image = "lscr.io/linuxserver/readarr:latest";
+        image = "lscr.io/linuxserver/readarr:develop";
         container_name = "readarr";
         network_mode = "service:gluetun";
         depends_on = [ "gluetun" ];
