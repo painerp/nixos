@@ -50,7 +50,7 @@ in {
           "${config.lib.server.mkConfigDir "pihole/dnsmasq.d"}:/etc/dnsmasq.d"
         ];
         environment = {
-          TZ = "Europe/Berlin";
+          TZ = config.time.timeZone;
           PIHOLE_DNS_ = "dnscrypt#5053;9.9.9.9";
           SKIPGRAVITYONBOOT = "true";
         };

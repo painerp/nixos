@@ -35,7 +35,7 @@ in {
         container_name = "gotify";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];
-        environment = { TZ = "Europe/Berlin"; };
+        environment = { TZ = config.time.timeZone; };
         volumes = [ "${config.lib.server.mkConfigDir "gotify"}:/app/data" ];
         labels = config.lib.server.mkTraefikLabels {
           name = "gotify";
