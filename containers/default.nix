@@ -70,6 +70,7 @@ in {
     ./protonbridge.nix
     ./prowlarr.nix
     ./radarr.nix
+    ./readarr.nix
     ./sabnzbd.nix
     ./sonarr.nix
     ./stash.nix
