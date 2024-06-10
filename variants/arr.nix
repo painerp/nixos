@@ -87,6 +87,10 @@ in {
       enable = true;
       volumes = [ "${temp}/music:/temp/music" "${motion}/music:/music" ];
     };
+    readarr = {
+      enable = true;
+      volumes = [ "${temp}/books:/temp/books" "${motion}/books:/books" ];
+    };
     stash = {
       enable = true;
       volumes = [ "${motion}/xtra:/data" ];
