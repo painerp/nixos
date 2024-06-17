@@ -23,7 +23,7 @@ in {
     [{ device = "/dev/disk/by-uuid/bb391dc3-1cc6-40ff-8463-6b378d285f11"; }];
 
   fileSystems."/mnt/unknown" = {
-    device = "10.0.10.1:/mnt/main/unknown";
+    device = "10.0.10.1:/mnt/hdd/unknown";
     fsType = "nfs";
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };

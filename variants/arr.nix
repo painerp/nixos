@@ -31,7 +31,7 @@ in {
   };
 
   fileSystems."${motion}" = {
-    device = "10.0.10.1:/mnt/main/motion";
+    device = "10.0.10.1:/mnt/hdd/motion";
     fsType = "nfs";
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };

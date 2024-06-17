@@ -24,25 +24,25 @@ in {
     [{ device = "/dev/disk/by-uuid/0c680e6b-a520-4d4a-87e7-15d21b709e5b"; }];
 
   fileSystems."/mnt/nextcloud" = {
-    device = "10.0.10.1:/mnt/main/nextcloud";
+    device = "10.0.10.1:/mnt/hdd/nextcloud";
     fsType = "nfs";
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
 
   fileSystems."/mnt/immich" = {
-    device = "10.0.10.1:/mnt/main/immich";
+    device = "10.0.10.1:/mnt/hdd/immich";
     fsType = "nfs";
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
 
   fileSystems."${motion}" = {
-    device = "10.0.10.1:/mnt/main/motion";
+    device = "10.0.10.1:/mnt/hdd/motion";
     fsType = "nfs";
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
 
   fileSystems."/mnt/backup" = {
-    device = "10.0.10.1:/mnt/main/backup/nextcloud";
+    device = "10.0.10.1:/mnt/hdd/backup/nextcloud";
     fsType = "nfs";
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
