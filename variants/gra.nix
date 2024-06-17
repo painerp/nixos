@@ -3,7 +3,7 @@
 let
   flake = "gra";
   tailscale-ip = "100.118.176.61";
-  motion = "/mnt/motion";
+  media = "/mnt/media";
 in {
   imports = [ ./secrets ];
 
@@ -35,8 +35,8 @@ in {
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
 
-  fileSystems."${motion}" = {
-    device = "10.0.10.1:/mnt/hdd/motion";
+  fileSystems."${media}" = {
+    device = "10.0.10.1:/mnt/hdd/media";
     fsType = "nfs";
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
@@ -86,19 +86,19 @@ in {
       internal = true;
       auth = false;
       volumes = [
-        "${motion}/shows:/data/tvshows"
-        "${motion}/movies:/data/movies"
-        "${motion}/music:/data/music"
+        "${media}/shows:/data/tvshows"
+        "${media}/movies:/data/movies"
+        "${media}/music:/data/music"
       ];
     };
     tdarr = {
       enable = true;
       internal = true;
       volumes = [
-        "${motion}/temp/unprocessed:/unprocessed"
-        "${motion}/movies:/movies"
-        "${motion}/shows:/shows"
-        "${motion}/xtra:/xtra"
+        "${media}/temp/unprocessed:/unprocessed"
+        "${media}/movies:/movies"
+        "${media}/shows:/shows"
+        "${media}/xtra:/xtra"
       ];
     };
     ollama = {

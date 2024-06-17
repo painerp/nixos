@@ -3,8 +3,8 @@
 let
   flake = "arr";
   tailscale-ip = "100.95.215.11";
-  motion = "/mnt/motion";
-  unprocessed = "${motion}/temp/unprocessed";
+  media = "/mnt/media";
+  unprocessed = "${media}/temp/unprocessed";
   temp = "/tmp/unprocessed";
 in {
   imports = [ ./secrets ./secrets/arr.nix ];
@@ -30,8 +30,8 @@ in {
     fsType = "ext4";
   };
 
-  fileSystems."${motion}" = {
-    device = "10.0.10.1:/mnt/hdd/motion";
+  fileSystems."${media}" = {
+    device = "10.0.10.1:/mnt/hdd/media";
     fsType = "nfs";
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
@@ -56,7 +56,7 @@ in {
     };
     bazarr = {
       enable = true;
-      volumes = [ "${motion}/movies:/movies" "${motion}/shows:/tv" ];
+      volumes = [ "${media}/movies:/movies" "${media}/shows:/tv" ];
     };
     prdl = {
       enable = true;
@@ -66,14 +66,14 @@ in {
       volumes = [
         "${unprocessed}/movies:/movies"
         "${unprocessed}/shows:/shows"
-        "${motion}/movies:/processed/movies"
-        "${motion}/shows:/processed/shows"
+        "${media}/movies:/processed/movies"
+        "${media}/shows:/processed/shows"
       ];
     };
     prowlarr.enable = true;
     radarr = {
       enable = true;
-      volumes = [ "${temp}/movies:/temp/movies" "${motion}/movies:/movies" ];
+      volumes = [ "${temp}/movies:/temp/movies" "${media}/movies:/movies" ];
     };
     sabnzbd = {
       enable = true;
@@ -81,19 +81,19 @@ in {
     };
     sonarr = {
       enable = true;
-      volumes = [ "${temp}/shows:/temp/shows" "${motion}/shows:/tv" ];
+      volumes = [ "${temp}/shows:/temp/shows" "${media}/shows:/tv" ];
     };
     lidarr = {
       enable = true;
-      volumes = [ "${temp}/music:/temp/music" "${motion}/music:/music" ];
+      volumes = [ "${temp}/music:/temp/music" "${media}/music:/music" ];
     };
     readarr = {
       enable = true;
-      volumes = [ "${temp}/books:/temp/books" "${motion}/books:/books" ];
+      volumes = [ "${temp}/books:/temp/books" "${media}/books:/books" ];
     };
     stash = {
       enable = true;
-      volumes = [ "${motion}/xtra:/data" ];
+      volumes = [ "${media}/xtra:/data" ];
     };
     monitoring = {
       node-exporter.enable = true;
