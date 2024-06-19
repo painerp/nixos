@@ -41,12 +41,6 @@ in {
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
 
-  fileSystems."/mnt/backup" = {
-    device = "10.0.10.1:/mnt/hdd/backup/nextcloud";
-    fsType = "nfs";
-    options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
-  };
-
   # nvidia
   services.xserver.videoDrivers = [ "nvidia" ];
   virtualisation.docker = { enableNvidia = true; };
