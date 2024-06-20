@@ -69,6 +69,7 @@ in {
     ./prdl.nix
     ./protonbridge.nix
     ./prowlarr.nix
+    ./proxmox-backup.nix
     ./radarr.nix
     ./readarr.nix
     ./sabnzbd.nix
