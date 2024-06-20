@@ -25,6 +25,12 @@ in {
   swapDevices =
     [{ device = "/dev/disk/by-uuid/b59d42ce-4fc3-42e6-8bfb-bf8bf789ab85"; }];
 
+  fileSystems."/mnt/backup" = {
+    device = "10.0.10.1:/mnt/hdd/backup/pve";
+    fsType = "nfs";
+    options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
+  };
+
   fileSystems."/mnt/syncthing" = {
     device = "10.0.10.1:/mnt/hdd/syncthing";
     fsType = "nfs";
@@ -45,6 +51,11 @@ in {
       subdomain = "auth";
       env-file = secrets.cit-authentik-env;
       postgres.env-file = secrets.cit-authentik-pg-env;
+    };
+    proxmox-backup = {
+      enable = true;
+      auth = false;
+      volumes = [ "/mnt/backup:/backups" ];
     };
     gitea = {
       enable = true;
