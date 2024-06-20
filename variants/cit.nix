@@ -54,7 +54,7 @@ in {
     };
     proxmox-backup = {
       enable = true;
-      auth = false;
+      internal = true;
       volumes = [ "/mnt/backup:/backups" ];
     };
     gitea = {
