@@ -44,6 +44,7 @@ in {
         networks = [ "proxy" ];
         environment = { TZ = config.time.timeZone; };
         stop_signal = "SIGHUP";
+        tmpfs = [ "/run" ];
         volumes = [
           "${config-dir}/etc:/etc/proxmox-backup"
           "${config-dir}/logs:/var/log/proxmox-backup"
