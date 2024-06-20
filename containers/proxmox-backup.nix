@@ -43,6 +43,7 @@ in {
         hostname = config.networking.hostName;
         networks = [ "proxy" ];
         environment = { TZ = config.time.timeZone; };
+        stop_signal = "SIGHUP";
         volumes = [
           "${config-dir}/etc:/etc/proxmox-backup"
           "${config-dir}/logs:/var/log/proxmox-backup"
@@ -51,6 +52,8 @@ in {
         labels = config.lib.server.mkTraefikLabels {
           name = "proxmox-backup";
           port = "8007";
+          scheme = "https";
+          transport = "skip-verify@file";
           subdomain = "${cfg.subdomain}";
           forwardAuth = cfg.auth;
         };
