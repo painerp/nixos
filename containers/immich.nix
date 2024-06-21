@@ -58,28 +58,7 @@ in {
       networks.proxy.external = true;
       networks.backend.internal = true;
 
-      services.immich-server.service = {
-        image = "ghcr.io/immich-app/immich-server:${cfg.version}";
-        container_name = "immich_server";
-        hostname = config.networking.hostName;
-        command = "start.sh immich";
-        networks = [ "proxy" "backend" ];
-        environment = default-env;
-        env_file = [ config.age.secrets.immich-env.path ];
-        volumes = [ "/etc/localtime:/etc/localtime:ro" ] ++ cfg.volumes;
-        depends_on = [ "database" "redis" ];
-        labels = config.lib.server.mkTraefikLabels {
-          name = "immich";
-          port = "3001";
-          subdomain = "${cfg.subdomain}";
-          forwardAuth = cfg.auth;
-        } // {
-          "com.centurylinklabs.watchtower.enable" = "false";
-        };
-        restart = "unless-stopped";
-      };
-
-      services.immich-microservices = {
+      services.immich-server = {
         out.service = {
           deploy.resources.reservations.devices = [{
             driver = "nvidia";
@@ -89,15 +68,21 @@ in {
         };
         service = {
           image = "ghcr.io/immich-app/immich-server:${cfg.version}";
-          container_name = "immich_microservices";
+          container_name = "immich_server";
           hostname = config.networking.hostName;
-          command = "start.sh microservices";
-          networks = [ "backend" "outbound" ];
+          networks = [ "proxy" "backend" ];
           environment = default-env;
           env_file = [ config.age.secrets.immich-env.path ];
           volumes = [ "/etc/localtime:/etc/localtime:ro" ] ++ cfg.volumes;
-          labels = { "com.centurylinklabs.watchtower.enable" = "false"; };
           depends_on = [ "database" "redis" ];
+          labels = config.lib.server.mkTraefikLabels {
+            name = "immich";
+            port = "3001";
+            subdomain = "${cfg.subdomain}";
+            forwardAuth = cfg.auth;
+          } // {
+            "com.centurylinklabs.watchtower.enable" = "false";
+          };
           restart = "unless-stopped";
         };
       };
