@@ -80,9 +80,9 @@ in {
       internal = true;
       auth = false;
       volumes = [
-        "${media}/shows:/data/tvshows"
-        "${media}/movies:/data/movies"
-        "${media}/music:/data/music"
+        "${media}/shows:/shows"
+        "${media}/movies:/movies"
+        "${media}/music:/music"
       ];
     };
     tdarr = {
