@@ -56,7 +56,7 @@ in {
     };
     bazarr = {
       enable = true;
-      volumes = [ "${media}/movies:/movies" "${media}/shows:/tv" ];
+      volumes = [ "${media}/movies:/movies" "${media}/shows:/shows" ];
     };
     prdl = {
       enable = true;
@@ -81,7 +81,7 @@ in {
     };
     sonarr = {
       enable = true;
-      volumes = [ "${temp}/shows:/temp/shows" "${media}/shows:/tv" ];
+      volumes = [ "${temp}/shows:/temp/shows" "${media}/shows:/shows" ];
     };
     lidarr = {
       enable = true;
