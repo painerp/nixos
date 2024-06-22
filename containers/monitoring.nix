@@ -247,7 +247,8 @@ in {
           loki.service = {
             image = "grafana/loki:latest";
             container_name = "loki";
-            networks = [ "exporter" ];
+            networks = [ "exporter" ]
+              ++ (if (cfg.loki.internal) then [ "external" ] else [ ]);
             ports = (if (cfg.loki.internal) then
               [ "${config.server.tailscale-ip}:20100:3100/tcp" ]
             else
