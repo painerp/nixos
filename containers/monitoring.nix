@@ -4,26 +4,27 @@ let
   cfg = config.server.monitoring;
   promtailConfig = {
     server = {
-      http_listen_post = 9080;
+      http_listen_port = 9080;
       grpc_listen_port = 0;
     };
     positions.filename = "/tmp/positions.yaml";
-    clients = [
-      "http://${cfg.promtail.loki.address}:${cfg.promtail.loki.port}/loki/api/v1/push"
-    ];
+    clients = [{
+      url =
+        "http://${cfg.promtail.loki.address}:${cfg.promtail.loki.port}/loki/api/v1/push";
+    }];
     scrape_configs = [{
       job_name = "journal";
       journal = {
         json = false;
         max_age = "12h";
-        path = "/var/log/journal/";
+        path = "/var/log/journal";
         labels = {
           job = "systemd-journal";
           host = config.networking.hostName;
         };
       };
       relabel_configs = [{
-        source_labels = "['__journal__systemd_unit']";
+        source_labels = [ "__journal__systemd_unit" ];
         target_label = "unit";
       }];
     }];
