@@ -146,7 +146,8 @@ in {
           grafana.service = {
             image = "grafana/grafana-oss:latest";
             container_name = "grafana";
-            networks = [ "proxy" ];
+            networks = [ "proxy" ]
+              ++ (if (cfg.loki.enable) then [ "exporter" ] else [ ]);
             user = "0:0";
             volumes =
               [ "${config.lib.server.mkConfigDir "grafana"}:/var/lib/grafana" ];
