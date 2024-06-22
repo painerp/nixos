@@ -37,14 +37,6 @@ in {
         type = lib.types.bool;
         default = false;
       };
-      subdomain = lib.mkOption {
-        type = lib.types.str;
-        default = if config.server.short-subdomain then "lk" else "loki";
-      };
-      auth = lib.mkOption {
-        type = lib.types.bool;
-        default = config.server.authentik.enable;
-      };
       internal = lib.mkOption {
         type = lib.types.bool;
         default = false;
@@ -213,19 +205,13 @@ in {
           loki.service = {
             image = "grafana/loki:latest";
             container_name = "loki";
-            networks = [ "proxy" ];
+            networks = [ "exporter" ];
             ports = (if (cfg.loki.internal) then
               [ "${config.server.tailscale-ip}:20100:3100/tcp" ]
             else
               [ ]);
             command = [ "-config.file=/etc/loki/config.yml" ];
             volumes = [ "${config.lib.server.mkConfigDir "loki"}:/etc/loki" ];
-            labels = config.lib.server.mkTraefikLabels {
-              name = "loki";
-              subdomain = "${cfg.loki.subdomain}";
-              port = "3100";
-              forwardAuth = cfg.loki.auth;
-            };
             restart = "unless-stopped";
           };
 
@@ -301,6 +287,8 @@ in {
           promtail.service = {
             image = "grafana/promtail:latest";
             container_name = "promtail";
+            networks =
+              (if (cfg.loki.enable) then [ "exporter" ] else [ "external" ]);
             command = [ "-config.file=/etc/promtail/config.yml" ];
             volumes = [
               "/var/log:/var/log"
