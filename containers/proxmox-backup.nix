@@ -49,8 +49,8 @@ in {
         environment = { TZ = config.time.timeZone; };
         stop_signal = "SIGHUP";
         tmpfs = [ "/run" ];
-        ports =
-          lib.mkIf (cfg.internal) [ "${config.server.tailscale-ip}:8007:8007" ];
+        ports = lib.mkIf (cfg.internal)
+          [ "${config.server.tailscale-ip}:8007:8007/tcp" ];
         volumes = [
           "${config-dir}/etc:/etc/proxmox-backup"
           "${config-dir}/logs:/var/log/proxmox-backup"
