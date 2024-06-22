@@ -293,6 +293,7 @@ in {
             command = [ "-config.file=/etc/promtail/config.yml" ];
             volumes = [
               "/var/log:/var/log"
+              "/var/lib/docker/containers:/var/lib/docker/containers"
               "${config.lib.server.mkConfigDir "promtail"}:/etc/promtail"
             ];
             restart = "unless-stopped";
