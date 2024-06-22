@@ -292,8 +292,9 @@ in {
               (if (cfg.loki.enable) then [ "exporter" ] else [ "external" ]);
             command = [ "-config.file=/etc/promtail/config.yml" ];
             volumes = [
-              "/var/log:/var/log"
-              "/var/lib/docker/containers:/var/lib/docker/containers"
+              "/var/log/journal:/var/log/journal"
+              "/run/log/journal:/run/log/journal"
+              "/etc/machine-id:/etc/machine-id"
               "${config.lib.server.mkConfigDir "promtail"}:/etc/promtail"
             ];
             restart = "unless-stopped";
