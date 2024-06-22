@@ -19,7 +19,7 @@ let
         path = "/var/log/journal/";
         labels = {
           job = "systemd-journal";
-          host = networking.hostName;
+          host = config.networking.hostName;
         };
       };
       relabel_configs = [{
