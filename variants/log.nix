@@ -37,6 +37,10 @@ in {
         env-file = secrets.log-grafana-env;
       };
       prometheus.enable = true;
+      loki = {
+        enable = true;
+        internal = true;
+      };
       node-exporter = {
         enable = true;
         internal = false;
@@ -46,6 +50,7 @@ in {
         internal = false;
         env-file = secrets.log-pve-exporter-env;
       };
+      promtail.enable = true;
       alertmanager.enable = true;
     };
     traefik = {
