@@ -1,6 +1,35 @@
 { lib, config, ... }:
 
-let cfg = config.server.monitoring;
+let
+  cfg = config.server.monitoring;
+  promtailConfig = {
+    server = {
+      http_listen_post = 9080;
+      grpc_listen_port = 0;
+    };
+    positions.filename = "/tmp/positions.yaml";
+    clients = [
+      "http://${cfg.promtail.loki.address}:${cfg.promtail.loki.port}/loki/api/v1/push"
+    ];
+    scrape_configs = [{
+      job_name = "journal";
+      journal = {
+        json = false;
+        max_age = "12h";
+        path = "/var/log/journal/";
+        labels = {
+          job = "systemd-journal";
+          host = networking.hostName;
+        };
+      };
+      relabel_configs = [{
+        source_labels = "['__journal__systemd_unit']";
+        target_label = "unit";
+      }];
+    }];
+  };
+  promtailConfigFile =
+    builtins.toFile "promtail_config.yml" (builtins.toJSON promtailConfig);
 in {
   options.server.monitoring = {
     grafana = {
@@ -89,6 +118,17 @@ in {
       enable = lib.mkOption {
         type = lib.types.bool;
         default = false;
+      };
+      loki = {
+        address = lib.mkOption {
+          type = lib.types.str;
+          default = "loki";
+        };
+        port = lib.mkOption {
+          type = lib.types.str;
+          default =
+            if cfg.promtail.loki.address == "loki" then "3100" else "20100";
+        };
       };
     };
     alertmanager = {
@@ -290,12 +330,12 @@ in {
             container_name = "promtail";
             networks =
               (if (cfg.loki.enable) then [ "exporter" ] else [ "external" ]);
-            command = [ "-config.file=/etc/promtail/config.yml" ];
+            command = [ "-config.file=/promtail_config.yml" ];
             volumes = [
+              "${promtailConfigFile}:/promtail_config.yml"
               "/var/log/journal:/var/log/journal"
               "/run/log/journal:/run/log/journal"
               "/etc/machine-id:/etc/machine-id"
-              "${config.lib.server.mkConfigDir "promtail"}:/etc/promtail"
             ];
             restart = "unless-stopped";
           };
