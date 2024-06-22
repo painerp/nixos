@@ -17,6 +17,10 @@ in {
     virtualisation.docker = {
       enable = true;
       liveRestore = false;
+      autoPrune = {
+        enable = true;
+        dates = "01:00";
+      };
     };
     virtualisation.arion = { backend = "docker"; };
   };
