@@ -32,6 +32,24 @@ in {
         default = config.server.authentik.enable;
       };
     };
+    loki = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
+      subdomain = lib.mkOption {
+        type = lib.types.str;
+        default = if config.server.short-subdomain then "lk" else "loki";
+      };
+      auth = lib.mkOption {
+        type = lib.types.bool;
+        default = config.server.authentik.enable;
+      };
+      internal = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
+    };
     node-exporter = {
       enable = lib.mkOption {
         type = lib.types.bool;
@@ -74,6 +92,12 @@ in {
         default = !cfg.pve-exporter.expose;
       };
       env-file = lib.mkOption { type = lib.types.path; };
+    };
+    promtail = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
     };
     alertmanager = {
       enable = lib.mkOption {
@@ -185,6 +209,26 @@ in {
             restart = "unless-stopped";
           };
 
+        } // lib.attrsets.optionalAttrs (cfg.loki.enable) {
+          loki.service = {
+            image = "grafana/loki:latest";
+            container_name = "loki";
+            networks = [ "proxy" ];
+            ports = (if (cfg.loki.internal) then
+              [ "${config.server.tailscale-ip}:20100:3100/tcp" ]
+            else
+              [ ]);
+            command = [ "-config.file=/etc/loki/config.yml" ];
+            volumes = [ "${config.lib.server.mkConfigDir "loki"}:/etc/loki" ];
+            labels = config.lib.server.mkTraefikLabels {
+              name = "loki";
+              subdomain = "${cfg.loki.subdomain}";
+              port = "3100";
+              forwardAuth = cfg.loki.auth;
+            };
+            restart = "unless-stopped";
+          };
+
         } // lib.attrsets.optionalAttrs (cfg.node-exporter.enable) {
           node-exporter.service = {
             image = "quay.io/prometheus/node-exporter:latest";
@@ -250,6 +294,18 @@ in {
               else
                 [ ]);
             env_file = [ config.age.secrets.pve-exporter-env.path ];
+            restart = "unless-stopped";
+          };
+
+        } // lib.attrsets.optionalAttrs (cfg.promtail.enable) {
+          promtail.service = {
+            image = "grafana/promtail:latest";
+            container_name = "promtail";
+            command = [ "-config.file=/etc/promtail/config.yml" ];
+            volumes = [
+              "/var/log:/var/log"
+              "${config.lib.server.mkConfigDir "promtail"}:/etc/promtail"
+            ];
             restart = "unless-stopped";
           };
 
