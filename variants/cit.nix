@@ -71,6 +71,10 @@ in {
     monitoring = {
       node-exporter.enable = true;
       cadvisor.enable = true;
+      promtail = {
+        enable = true;
+        loki.address = "100.73.203.96";
+      };
     };
     traefik = {
       enable = true;
