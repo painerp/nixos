@@ -43,6 +43,7 @@
   arr-prdl-env = ./arr/prdl.env.age;
 
   run-act-runner-env = ./run/act-runner.env.age;
+  run-renovate-env = ./run/renovate.env.age;
 
   log-authentik-proxy-env = ./log/authentik-proxy.env.age;
   log-grafana-env = ./log/grafana.env.age;

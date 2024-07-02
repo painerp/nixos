@@ -68,6 +68,7 @@ in {
   "arr/prdl.env.age".publicKeys = users ++ [ arr ];
 
   "run/act-runner.env.age".publicKeys = users ++ [ run ];
+  "run/renovate.env.age".publicKeys = users ++ [ run ];
 
   "log/authentik-proxy.env.age".publicKeys = users ++ [ log ];
   "log/grafana.env.age".publicKeys = users ++ [ log ];
