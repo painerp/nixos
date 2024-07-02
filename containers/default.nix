@@ -72,6 +72,7 @@ in {
     ./proxmox-backup.nix
     ./radarr.nix
     ./readarr.nix
+    ./renovate.nix
     ./sabnzbd.nix
     ./sonarr.nix
     ./stash.nix
