@@ -7,9 +7,11 @@ in {
       type = lib.types.bool;
       default = false;
     };
+    env-file = lib.mkOption { type = lib.types.path; };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
+    age.secrets.renovate-env.file = cfg.env-file;
     systemd.services.arion-renovate = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
@@ -22,11 +24,13 @@ in {
         image = "renovate/renovate:latest";
         container_name = "renovate";
         hostname = config.networking.hostName;
-        volumes = [
-          "${
-            config.lib.server.mkConfigDir "renovate"
-          }/config.js:/usr/src/app/config.js"
-        ];
+        environment = {
+          RENOVATE_PLATFORM = "gitea";
+          RENOVATE_AUTODISCOVER = "true";
+          RENOVATE_OPTIMIZE_FOR_DISABLED = "true";
+          RENOVATE_PERSIST_REPO_DATA = "true";
+        };
+        env_file = [ config.age.secrets.renovate-env.path ];
         restart = "unless-stopped";
       };
     };
