@@ -63,7 +63,6 @@ in {
       auth = false;
       internal = false;
     };
-    renovate.enable = true;
     syncthing = {
       enable = true;
       subdomain = "sync";
