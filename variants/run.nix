@@ -29,6 +29,10 @@ in {
       enable = true;
       env-file = secrets.run-act-runner-env;
     };
+    renovate = {
+      enable = true;
+      env-file = secrets.run-renovate-env;
+    };
     monitoring = {
       node-exporter.enable = true;
       cadvisor.enable = true;
