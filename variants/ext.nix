@@ -72,6 +72,7 @@ in {
     open-webui = {
       enable = true;
       subdomain = "chat";
+      auth = false;
       env-file = secrets.ext-open-webui-env;
     };
     pihole.enable = true;
