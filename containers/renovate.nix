@@ -7,6 +7,10 @@ in {
       type = lib.types.bool;
       default = false;
     };
+    timer = lib.mkOption {
+      type = lib.types.str;
+      default = "5m";
+    };
     env-file = lib.mkOption { type = lib.types.path; };
   };
 
@@ -15,6 +19,15 @@ in {
     systemd.services.arion-renovate = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
+    };
+
+    systemd.timers."renovate" = {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnBootSec = cfg.timer;
+        OnUnitActiveSec = cfg.timer;
+        Unit = "arion-renovate.service";
+      };
     };
 
     virtualisation.arion.projects.renovate.settings = {
@@ -31,7 +44,6 @@ in {
           RENOVATE_PERSIST_REPO_DATA = "true";
         };
         env_file = [ config.age.secrets.renovate-env.path ];
-        restart = "unless-stopped";
       };
     };
   };
