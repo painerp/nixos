@@ -25,7 +25,7 @@ in {
       wantedBy = [ "timers.target" ];
       timerConfig = {
         OnBootSec = cfg.timer;
-        OnUnitActiveSec = cfg.timer;
+        OnUnitInactiveSec = cfg.timer;
         Unit = "arion-renovate.service";
       };
     };
