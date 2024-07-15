@@ -45,6 +45,7 @@ in {
 
   imports = [
     ./act-runner.nix
+    ./adguardhome.nix
     ./authentik.nix
     ./bachelor.nix
     ./bazarr.nix
