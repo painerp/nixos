@@ -22,7 +22,7 @@ in {
     base-domain = "redacted";
     subdomain = "bi";
     inherit tailscale-ip;
-    pihole = {
+    adguardhome = {
       enable = true;
       expose = true;
     };
