@@ -63,12 +63,6 @@ in {
         image = "redacted";
         env-file = secrets.ext-nuxt-pages-env;
       };
-      g2g = {
-        enable = true;
-        auth = false;
-        image = "redacted";
-        env-file = secrets.ext-nuxt-pages-g2g-env;
-      };
     };
     open-webui = {
       enable = true;
