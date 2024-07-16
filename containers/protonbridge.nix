@@ -16,7 +16,7 @@ in {
       default = !cfg.expose;
     };
     image = lib.mkOption {
-      type = lib.types.string;
+      type = lib.types.str;
       default = "shenxn/protonmail-bridge:latest";
     };
   };
