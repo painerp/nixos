@@ -44,12 +44,13 @@ in {
       project.name = "adguardhome";
 
       networks.proxy.external = true;
+      networks.adguardhome.name = "adguardhome";
 
       services.adguardhome.service = {
         image = "adguard/adguardhome:latest";
         container_name = "adguardhome";
         hostname = config.networking.hostName;
-        networks = [ "proxy" ];
+        networks = [ "proxy" "adguardhome" ];
         volumes = [
           "${config-dir}/work:/opt/adguardhome/work"
           "${config-dir}/conf:/opt/adguardhome/conf"
