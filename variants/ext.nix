@@ -1,4 +1,4 @@
-{ config, modulesPath, secrets, lib, ... }:
+{ pkgs, config, modulesPath, secrets, lib, ... }:
 
 let
   flake = "ext";
@@ -103,6 +103,29 @@ in {
     watchtower = {
       enable = true;
       internal-services = true;
+    };
+  };
+
+  systemd = {
+    timers."lenovo-notifier" = {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnBootSec = "5m";
+        OnUnitActiveSec = "5m";
+        Unit = "lenovo-notifier.service";
+      };
+    };
+    services."lenovo-notifier" = {
+      script = ''
+        set -eu
+        ${
+          pkgs.python3.withPackages (python-pkgs: [ python-pkgs.requests ])
+        }/bin/python /root/checker/getYogaUpdate.py
+      '';
+      serviceConfig = {
+        Type = "oneshot";
+        User = "root";
+      };
     };
   };
 
