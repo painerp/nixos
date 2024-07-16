@@ -106,6 +106,29 @@ in {
     };
   };
 
+  systemd = {
+    timers."lenovo-notifier" = {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnBootSec = "5m";
+        OnUnitActiveSec = "5m";
+        Unit = "lenovo-notifier.service";
+      };
+    };
+    services."lenovo-notifier" = {
+      script = ''
+        set -eu
+        ${
+          pkgs.python3.withPackages (python-pkgs: [ python-pkgs.requests ])
+        }/bin/python /root/checker/getYogaUpdate.py
+      '';
+      serviceConfig = {
+        Type = "oneshot";
+        User = "root";
+      };
+    };
+  };
+
   # users
   users.mutableUsers = false;
   nix.settings.trusted-users = [ "@wheel" ];
