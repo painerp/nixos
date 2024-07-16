@@ -30,6 +30,7 @@ in {
     base-domain = "redacted";
     inherit tailscale-ip;
     short-subdomain = true;
+    adguardhome.enable = true;
     authentik = {
       enable = true;
       subdomain = "auth";
@@ -75,7 +76,6 @@ in {
       auth = false;
       env-file = secrets.ext-open-webui-env;
     };
-    pihole.enable = true;
     teamspeak = {
       enable = true;
       expose = true;
