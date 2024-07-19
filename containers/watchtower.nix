@@ -11,6 +11,10 @@ in {
       type = lib.types.bool;
       default = false;
     };
+    only-label = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -31,6 +35,8 @@ in {
         environment = {
           WATCHTOWER_CLEANUP = "true";
           WATCHTOWER_SCHEDULE = "0 0 */6 * * *";
+        } // lib.attrsets.optionalAttrs (cfg.only-label) {
+          WATCHTOWER_LABEL_ENABLE = "true";
         };
         env_file = [ config.age.secrets.watchtower-env.path ];
         volumes = [
