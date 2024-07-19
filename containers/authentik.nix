@@ -18,6 +18,8 @@ let
       "true";
     "traefik.http.middlewares.authentik.forwardauth.authResponseHeaders" =
       "X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid,X-authentik-jwt,X-authentik-meta-jwks,X-authentik-meta-outpost,X-authentik-meta-provider,X-authentik-meta-app,X-authentik-meta-version";
+  } // {
+    "com.centurylinklabs.watchtower.enable" = "true";
   };
   env-auth = {
     AUTHENTIK_REDIS__HOST = "authentik-redis";
@@ -92,6 +94,7 @@ in {
             timeout = "5s";
           };
           volumes = [ "${config-dir}/database:/var/lib/postgresql/data" ];
+          labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
           restart = "unless-stopped";
         };
 
@@ -108,6 +111,7 @@ in {
             timeout = "3s";
           };
           volumes = [ "${config-dir}/redis:/data" ];
+          labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
           restart = "unless-stopped";
         };
 
@@ -141,6 +145,7 @@ in {
             "${config-dir}/certs:/certs"
             "${config-dir}/templates:/templates"
           ];
+          labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
           depends_on = [ "postgresql" "redis" ];
           restart = "unless-stopped";
         };

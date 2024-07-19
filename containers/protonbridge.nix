@@ -40,6 +40,7 @@ in {
           else
             [ ]);
         volumes = [ "${config.lib.server.mkConfigDir "protonbridge"}:/root" ];
+        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
         restart = "unless-stopped";
       };
     };

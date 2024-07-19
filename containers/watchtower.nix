@@ -46,6 +46,7 @@ in {
           [ "/root/.docker/config.json:/config.json" ]
         else
           [ ]);
+        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
         restart = "unless-stopped";
       };
     };

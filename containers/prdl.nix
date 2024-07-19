@@ -52,6 +52,7 @@ in {
         env_file = [ config.age.secrets.prdl-env.path ];
         volumes = [ "${config.lib.server.mkConfigDir "prdl"}/data:/app/data" ]
           ++ cfg.volumes;
+        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
         restart = "unless-stopped";
       };
     };

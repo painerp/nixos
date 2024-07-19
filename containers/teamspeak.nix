@@ -36,6 +36,7 @@ in {
         env_file = [ config.age.secrets.teamspeak-env.path ];
         volumes =
           [ "${config.lib.server.mkConfigDir "teamspeak"}:/var/ts3server" ];
+        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
         restart = "unless-stopped";
       };
     };

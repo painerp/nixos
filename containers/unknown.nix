@@ -75,6 +75,7 @@ in {
           environment = { MARIADB_AUTO_UPGRADE = "yes"; };
           env_file = [ config.age.secrets.unknown-mysql-env.path ];
           volumes = [ "${config-dir}/mysql:/var/lib/mysql" ];
+          labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
           restart = "unless-stopped";
         };
 
@@ -93,6 +94,8 @@ in {
             port = "3000";
             subdomain = "${cfg.subdomain}";
             forwardAuth = cfg.auth;
+          } // {
+            "com.centurylinklabs.watchtower.enable" = "true";
           };
           restart = "unless-stopped";
         };
@@ -118,6 +121,8 @@ in {
             port = "80";
             subdomain = "${cfg.pma.subdomain}.${cfg.subdomain}";
             forwardAuth = cfg.pma.auth;
+          } // {
+            "com.centurylinklabs.watchtower.enable" = "true";
           };
           restart = "unless-stopped";
         };
