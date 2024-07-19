@@ -41,7 +41,10 @@ in {
         loki.address = "100.73.203.96";
       };
     };
-    watchtower.enable = true;
+    watchtower = {
+      enable = true;
+      only-label = true;
+    };
   };
 
   # users
