@@ -40,6 +40,7 @@ in {
         depends_on = [ "gluetun" ];
         volumes = [ "${config.lib.server.mkConfigDir "pledo"}:/config" ]
           ++ cfg.volumes;
+        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
         restart = "unless-stopped";
       };
     };

@@ -1,6 +1,8 @@
 { lib, config, ... }:
 
-let cfg = config.server.stash;
+let
+  cfg = config.server.stash;
+  config-dir = config.lib.server.mkConfigDir "stash";
 in {
   options.server.stash = {
     enable = lib.mkOption {
@@ -48,17 +50,19 @@ in {
         };
         volumes = [
           "/etc/localtime:/etc/localtime:ro"
-          "${config.lib.server.mkConfigDir "stash"}/config:/root/.stash"
-          "${config.lib.server.mkConfigDir "stash"}/metadata:/metadata"
-          "${config.lib.server.mkConfigDir "stash"}/cache:/cache"
-          "${config.lib.server.mkConfigDir "stash"}/blobs:/blobs"
-          "${config.lib.server.mkConfigDir "stash"}/generated:/generated"
+          "${config-dir}/config:/root/.stash"
+          "${config-dir}/metadata:/metadata"
+          "${config-dir}/cache:/cache"
+          "${config-dir}/blobs:/blobs"
+          "${config-dir}/generated:/generated"
         ] ++ cfg.volumes;
         labels = config.lib.server.mkTraefikLabels {
           name = "stash";
           port = "9999";
           subdomain = "${cfg.subdomain}";
           forwardAuth = cfg.auth;
+        } // {
+          "com.centurylinklabs.watchtower.enable" = "true";
         };
         restart = "unless-stopped";
       };

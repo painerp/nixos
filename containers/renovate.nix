@@ -44,6 +44,7 @@ in {
           RENOVATE_PERSIST_REPO_DATA = "true";
         };
         env_file = [ config.age.secrets.renovate-env.path ];
+        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
       };
     };
   };

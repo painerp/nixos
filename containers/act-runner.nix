@@ -30,6 +30,7 @@ in {
           "${config.lib.server.mkConfigDir "act-runner"}:/data"
           "/var/run/docker.sock:/var/run/docker.sock"
         ];
+        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
         restart = "unless-stopped";
       };
     };

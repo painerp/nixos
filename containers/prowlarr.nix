@@ -40,6 +40,7 @@ in {
           TZ = config.time.timeZone;
         };
         volumes = [ "${config.lib.server.mkConfigDir "prowlarr"}:/config" ];
+        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
         restart = "unless-stopped";
       };
     };

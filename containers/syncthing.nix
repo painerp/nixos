@@ -69,6 +69,8 @@ in {
           port = "8384";
           subdomain = "${cfg.subdomain}";
           forwardAuth = cfg.auth;
+        } // {
+          "com.centurylinklabs.watchtower.enable" = "true";
         };
         restart = "unless-stopped";
       };

@@ -45,6 +45,7 @@ in {
         };
         volumes = [ "${config.lib.server.mkConfigDir "sabnzbd"}:/config" ]
           ++ cfg.volumes;
+        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
         restart = "unless-stopped";
       };
     };

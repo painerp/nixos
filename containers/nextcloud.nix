@@ -77,6 +77,8 @@ in {
           transport = "skip-verify@file";
           subdomain = "${cfg.subdomain}";
           forwardAuth = cfg.auth;
+        } // {
+          "com.centurylinklabs.watchtower.enable" = "true";
         };
         restart = "unless-stopped";
       };

@@ -52,6 +52,7 @@ in {
           else
             [ ]);
         volumes = [ "${config.lib.server.mkConfigDir "palworld"}:/palworld" ];
+        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
         restart = "unless-stopped";
       };
     };

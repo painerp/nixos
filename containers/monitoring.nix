@@ -204,6 +204,8 @@ in {
               subdomain = "${cfg.grafana.subdomain}";
               port = "3000";
               forwardAuth = cfg.grafana.auth;
+            } // {
+              "com.centurylinklabs.watchtower.enable" = "true";
             };
             restart = "unless-stopped";
           };
@@ -239,6 +241,8 @@ in {
               subdomain = "${cfg.prometheus.subdomain}";
               port = "9090";
               forwardAuth = cfg.prometheus.auth;
+            } // {
+              "com.centurylinklabs.watchtower.enable" = "true";
             };
             restart = "unless-stopped";
           };
@@ -255,6 +259,7 @@ in {
               [ ]);
             command = [ "-config.file=/etc/loki/config.yml" ];
             volumes = [ "${config.lib.server.mkConfigDir "loki"}:/etc/loki" ];
+            labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
             restart = "unless-stopped";
           };
 
@@ -280,6 +285,7 @@ in {
               "/sys:/host/sys:ro"
               "/:/rootfs:ro,rslave"
             ];
+            labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
             restart = "unless-stopped";
           };
 
@@ -305,6 +311,7 @@ in {
               "/var/lib/docker/:/var/lib/docker:ro"
               "/dev/disk/:/dev/disk:ro"
             ];
+            labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
             devices = [ "/dev/kmsg" ];
             privileged = true;
             restart = "unless-stopped";
@@ -339,6 +346,7 @@ in {
               "/run/log/journal:/run/log/journal"
               "/etc/machine-id:/etc/machine-id"
             ];
+            labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
             restart = "unless-stopped";
           };
 
@@ -358,6 +366,8 @@ in {
               subdomain = "${cfg.alertmanager.subdomain}";
               port = "9093";
               forwardAuth = cfg.alertmanager.auth;
+            } // {
+              "com.centurylinklabs.watchtower.enable" = "true";
             };
             restart = "unless-stopped";
           };
