@@ -51,7 +51,6 @@ in {
         env-file = secrets.log-pve-exporter-env;
       };
       promtail.enable = true;
-      alertmanager.enable = true;
     };
     traefik = {
       enable = true;
