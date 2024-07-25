@@ -27,6 +27,8 @@
   inf-unknown-env = ./inf/unknown.env.age;
   inf-unknown-mysql-env = ./inf/unknown-mysql.env.age;
   inf-unknown-pma-env = ./inf/unknown-pma.env.age;
+  inf-dawarich-env = ./inf/dawarich.env.age;
+  inf-dawarich-pg-env = ./inf/dawarich-pg.env.age;
 
   gra-authentik-proxy-env = ./gra/authentik-proxy.env.age;
   gra-immich-env = ./gra/immich.env.age;
