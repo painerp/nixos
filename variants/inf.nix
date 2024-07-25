@@ -65,6 +65,11 @@ in {
         env-file = secrets.inf-unknown-pma-env;
       };
     };
+    dawarich = {
+      enable = true;
+      env-file = secrets.inf-dawarich-env;
+      postgres.env-file = secrets.inf-dawarich-pg-env;
+    };
     monitoring = {
       node-exporter.enable = true;
       cadvisor.enable = true;
