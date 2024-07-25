@@ -74,6 +74,7 @@ in {
           networks = [ "proxy" "backend" ];
           entrypoint = "dev-entrypoint.sh";
           command = [ "bin/dev" ];
+          tty = true;
           environment = default-env;
           env_file = [ config.age.secrets.dawarich-env.path ];
           volumes = [
@@ -101,6 +102,7 @@ in {
           networks = [ "proxy" "backend" ];
           entrypoint = "dev-entrypoint.sh";
           command = [ "sidekiq" ];
+          tty = true;
           environment = default-env // {
             BACKGROUND_PROCESSING_CONCURRENCY = "10";
           };
