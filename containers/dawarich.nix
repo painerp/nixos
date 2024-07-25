@@ -72,6 +72,7 @@ in {
           container_name = "dawarich_app";
           hostname = config.networking.hostName;
           networks = [ "proxy" "backend" ];
+          entrypoint = "dev-entrypoint.sh";
           command = [ "bin/dev" ];
           environment = default-env;
           env_file = [ config.age.secrets.dawarich-env.path ];
@@ -98,6 +99,7 @@ in {
           container_name = "dawarich_sidekiq";
           hostname = config.networking.hostName;
           networks = [ "proxy" "backend" ];
+          entrypoint = "dev-entrypoint.sh";
           command = [ "sidekiq" ];
           environment = default-env // {
             BACKGROUND_PROCESSING_CONCURRENCY = "10";
