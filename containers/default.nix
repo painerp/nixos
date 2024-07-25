@@ -50,6 +50,7 @@ in {
     ./bachelor.nix
     ./bazarr.nix
     ./dashboard.nix
+    ./dawarich.nix
     ./gitea.nix
     ./gluetun.nix
     ./gotify.nix
