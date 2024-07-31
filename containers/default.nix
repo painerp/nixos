@@ -60,6 +60,8 @@ in {
     ./jellystat.nix
     ./lidarr.nix
     ./linkwarden.nix
+    ./minecraft.nix
+    ./minecraft-router.nix
     ./monitoring.nix
     ./nextcloud.nix
     ./nuxt-pages.nix
