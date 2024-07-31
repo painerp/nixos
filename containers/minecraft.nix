@@ -50,5 +50,7 @@ in {
         restart = "unless-stopped";
       };
     };
+
+    networking.firewall.allowedTCPPorts = lib.mkIf (cfg.expose) [ 25565 ];
   };
 }
