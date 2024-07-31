@@ -70,6 +70,7 @@ in {
       auth = false;
       env-file = secrets.ext-open-webui-env;
     };
+    minecraft-router.enable = true;
     teamspeak = {
       enable = true;
       expose = true;
