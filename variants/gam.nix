@@ -29,6 +29,7 @@ in {
       enable = false;
       env-file = secrets.gam-palworld-env;
     };
+    minecraft.enable = true;
     monitoring = {
       node-exporter.enable = true;
       cadvisor.enable = true;
