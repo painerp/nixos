@@ -16,8 +16,8 @@ in {
       default = !cfg.expose;
     };
     mapping = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [ ];
+      type = lib.types.str;
+      default = "";
     };
   };
 
