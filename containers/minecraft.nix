@@ -7,6 +7,14 @@ in {
       type = lib.types.bool;
       default = false;
     };
+    expose = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
+    internal = lib.mkOption {
+      type = lib.types.bool;
+      default = !cfg.expose;
+    };
     server-type = lib.mkOption {
       type = lib.types.str;
       default = "PURPUR";
