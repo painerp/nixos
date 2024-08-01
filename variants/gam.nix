@@ -3,6 +3,7 @@
 let
   flake = "gam";
   tailscale-ip = "100.114.234.126";
+  minecraft-path = "/root/config/minecraft";
 in {
   imports = [ ./secrets ];
 
@@ -30,6 +31,14 @@ in {
       env-file = secrets.gam-palworld-env;
     };
     minecraft.enable = true;
+    minecraft-bluemap = {
+      enable = true;
+      volumes = [
+        "${minecraft-path}/world:/app/world"
+        "${minecraft-path}/world_nether:/world_nether"
+        "${minecraft-path}/world_the_end:/world_the_end"
+      ];
+    };
     monitoring = {
       node-exporter.enable = true;
       cadvisor.enable = true;
