@@ -61,6 +61,7 @@ in {
     ./lidarr.nix
     ./linkwarden.nix
     ./minecraft.nix
+    ./minecraft-bluemap.nix
     ./minecraft-router.nix
     ./monitoring.nix
     ./nextcloud.nix
