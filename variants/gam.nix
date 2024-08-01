@@ -35,8 +35,8 @@ in {
       enable = true;
       volumes = [
         "${minecraft-path}/world:/app/world"
-        "${minecraft-path}/world_nether:/world_nether"
-        "${minecraft-path}/world_the_end:/world_the_end"
+        "${minecraft-path}/world_nether:/app/world_nether"
+        "${minecraft-path}/world_the_end:/app/world_the_end"
       ];
     };
     monitoring = {
