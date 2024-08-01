@@ -39,6 +39,7 @@ in {
         environment = {
           EULA = "TRUE";
           TYPE = cfg.server-type;
+          SNOOPER_ENABLED = "FALSE";
         };
         ports = (if (cfg.expose) then [ "25565:25565/tcp" ] else [ ])
           ++ (if (cfg.internal) then
