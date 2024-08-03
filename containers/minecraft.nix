@@ -57,6 +57,7 @@ in {
           TYPE = cfg.server-type;
           SNOOPER_ENABLED = "FALSE";
         };
+        env_file = [ config.age.secrets.minecraft-env.path ];
         ports = (if (cfg.expose) then [ "25565:25565/tcp" ] else [ ])
           ++ (if (cfg.internal) then
             [ "${config.server.tailscale-ip}:25565:25565/tcp" ]
