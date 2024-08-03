@@ -30,7 +30,11 @@ in {
       enable = false;
       env-file = secrets.gam-palworld-env;
     };
-    minecraft.enable = true;
+    minecraft = {
+      enable = true;
+      env-file = secrets.gam-minecraft-env;
+      rcon.enable = true;
+    };
     minecraft-bluemap = {
       enable = true;
       volumes = [

@@ -39,6 +39,7 @@
   cit-authentik-pg-env = ./cit/authentik-pg.env.age;
 
   gam-palworld-env = ./gam/palworld.env.age;
+  gam-minecraft-env = ./gam/minecraft.env.age;
 
   arr-authentik-proxy-env = ./arr/authentik-proxy.env.age;
   arr-gluetun-env = ./arr/gluetun.env.age;
