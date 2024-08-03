@@ -1,6 +1,8 @@
 { lib, config, ... }:
 
-let cfg = config.server.minecraft;
+let
+  cfg = config.server.minecraft;
+  config-dir = config.lib.server.mkConfigDir "minecraft";
 in {
   options.server.minecraft = {
     enable = lib.mkOption {
@@ -36,6 +38,16 @@ in {
       internal = lib.mkOption {
         type = lib.types.bool;
         default = !cfg.rcon.expose;
+      };
+    };
+    backup = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
+      interval = lib.mkOption {
+        type = lib.types.str;
+        default = "24h";
       };
     };
   };
@@ -76,6 +88,24 @@ in {
                 [ ]);
         volumes = [ "${config.lib.server.mkConfigDir "minecraft"}:/data" ];
         labels = { "com.centurylinklabs.watchtower.enable" = "false"; };
+        restart = "unless-stopped";
+      };
+
+      services.minecraft-backup.service = lib.mkIf (cfg.backup.enable) {
+        image = "itzg/mc-backup:latest";
+        container_name = "minecraft-backup";
+        hostname = config.networking.hostName;
+        environment = {
+          RCON_HOST = "minecraft";
+          PAUSE_IF_NO_PLAYERS = "TRUE";
+          BACKUP_INTERVAL = cfg.backup.interval;
+        };
+        env_file = [ config.age.secrets.minecraft-env.path ];
+        volumes = [
+          "${config.lib.server.mkConfigDir "minecraft-backups"}:/backups"
+          "${config-dir}:/data:ro"
+        ];
+        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
         restart = "unless-stopped";
       };
     };
