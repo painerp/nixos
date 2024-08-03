@@ -34,6 +34,10 @@ in {
       enable = true;
       env-file = secrets.gam-minecraft-env;
       rcon.enable = true;
+      backup = {
+        enable = true;
+        interval = "2h";
+      };
     };
     minecraft-bluemap = {
       enable = true;
