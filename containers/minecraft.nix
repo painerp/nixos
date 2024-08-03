@@ -20,6 +20,10 @@ in {
       type = lib.types.str;
       default = "PURPUR";
     };
+    max-memory = lib.mkOption {
+      type = lib.types.str;
+      default = "4G";
+    };
     rcon = {
       enable = lib.mkOption {
         type = lib.types.bool;
@@ -56,6 +60,7 @@ in {
           EULA = "TRUE";
           TYPE = cfg.server-type;
           SNOOPER_ENABLED = "FALSE";
+          MAX_MEMORY = cfg.max-memory;
         };
         env_file = [ config.age.secrets.minecraft-env.path ];
         ports = (if (cfg.expose) then [ "25565:25565/tcp" ] else [ ])
