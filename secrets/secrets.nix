@@ -64,6 +64,7 @@ in {
   "gra/immich-pg.env.age".publicKeys = users ++ [ gra ];
 
   "gam/palworld.env.age".publicKeys = users ++ [ gam ];
+  "gam/minecraft.env.age".publicKeys = users ++ [ gam ];
 
   "arr/authentik-proxy.env.age".publicKeys = users ++ [ arr ];
   "arr/gluetun.env.age".publicKeys = users ++ [ arr ];
