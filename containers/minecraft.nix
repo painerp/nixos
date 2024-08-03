@@ -47,7 +47,7 @@ in {
           else
             [ ]);
         volumes = [ "${config.lib.server.mkConfigDir "minecraft"}:/data" ];
-        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
+        labels = { "com.centurylinklabs.watchtower.enable" = "false"; };
         restart = "unless-stopped";
       };
     };
