@@ -53,7 +53,7 @@
     };
     systemPackages = [
       fishPlugins.done
-      fishPlugins.puffery
+      fishPlugins.puffer
       fishPlugins.fzf-fish
       fishPlugins.pisces
       fishPlugins.bobthefish
