@@ -71,10 +71,10 @@ in {
           jetbrains.idea-ultimate
         ] else
           [ ]) ++ (if cfg.crypto then [ electrum monero-gui ] else [ ]);
-  };
 
-  programs = {
-    steam.enable = cfg.gaming;
-    kdeconnect.enable = cfg.desktop;
+    programs = {
+      steam.enable = cfg.gaming;
+      kdeconnect.enable = cfg.desktop;
+    };
   };
 }
