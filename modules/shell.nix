@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   programs.fish = {
@@ -14,7 +14,7 @@
       set -g theme_display_user yes
       set -g theme_display_hostname ssh
       set -g theme_date_format '+%a %H:%M'
-      set -g theme_date_timezone ${time.timeZone}
+      set -g theme_date_timezone ${config.time.timeZone}
       set -g theme_powerline_fonts yes
       set -g theme_nerd_fonts yes
       set -g theme_show_exit_status yes
