@@ -17,6 +17,7 @@ in {
     office = makeOption false;
     desktop = makeOption false;
     gaming = makeOption false;
+    tor = makeOption false;
     communication = makeOption false;
     dev = makeOption false;
     crypto = makeOption false;
