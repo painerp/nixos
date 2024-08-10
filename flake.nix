@@ -2,9 +2,7 @@
   description = "system config";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-    # nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-
-    # Trick renovate into working: "github:NixOS/nixpkgs/nixpkgs-unstable"
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     arion = {
       url = "github:hercules-ci/arion";
@@ -118,6 +116,17 @@
           pkgs = (import nixpkgs) { system = "x86_64-linux"; };
           modules = server-modules ++ [ ./containers ]
             ++ [ ./variants/arr.nix ./hardware/int-vps.nix ];
+        };
+
+        kronos = nixpkgs.lib.nixosSystem {
+          inherit specialArgs;
+          system = "x86_64-linux";
+          pkgs = (import nixpkgs) {
+            system = "x86_64-linux";
+            overlays = [ inputs.hyprpanel.overlay.x86_64-linux ];
+          };
+          modules = server-modules
+            ++ [ ./variants/kronos.nix ./hardware/lenovo-15arh05h.nix ];
         };
       };
     };
