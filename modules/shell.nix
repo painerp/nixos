@@ -31,12 +31,13 @@
       "l" = "${eza}/bin/eza -l";
       "ls" = "${eza}/bin/eza -la";
       "ll" = "${eza}/bin/eza -la --tree";
+      "cp" = "cp -i";
+      "mv" = "mv -i";
       "sc" = "systemctl";
       "scs" = "systemctl status";
       "scr" = "systemctl restart";
       "sce" = "systemctl enable";
       "c" = "clear";
-      "cd" = "z";
       "cdp" = "pushd";
       "ve" = "source ./venv/bin/activate";
       "jctl" = "journalctl -p 3 -xb";
