@@ -6,12 +6,18 @@
       description = "The flake to use for system configuration";
       type = lib.types.str;
     };
+    username = lib.mkOption {
+      description = "The main username of the system";
+      type = lib.types.str;
+      default = "root";
+    };
   };
 
   imports = [
     ./arion.nix
     ./auto-upgrade.nix
     ./firewall.nix
+    ./hyprland.nix
     ./kodi.nix
     ./micro.nix
     ./optimize.nix
