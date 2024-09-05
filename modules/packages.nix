@@ -81,6 +81,27 @@ in {
       };
       gamemode.enable = cfg.gaming;
       kdeconnect.enable = cfg.desktop;
+      xfconf.enable = cfg.desktop;
+      thunar = {
+        enable = cfg.desktop;
+        plugins = with pkgs.xfce; [ thunar-archive-plugin thunar-volman ];
+      };
+      nh = {
+        enable = true;
+        #        clean.enable = true;
+        #        clean.extraArgs = "--keep-since 4d --keep 3";
+        flake = "/etc/nixos";
+      };
+    };
+
+    services = {
+      tumbler.enable = cfg.desktop;
+      syncthing = {
+        enable = cfg.desktop;
+        user = config.system.username;
+        dataDir = "/home/${config.system.username}/Syncthing";
+        configDir = "/home/${config.system.username}/.config/syncthing";
+      };
     };
   };
 }
