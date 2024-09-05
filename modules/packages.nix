@@ -25,7 +25,7 @@ in {
 
   config = {
     environment.systemPackages = with pkgs;
-      [ vim nano eza dig htop git home-manager ncdu jq ffmpeg zoxide ]
+      [ vim nano eza dig htop git home-manager ncdu jq ffmpeg zoxide tldr ]
       ++ (if cfg.desktop then [
         btop
         brave
