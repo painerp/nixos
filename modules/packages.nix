@@ -44,8 +44,9 @@ in {
           handbrake
           kdenlive
           yt-dlp
-          obs-studio
-          obs-studio-plugins.advanced-scene-switcher
+          (pkgs.wrapOBS {
+            plugins = with pkgs.obs-studio-plugins; [ advanced-scene-switcher ];
+          })
         ] else
           [ ]) ++ (if cfg.office then [ libreoffice okular ] else [ ])
       ++ (if cfg.gaming then [
