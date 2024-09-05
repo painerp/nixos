@@ -50,7 +50,15 @@ in {
         matugen
         grimblast
       ];
+      sessionVariables = {
+        NIXOS_OZONE_WL = "1";
+        GI_TYPELIB_PATH =
+          "${pkgs.libgtop}/lib/girepository-1.0:${pkgs.glib}/lib/girepository-1.0";
+      };
     };
+
+    fonts.packages = with pkgs; [ nerdfonts ];
+
     programs = {
       hyprland.enable = true;
       hyprlock.enable = true;
