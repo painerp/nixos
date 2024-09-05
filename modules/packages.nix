@@ -61,9 +61,11 @@ in {
         signal-desktop
       ] else
         [ ]) ++ (if cfg.dev then [
-          gimp
+          nixfmt-rfc-style
           lazygit
-          vscodium
+          nodePackages_latest.nodejs
+          nodePackages_latest.pnpm
+          python3
           jetbrains.webstorm
           jetbrains.rust-rover
           jetbrains.pycharm-professional
