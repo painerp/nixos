@@ -4,7 +4,11 @@ let flake = "kronos";
 in {
   imports = [ ./secrets ];
 
-  networking = { hostName = "${flake}"; };
+  networking = {
+    hostName = "${flake}";
+    useDHCP = lib.mkDefault true;
+    networkmanager.enable = true;
+  };
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/C34B-E9C0";
