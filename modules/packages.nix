@@ -56,7 +56,7 @@ in {
       ] else
         [ ]) ++ (if cfg.tor then [ tor nyx protonvpn-gui ] else [ ])
       ++ (if cfg.communication then [
-        teamspeak-client
+        teamspeak_client
         webcord
         signal-desktop
       ] else
