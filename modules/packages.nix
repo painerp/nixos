@@ -33,13 +33,11 @@ in {
         librewolf
         nextcloud-client
         nomacs
-        syncthing
+        kdePackages.kate
+        kdePackages.ark
         vlc
         vorta
         keepassxc
-        xfce.thunar
-        xfce.thunar-archive-plugin
-        xfce.thunar-volman
       ] else
         [ ]) ++ (if cfg.video then [
           freetube
