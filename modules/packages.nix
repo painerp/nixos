@@ -50,7 +50,7 @@ in {
           [ ]) ++ (if cfg.office then [ libreoffice okular ] else [ ])
       ++ (if cfg.gaming then [
         lutris
-        proton-ge-bin
+        protonup
         steamguard-cli
         prismlauncher
       ] else
