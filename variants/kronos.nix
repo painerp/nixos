@@ -50,7 +50,10 @@ in {
   };
 
   # system
-  system = { inherit flake; };
+  system = {
+    inherit flake;
+    username = flake;
+  };
   modules = {
     ssh.enable = false;
     arion.enable = true;
