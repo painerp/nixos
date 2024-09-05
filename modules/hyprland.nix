@@ -29,12 +29,23 @@ in {
 
     environment = with pkgs; {
       systemPackages = [
+        libnotify
+        wl-clipboard
+        cliphist
+        wlogout
+        egl-wayland
+        kitty
         udiskie
         rofi-wayland
+        pavucontrol
+        brightnessctl
         ags
-        hyprpanel
+        libdbusmenu-gtk3
+        bun
+        sass
         networkmanagerapplet
-        blueman
+        libgtop
+        glib
         swww
         matugen
         grimblast
