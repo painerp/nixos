@@ -28,7 +28,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
-  outputs = { agenix, nixpkgs, ... }@inputs:
+  outputs = { agenix, home-manager, nixpkgs, ... }@inputs:
     let
       secrets = import ./secrets;
       specialArgs = { inherit inputs secrets; };
@@ -124,9 +124,19 @@
           pkgs = (import nixpkgs) {
             system = "x86_64-linux";
             overlays = [ inputs.hyprpanel.overlay.x86_64-linux ];
+            config.allowUnfree = true;
           };
-          modules = server-modules
-            ++ [ ./variants/kronos.nix ./hardware/lenovo-15arh05h.nix ];
+          modules = server-modules ++ [
+            ./variants/kronos.nix
+            ./hardware/lenovo-15arh05h.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.kronos = import ./homes/default.nix;
+              home-manager.extraSpecialArgs = { inherit inputs; };
+            }
+          ];
         };
       };
     };
