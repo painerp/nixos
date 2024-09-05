@@ -45,7 +45,7 @@ in {
   users.mutableUsers = false;
   users.users."${flake}" = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "docker" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "video" "input" "docker" ];
   };
 
   nix.settings.trusted-users = [ "@wheel" ];
