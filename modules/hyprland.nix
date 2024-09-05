@@ -62,6 +62,21 @@ in {
     programs = {
       hyprland.enable = true;
       hyprlock.enable = true;
+      ssh.startAgent = true;
+    };
+
+    services = {
+      gvfs.enable = true;
+      blueman.enable = true;
+      udisks2.enable = true;
+      upower.enable = true;
+      hypridle.enable = true;
+      printing.enable = true;
+      #      kdeconnect = {
+      #        enable = true;
+      #        indicator = true;
+      #      };
+      gnome.gnome-keyring.enable = true;
     };
     services.hypridle.enable = true;
   };
