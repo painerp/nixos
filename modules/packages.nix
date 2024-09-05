@@ -51,6 +51,8 @@ in {
         ] else
           [ ]) ++ (if cfg.office then [ libreoffice okular obsidian ] else [ ])
       ++ (if cfg.image then [ krita upscayl ] else [ ]) ++ (if cfg.gaming then [
+        mangohud
+        heroic
         lutris
         protonup
         steamguard-cli
