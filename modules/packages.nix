@@ -14,6 +14,7 @@ in {
       default = false;
     };
     video = makeOption false;
+    image = makeOption false;
     office = makeOption false;
     desktop = makeOption false;
     gaming = makeOption false;
@@ -48,8 +49,8 @@ in {
             plugins = with pkgs.obs-studio-plugins; [ advanced-scene-switcher ];
           })
         ] else
-          [ ]) ++ (if cfg.office then [ libreoffice okular ] else [ ])
-      ++ (if cfg.gaming then [
+          [ ]) ++ (if cfg.office then [ libreoffice okular obsidian ] else [ ])
+      ++ (if cfg.image then [ krita upscayl ] else [ ]) ++ (if cfg.gaming then [
         lutris
         protonup
         steamguard-cli
