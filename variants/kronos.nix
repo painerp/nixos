@@ -32,19 +32,19 @@ in {
   };
 
   fileSystems."/mnt/backup" = {
-    device = "100.115.213.122:/mnt/hdd/backup/kronos";
+    device = "100.85.220.82:/mnt/hdd/backup/kronos";
     fsType = "nfs";
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
 
   fileSystems."/mnt/media" = {
-    device = "100.115.213.122:/mnt/hdd/media";
+    device = "100.85.220.82:/mnt/hdd/media";
     fsType = "nfs";
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
 
   fileSystems."/mnt/unknown" = {
-    device = "100.115.213.122:/mnt/hdd/unknown";
+    device = "100.85.220.82:/mnt/hdd/unknown";
     fsType = "nfs";
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
