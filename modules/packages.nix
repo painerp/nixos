@@ -75,7 +75,11 @@ in {
           [ ]) ++ (if cfg.crypto then [ electrum monero-gui ] else [ ]);
 
     programs = {
-      steam.enable = cfg.gaming;
+      steam = {
+        enable = cfg.gaming;
+        gamescopeSession.enable = true;
+      };
+      gamemode.enable = cfg.gaming;
       kdeconnect.enable = cfg.desktop;
     };
   };
