@@ -9,7 +9,7 @@
   boot = {
     initrd.availableKernelModules =
       [ "xhci_pci" "nvme" "ahci" "usbhid" "usb_storage" "sd_mod" ];
-    kernelPackages = pkgs.linuxPackages_6_9;
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [ "kvm-amd" ];
     loader = {
       systemd-boot.enable = true;
@@ -47,19 +47,6 @@
   hardware = {
     cpu.amd.updateMicrocode =
       lib.mkDefault config.hardware.enableRedistributableFirmware;
-    opengl = {
-      enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
-    };
-
-    nvidia = {
-      modesetting.enable = true;
-      #    powerManagement.enable = false;
-      open = false;
-      #    nvidiaSettings = false;
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
-    };
 
     bluetooth = {
       enable = true;
