@@ -41,25 +41,12 @@ in {
     options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
   };
 
-  # nvidia
-  services.xserver.videoDrivers = [ "nvidia" ];
-  virtualisation.docker = { enableNvidia = true; };
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement.enable = false;
-    open = false;
-    nvidiaSettings = false;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
-
   # system
   system = { inherit flake; };
-  modules = { arion.enable = true; };
+  modules = {
+    arion.enable = true;
+    nvidia.enable = true;
+  };
 
   # services
   server = {
