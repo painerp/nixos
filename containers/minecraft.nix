@@ -101,7 +101,7 @@ in
           RCON_HOST = "minecraft";
           PAUSE_IF_NO_PLAYERS = "TRUE";
           BACKUP_INTERVAL = cfg.backup.interval;
-          EXCLUDES = "";
+          EXCLUDES = "cache,logs,*.tmp";
         };
         env_file = [ config.age.secrets.minecraft-env.path ];
         volumes = [
