@@ -3,7 +3,8 @@
 let
   cfg = config.server.minecraft;
   config-dir = config.lib.server.mkConfigDir "minecraft";
-in {
+in
+{
   options.server.minecraft = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -75,19 +76,20 @@ in {
           MAX_MEMORY = cfg.max-memory;
         };
         env_file = [ config.age.secrets.minecraft-env.path ];
-        ports = (if (cfg.expose) then [ "25565:25565/tcp" ] else [ ])
-          ++ (if (cfg.internal) then
-            [ "${config.server.tailscale-ip}:25565:25565/tcp" ]
-          else
-            [ ]) ++ (if (cfg.rcon.enable && cfg.rcon.expose) then
-              [ "25575:25575/tcp" ]
+        ports =
+          (if (cfg.expose) then [ "25565:25565/tcp" ] else [ ])
+          ++ (if (cfg.internal) then [ "${config.server.tailscale-ip}:25565:25565/tcp" ] else [ ])
+          ++ (if (cfg.rcon.enable && cfg.rcon.expose) then [ "25575:25575/tcp" ] else [ ])
+          ++ (
+            if (cfg.rcon.enable && cfg.rcon.internal) then
+              [ "${config.server.tailscale-ip}:25575:25575/tcp" ]
             else
-              [ ]) ++ (if (cfg.rcon.enable && cfg.rcon.internal) then
-                [ "${config.server.tailscale-ip}:25575:25575/tcp" ]
-              else
-                [ ]);
+              [ ]
+          );
         volumes = [ "${config.lib.server.mkConfigDir "minecraft"}:/data" ];
-        labels = { "com.centurylinklabs.watchtower.enable" = "false"; };
+        labels = {
+          "com.centurylinklabs.watchtower.enable" = "false";
+        };
         restart = "unless-stopped";
       };
 
@@ -99,13 +101,16 @@ in {
           RCON_HOST = "minecraft";
           PAUSE_IF_NO_PLAYERS = "TRUE";
           BACKUP_INTERVAL = cfg.backup.interval;
+          EXCLUDES = "";
         };
         env_file = [ config.age.secrets.minecraft-env.path ];
         volumes = [
           "${config.lib.server.mkConfigDir "minecraft-backups"}:/backups"
-          "${config-dir}:/data:ro"
+          "${config-dir}:/data"
         ];
-        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
+        labels = {
+          "com.centurylinklabs.watchtower.enable" = "true";
+        };
         restart = "unless-stopped";
       };
     };
