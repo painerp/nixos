@@ -18,20 +18,22 @@ in
   config = {
     services.xserver.videoDrivers = [ "nvidia" ];
 
-    virtualisation.docker.enableNvidia = true;
+    hardware = {
+      opengl = {
+        enable = true;
+        driSupport = true;
+        driSupport32Bit = true;
+      };
 
-    hardware.opengl = {
-      enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
-    };
+      nvidia = {
+        modesetting.enable = true;
+        powerManagement.enable = false;
+        open = false;
+        nvidiaSettings = false;
+        package = cfg.package;
+      };
 
-    hardware.nvidia = {
-      modesetting.enable = true;
-      powerManagement.enable = false;
-      open = false;
-      nvidiaSettings = false;
-      package = cfg.package;
+      nvidia-container-toolkit.enable = config.modules.arion.enable;
     };
   };
 }
