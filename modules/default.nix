@@ -14,12 +14,14 @@
   };
 
   imports = [
+    ./amd.nix
     ./arion.nix
     ./auto-upgrade.nix
     ./firewall.nix
     ./hyprland.nix
     ./kodi.nix
     ./micro.nix
+    ./nvidia.nix
     ./optimize.nix
     ./packages.nix
     ./shell.nix
