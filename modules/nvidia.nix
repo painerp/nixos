@@ -10,7 +10,7 @@ in
       default = false;
     };
     package = lib.mkOption {
-      type = lib.types.attr;
+      type = lib.types.attrs;
       default = config.boot.kernelPackages.nvidiaPackages.stable;
     };
   };
