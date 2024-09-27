@@ -35,9 +35,8 @@ in {
         environment = {
           WATCHTOWER_CLEANUP = "true";
           WATCHTOWER_SCHEDULE = "0 0 */6 * * *";
-        } // lib.attrsets.optionalAttrs (cfg.only-label) {
-          WATCHTOWER_LABEL_ENABLE = "true";
-        };
+          WATCHTOWER_ROLLING_RESTART = "true";
+        } // lib.attrsets.optionalAttrs (cfg.only-label) { WATCHTOWER_LABEL_ENABLE = "true"; };
         env_file = [ config.age.secrets.watchtower-env.path ];
         volumes = [
           "/var/run/docker.sock:/var/run/docker.sock"
