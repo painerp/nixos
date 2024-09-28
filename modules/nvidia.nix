@@ -15,7 +15,7 @@ in
     };
   };
 
-  config = {
+  config = lib.mkIf (cfg.enable) {
     services.xserver.videoDrivers = [ "nvidia" ];
 
     hardware = {
