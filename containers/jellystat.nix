@@ -42,7 +42,7 @@ in {
       networks.internal.internal = true;
 
       services.jellystat-pg.service = {
-        image = "postgres:alpine";
+        image = "postgres:16-alpine";
         container_name = "jellystat-pg";
         hostname = config.networking.hostName;
         networks = [ "internal" ];
