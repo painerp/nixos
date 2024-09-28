@@ -15,6 +15,10 @@ in {
       type = lib.types.bool;
       default = false;
     };
+    rolling-restart = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -32,11 +36,13 @@ in {
         image = "containrrr/watchtower:latest";
         container_name = "watchtower";
         hostname = config.networking.hostName;
-        environment = {
-          WATCHTOWER_CLEANUP = "true";
-          WATCHTOWER_SCHEDULE = "0 0 */6 * * *";
-          WATCHTOWER_ROLLING_RESTART = "true";
-        } // lib.attrsets.optionalAttrs (cfg.only-label) { WATCHTOWER_LABEL_ENABLE = "true"; };
+        environment =
+          {
+            WATCHTOWER_CLEANUP = "true";
+            WATCHTOWER_SCHEDULE = "0 0 */6 * * *";
+          }
+          // lib.attrsets.optionalAttrs (cfg.rolling-restart) { WATCHTOWER_ROLLING_RESTART = "true"; }
+          // lib.attrsets.optionalAttrs (cfg.only-label) { WATCHTOWER_LABEL_ENABLE = "true"; };
         env_file = [ config.age.secrets.watchtower-env.path ];
         volumes = [
           "/var/run/docker.sock:/var/run/docker.sock"
