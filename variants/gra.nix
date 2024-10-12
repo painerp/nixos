@@ -45,7 +45,10 @@ in {
   system = { inherit flake; };
   modules = {
     arion.enable = true;
-    nvidia.enable = true;
+    nvidia = {
+      enable = true;
+      patch = true;
+    };
   };
 
   # services
