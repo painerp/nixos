@@ -41,8 +41,8 @@ in
           cfg.package;
       };
 
-      virtualisation.docker.enableNvidia = config.modules.arion.enable;
       nvidia-container-toolkit.enable = config.modules.arion.enable;
     };
+    virtualisation.docker.enableNvidia = config.modules.arion.enable;
   };
 }
