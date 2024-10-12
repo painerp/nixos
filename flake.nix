@@ -26,6 +26,11 @@
     };
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+
+    nvidia-patch = {
+      url = "github:icewind1991/nvidia-patch-nixos";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { agenix, home-manager, nixpkgs, ... }@inputs:
@@ -96,6 +101,7 @@
           system = "x86_64-linux";
           pkgs = (import nixpkgs) {
             system = "x86_64-linux";
+            overlays = [ inputs.nvidia-patch.overlays.default ];
             config.allowUnfree = true;
           };
           modules = server-modules ++ [ ./containers ]
