@@ -13,6 +13,10 @@ in
       type = lib.types.attrs;
       default = config.boot.kernelPackages.nvidiaPackages.stable;
     };
+    patch = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   config = lib.mkIf (cfg.enable) {
@@ -30,7 +34,11 @@ in
         powerManagement.enable = false;
         open = false;
         nvidiaSettings = false;
-        package = cfg.package;
+        package = if cfg.patch then
+          pkgs.nvidia-patch.patch-nvenc
+          (pkgs.nvidia-patch.patch-fbc cfg.package)
+        else
+          cfg.package;
       };
 
       nvidia-container-toolkit.enable = config.modules.arion.enable;
