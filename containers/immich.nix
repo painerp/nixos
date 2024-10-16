@@ -77,7 +77,7 @@ in {
           depends_on = [ "database" "redis" ];
           labels = config.lib.server.mkTraefikLabels {
             name = "immich";
-            port = "3001";
+            port = "2283";
             subdomain = "${cfg.subdomain}";
             forwardAuth = cfg.auth;
           } // {
