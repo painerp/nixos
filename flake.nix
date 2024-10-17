@@ -129,7 +129,6 @@
           system = "x86_64-linux";
           pkgs = (import nixpkgs) {
             system = "x86_64-linux";
-            overlays = [ inputs.hyprpanel.overlay.x86_64-linux ];
             config.allowUnfree = true;
           };
           modules = server-modules ++ [
@@ -139,7 +138,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.kronos = import ./homes/default.nix;
+              home-manager.users.kronos = import ./variants/homes/default.nix;
               home-manager.extraSpecialArgs = { inherit inputs; };
             }
           ];
