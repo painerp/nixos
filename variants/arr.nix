@@ -48,6 +48,7 @@ in {
     authentik = {
       enable = true;
       proxy = true;
+      extra-headers = "authorization";
       env-file = secrets.arr-authentik-proxy-env;
     };
     gluetun = {
