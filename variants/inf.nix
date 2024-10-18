@@ -48,6 +48,7 @@ in {
       env-file = secrets.inf-jellystat-env;
       postgres.env-file = secrets.inf-jellystat-pg-env;
     };
+    home-assistant.enable = true;
     linkwarden = {
       enable = true;
       env-file = secrets.inf-linkwarden-env;
