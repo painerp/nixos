@@ -54,6 +54,7 @@ in {
     ./gitea.nix
     ./gluetun.nix
     ./gotify.nix
+    ./home-assistant.nix
     ./immich.nix
     ./jellyfin.nix
     ./jellyfin-vue.nix
