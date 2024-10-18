@@ -63,6 +63,7 @@ in {
       auth = false;
       internal = false;
     };
+    home-assistant.enable = true;
     syncthing = {
       enable = true;
       subdomain = "sync";
