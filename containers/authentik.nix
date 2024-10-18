@@ -5,6 +5,8 @@ let
   config-dir = config.lib.server.mkConfigDir "authentik";
   address = if cfg.proxy then "authentik-proxy" else "authentik-server";
   subdomain = if cfg.proxy then "auth-proxy" else cfg.subdomain;
+  headers =
+    "X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid,X-authentik-jwt,X-authentik-meta-jwks,X-authentik-meta-outpost,X-authentik-meta-provider,X-authentik-meta-app,X-authentik-meta-version";
   labels = config.lib.server.mkTraefikLabels {
     name = "authentik";
     port = "9000";
@@ -17,7 +19,8 @@ let
     "traefik.http.middlewares.authentik.forwardauth.trustForwardHeader" =
       "true";
     "traefik.http.middlewares.authentik.forwardauth.authResponseHeaders" =
-      "X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid,X-authentik-jwt,X-authentik-meta-jwks,X-authentik-meta-outpost,X-authentik-meta-provider,X-authentik-meta-app,X-authentik-meta-version,authorization";
+      "${headers}"
+      + (if cfg.extra-headers != "" then "," + cfg.extra-headers else "");
   } // {
     "com.centurylinklabs.watchtower.enable" = "true";
   };
@@ -40,6 +43,10 @@ in {
     proxy = lib.mkOption {
       type = lib.types.bool;
       default = false;
+    };
+    extra-headers = lib.mkOption {
+      type = lib.types.str;
+      default = "";
     };
     env-file = lib.mkOption { type = lib.types.path; };
     postgres.env-file = lib.mkOption { type = lib.types.path; };
