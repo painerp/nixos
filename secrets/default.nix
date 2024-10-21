@@ -8,6 +8,8 @@
 
   jpi-wifi = ./jpi/wifi.age;
 
+  jbx-wifi = ./jbx/wifi.age;
+
   ext-authentik-env = ./ext/authentik.env.age;
   ext-authentik-pg-env = ./ext/authentik-pg.env.age;
   ext-bachelor-env = ./ext/bachelor.env.age;
