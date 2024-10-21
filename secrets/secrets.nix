@@ -5,6 +5,8 @@ let
 
   jpi =
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGPwO0rR4DGyCTUTBQ8eZD57Sps/AeIYTooSFKollMAV";
+  jbx =
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPwNnBrvLYanuWqr1PUE197pmsXCTDPdcp/N8+ozYkZn";
   bpi =
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMsEvJHm2Nyaps1z7Pk7tUAqNd6HZLhGeV4P8JVPbkla";
   ext =
@@ -30,6 +32,8 @@ in {
   "containers/watchtower.env.age".publicKeys = users ++ systems;
 
   "jpi/wifi.age".publicKeys = users ++ [ jpi ];
+
+  "jbx/wifi.age".publicKeys = users ++ [ jbx ];
 
   "bpi/wifi.age".publicKeys = users ++ [ bpi ];
 
