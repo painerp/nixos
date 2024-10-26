@@ -43,20 +43,23 @@ let
         http.tls = { certResolver = "hetzner"; };
         http3.advertisedPort = 443;
       };
+      metrics.address = ":20003";
     } // lib.attrsets.optionalAttrs (cfg.extra-entrypoints != { })
       cfg.extra-entrypoints;
-    certificatesResolvers = {
-      hetzner = {
-        acme = {
-          email = "help@${config.server.base-domain}";
-          storage = "acme.json";
-          dnsChallenge = {
-            provider = "hetzner";
-            resolvers =
-              [ "213.133.100.98:53" "193.47.99.5:53" "88.198.229.192:53" ];
-          };
-        };
+    certificatesResolvers.hetzner.acme = {
+      email = "help@${config.server.base-domain}";
+      storage = "acme.json";
+      dnsChallenge = {
+        provider = "hetzner";
+        resolvers =
+          [ "213.133.100.98:53" "193.47.99.5:53" "88.198.229.192:53" ];
       };
+    };
+  } // lib.attrsets.optionalAttrs cfg.monitoring {
+    metrics.prometheus = {
+      entryPoint = "metrics";
+      addEntryPointsLabels = true;
+      addServicesLabels = true;
     };
   };
   staticConfigFile =
@@ -92,6 +95,11 @@ in {
       type = lib.types.bool;
       description = "Enable wildcard certificate";
       default = false;
+    };
+    monitoring = lib.mkOption {
+      type = lib.types.bool;
+      description = "Enable traefik monitoring";
+      default = true;
     };
     extra-entrypoints = lib.mkOption {
       type = lib.types.attrs;
@@ -202,7 +210,10 @@ in {
             "${config.server.tailscale-ip}:443:443/tcp"
             "${config.server.tailscale-ip}:443:443/udp"
           ] else
-            [ ]) ++ cfg.extra-ports;
+            [ ]) ++ (if (cfg.monitoring) then
+              [ "${config.server.tailscale-ip}:20003:20003/tcp" ]
+            else
+              [ ]) ++ cfg.extra-ports;
         volumes = [
           "${staticConfigFile}:/traefik.yaml"
           "${config.lib.server.mkConfigDir "traefik"}/acme.json:/acme.json"
