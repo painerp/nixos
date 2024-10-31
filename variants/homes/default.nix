@@ -1,4 +1,4 @@
-{ config, inputs, pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 let
   theme = {
@@ -14,12 +14,16 @@ let
     name = "Papirus";
     package = pkgs.papirus-icon-theme;
   };
-in {
+in
+{
   imports = [ inputs.ags.homeManagerModules.default ];
 
   programs.ags = {
     enable = true;
-    extraPackages = with pkgs; [ gtksourceview webkitgtk ];
+    extraPackages = with pkgs; [
+      gtksourceview
+      webkitgtk
+    ];
   };
 
   programs.zoxide.enable = true;
@@ -36,6 +40,11 @@ in {
     extensions = with pkgs.vscode-extensions; [ ms-python.python ];
   };
 
+  services.kdeconnect = {
+    enable = true;
+    indicator = true;
+  };
+
   home.packages = with pkgs; [
     cantarell-fonts
     font-awesome
@@ -44,7 +53,9 @@ in {
     iconTheme.package
   ];
 
-  home.pointerCursor = cursorTheme // { gtk.enable = true; };
+  home.pointerCursor = cursorTheme // {
+    gtk.enable = true;
+  };
 
   gtk = {
     inherit cursorTheme iconTheme;
