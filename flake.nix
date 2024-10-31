@@ -144,6 +144,26 @@
           ];
         };
 
+        dionysus = nixpkgs.lib.nixosSystem {
+          inherit specialArgs;
+          system = "x86_64-linux";
+          pkgs = (import nixpkgs) {
+            system = "x86_64-linux";
+            config.allowUnfree = true;
+          };
+          modules = server-modules ++ [
+            ./variants/dionysus.nix
+            ./hardware/amd-5800x3d.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.dionysus = import ./variants/homes/default.nix;
+              home-manager.extraSpecialArgs = { inherit inputs; };
+            }
+          ];
+        };
+
         jbx = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           system = "x86_64-linux";
