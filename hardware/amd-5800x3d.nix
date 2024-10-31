@@ -19,6 +19,7 @@
       "sd_mod"
     ];
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelModules = [ "kvm-amd" ];
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
