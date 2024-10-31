@@ -1,7 +1,16 @@
-{ config, modulesPath, secrets, lib, ... }:
+{
+  config,
+  modulesPath,
+  secrets,
+  lib,
+  ...
+}:
 
-let flake = "kronos";
-in {
+let
+  flake = "kronos";
+  truenas-ip = "100.111.75.128";
+in
+{
   imports = [ ./secrets ];
 
   networking = {
@@ -13,7 +22,10 @@ in {
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/C34B-E9C0";
     fsType = "vfat";
-    options = [ "fmask=0022" "dmask=0022" ];
+    options = [
+      "fmask=0022"
+      "dmask=0022"
+    ];
   };
 
   fileSystems."/" = {
@@ -21,32 +33,56 @@ in {
     fsType = "ext4";
   };
 
-  swapDevices =
-    [{ device = "/dev/disk/by-uuid/040cc9dd-71cf-4c88-8cfa-cf52e21bc9e5"; }];
+  swapDevices = [ { device = "/dev/disk/by-uuid/040cc9dd-71cf-4c88-8cfa-cf52e21bc9e5"; } ];
 
   boot.initrd.luks.devices = {
-    "luks-1fea4deb-b91d-46cb-9fc2-abb4e15cb2c6".device =
-      "/dev/disk/by-uuid/1fea4deb-b91d-46cb-9fc2-abb4e15cb2c6";
-    "luks-97fed62b-bdc0-43b3-b670-ed83775644aa".device =
-      "/dev/disk/by-uuid/97fed62b-bdc0-43b3-b670-ed83775644aa";
+    "luks-1fea4deb-b91d-46cb-9fc2-abb4e15cb2c6".device = "/dev/disk/by-uuid/1fea4deb-b91d-46cb-9fc2-abb4e15cb2c6";
+    "luks-97fed62b-bdc0-43b3-b670-ed83775644aa".device = "/dev/disk/by-uuid/97fed62b-bdc0-43b3-b670-ed83775644aa";
+  };
+
+  fileSystems."/mnt/backup-arch" = {
+    device = "${truenas-ip}:/mnt/hdd/backup/archtop";
+    fsType = "nfs";
+    options = [
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
+    ];
   };
 
   fileSystems."/mnt/backup" = {
-    device = "100.85.220.82:/mnt/hdd/backup/kronos";
+    device = "${truenas-ip}:/mnt/hdd/backup/kronos";
     fsType = "nfs";
-    options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
+    options = [
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
+    ];
   };
 
   fileSystems."/mnt/media" = {
-    device = "100.85.220.82:/mnt/hdd/media";
+    device = "${truenas-ip}:/mnt/hdd/media";
     fsType = "nfs";
-    options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
+    options = [
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
+    ];
   };
 
   fileSystems."/mnt/unknown" = {
-    device = "100.85.220.82:/mnt/hdd/unknown";
+    device = "${truenas-ip}:/mnt/hdd/unknown";
     fsType = "nfs";
-    options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
+    options = [
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
+    ];
+  };
+
+  fileSystems."/mnt/rebuild" = {
+    device = "${truenas-ip}:/mnt/hdd/rebuild";
+    fsType = "nfs";
+    options = [
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
+    ];
   };
 
   # system
@@ -76,7 +112,14 @@ in {
   users.mutableUsers = false;
   users.users."${flake}" = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "audio" "video" "input" "docker" ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "audio"
+      "video"
+      "input"
+      "docker"
+    ];
   };
 
   nix.settings.trusted-users = [ "@wheel" ];
