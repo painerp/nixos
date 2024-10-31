@@ -1,7 +1,14 @@
-{ inputs, pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
-let cfg = config.modules.hyprland;
-in {
+let
+  cfg = config.modules.hyprland;
+in
+{
   options.modules.hyprland = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -21,10 +28,20 @@ in {
     services.greetd = {
       enable = true;
       settings.default_session = {
-        command =
-          "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-session --cmd Hyprland";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-session --cmd Hyprland";
         user = "greeter";
       };
+    };
+
+    systemd.services.greetd.serviceConfig = {
+      Type = "idle";
+      StandardInput = "tty";
+      StandardOutput = "tty";
+      StandardError = "journal"; # Without this errors will spam on screen
+      # Without these bootlogs will spam on screen
+      TTYReset = true;
+      TTYVHangup = true;
+      TTYVTDisallocate = true;
     };
 
     environment = with pkgs; {
@@ -52,8 +69,7 @@ in {
       ];
       sessionVariables = {
         NIXOS_OZONE_WL = "1";
-        GI_TYPELIB_PATH =
-          "${pkgs.libgtop}/lib/girepository-1.0:${pkgs.glib}/lib/girepository-1.0";
+        GI_TYPELIB_PATH = "${pkgs.libgtop}/lib/girepository-1.0:${pkgs.glib}/lib/girepository-1.0";
       };
     };
 
@@ -87,8 +103,7 @@ in {
       after = [ "graphical-session.target" ];
       serviceConfig = {
         Type = "simple";
-        ExecStart =
-          "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1";
+        ExecStart = "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1";
         Restart = "on-failure";
         RestartSec = 1;
         TimeoutStopSec = 10;
