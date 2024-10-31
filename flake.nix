@@ -15,10 +15,7 @@
       inputs.darwin.follows = "";
     };
 
-    ags = {
-      url = "github:Aylur/ags";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    ags.url = "github:Aylur/ags";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-24.05";
@@ -33,67 +30,112 @@
     };
   };
 
-  outputs = { agenix, home-manager, nixpkgs, ... }@inputs:
+  outputs =
+    {
+      agenix,
+      home-manager,
+      nixpkgs,
+      nixpkgs-unstable,
+      ...
+    }@inputs:
     let
       secrets = import ./secrets;
-      specialArgs = { inherit inputs secrets; };
-      server-modules = [ agenix.nixosModules.default ./modules ];
-    in {
+      specialArgs = {
+        inherit inputs secrets;
+      };
+      server-modules = [
+        agenix.nixosModules.default
+        ./modules
+      ];
+    in
+    {
       nixosConfigurations = {
         jpi = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           system = "aarch64-linux";
           pkgs = (import nixpkgs) { system = "aarch64-linux"; };
-          modules = server-modules ++ [ ./containers ]
-            ++ [ ./variants/jpi.nix ./hardware/rpi.nix ];
+          modules =
+            server-modules
+            ++ [ ./containers ]
+            ++ [
+              ./variants/jpi.nix
+              ./hardware/rpi.nix
+            ];
         };
 
         bpi = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           system = "aarch64-linux";
           pkgs = (import nixpkgs) { system = "aarch64-linux"; };
-          modules = server-modules ++ [ ./containers ]
-            ++ [ ./variants/bpi.nix ./hardware/rpi.nix ];
+          modules =
+            server-modules
+            ++ [ ./containers ]
+            ++ [
+              ./variants/bpi.nix
+              ./hardware/rpi.nix
+            ];
         };
 
         ext = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           system = "x86_64-linux";
           pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules = server-modules ++ [ ./containers ]
-            ++ [ ./variants/ext.nix ./hardware/vps.nix ];
+          modules =
+            server-modules
+            ++ [ ./containers ]
+            ++ [
+              ./variants/ext.nix
+              ./hardware/vps.nix
+            ];
         };
 
         run = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           system = "x86_64-linux";
           pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules = server-modules ++ [ ./containers ]
-            ++ [ ./variants/run.nix ./hardware/int-vps.nix ];
+          modules =
+            server-modules
+            ++ [ ./containers ]
+            ++ [
+              ./variants/run.nix
+              ./hardware/int-vps.nix
+            ];
         };
 
         log = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           system = "x86_64-linux";
           pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules = server-modules ++ [ ./containers ]
-            ++ [ ./variants/log.nix ./hardware/int-vps.nix ];
+          modules =
+            server-modules
+            ++ [ ./containers ]
+            ++ [
+              ./variants/log.nix
+              ./hardware/int-vps.nix
+            ];
         };
 
         cit = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           system = "x86_64-linux";
           pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules = server-modules ++ [ ./containers ]
-            ++ [ ./variants/cit.nix ./hardware/int-vps.nix ];
+          modules =
+            server-modules
+            ++ [ ./containers ]
+            ++ [
+              ./variants/cit.nix
+              ./hardware/int-vps.nix
+            ];
         };
 
         inf = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           system = "x86_64-linux";
           pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules = server-modules
-            ++ [ ./variants/inf.nix ./hardware/int-vps.nix ];
+          modules = server-modules ++ [
+            ./variants/inf.nix
+            ./hardware/int-vps.nix
+          ];
         };
 
         gra = nixpkgs.lib.nixosSystem {
@@ -104,28 +146,49 @@
             overlays = [ inputs.nvidia-patch.overlays.default ];
             config.allowUnfree = true;
           };
-          modules = server-modules ++ [ ./containers ]
-            ++ [ ./variants/gra.nix ./hardware/int-vps.nix ];
+          modules =
+            server-modules
+            ++ [ ./containers ]
+            ++ [
+              ./variants/gra.nix
+              ./hardware/int-vps.nix
+            ];
         };
 
         gam = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           system = "x86_64-linux";
           pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules = server-modules ++ [ ./containers ]
-            ++ [ ./variants/gam.nix ./hardware/int-vps.nix ];
+          modules =
+            server-modules
+            ++ [ ./containers ]
+            ++ [
+              ./variants/gam.nix
+              ./hardware/int-vps.nix
+            ];
         };
 
         arr = nixpkgs.lib.nixosSystem {
           inherit specialArgs;
           system = "x86_64-linux";
           pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules = server-modules ++ [ ./containers ]
-            ++ [ ./variants/arr.nix ./hardware/int-vps.nix ];
+          modules =
+            server-modules
+            ++ [ ./containers ]
+            ++ [
+              ./variants/arr.nix
+              ./hardware/int-vps.nix
+            ];
         };
 
         kronos = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
+          specialArgs = {
+            inherit inputs secrets;
+            pkgs-unstable = (import nixpkgs-unstable) {
+              system = "x86_64-linux";
+              config.allowUnfree = true;
+            };
+          };
           system = "x86_64-linux";
           pkgs = (import nixpkgs) {
             system = "x86_64-linux";
@@ -139,13 +202,21 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.kronos = import ./variants/homes/default.nix;
-              home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+              };
             }
           ];
         };
 
         dionysus = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
+          specialArgs = {
+            inherit inputs secrets;
+            pkgs-unstable = (import nixpkgs-unstable) {
+              system = "x86_64-linux";
+              config.allowUnfree = true;
+            };
+          };
           system = "x86_64-linux";
           pkgs = (import nixpkgs) {
             system = "x86_64-linux";
@@ -159,7 +230,9 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.dionysus = import ./variants/homes/default.nix;
-              home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+              };
             }
           ];
         };
@@ -171,8 +244,13 @@
             system = "x86_64-linux";
             config.allowUnfree = true;
           };
-          modules = server-modules ++ [ ./containers ]
-            ++ [ ./variants/jbx.nix ./hardware/thinkcentre-m715q.nix ];
+          modules =
+            server-modules
+            ++ [ ./containers ]
+            ++ [
+              ./variants/jbx.nix
+              ./hardware/thinkcentre-m715q.nix
+            ];
         };
       };
     };
