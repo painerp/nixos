@@ -22,7 +22,7 @@ in
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/C34B-E9C0";
+    device = "/dev/disk/by-uuid/5A27-5DD4";
     fsType = "vfat";
     options = [
       "fmask=0022"
@@ -31,15 +31,12 @@ in
   };
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/ce9ee924-0948-4ac1-83d4-8b10731b21ba";
+    device = "/dev/disk/by-uuid/b277bef3-cb17-4996-95ca-529208ad2738";
     fsType = "ext4";
   };
 
-  swapDevices = [ { device = "/dev/disk/by-uuid/040cc9dd-71cf-4c88-8cfa-cf52e21bc9e5"; } ];
-
   boot.initrd.luks.devices = {
-    "luks-1fea4deb-b91d-46cb-9fc2-abb4e15cb2c6".device = "/dev/disk/by-uuid/1fea4deb-b91d-46cb-9fc2-abb4e15cb2c6";
-    "luks-97fed62b-bdc0-43b3-b670-ed83775644aa".device = "/dev/disk/by-uuid/97fed62b-bdc0-43b3-b670-ed83775644aa";
+    "luks-c7261900-049b-433c-8c8b-d96d9a68a9d6".device = "/dev/disk/by-uuid/c7261900-049b-433c-8c8b-d96d9a68a9d6";
   };
 
   fileSystems."/mnt/backup-arch" = {
