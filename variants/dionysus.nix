@@ -35,6 +35,11 @@ in
     fsType = "ext4";
   };
 
+  fileSystems."/mount/10tb" = {
+    device = "/dev/disk/by-uuid/7812afa2-3544-4b10-9e54-c06999c8110a";
+    fsType = "btrfs";
+  };
+
   boot.initrd.luks.devices = {
     "luks-c7261900-049b-433c-8c8b-d96d9a68a9d6".device = "/dev/disk/by-uuid/c7261900-049b-433c-8c8b-d96d9a68a9d6";
     "luks-8089a368-5043-4915-a251-08688916a613".device = "/dev/disk/by-uuid/8089a368-5043-4915-a251-08688916a613";
