@@ -1,4 +1,5 @@
 {
+  inputs,
   lib,
   config,
   pkgs,
@@ -20,6 +21,10 @@ in
     full = lib.mkOption {
       type = lib.types.bool;
       default = false;
+    };
+    system = lib.mkOption {
+      type = lib.types.str;
+      default = "x86_64-linux";
     };
     video = makeOption false;
     image = makeOption false;
@@ -137,6 +142,7 @@ in
           [
             ungoogled-chromium
             nixfmt-rfc-style
+            inputs.agenix.packages.${cfg.system}.default
             lazygit
             nodePackages_latest.nodejs
             nodePackages_latest.pnpm
