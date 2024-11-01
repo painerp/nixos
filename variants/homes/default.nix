@@ -18,43 +18,30 @@ in
 {
   imports = [ inputs.ags.homeManagerModules.default ];
 
-  programs.ags = {
-    enable = true;
-    extraPackages = with pkgs; [
-      gtksourceview
-      webkitgtk
-    ];
-  };
-
-  programs.zoxide.enable = true;
-
-  programs.git = {
-    enable = true;
-    userName = "painerp";
-    userEmail = "8081128+painerp@users.noreply.github.com";
-  };
-
-  programs.vscode = {
-    enable = true;
-    package = pkgs.vscodium;
-    extensions = with pkgs.vscode-extensions; [ ms-python.python ];
+  programs = {
+    ags = {
+      enable = true;
+      extraPackages = with pkgs; [
+        gtksourceview
+        webkitgtk
+      ];
+    };
+    git = {
+      enable = true;
+      userName = "painerp";
+      userEmail = "8081128+painerp@users.noreply.github.com";
+    };
+    vscode = {
+      enable = true;
+      package = pkgs.vscodium;
+      extensions = with pkgs.vscode-extensions; [ ms-python.python ];
+    };
+    zoxide.enable = true;
   };
 
   services.kdeconnect = {
     enable = true;
     indicator = true;
-  };
-
-  home.packages = with pkgs; [
-    cantarell-fonts
-    font-awesome
-    theme.package
-    cursorTheme.package
-    iconTheme.package
-  ];
-
-  home.pointerCursor = cursorTheme // {
-    gtk.enable = true;
   };
 
   gtk = {
@@ -63,5 +50,17 @@ in
     enable = true;
   };
 
-  home.stateVersion = "24.05";
+  home = {
+    packages = with pkgs; [
+      cantarell-fonts
+      font-awesome
+      theme.package
+      cursorTheme.package
+      iconTheme.package
+    ];
+    pointerCursor = cursorTheme // {
+      gtk.enable = true;
+    };
+    stateVersion = "24.05";
+  };
 }
