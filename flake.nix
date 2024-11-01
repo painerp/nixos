@@ -221,6 +221,7 @@
           pkgs = (import nixpkgs) {
             system = "x86_64-linux";
             config.allowUnfree = true;
+            overlays = [ (import ./overlays/teamspeak_client.nix { }) ];
           };
           modules = server-modules ++ [
             ./variants/dionysus.nix
