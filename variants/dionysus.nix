@@ -15,6 +15,8 @@ in
 {
   imports = [ ./secrets ];
 
+  age.secrets.dionysus-pw.file = secrets.dionysus-dionysus-pw;
+
   networking = {
     hostName = "${flake}";
     useDHCP = lib.mkDefault true;
@@ -104,17 +106,20 @@ in
   };
 
   # users
-  users.mutableUsers = false;
-  users.users."${flake}" = {
-    isNormalUser = true;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "audio"
-      "video"
-      "input"
-      "docker"
-    ];
+  users = {
+    mutableUsers = false;
+    users."${flake}" = {
+      isNormalUser = true;
+      extraGroups = [
+        "wheel"
+        "networkmanager"
+        "audio"
+        "video"
+        "input"
+        "docker"
+      ];
+      hashedPasswordFile = age.secrets.dionysus-pw.path;
+    };
   };
 
   nix.settings.trusted-users = [ "@wheel" ];

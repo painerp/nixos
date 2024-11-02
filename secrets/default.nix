@@ -53,4 +53,6 @@
   log-authentik-proxy-env = ./log/authentik-proxy.env.age;
   log-grafana-env = ./log/grafana.env.age;
   log-pve-exporter-env = ./log/pve-exporter.env.age;
+
+  dionysus-dionysus-pw = ./dionysus/dionysus-pw.age;
 }
