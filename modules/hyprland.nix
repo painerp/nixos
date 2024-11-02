@@ -1,5 +1,6 @@
 {
   pkgs,
+  pkgs-unstable,
   lib,
   config,
   ...
@@ -76,7 +77,10 @@ in
     fonts.packages = with pkgs; [ nerdfonts ];
 
     programs = {
-      hyprland.enable = true;
+      hyprland = {
+        enable = true;
+        package = pkgs-unstable.hyprland;
+      };
       hyprlock.enable = true;
       ssh.startAgent = true;
     };
