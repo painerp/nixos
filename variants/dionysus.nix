@@ -118,7 +118,7 @@ in
         "input"
         "docker"
       ];
-      hashedPasswordFile = age.secrets.dionysus-pw.path;
+      hashedPasswordFile = config.age.secrets.dionysus-pw.path;
     };
   };
 
