@@ -35,7 +35,7 @@ in
     fsType = "ext4";
   };
 
-  fileSystems."/mount/10tb" = {
+  fileSystems."/media/10tb" = {
     device = "/dev/disk/by-uuid/7812afa2-3544-4b10-9e54-c06999c8110a";
     fsType = "btrfs";
   };
