@@ -98,7 +98,6 @@ in
     username = flake;
   };
   modules = {
-    ssh.enable = false;
     arion.enable = true;
     hyprland.enable = true;
     packages.full = true;
