@@ -24,6 +24,7 @@
     ./nvidia.nix
     ./optimize.nix
     ./packages.nix
+    ./pipewire.nix
     ./shell.nix
     ./ssh-server.nix
     ./system.nix
