@@ -1,4 +1,11 @@
-{ config, inputs, pkgs, lib, modulesPath, ... }:
+{
+  config,
+  inputs,
+  pkgs,
+  lib,
+  modulesPath,
+  ...
+}:
 
 {
   imports = [
@@ -7,8 +14,14 @@
   ];
 
   boot = {
-    initrd.availableKernelModules =
-      [ "xhci_pci" "nvme" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+    initrd.availableKernelModules = [
+      "xhci_pci"
+      "nvme"
+      "ahci"
+      "usbhid"
+      "usb_storage"
+      "sd_mod"
+    ];
     kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [ "kvm-amd" ];
     loader = {
@@ -18,14 +31,8 @@
   };
 
   security.rtkit.enable = true;
+  modules.pipewire.enable = true;
   services = {
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-      #jack.enable = true;
-    };
     tlp = {
       enable = true;
       settings = {
@@ -45,8 +52,7 @@
   };
 
   hardware = {
-    cpu.amd.updateMicrocode =
-      lib.mkDefault config.hardware.enableRedistributableFirmware;
+    cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
     bluetooth = {
       enable = true;
