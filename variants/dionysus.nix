@@ -102,6 +102,7 @@ in
     hyprland.enable = true;
     packages.full = true;
     amd.enable = true;
+    pipewire.audiosink = true;
   };
 
   # users
