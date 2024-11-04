@@ -102,7 +102,10 @@ in
     hyprland.enable = true;
     packages.full = true;
     amd.enable = true;
-    pipewire.audiosink = true;
+    pipewire.audiosink = {
+      enable = true;
+      output = "alsa_output.pci-0000_0f_00.4.iec958-stereo";
+    };
   };
 
   # users
