@@ -36,6 +36,7 @@ in
       package = pkgs.vscodium;
       extensions = with pkgs.vscode-extensions; [ ms-python.python ];
     };
+    fzf.enable = true;
     zoxide.enable = true;
   };
 
