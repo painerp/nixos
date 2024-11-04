@@ -14,10 +14,7 @@ in
         type = lib.types.bool;
         default = false;
       };
-      output = lib.mkOption {
-        type = lib.types.str;
-        required = cfg.audiosink.enable;
-      };
+      output = lib.mkOption { type = lib.types.str; };
     };
   };
 
@@ -30,7 +27,7 @@ in
         pulse.enable = true;
         #jack.enable = true;
       }
-      // lib.attrsets.optionalAttrs (cfg.audiosink.enable) {
+      // lib.attrsets.optionalAttrs (cfg.audiosink.enable && cfg.audiosink.output != null) {
         extraConfig.pipewire = {
           "10-null-sink"."context.objects" = [
             {
