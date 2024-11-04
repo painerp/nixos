@@ -60,7 +60,6 @@ in
           [
             btop
             brave
-            firefox
             librewolf
             nextcloud-client
             nomacs
