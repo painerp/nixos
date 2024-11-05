@@ -14,6 +14,10 @@ in
       type = lib.types.bool;
       default = false;
     };
+    monitor = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+    };
   };
 
   config = lib.mkIf cfg.enable {
