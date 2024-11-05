@@ -98,10 +98,18 @@ in
     username = flake;
   };
   modules = {
-    arion.enable = true;
-    hyprland.enable = true;
-    packages.full = true;
+    ssh.enable = false;
     amd.enable = true;
+    arion.enable = true;
+    packages.full = true;
+    hyprland = {
+      enable = true;
+      monitor = [
+        "HDMI-A-1,highrr,0x0,1"
+        "DP-2,highrr,1920x0,1"
+        ",preferred,auto,1,mirror,HDMI-A-1"
+      ];
+    };
     pipewire.audiosink = {
       enable = true;
       output = "alsa_output.pci-0000_0f_00.4.iec958-stereo";
