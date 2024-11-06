@@ -20,6 +20,7 @@
     ./firewall.nix
     ./hyprland.nix
     ./kodi.nix
+    ./logitech.nix
     ./micro.nix
     ./nvidia.nix
     ./optimize.nix
