@@ -54,7 +54,7 @@
       shadow_offset = "2 2";
       shadow_range = 4;
       shadow_render_power = 2;
-      col.shadow = "0 x66000000";
+      "col.shadow" = "0 x66000000";
 
       blur = {
         enabled = true;
