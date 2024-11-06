@@ -98,7 +98,6 @@ in
     username = flake;
   };
   modules = {
-    ssh.enable = false;
     amd.enable = true;
     arion.enable = true;
     packages.full = true;
