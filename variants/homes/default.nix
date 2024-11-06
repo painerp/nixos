@@ -55,7 +55,7 @@ in
   };
 
   gtk = {
-    cursorTheme = curstor-theme;
+    cursorTheme = cursor-theme;
     iconTheme = icon-theme;
     theme.name = theme.name;
     enable = true;
