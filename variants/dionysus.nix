@@ -101,6 +101,7 @@ in
     amd.enable = true;
     arion.enable = true;
     packages.full = true;
+    logitech.enable = true;
     hyprland = {
       enable = true;
       monitor = [
