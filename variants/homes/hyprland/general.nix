@@ -6,7 +6,7 @@
     input = {
       kb_layout = "de";
       follow_mouse = 1;
-      sensitivity = -0.4;
+      sensitivity = 0;
       accel_profile = "flat";
       touchpad = {
         natural_scroll = true;
