@@ -30,6 +30,7 @@ in
         [
           ./hyprland
           ./hypridle.nix
+          ./hyprlock.nix
         ]
       else
         [ ]
