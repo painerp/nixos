@@ -7,8 +7,8 @@
         "SUPER, X, exec, kitty"
         "SUPER, E, exec, thunar"
         # Rofi
-        "SUPER, R, exec, killall rofi || rofi -show drun -theme ~/.config/rofi/global/rofi.rasi"
-        "SUPER, V, exec, killall rofi || cliphist list | rofi -dmenu -display-columns 2 -theme .config/rofi/global/rofi-dmenu.rasi | cliphist decode | wl-copy"
+        "SUPER, R, exec, killall rofi || rofi -show drun -theme ~/.config/rofi/themes/rofi.rasi"
+        "SUPER, V, exec, killall rofi || cliphist list | rofi -dmenu -display-columns 2 -theme .config/rofi/themes/rofi-dmenu.rasi | cliphist decode | wl-copy"
         # Lock
         "SUPER, escape, exec, killall wlogout || wlogout --protocol layer-shell -b 5 -T 400 -B 400"
         # Screenshot

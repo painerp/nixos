@@ -1,0 +1,13 @@
+/** Basic config file **/
+
+configuration {
+  show-icons: true;
+  icon-theme: "Papirus-Dark";
+  display-drun: "drun";
+  display-window: "window";
+  display-combi: "mix";
+  kb-clear-line: "Control+a";
+  kb-move-front: "";
+  kb-move-end: "";
+}
+@theme "themes/sidetab-nord.rasi"
