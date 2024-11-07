@@ -23,9 +23,17 @@ let
   pkg-config = osConfig.modules.packages;
 in
 {
-  imports = [
-    inputs.ags.homeManagerModules.default
-  ] ++ (if (osConfig.modules.hyprland.enable) then [ ./hyprland ] else [ ]);
+  imports =
+    [ inputs.ags.homeManagerModules.default ]
+    ++ (
+      if (osConfig.modules.hyprland.enable) then
+        [
+          ./hyprland
+          ./hypridle.nix
+        ]
+      else
+        [ ]
+    );
 
   programs = {
     ags = lib.mkIf (osConfig.modules.hyprland.enable) {
