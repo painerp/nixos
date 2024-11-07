@@ -55,6 +55,15 @@ in
       package = pkgs.vscodium;
       extensions = with pkgs.vscode-extensions; [ ms-python.python ];
     };
+    mangohud = lib.mkIf (pkg-config.gaming) {
+      enable = true;
+      settings = {
+        cpu_temp = true;
+        gpu_temp = true;
+        vram = true;
+        frame_timing = false;
+      };
+    };
     fzf.enable = true;
     zoxide.enable = true;
   };
