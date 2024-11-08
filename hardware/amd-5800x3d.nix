@@ -29,6 +29,10 @@
   security.rtkit.enable = true;
   modules.pipewire.enable = true;
 
+  services.udev.extraRules = ''
+    ACTION=="add" SUBSYSTEM=="pci" ATTR{vendor}=="0x1022" ATTR{device}=="0x43d0" ATTR{power/wakeup}="disabled"
+  '';
+
   hardware = {
     cpu.amd.updateMicrocode = true;
 
