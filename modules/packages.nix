@@ -141,6 +141,7 @@ in
           [
             ungoogled-chromium
             nixfmt-rfc-style
+            nixd
             inputs.agenix.packages.${cfg.system}.default
             lazygit
             nodePackages_latest.nodejs
@@ -191,6 +192,8 @@ in
         package = pkgs.jdk;
       };
     };
+
+    nix.nixPath = lib.mkIf (cfg.dev) [ "nixpkgs=${inputs.nixpkgs}" ];
 
     virtualisation.virtualbox.host.enable = cfg.vm;
     users.extraGroups.vboxusers.members = [ "${config.system.username}" ];
