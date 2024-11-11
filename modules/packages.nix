@@ -146,7 +146,7 @@ in
             lazygit
             nodePackages_latest.nodejs
             nodePackages_latest.pnpm
-            python3
+            python3Full
             pylint
             jdk
             jetbrains.webstorm
