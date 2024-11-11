@@ -147,6 +147,7 @@ in
             nodePackages_latest.nodejs
             nodePackages_latest.pnpm
             python3
+            pylint
             jdk
             jetbrains.webstorm
             jetbrains.rust-rover
