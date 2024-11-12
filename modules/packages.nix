@@ -69,6 +69,12 @@ in
             vorta
             keepassxc
           ]
+          ++ (
+            if config.modules.amd.enable then
+              [ btop_amd ]
+            else
+              (if config.modules.nvidia.enable then [ btop_nvidia ] else [ btop ])
+          )
         else
           [ ]
       )
