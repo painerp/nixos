@@ -1,7 +1,15 @@
-{ lib, config, arion, agenix, ... }:
+{
+  lib,
+  config,
+  arion,
+  agenix,
+  ...
+}:
 
-let cfg = config.server;
-in {
+let
+  cfg = config.server;
+in
+{
   options.server = {
     base-domain = lib.mkOption {
       type = lib.types.str;
@@ -18,10 +26,7 @@ in {
     domain = lib.mkOption {
       type = lib.types.str;
       description = "The domain that all services will be deployed to";
-      default = if cfg.subdomain == "" then
-        cfg.base-domain
-      else
-        "${cfg.subdomain}.${cfg.base-domain}";
+      default = if cfg.subdomain == "" then cfg.base-domain else "${cfg.subdomain}.${cfg.base-domain}";
       readOnly = true;
     };
 
@@ -92,8 +97,7 @@ in {
   ];
 
   config = {
-    lib.server.mkServiceSubdomain = subdomain:
-      "${subdomain}.${config.server.domain}";
+    lib.server.mkServiceSubdomain = subdomain: "${subdomain}.${config.server.domain}";
     lib.server.mkConfigDir = name: "${config.server.config-dir}/${name}";
   };
 }
