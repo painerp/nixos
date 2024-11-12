@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   cfg = config.modules.nvidia;
@@ -34,11 +39,11 @@ in
         powerManagement.enable = false;
         open = false;
         nvidiaSettings = false;
-        package = if cfg.patch then
-          pkgs.nvidia-patch.patch-nvenc
-          (pkgs.nvidia-patch.patch-fbc cfg.package)
-        else
-          cfg.package;
+        package =
+          if cfg.patch then
+            pkgs.nvidia-patch.patch-nvenc (pkgs.nvidia-patch.patch-fbc cfg.package)
+          else
+            cfg.package;
       };
 
       nvidia-container-toolkit.enable = config.modules.arion.enable;
