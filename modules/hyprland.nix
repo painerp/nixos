@@ -74,6 +74,7 @@ in
       sessionVariables = {
         NIXOS_OZONE_WL = "1";
         GI_TYPELIB_PATH = "${pkgs.libgtop}/lib/girepository-1.0:${pkgs.glib}/lib/girepository-1.0";
+        LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
       };
     };
 
