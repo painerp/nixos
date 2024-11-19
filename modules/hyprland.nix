@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   lib,
   config,
@@ -28,6 +29,10 @@ in
     #      };
     #      xserver.enable = true;
     #    };
+    nix.settings = {
+      substituters = [ "https://hyprland.cachix.org" ];
+      trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
+    };
 
     services.greetd = {
       enable = true;
@@ -73,14 +78,19 @@ in
       ];
       sessionVariables = {
         NIXOS_OZONE_WL = "1";
-        GI_TYPELIB_PATH = "${pkgs.libgtop}/lib/girepository-1.0:${pkgs.glib}/lib/girepository-1.0";
+        GI_TYPELIB_PATH = "${libgtop}/lib/girepository-1.0:${glib}/lib/girepository-1.0";
       };
     };
 
     fonts.packages = with pkgs; [ nerdfonts ];
 
     programs = {
-      hyprland.enable = true;
+      hyprland = {
+        enable = true;
+        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+        portalPackage =
+          inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+      };
       hyprlock.enable = true;
       ssh.startAgent = true;
     };
