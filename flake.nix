@@ -204,6 +204,10 @@
               home-manager.users.kronos = import ./variants/homes/default.nix;
               home-manager.extraSpecialArgs = {
                 inherit inputs;
+                pkgs-unstable = (import nixpkgs-unstable) {
+                  system = "x86_64-linux";
+                  config.allowUnfree = true;
+                };
               };
             }
           ];
@@ -236,6 +240,10 @@
               home-manager.users.dionysus = import ./variants/homes/default.nix;
               home-manager.extraSpecialArgs = {
                 inherit inputs;
+                pkgs-unstable = (import nixpkgs-unstable) {
+                  system = "x86_64-linux";
+                  config.allowUnfree = true;
+                };
               };
             }
           ];
