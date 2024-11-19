@@ -155,6 +155,7 @@ in
             python3Full
             pylint
             jdk
+            pkgs-unstable.uv
             jetbrains.webstorm
             jetbrains.rust-rover
             jetbrains.pycharm-professional
