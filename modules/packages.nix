@@ -58,7 +58,7 @@ in
       ++ (
         if cfg.desktop then
           [
-            btop
+            inputs.apod-wallpaper.packages.${cfg.system}.default
             brave
             librewolf
             nextcloud-client
