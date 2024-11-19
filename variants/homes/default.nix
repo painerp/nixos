@@ -2,6 +2,7 @@
   inputs,
   lib,
   pkgs,
+  pkgs-unstable,
   osConfig,
   ...
 }:
@@ -53,8 +54,13 @@ in
     };
     vscode = lib.mkIf (pkg-config.dev) {
       enable = true;
-      package = pkgs.vscodium;
-      extensions = with pkgs.vscode-extensions; [ ms-python.python ];
+      package = pkgs-unstable.vscodium;
+      extensions = with pkgs-unstable.vscode-extensions; [
+        jnoortheen.nix-ide
+        ms-python.python
+        github.copilot
+        github.copilot-chat
+      ];
     };
     mangohud = lib.mkIf (pkg-config.gaming) {
       enable = true;
