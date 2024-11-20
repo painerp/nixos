@@ -3,6 +3,8 @@
   traefik-env = ./containers/traefik.env.age;
   watchtower-env = ./containers/watchtower.env.age;
 
+  pkgs-upload-file = ./pkgs/upload-file.age;
+
   # variants
   bpi-wifi = ./bpi/wifi.age;
 

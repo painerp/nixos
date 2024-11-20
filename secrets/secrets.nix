@@ -33,6 +33,8 @@ in
   "containers/traefik.env.age".publicKeys = users ++ systems;
   "containers/watchtower.env.age".publicKeys = users ++ systems;
 
+  "pkgs/upload-file.age".publicKeys = users ++ [ dionysus ];
+
   "jpi/wifi.age".publicKeys = users ++ [ jpi ];
 
   "jbx/wifi.age".publicKeys = users ++ [ jbx ];
