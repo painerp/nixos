@@ -18,7 +18,12 @@ in
   };
 
   config = lib.mkIf (cfg.enable) {
-    age.secrets.upload-file.file = cfg.key-file;
+    age.secrets.upload-file = {
+      file = cfg.key-file;
+      mode = "770";
+      owner = config.system.username;
+      group = "users";
+    };
     environment.systemPackages = [
       (pkgs.writeShellScriptBin "upload-file" ''
         set -euo pipefail
