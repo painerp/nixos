@@ -62,7 +62,7 @@ in
 
         echo "file uploaded to: $result"
 
-        echo -n "$result" | ${pkgs.xclip} -selection clipboard
+        echo -n "$result" | ${pkgs.xclip}/bin/xclip -selection clipboard
         _notify '${config.server.base-domain} uploader' 'Success! The link was sent to your clipboard'
         exit 0
       '')
