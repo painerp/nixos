@@ -198,7 +198,7 @@
           };
           modules =
             server-modules
-            ++ [ ./cpkgs ]
+            ++ [ ./pkgs ]
             ++ [
               ./variants/kronos.nix
               ./hardware/lenovo-15arh05h.nix
@@ -237,7 +237,7 @@
           };
           modules =
             server-modules
-            ++ [ ./cpkgs ]
+            ++ [ ./pkgs ]
             ++ [
               ./variants/dionysus.nix
               ./hardware/amd-5800x3d.nix
