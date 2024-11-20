@@ -196,23 +196,26 @@
             system = "x86_64-linux";
             config.allowUnfree = true;
           };
-          modules = server-modules ++ [
-            ./variants/kronos.nix
-            ./hardware/lenovo-15arh05h.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.kronos = import ./variants/homes/default.nix;
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                pkgs-unstable = (import nixpkgs-unstable) {
-                  system = "x86_64-linux";
-                  config.allowUnfree = true;
+          modules =
+            server-modules
+            ++ [ ./cpkgs ]
+            ++ [
+              ./variants/kronos.nix
+              ./hardware/lenovo-15arh05h.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.kronos = import ./variants/homes/default.nix;
+                home-manager.extraSpecialArgs = {
+                  inherit inputs;
+                  pkgs-unstable = (import nixpkgs-unstable) {
+                    system = "x86_64-linux";
+                    config.allowUnfree = true;
+                  };
                 };
-              };
-            }
-          ];
+              }
+            ];
         };
 
         dionysus = nixpkgs.lib.nixosSystem {
@@ -232,23 +235,26 @@
               (import ./overlays/btop.nix { })
             ];
           };
-          modules = server-modules ++ [
-            ./variants/dionysus.nix
-            ./hardware/amd-5800x3d.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.dionysus = import ./variants/homes/default.nix;
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                pkgs-unstable = (import nixpkgs-unstable) {
-                  system = "x86_64-linux";
-                  config.allowUnfree = true;
+          modules =
+            server-modules
+            ++ [ ./cpkgs ]
+            ++ [
+              ./variants/dionysus.nix
+              ./hardware/amd-5800x3d.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.dionysus = import ./variants/homes/default.nix;
+                home-manager.extraSpecialArgs = {
+                  inherit inputs;
+                  pkgs-unstable = (import nixpkgs-unstable) {
+                    system = "x86_64-linux";
+                    config.allowUnfree = true;
+                  };
                 };
-              };
-            }
-          ];
+              }
+            ];
         };
 
         jbx = nixpkgs.lib.nixosSystem {

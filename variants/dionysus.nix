@@ -116,6 +116,13 @@ in
       output = "alsa_output.pci-0000_0f_00.4.iec958-stereo";
     };
   };
+  cpkgs = {
+    screenshot-upload.enable = true;
+    upload-file = {
+      enable = true;
+      key-file = secrets.pkgs-upload-file;
+    };
+  };
 
   # users
   users = {
