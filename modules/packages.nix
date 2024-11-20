@@ -53,7 +53,7 @@ in
         jq
         ffmpeg
         zoxide
-        tldr
+        tealdeer
       ]
       ++ (
         if cfg.desktop then
