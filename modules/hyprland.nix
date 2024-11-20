@@ -7,6 +7,7 @@
 
 let
   cfg = config.modules.hyprland;
+  hm = config.system.home-manager;
 in
 {
   options.modules.hyprland = {
@@ -73,15 +74,15 @@ in
       ];
       sessionVariables = {
         NIXOS_OZONE_WL = "1";
-        GI_TYPELIB_PATH = "${pkgs.libgtop}/lib/girepository-1.0:${pkgs.glib}/lib/girepository-1.0";
+        GI_TYPELIB_PATH = "${libgtop}/lib/girepository-1.0:${glib}/lib/girepository-1.0";
       };
     };
 
     fonts.packages = with pkgs; [ nerdfonts ];
 
     programs = {
-      hyprland.enable = true;
-      hyprlock.enable = true;
+      hyprland.enable = if hm then false else true;
+      hyprlock.enable = if hm then false else true;
       ssh.startAgent = true;
     };
 
@@ -90,12 +91,8 @@ in
       blueman.enable = true;
       udisks2.enable = true;
       upower.enable = true;
-      hypridle.enable = true;
+      hypridle.enable = if hm then false else true;
       printing.enable = true;
-      #      kdeconnect = {
-      #        enable = true;
-      #        indicator = true;
-      #      };
       gnome.gnome-keyring.enable = true;
     };
 
