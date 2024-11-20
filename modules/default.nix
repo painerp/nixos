@@ -11,6 +11,11 @@
       type = lib.types.str;
       default = "root";
     };
+    home-manager = lib.mkOption {
+      description = "Whether home-manager is enabled";
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   imports = [

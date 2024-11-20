@@ -96,6 +96,7 @@ in
   system = {
     inherit flake;
     username = flake;
+    home-manager = true;
   };
   modules = {
     amd.enable = true;
