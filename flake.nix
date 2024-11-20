@@ -15,7 +15,7 @@
       inputs.darwin.follows = "";
     };
 
-    ags.url = "github:Aylur/ags";
+    ags.url = "github:Aylur/ags/v1";
 
     apod-wallpaper.url = "github:painerp/apod-wallpaper";
 
