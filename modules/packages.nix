@@ -53,6 +53,7 @@ in
         jq
         ffmpeg
         zoxide
+        zip
         tealdeer
       ]
       ++ (
