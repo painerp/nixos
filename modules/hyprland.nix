@@ -81,7 +81,7 @@ in
     fonts.packages = with pkgs; [ nerdfonts ];
 
     programs = {
-      hyprland.enable = if hm then false else true;
+      hyprland.enable = true;
       hyprlock.enable = if hm then false else true;
       ssh.startAgent = true;
     };
