@@ -1,9 +1,10 @@
-{ config, modulesPath, secrets, lib, ... }:
+{ config, secrets, ... }:
 
 let
   flake = "cit";
   tailscale-ip = "100.77.215.64";
-in {
+in
+{
   imports = [ ./secrets ];
 
   # secrets
@@ -11,10 +12,12 @@ in {
 
   networking = {
     hostName = "nix${flake}";
-    interfaces.ens19.ipv4.addresses = [{
-      address = "10.0.10.10";
-      prefixLength = 24;
-    }];
+    interfaces.ens19.ipv4.addresses = [
+      {
+        address = "10.0.10.10";
+        prefixLength = 24;
+      }
+    ];
   };
 
   fileSystems."/" = {
@@ -28,18 +31,28 @@ in {
   fileSystems."/mnt/backup" = {
     device = "10.0.10.1:/mnt/hdd/backup/pve";
     fsType = "nfs";
-    options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
+    options = [
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
+    ];
   };
 
   fileSystems."/mnt/syncthing" = {
     device = "10.0.10.1:/mnt/hdd/syncthing";
     fsType = "nfs";
-    options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
+    options = [
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
+    ];
   };
 
   # system
-  system = { inherit flake; };
-  modules = { arion.enable = true; };
+  system = {
+    inherit flake;
+  };
+  modules = {
+    arion.enable = true;
+  };
 
   # services
   server = {
