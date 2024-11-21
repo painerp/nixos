@@ -25,8 +25,7 @@ in
     fsType = "ext4";
   };
 
-  swapDevices =
-    [{ device = "/dev/disk/by-uuid/b59d42ce-4fc3-42e6-8bfb-bf8bf789ab85"; }];
+  swapDevices = [ { device = "/dev/disk/by-uuid/ab983818-1f80-49a0-9beb-0e5329843b83"; } ];
 
   fileSystems."/mnt/backup" = {
     device = "10.0.10.1:/mnt/hdd/backup/pve";
