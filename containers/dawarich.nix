@@ -13,7 +13,8 @@ let
     APPLICATION_HOSTS = "localhost,${cfg.subdomain}.${config.server.domain}";
     TIME_ZONE = config.time.timeZone;
   };
-in {
+in
+{
   options.server.dawarich = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -58,8 +59,7 @@ in {
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.dawarich.settings = {
       project.name = "dawarich";
@@ -71,25 +71,33 @@ in {
           image = "freikin/dawarich:${cfg.version}";
           container_name = "dawarich_app";
           hostname = config.networking.hostName;
-          networks = [ "proxy" "backend" ];
+          networks = [
+            "proxy"
+            "backend"
+          ];
           entrypoint = "dev-entrypoint.sh";
           command = [ "bin/dev" ];
           tty = true;
           environment = default-env;
           env_file = [ config.age.secrets.dawarich-env.path ];
           volumes = [
-            "${config-dir}/gem-cache:/usr/local/bundle/gems"
+            "${config-dir}/gem-cache:/usr/local/bundle/gems_app"
             "${config-dir}/public:/var/app/public"
           ];
-          depends_on = [ "database" "redis" ];
-          labels = config.lib.server.mkTraefikLabels {
-            name = "dawarich";
-            port = "3000";
-            subdomain = "${cfg.subdomain}";
-            forwardAuth = cfg.auth;
-          } // {
-            "com.centurylinklabs.watchtower.enable" = "false";
-          };
+          depends_on = [
+            "database"
+            "redis"
+          ];
+          labels =
+            config.lib.server.mkTraefikLabels {
+              name = "dawarich";
+              port = "3000";
+              subdomain = "${cfg.subdomain}";
+              forwardAuth = cfg.auth;
+            }
+            // {
+              "com.centurylinklabs.watchtower.enable" = "false";
+            };
           restart = "unless-stopped";
         };
       };
@@ -99,7 +107,10 @@ in {
           image = "freikin/dawarich:${cfg.version}";
           container_name = "dawarich_sidekiq";
           hostname = config.networking.hostName;
-          networks = [ "proxy" "backend" ];
+          networks = [
+            "proxy"
+            "backend"
+          ];
           entrypoint = "dev-entrypoint.sh";
           command = [ "sidekiq" ];
           tty = true;
@@ -108,11 +119,17 @@ in {
           };
           env_file = [ config.age.secrets.dawarich-env.path ];
           volumes = [
-            "${config-dir}/gem-cache:/usr/local/bundle/gems"
+            "${config-dir}/gem-cache:/usr/local/bundle/gems_sidekiq"
             "${config-dir}/public:/var/app/public"
           ];
-          depends_on = [ "database" "redis" "dawarich-server" ];
-          labels = { "com.centurylinklabs.watchtower.enable" = "false"; };
+          depends_on = [
+            "database"
+            "redis"
+            "dawarich-server"
+          ];
+          labels = {
+            "com.centurylinklabs.watchtower.enable" = "false";
+          };
           restart = "unless-stopped";
         };
       };
@@ -122,7 +139,9 @@ in {
         container_name = "dawarich_redis";
         hostname = config.networking.hostName;
         networks = [ "backend" ];
-        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
+        labels = {
+          "com.centurylinklabs.watchtower.enable" = "true";
+        };
         restart = "unless-stopped";
       };
 
@@ -137,7 +156,9 @@ in {
         };
         env_file = [ config.age.secrets.dawarich-pg-env.path ];
         volumes = [ "${config-dir}/postgres:/var/lib/postgresql/data" ];
-        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
+        labels = {
+          "com.centurylinklabs.watchtower.enable" = "true";
+        };
         restart = "unless-stopped";
       };
     };
