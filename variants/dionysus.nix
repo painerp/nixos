@@ -117,6 +117,7 @@ in
     };
   };
   cpkgs = {
+    brightness.enable = true;
     screenshot-upload.enable = true;
     upload-file = {
       enable = true;
