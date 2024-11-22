@@ -25,7 +25,10 @@
     kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [ "kvm-amd" ];
     loader = {
-      systemd-boot.enable = true;
+      systemd-boot = {
+        enable = true;
+        configurationLimit = 30;
+      };
       efi.canTouchEfiVariables = true;
     };
   };
