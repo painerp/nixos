@@ -3,7 +3,6 @@
     "ags"
     "wl-paste --watch cliphist store"
     "udiskie &"
-    "nextcloud --background"
     "keepassxc"
     "vorta -d"
   ];

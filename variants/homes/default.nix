@@ -75,9 +75,15 @@ in
     zoxide.enable = true;
   };
 
-  services.kdeconnect = lib.mkIf (pkg-config.desktop) {
-    enable = true;
-    indicator = true;
+  services = {
+    kdeconnect = lib.mkIf (pkg-config.desktop) {
+      enable = true;
+      indicator = true;
+    };
+    nextcloud-client = lib.mkIf (pkg-config.desktop) {
+      enable = true;
+      startInBackground = true;
+    };
   };
 
   gtk = {
