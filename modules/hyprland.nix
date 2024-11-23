@@ -22,14 +22,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    #    services = {
-    #      displayManager.sddm = {
-    #        enable = true;
-    #        wayland.enable = true;
-    #      };
-    #      xserver.enable = true;
-    #    };
-
     services.greetd = {
       enable = true;
       settings.default_session = {
