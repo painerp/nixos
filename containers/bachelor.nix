@@ -1,9 +1,15 @@
-{ lib, config, secrets, ... }:
+{
+  lib,
+  config,
+  secrets,
+  ...
+}:
 
 let
   cfg = config.server.bachelor;
   config-dir = config.lib.server.mkConfigDir "bachelor";
-in {
+in
+{
   options.server.bachelor = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -77,7 +83,10 @@ in {
       services.inventurpro.service = {
         image = "${cfg.image}";
         container_name = "bachelor-ip";
-        networks = [ "backend" "proxy" ];
+        networks = [
+          "backend"
+          "proxy"
+        ];
         env_file = [ config.age.secrets.bachelor-env.path ];
         volumes = [ "${config-dir}/logs:/var/log/apache2" ];
         labels = config.lib.server.mkTraefikLabels {

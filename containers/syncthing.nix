@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.server.syncthing;
-in {
+let
+  cfg = config.server.syncthing;
+in
+{
   options.server.syncthing = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -36,8 +38,7 @@ in {
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.syncthing.settings = {
       project.name = "syncthing";
@@ -53,25 +54,37 @@ in {
           PGID = 1000;
         };
         volumes = [ "${cfg.path}:/var/syncthing" ];
-        ports = (if (cfg.expose) then [
-          "22000:22000/tcp" # TCP file transfers
-          "22000:22000/udp" # QUIC file transfers
-          "21027:21027/udp" # Receive local discovery broadcasts
-        ] else
-          [ ]) ++ (if (cfg.internal) then [
-            "${config.server.tailscale-ip}:22000:22000/tcp"
-            "${config.server.tailscale-ip}:22000:22000/udp"
-            "${config.server.tailscale-ip}:21027:21027/udp"
-          ] else
-            [ ]);
-        labels = config.lib.server.mkTraefikLabels {
-          name = "syncthing";
-          port = "8384";
-          subdomain = "${cfg.subdomain}";
-          forwardAuth = cfg.auth;
-        } // {
-          "com.centurylinklabs.watchtower.enable" = "true";
-        };
+        ports =
+          (
+            if (cfg.expose) then
+              [
+                "22000:22000/tcp" # TCP file transfers
+                "22000:22000/udp" # QUIC file transfers
+                "21027:21027/udp" # Receive local discovery broadcasts
+              ]
+            else
+              [ ]
+          )
+          ++ (
+            if (cfg.internal) then
+              [
+                "${config.server.tailscale-ip}:22000:22000/tcp"
+                "${config.server.tailscale-ip}:22000:22000/udp"
+                "${config.server.tailscale-ip}:21027:21027/udp"
+              ]
+            else
+              [ ]
+          );
+        labels =
+          config.lib.server.mkTraefikLabels {
+            name = "syncthing";
+            port = "8384";
+            subdomain = "${cfg.subdomain}";
+            forwardAuth = cfg.auth;
+          }
+          // {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
         restart = "unless-stopped";
       };
     };

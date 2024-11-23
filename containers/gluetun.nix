@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.server.gluetun;
-in {
+let
+  cfg = config.server.gluetun;
+in
+{
   options.server.gluetun = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -38,8 +40,7 @@ in {
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.gluetun.settings = {
       project.name = "gluetun";
@@ -58,14 +59,16 @@ in {
         };
         env_file = [ config.age.secrets.gluetun-env.path ];
         volumes = [ "${config.lib.server.mkConfigDir "gluetun"}:/gluetun" ];
-        labels = config.lib.server.mkTraefikLabels {
-          name = "gluetun";
-          port = "8000";
-          subdomain = "${cfg.subdomain}";
-          forwardAuth = cfg.auth;
-        } // {
-          "com.centurylinklabs.watchtower.enable" = "true";
-        };
+        labels =
+          config.lib.server.mkTraefikLabels {
+            name = "gluetun";
+            port = "8000";
+            subdomain = "${cfg.subdomain}";
+            forwardAuth = cfg.auth;
+          }
+          // {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
         restart = "unless-stopped";
       };
     };

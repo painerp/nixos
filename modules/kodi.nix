@@ -1,7 +1,14 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
-let cfg = config.modules.kodi;
-in {
+let
+  cfg = config.modules.kodi;
+in
+{
   options.modules.kodi = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -12,15 +19,17 @@ in {
   config = lib.mkIf (cfg.enable) {
     users.extraUsers.kodi = {
       isNormalUser = true;
-      extraGroups = [ "video" "audio" ];
+      extraGroups = [
+        "video"
+        "audio"
+      ];
     };
 
     services.xserver = {
       enable = true;
       desktopManager.kodi = {
         enable = true;
-        package = (pkgs.kodi.passthru.withPackages
-          (kodiPackages: with kodiPackages; [ jellyfin ]));
+        package = (pkgs.kodi.passthru.withPackages (kodiPackages: with kodiPackages; [ jellyfin ]));
       };
       displayManager = {
         autoLogin = {
@@ -37,14 +46,22 @@ in {
         User = "kodi";
         PassEnvironment = "DISPLAY";
       };
-      environment = { DISPLAY = ":0"; };
+      environment = {
+        DISPLAY = ":0";
+      };
       script = "sleep 30; ${pkgs.xorg.xset}/bin/xset s off -dpms";
       wantedBy = [ "multi-user.target" ];
     };
 
     networking.firewall = {
-      allowedTCPPorts = [ 8080 9090 ];
-      allowedUDPPorts = [ 8080 9090 ];
+      allowedTCPPorts = [
+        8080
+        9090
+      ];
+      allowedUDPPorts = [
+        8080
+        9090
+      ];
     };
   };
 }

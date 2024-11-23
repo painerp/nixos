@@ -1,10 +1,21 @@
-{ pkgs, config, modulesPath, secrets, lib, ... }:
+{
+  pkgs,
+  config,
+  modulesPath,
+  secrets,
+  lib,
+  ...
+}:
 
 let
   flake = "ext";
   tailscale-ip = "100.86.37.30";
-in {
-  imports = [ ./secrets ./secrets/ext.nix ];
+in
+{
+  imports = [
+    ./secrets
+    ./secrets/ext.nix
+  ];
 
   networking.hostName = "nix${flake}";
 
@@ -18,12 +29,15 @@ in {
     fsType = "vfat";
   };
 
-  swapDevices =
-    [{ device = "/dev/disk/by-uuid/55f7d97a-a438-4ac9-8909-2e08a78e3ef5"; }];
+  swapDevices = [ { device = "/dev/disk/by-uuid/55f7d97a-a438-4ac9-8909-2e08a78e3ef5"; } ];
 
   # system
-  system = { inherit flake; };
-  modules = { arion.enable = true; };
+  system = {
+    inherit flake;
+  };
+  modules = {
+    arion.enable = true;
+  };
 
   # services
   server = {

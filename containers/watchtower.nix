@@ -1,7 +1,14 @@
-{ lib, config, secrets, ... }:
+{
+  lib,
+  config,
+  secrets,
+  ...
+}:
 
-let cfg = config.server.watchtower;
-in {
+let
+  cfg = config.server.watchtower;
+in
+{
   options.server.watchtower = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -40,23 +47,21 @@ in {
         image = "containrrr/watchtower:latest";
         container_name = "watchtower";
         hostname = config.networking.hostName;
-        environment = {
-          WATCHTOWER_CLEANUP = "true";
-          WATCHTOWER_SCHEDULE = cfg.schedule;
-        } // lib.attrsets.optionalAttrs (cfg.rolling-restart) {
-          WATCHTOWER_ROLLING_RESTART = "true";
-        } // lib.attrsets.optionalAttrs (cfg.only-label) {
-          WATCHTOWER_LABEL_ENABLE = "true";
-        };
+        environment =
+          {
+            WATCHTOWER_CLEANUP = "true";
+            WATCHTOWER_SCHEDULE = cfg.schedule;
+          }
+          // lib.attrsets.optionalAttrs (cfg.rolling-restart) { WATCHTOWER_ROLLING_RESTART = "true"; }
+          // lib.attrsets.optionalAttrs (cfg.only-label) { WATCHTOWER_LABEL_ENABLE = "true"; };
         env_file = [ config.age.secrets.watchtower-env.path ];
         volumes = [
           "/var/run/docker.sock:/var/run/docker.sock"
           "/etc/localtime:/etc/localtime:ro"
-        ] ++ (if (cfg.internal-services) then
-          [ "/root/.docker/config.json:/config.json" ]
-        else
-          [ ]);
-        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
+        ] ++ (if (cfg.internal-services) then [ "/root/.docker/config.json:/config.json" ] else [ ]);
+        labels = {
+          "com.centurylinklabs.watchtower.enable" = "true";
+        };
         restart = "unless-stopped";
       };
     };
