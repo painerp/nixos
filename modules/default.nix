@@ -28,7 +28,6 @@
     ./logitech.nix
     ./micro.nix
     ./nvidia.nix
-    ./optimize.nix
     ./packages.nix
     ./pipewire.nix
     ./shell.nix
