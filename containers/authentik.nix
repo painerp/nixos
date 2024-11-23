@@ -1,9 +1,4 @@
-{
-  lib,
-  config,
-  secrets,
-  ...
-}:
+{ lib, config, ... }:
 
 let
   cfg = config.server.authentik;
