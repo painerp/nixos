@@ -12,7 +12,10 @@ in
   };
 
   config = lib.mkIf (cfg.enable) {
-    boot.initrd.kernelModules = [ "amdgpu" ];
+    hardware.amdgpu = {
+      amdvlk.enable = true;
+      initrd.enable = true;
+    };
     services.xserver.videoDrivers = [ "amdgpu" ];
   };
 }
