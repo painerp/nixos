@@ -98,7 +98,10 @@ in
 
     security = {
       polkit.enable = true;
-      pam.services.greetd.enableGnomeKeyring = true;
+      pam.services.greetd = {
+        enableGnomeKeyring = true;
+        kwallet.enable = true;
+      };
     };
   };
 }
