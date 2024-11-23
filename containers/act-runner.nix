@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.server.act-runner;
-in {
+let
+  cfg = config.server.act-runner;
+in
+{
   options.server.act-runner = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -30,7 +32,9 @@ in {
           "${config.lib.server.mkConfigDir "act-runner"}:/data"
           "/var/run/docker.sock:/var/run/docker.sock"
         ];
-        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
+        labels = {
+          "com.centurylinklabs.watchtower.enable" = "true";
+        };
         restart = "unless-stopped";
       };
     };

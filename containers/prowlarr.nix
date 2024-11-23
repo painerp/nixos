@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.server.prowlarr;
-in {
+let
+  cfg = config.server.prowlarr;
+in
+{
   options.server.prowlarr = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -18,8 +20,7 @@ in {
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.gluetun.settings = {
       services.gluetun.service.labels = config.lib.server.mkTraefikLabels {
@@ -40,7 +41,9 @@ in {
           TZ = config.time.timeZone;
         };
         volumes = [ "${config.lib.server.mkConfigDir "prowlarr"}:/config" ];
-        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
+        labels = {
+          "com.centurylinklabs.watchtower.enable" = "true";
+        };
         restart = "unless-stopped";
       };
     };

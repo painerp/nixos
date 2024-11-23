@@ -1,10 +1,19 @@
-{ lib, config, secrets, ... }:
+{
+  lib,
+  config,
+  secrets,
+  ...
+}:
 
 let
   flake = "bpi";
   tailscale-ip = "100.116.126.150";
-in {
-  imports = [ ./secrets ./secrets/bpi.nix ];
+in
+{
+  imports = [
+    ./secrets
+    ./secrets/bpi.nix
+  ];
   # secrets
   age.secrets.wifi.file = secrets.bpi-wifi;
 
@@ -15,8 +24,12 @@ in {
   };
 
   # system
-  system = { inherit flake; };
-  modules = { arion.enable = true; };
+  system = {
+    inherit flake;
+  };
+  modules = {
+    arion.enable = true;
+  };
 
   server = {
     base-domain = "redacted";
@@ -44,7 +57,6 @@ in {
 
   # docker
   virtualisation.arion.projects = {
-    watchtower.settings.services.watchtower.service.environment.WATCHTOWER_SCHEDULE =
-      lib.mkForce "0 0 3 * * *";
+    watchtower.settings.services.watchtower.service.environment.WATCHTOWER_SCHEDULE = lib.mkForce "0 0 3 * * *";
   };
 }

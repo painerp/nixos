@@ -1,9 +1,16 @@
-{ config, modulesPath, secrets, lib, ... }:
+{
+  config,
+  modulesPath,
+  secrets,
+  lib,
+  ...
+}:
 
 let
   flake = "log";
   tailscale-ip = "100.73.203.96";
-in {
+in
+{
   imports = [ ./secrets ];
 
   networking.hostName = "nix${flake}";
@@ -13,12 +20,15 @@ in {
     fsType = "ext4";
   };
 
-  swapDevices =
-    [{ device = "/dev/disk/by-uuid/ebf55e6d-85b4-4076-94ae-1d84feddf17d"; }];
+  swapDevices = [ { device = "/dev/disk/by-uuid/ebf55e6d-85b4-4076-94ae-1d84feddf17d"; } ];
 
   # system
-  system = { inherit flake; };
-  modules = { arion.enable = true; };
+  system = {
+    inherit flake;
+  };
+  modules = {
+    arion.enable = true;
+  };
 
   # services
   server = {

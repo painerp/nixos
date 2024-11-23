@@ -1,10 +1,19 @@
-{ lib, config, secrets, ... }:
+{
+  lib,
+  config,
+  secrets,
+  ...
+}:
 
 let
   flake = "jpi";
   tailscale-ip = "100.81.246.82";
-in {
-  imports = [ ./secrets ./secrets/jpi.nix ];
+in
+{
+  imports = [
+    ./secrets
+    ./secrets/jpi.nix
+  ];
   # secrets
   age.secrets.wifi.file = secrets.jpi-wifi;
 
@@ -15,7 +24,9 @@ in {
   };
 
   # system
-  system = { inherit flake; };
+  system = {
+    inherit flake;
+  };
   modules = {
     arion.enable = true;
     kodi.enable = true;
@@ -44,7 +55,6 @@ in {
 
   # docker
   virtualisation.arion.projects = {
-    watchtower.settings.services.watchtower.service.environment.WATCHTOWER_SCHEDULE =
-      lib.mkForce "0 0 3 * * *";
+    watchtower.settings.services.watchtower.service.environment.WATCHTOWER_SCHEDULE = lib.mkForce "0 0 3 * * *";
   };
 }

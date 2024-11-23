@@ -3,7 +3,8 @@
 let
   cfg = config.server.minecraft-bluemap;
   config-dir = config.lib.server.mkConfigDir "minecraft-bluemap";
-in {
+in
+{
   options.server.minecraft-bluemap = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -37,17 +38,17 @@ in {
         container_name = "minecraft-bluemap";
         hostname = config.networking.hostName;
         command = "-r -u -w";
-        ports = (if (cfg.expose) then [ "25569:8100/tcp" ] else [ ])
-          ++ (if (cfg.internal) then
-            [ "${config.server.tailscale-ip}:25569:8100/tcp" ]
-          else
-            [ ]);
+        ports =
+          (if (cfg.expose) then [ "25569:8100/tcp" ] else [ ])
+          ++ (if (cfg.internal) then [ "${config.server.tailscale-ip}:25569:8100/tcp" ] else [ ]);
         volumes = [
           "${config-dir}/config:/app/config"
           "${config-dir}/data:/app/data"
           "${config-dir}/web:/app/web"
         ] ++ cfg.volumes;
-        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
+        labels = {
+          "com.centurylinklabs.watchtower.enable" = "true";
+        };
         restart = "unless-stopped";
       };
     };

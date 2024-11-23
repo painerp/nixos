@@ -1,10 +1,19 @@
-{ lib, config, secrets, ... }:
+{
+  lib,
+  config,
+  secrets,
+  ...
+}:
 
 let
   flake = "jbx";
   tailscale-ip = "100.103.104.35";
-in {
-  imports = [ ./secrets ./secrets/jbx.nix ];
+in
+{
+  imports = [
+    ./secrets
+    ./secrets/jbx.nix
+  ];
   # secrets
   age.secrets.wifi.file = secrets.jbx-wifi;
 
@@ -22,11 +31,16 @@ in {
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/8530-EC8C";
     fsType = "vfat";
-    options = [ "fmask=0022" "dmask=0022" ];
+    options = [
+      "fmask=0022"
+      "dmask=0022"
+    ];
   };
 
   # system
-  system = { inherit flake; };
+  system = {
+    inherit flake;
+  };
   modules = {
     arion.enable = true;
     kodi.enable = true;

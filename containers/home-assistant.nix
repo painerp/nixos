@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.server.home-assistant;
-in {
+let
+  cfg = config.server.home-assistant;
+in
+{
   options.server.home-assistant = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -9,8 +11,7 @@ in {
     };
     subdomain = lib.mkOption {
       type = lib.types.str;
-      default =
-        if config.server.short-subdomain then "ha" else "home-assistant";
+      default = if config.server.short-subdomain then "ha" else "home-assistant";
     };
     auth = lib.mkOption {
       type = lib.types.bool;
@@ -24,8 +25,7 @@ in {
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.home-assistant.settings = {
       project.name = "home-assistant";
@@ -41,14 +41,16 @@ in {
           "/run/dbus:/run/dbus:ro"
           "${config.lib.server.mkConfigDir "home-assistant/config"}:/config"
         ];
-        labels = config.lib.server.mkTraefikLabels {
-          name = "home-assistant";
-          port = "8123";
-          subdomain = "${cfg.subdomain}";
-          forwardAuth = cfg.auth;
-        } // {
-          "com.centurylinklabs.watchtower.enable" = "true";
-        };
+        labels =
+          config.lib.server.mkTraefikLabels {
+            name = "home-assistant";
+            port = "8123";
+            subdomain = "${cfg.subdomain}";
+            forwardAuth = cfg.auth;
+          }
+          // {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
         restart = "unless-stopped";
       };
     };

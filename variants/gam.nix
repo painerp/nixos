@@ -1,10 +1,17 @@
-{ config, modulesPath, secrets, lib, ... }:
+{
+  config,
+  modulesPath,
+  secrets,
+  lib,
+  ...
+}:
 
 let
   flake = "gam";
   tailscale-ip = "100.114.234.126";
   minecraft-path = "/root/config/minecraft";
-in {
+in
+{
   imports = [ ./secrets ];
 
   networking.hostName = "nix${flake}";
@@ -14,12 +21,15 @@ in {
     fsType = "ext4";
   };
 
-  swapDevices =
-    [{ device = "/dev/disk/by-uuid/c0811b51-5a31-42cd-a982-c7bc5fbb2b7e"; }];
+  swapDevices = [ { device = "/dev/disk/by-uuid/c0811b51-5a31-42cd-a982-c7bc5fbb2b7e"; } ];
 
   # system
-  system = { inherit flake; };
-  modules = { arion.enable = true; };
+  system = {
+    inherit flake;
+  };
+  modules = {
+    arion.enable = true;
+  };
 
   # services
   server = {

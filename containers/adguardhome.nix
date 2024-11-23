@@ -3,7 +3,8 @@
 let
   cfg = config.server.adguardhome;
   config-dir = config.lib.server.mkConfigDir "adguardhome";
-in {
+in
+{
   options.server.adguardhome = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -37,8 +38,7 @@ in {
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.adguardhome.settings = {
       project.name = "adguardhome";
@@ -50,30 +50,48 @@ in {
         image = "adguard/adguardhome:latest";
         container_name = "adguardhome";
         hostname = config.networking.hostName;
-        networks = [ "proxy" "adguardhome" ];
+        networks = [
+          "proxy"
+          "adguardhome"
+        ];
         volumes = [
           "${config-dir}/work:/opt/adguardhome/work"
           "${config-dir}/conf:/opt/adguardhome/conf"
         ];
-        environment = { TZ = config.time.timeZone; };
-        ports = (if (cfg.expose) then [ "53:53/tcp" "53:53/udp" ] else [ ])
-          ++ (if (cfg.dot && cfg.expose) then [ "853:853/tcp" ] else [ ])
-          ++ (if (cfg.internal) then [
-            "${config.server.tailscale-ip}:53:53/tcp"
-            "${config.server.tailscale-ip}:53:53/udp"
-          ] else
-            [ ]) ++ (if (cfg.dot && cfg.internal) then
-              [ "${config.server.tailscale-ip}:853:853/tcp" ]
-            else
-              [ ]);
-        labels = config.lib.server.mkTraefikLabels {
-          name = "adguardhome";
-          port = "3000";
-          subdomain = "${cfg.subdomain}";
-          forwardAuth = cfg.auth;
-        } // {
-          "com.centurylinklabs.watchtower.enable" = "true";
+        environment = {
+          TZ = config.time.timeZone;
         };
+        ports =
+          (
+            if (cfg.expose) then
+              [
+                "53:53/tcp"
+                "53:53/udp"
+              ]
+            else
+              [ ]
+          )
+          ++ (if (cfg.dot && cfg.expose) then [ "853:853/tcp" ] else [ ])
+          ++ (
+            if (cfg.internal) then
+              [
+                "${config.server.tailscale-ip}:53:53/tcp"
+                "${config.server.tailscale-ip}:53:53/udp"
+              ]
+            else
+              [ ]
+          )
+          ++ (if (cfg.dot && cfg.internal) then [ "${config.server.tailscale-ip}:853:853/tcp" ] else [ ]);
+        labels =
+          config.lib.server.mkTraefikLabels {
+            name = "adguardhome";
+            port = "3000";
+            subdomain = "${cfg.subdomain}";
+            forwardAuth = cfg.auth;
+          }
+          // {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
         restart = "unless-stopped";
       };
     };
