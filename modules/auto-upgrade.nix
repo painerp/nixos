@@ -70,7 +70,7 @@ in
         in
         ''
           cd /etc/nixos
-          if ! git pull | grep -q 'Already up to date.'; then
+          if ! ${git} pull | grep -q 'Already up to date.'; then
             ${nixos-rebuild} switch --flake "/etc/nixos#${config.system.flake}" --no-write-lock-file -L
           fi
         '';
