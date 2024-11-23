@@ -95,6 +95,7 @@ in
         if cfg.office then
           [
             libreoffice
+            okular
             obsidian
           ]
         else
