@@ -100,7 +100,10 @@ in
       polkit.enable = true;
       pam.services.greetd = {
         enableGnomeKeyring = true;
-        kwallet.enable = true;
+        kwallet = {
+          enable = true;
+          forceRun = true;
+        };
       };
     };
   };
