@@ -153,11 +153,10 @@ in
             lazygit
             nodePackages_latest.nodejs
             nodePackages_latest.pnpm
-            python3Full.withPackages
-            (python-pkgs: [
+            (python3Full.withPackages (python-pkgs: [
               python-pkgs.pytest
               python-pkgs.requests
-            ])
+            ]))
             jdk
             pkgs-unstable.uv
             jetbrains.webstorm
