@@ -93,7 +93,6 @@ in
     home-manager = true;
   };
   modules = {
-    ssh.enable = false;
     arion.enable = true;
     hyprland.enable = true;
     packages.full = true;
@@ -104,10 +103,6 @@ in
     toggle-refresh.enable = true;
     brightness.enable = true;
     screenshot-upload.enable = true;
-    upload-file = {
-      enable = true;
-      key-file = secrets.pkgs-upload-file;
-    };
   };
 
   # users
