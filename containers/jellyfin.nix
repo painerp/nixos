@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.server.jellyfin;
-in {
+let
+  cfg = config.server.jellyfin;
+in
+{
   options.server.jellyfin = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -31,8 +33,7 @@ in {
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.jellyfin.settings = {
       project.name = "jellyfin";
@@ -40,11 +41,13 @@ in {
 
       services.jellyfin = {
         out.service = {
-          deploy.resources.reservations.devices = [{
-            driver = "nvidia";
-            count = 1;
-            capabilities = [ "gpu" ];
-          }];
+          deploy.resources.reservations.devices = [
+            {
+              driver = "nvidia";
+              count = 1;
+              capabilities = [ "gpu" ];
+            }
+          ];
         };
         service = {
           image = "lscr.io/linuxserver/jellyfin:latest";
@@ -57,18 +60,18 @@ in {
             TZ = config.time.timeZone;
             NVIDIA_VISIBLE_DEVICES = "all";
           };
-          ports = lib.mkIf (cfg.internal)
-            [ "${config.server.tailscale-ip}:8096:8096" ];
-          volumes = [ "${config.lib.server.mkConfigDir "jellyfin"}:/config" ]
-            ++ cfg.volumes;
-          labels = config.lib.server.mkTraefikLabels {
-            name = "jellyfin";
-            port = "8096";
-            subdomain = "${cfg.subdomain}";
-            forwardAuth = cfg.auth;
-          } // {
-            "com.centurylinklabs.watchtower.enable" = "true";
-          };
+          ports = lib.mkIf (cfg.internal) [ "${config.server.tailscale-ip}:8096:8096" ];
+          volumes = [ "${config.lib.server.mkConfigDir "jellyfin"}:/config" ] ++ cfg.volumes;
+          labels =
+            config.lib.server.mkTraefikLabels {
+              name = "jellyfin";
+              port = "8096";
+              subdomain = "${cfg.subdomain}";
+              forwardAuth = cfg.auth;
+            }
+            // {
+              "com.centurylinklabs.watchtower.enable" = "true";
+            };
           restart = "unless-stopped";
         };
       };

@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.server.dashboard;
-in {
+let
+  cfg = config.server.dashboard;
+in
+{
   options.server.dashboard = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -23,8 +25,7 @@ in {
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.dashboard.settings = {
       project.name = "dashboard";
@@ -37,18 +38,18 @@ in {
         networks = [ "proxy" ];
         volumes = [
           "${config.lib.server.mkConfigDir "dashboard/config"}:/app/config"
-          "${
-            config.lib.server.mkConfigDir "dashboard/images"
-          }:/app/public/images"
+          "${config.lib.server.mkConfigDir "dashboard/images"}:/app/public/images"
         ];
-        labels = config.lib.server.mkTraefikLabels {
-          name = "dashboard";
-          port = "3000";
-          subdomain = "${cfg.subdomain}";
-          forwardAuth = cfg.auth;
-        } // {
-          "com.centurylinklabs.watchtower.enable" = "true";
-        };
+        labels =
+          config.lib.server.mkTraefikLabels {
+            name = "dashboard";
+            port = "3000";
+            subdomain = "${cfg.subdomain}";
+            forwardAuth = cfg.auth;
+          }
+          // {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
         restart = "unless-stopped";
       };
     };

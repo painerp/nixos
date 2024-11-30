@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.server.sabnzbd;
-in {
+let
+  cfg = config.server.sabnzbd;
+in
+{
   options.server.sabnzbd = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -22,8 +24,7 @@ in {
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.gluetun.settings = {
       services.gluetun.service.labels = config.lib.server.mkTraefikLabels {
@@ -43,9 +44,10 @@ in {
           PGID = 1000;
           TZ = config.time.timeZone;
         };
-        volumes = [ "${config.lib.server.mkConfigDir "sabnzbd"}:/config" ]
-          ++ cfg.volumes;
-        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
+        volumes = [ "${config.lib.server.mkConfigDir "sabnzbd"}:/config" ] ++ cfg.volumes;
+        labels = {
+          "com.centurylinklabs.watchtower.enable" = "true";
+        };
         restart = "unless-stopped";
       };
     };

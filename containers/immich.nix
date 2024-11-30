@@ -7,7 +7,8 @@ let
     DB_USERNAME = "postgres";
     DB_DATABASE_NAME = "immich";
   };
-in {
+in
+{
   options.server.immich = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -49,8 +50,7 @@ in {
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.immich.settings = {
       project.name = "immich";
@@ -60,49 +60,69 @@ in {
 
       services.immich-server = {
         out.service = {
-          deploy.resources.reservations.devices = [{
-            driver = "nvidia";
-            count = 1;
-            capabilities = [ "gpu" "compute" "video" ];
-          }];
+          deploy.resources.reservations.devices = [
+            {
+              driver = "nvidia";
+              count = 1;
+              capabilities = [
+                "gpu"
+                "compute"
+                "video"
+              ];
+            }
+          ];
         };
         service = {
           image = "ghcr.io/immich-app/immich-server:${cfg.version}";
           container_name = "immich_server";
           hostname = config.networking.hostName;
-          networks = [ "proxy" "backend" ];
+          networks = [
+            "proxy"
+            "backend"
+          ];
           environment = default-env;
           env_file = [ config.age.secrets.immich-env.path ];
           volumes = [ "/etc/localtime:/etc/localtime:ro" ] ++ cfg.volumes;
-          depends_on = [ "database" "redis" ];
-          labels = config.lib.server.mkTraefikLabels {
-            name = "immich";
-            port = "2283";
-            subdomain = "${cfg.subdomain}";
-            forwardAuth = cfg.auth;
-          } // {
-            "com.centurylinklabs.watchtower.enable" = "false";
-          };
+          depends_on = [
+            "database"
+            "redis"
+          ];
+          labels =
+            config.lib.server.mkTraefikLabels {
+              name = "immich";
+              port = "2283";
+              subdomain = "${cfg.subdomain}";
+              forwardAuth = cfg.auth;
+            }
+            // {
+              "com.centurylinklabs.watchtower.enable" = "false";
+            };
           restart = "unless-stopped";
         };
       };
 
       services.immich-machine-learning = {
         out.service = {
-          deploy.resources.reservations.devices = [{
-            driver = "nvidia";
-            count = 1;
-            capabilities = [ "gpu" ];
-          }];
+          deploy.resources.reservations.devices = [
+            {
+              driver = "nvidia";
+              count = 1;
+              capabilities = [ "gpu" ];
+            }
+          ];
         };
         service = {
-          image =
-            "ghcr.io/immich-app/immich-machine-learning:${cfg.version}-cuda";
+          image = "ghcr.io/immich-app/immich-machine-learning:${cfg.version}-cuda";
           container_name = "immich_machine_learning";
           hostname = config.networking.hostName;
-          networks = [ "backend" "outbound" ];
+          networks = [
+            "backend"
+            "outbound"
+          ];
           volumes = [ "${config-dir}/model-cache:/cache" ];
-          labels = { "com.centurylinklabs.watchtower.enable" = "false"; };
+          labels = {
+            "com.centurylinklabs.watchtower.enable" = "false";
+          };
           restart = "unless-stopped";
         };
       };
@@ -112,7 +132,9 @@ in {
         container_name = "immich_redis";
         hostname = config.networking.hostName;
         networks = [ "backend" ];
-        labels = { "com.centurylinklabs.watchtower.enable" = "false"; };
+        labels = {
+          "com.centurylinklabs.watchtower.enable" = "false";
+        };
         restart = "unless-stopped";
       };
 
@@ -127,7 +149,9 @@ in {
         };
         env_file = [ config.age.secrets.immich-pg-env.path ];
         volumes = [ "${config-dir}/postgres:/var/lib/postgresql/data" ];
-        labels = { "com.centurylinklabs.watchtower.enable" = "false"; };
+        labels = {
+          "com.centurylinklabs.watchtower.enable" = "false";
+        };
         restart = "unless-stopped";
       };
     };

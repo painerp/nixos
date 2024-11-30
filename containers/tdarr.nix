@@ -3,7 +3,8 @@
 let
   cfg = config.server.tdarr;
   config-dir = "${config.lib.server.mkConfigDir "tdarr"}";
-in {
+in
+{
   options.server.tdarr = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -32,8 +33,7 @@ in {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
     };
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.tdarr.settings = {
       project.name = "tdarr";
@@ -41,11 +41,13 @@ in {
 
       services.tdarr = {
         out.service = {
-          deploy.resources.reservations.devices = [{
-            driver = "nvidia";
-            count = 1;
-            capabilities = [ "gpu" ];
-          }];
+          deploy.resources.reservations.devices = [
+            {
+              driver = "nvidia";
+              count = 1;
+              capabilities = [ "gpu" ];
+            }
+          ];
         };
         service = {
           image = "ghcr.io/haveagitgat/tdarr:latest";
@@ -70,14 +72,16 @@ in {
             "${config.server.tailscale-ip}:8265:8265"
             "${config.server.tailscale-ip}:8266:8266"
           ];
-          labels = config.lib.server.mkTraefikLabels {
-            name = "tdarr";
-            port = "8265";
-            subdomain = "${cfg.subdomain}";
-            forwardAuth = cfg.auth;
-          } // {
-            "com.centurylinklabs.watchtower.enable" = "true";
-          };
+          labels =
+            config.lib.server.mkTraefikLabels {
+              name = "tdarr";
+              port = "8265";
+              subdomain = "${cfg.subdomain}";
+              forwardAuth = cfg.auth;
+            }
+            // {
+              "com.centurylinklabs.watchtower.enable" = "true";
+            };
           restart = "unless-stopped";
         };
       };

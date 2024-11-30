@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.server.minecraft-router;
-in {
+let
+  cfg = config.server.minecraft-router;
+in
+{
   options.server.minecraft-router = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -35,12 +37,12 @@ in {
         container_name = "minecraft-router";
         hostname = config.networking.hostName;
         environment.MAPPING = cfg.mapping;
-        ports = (if (cfg.expose) then [ "25565:25565/tcp" ] else [ ])
-          ++ (if (cfg.internal) then
-            [ "${config.server.tailscale-ip}:25565:25565/tcp" ]
-          else
-            [ ]);
-        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
+        ports =
+          (if (cfg.expose) then [ "25565:25565/tcp" ] else [ ])
+          ++ (if (cfg.internal) then [ "${config.server.tailscale-ip}:25565:25565/tcp" ] else [ ]);
+        labels = {
+          "com.centurylinklabs.watchtower.enable" = "true";
+        };
         restart = "unless-stopped";
       };
     };

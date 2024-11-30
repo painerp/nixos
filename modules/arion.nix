@@ -1,7 +1,15 @@
-{ lib, inputs, config, pkgs, ... }:
+{
+  lib,
+  inputs,
+  config,
+  pkgs,
+  ...
+}:
 
-let cfg = config.modules.arion;
-in {
+let
+  cfg = config.modules.arion;
+in
+{
   options.modules.arion = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -9,7 +17,10 @@ in {
     };
   };
 
-  imports = [ inputs.arion.nixosModules.arion ../containers ];
+  imports = [
+    inputs.arion.nixosModules.arion
+    ../containers
+  ];
 
   config = lib.mkIf (cfg.enable) {
     environment.systemPackages = [ pkgs.arion ];
@@ -22,6 +33,8 @@ in {
         dates = "01:00";
       };
     };
-    virtualisation.arion = { backend = "docker"; };
+    virtualisation.arion = {
+      backend = "docker";
+    };
   };
 }

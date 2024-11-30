@@ -1,4 +1,10 @@
-{ config, modulesPath, secrets, lib, ... }:
+{
+  config,
+  modulesPath,
+  secrets,
+  lib,
+  ...
+}:
 
 let
   flake = "arr";
@@ -6,15 +12,21 @@ let
   media = "/mnt/media";
   unprocessed = "${media}/temp/unprocessed";
   temp = "/tmp/unprocessed";
-in {
-  imports = [ ./secrets ./secrets/arr.nix ];
+in
+{
+  imports = [
+    ./secrets
+    ./secrets/arr.nix
+  ];
 
   networking = {
     hostName = "nix${flake}";
-    interfaces.ens19.ipv4.addresses = [{
-      address = "10.0.10.80";
-      prefixLength = 24;
-    }];
+    interfaces.ens19.ipv4.addresses = [
+      {
+        address = "10.0.10.80";
+        prefixLength = 24;
+      }
+    ];
   };
 
   fileSystems."/" = {
@@ -22,8 +34,7 @@ in {
     fsType = "ext4";
   };
 
-  swapDevices =
-    [{ device = "/dev/disk/by-uuid/449b2af4-f258-4eb8-9c39-5a35c91fe9f3"; }];
+  swapDevices = [ { device = "/dev/disk/by-uuid/449b2af4-f258-4eb8-9c39-5a35c91fe9f3"; } ];
 
   fileSystems."/tmp/unprocessed" = {
     device = "/dev/disk/by-uuid/e98ab9e9-6add-4298-a78b-6bdb55cde4d5";
@@ -33,12 +44,19 @@ in {
   fileSystems."${media}" = {
     device = "10.0.10.1:/mnt/hdd/media";
     fsType = "nfs";
-    options = [ "x-systemd.automount" "x-systemd.idle-timeout=600" ];
+    options = [
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
+    ];
   };
 
   # system
-  system = { inherit flake; };
-  modules = { arion.enable = true; };
+  system = {
+    inherit flake;
+  };
+  modules = {
+    arion.enable = true;
+  };
 
   # services
   server = {
@@ -57,7 +75,10 @@ in {
     };
     bazarr = {
       enable = true;
-      volumes = [ "${media}/movies:/movies" "${media}/shows:/shows" ];
+      volumes = [
+        "${media}/movies:/movies"
+        "${media}/shows:/shows"
+      ];
     };
     prdl = {
       enable = true;
@@ -74,23 +95,38 @@ in {
     prowlarr.enable = true;
     radarr = {
       enable = true;
-      volumes = [ "${temp}/movies:/temp/movies" "${media}/movies:/movies" ];
+      volumes = [
+        "${temp}/movies:/temp/movies"
+        "${media}/movies:/movies"
+      ];
     };
     sabnzbd = {
       enable = true;
-      volumes = [ "${unprocessed}/downloads:/downloads" "${temp}:/temp" ];
+      volumes = [
+        "${unprocessed}/downloads:/downloads"
+        "${temp}:/temp"
+      ];
     };
     sonarr = {
       enable = true;
-      volumes = [ "${temp}/shows:/temp/shows" "${media}/shows:/shows" ];
+      volumes = [
+        "${temp}/shows:/temp/shows"
+        "${media}/shows:/shows"
+      ];
     };
     lidarr = {
       enable = true;
-      volumes = [ "${temp}/music:/temp/music" "${media}/music:/music" ];
+      volumes = [
+        "${temp}/music:/temp/music"
+        "${media}/music:/music"
+      ];
     };
     readarr = {
       enable = true;
-      volumes = [ "${temp}/books:/temp/books" "${media}/books:/books" ];
+      volumes = [
+        "${temp}/books:/temp/books"
+        "${media}/books:/books"
+      ];
     };
     stash = {
       enable = true;

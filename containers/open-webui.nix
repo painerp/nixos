@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.server.open-webui;
-in {
+let
+  cfg = config.server.open-webui;
+in
+{
   options.server.open-webui = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -26,8 +28,7 @@ in {
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.open-webui.settings = {
       project.name = "open-webui";
@@ -38,22 +39,23 @@ in {
         container_name = "open-webui";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];
-        environment = {
-          ENABLE_SIGNUP = "false";
-        } // lib.attrsets.optionalAttrs (cfg.auth) {
-          WEBUI_AUTH_TRUSTED_EMAIL_HEADER = "X-authentik-email";
-        };
+        environment =
+          {
+            ENABLE_SIGNUP = "false";
+          }
+          // lib.attrsets.optionalAttrs (cfg.auth) { WEBUI_AUTH_TRUSTED_EMAIL_HEADER = "X-authentik-email"; };
         env_file = [ config.age.secrets.open-webui-env.path ];
-        volumes =
-          [ "${config.lib.server.mkConfigDir "open-webui"}:/app/backend/data" ];
-        labels = config.lib.server.mkTraefikLabels {
-          name = "open-webui";
-          port = "8080";
-          subdomain = "${cfg.subdomain}";
-          forwardAuth = cfg.auth;
-        } // {
-          "com.centurylinklabs.watchtower.enable" = "true";
-        };
+        volumes = [ "${config.lib.server.mkConfigDir "open-webui"}:/app/backend/data" ];
+        labels =
+          config.lib.server.mkTraefikLabels {
+            name = "open-webui";
+            port = "8080";
+            subdomain = "${cfg.subdomain}";
+            forwardAuth = cfg.auth;
+          }
+          // {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
         restart = "unless-stopped";
       };
     };

@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.server.pihole;
-in {
+let
+  cfg = config.server.pihole;
+in
+{
   options.server.pihole = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -31,8 +33,7 @@ in {
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.pihole.settings = {
       project.name = "pihole";
@@ -44,7 +45,10 @@ in {
         image = "pihole/pihole:latest";
         container_name = "pihole";
         hostname = config.networking.hostName;
-        networks = [ "proxy" "dnscrypt" ];
+        networks = [
+          "proxy"
+          "dnscrypt"
+        ];
         volumes = [
           "${config.lib.server.mkConfigDir "pihole/data"}:/etc/pihole"
           "${config.lib.server.mkConfigDir "pihole/dnsmasq.d"}:/etc/dnsmasq.d"
@@ -54,30 +58,49 @@ in {
           PIHOLE_DNS_ = "dnscrypt#5053;9.9.9.9";
           SKIPGRAVITYONBOOT = "true";
         };
-        ports = (if (cfg.expose) then [ "53:53/tcp" "53:53/udp" ] else [ ])
-          ++ (if (cfg.internal) then [
-            "${config.server.tailscale-ip}:53:53/tcp"
-            "${config.server.tailscale-ip}:53:53/udp"
-          ] else
-            [ ]);
-        labels = config.lib.server.mkTraefikLabels {
-          name = "pihole";
-          port = "80";
-          subdomain = "${cfg.subdomain}";
-          forwardAuth = cfg.auth;
-        } // {
-          "com.centurylinklabs.watchtower.enable" = "true";
-        };
+        ports =
+          (
+            if (cfg.expose) then
+              [
+                "53:53/tcp"
+                "53:53/udp"
+              ]
+            else
+              [ ]
+          )
+          ++ (
+            if (cfg.internal) then
+              [
+                "${config.server.tailscale-ip}:53:53/tcp"
+                "${config.server.tailscale-ip}:53:53/udp"
+              ]
+            else
+              [ ]
+          );
+        labels =
+          config.lib.server.mkTraefikLabels {
+            name = "pihole";
+            port = "80";
+            subdomain = "${cfg.subdomain}";
+            forwardAuth = cfg.auth;
+          }
+          // {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
         restart = "unless-stopped";
       };
 
       services.dnscrypt.service = {
         image = "klutchell/dnscrypt-proxy:latest";
         container_name = "dnscrypt";
-        networks = [ "proxy" "dnscrypt" ];
-        volumes =
-          [ "${config.lib.server.mkConfigDir "pihole/dnscrypt"}:/config" ];
-        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
+        networks = [
+          "proxy"
+          "dnscrypt"
+        ];
+        volumes = [ "${config.lib.server.mkConfigDir "pihole/dnscrypt"}:/config" ];
+        labels = {
+          "com.centurylinklabs.watchtower.enable" = "true";
+        };
         restart = "unless-stopped";
       };
     };

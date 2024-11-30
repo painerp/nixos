@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.modules.ssh;
-in {
+let
+  cfg = config.modules.ssh;
+in
+{
   options.modules.ssh = {
     enable = lib.mkOption {
       type = lib.types.bool;

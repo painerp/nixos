@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.server.linkwarden;
-in {
+let
+  cfg = config.server.linkwarden;
+in
+{
   options.server.linkwarden = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -28,8 +30,7 @@ in {
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.linkwarden.settings = {
       project.name = "linkwarden";
@@ -42,13 +43,11 @@ in {
         container_name = "linkwarden-pg";
         hostname = config.networking.hostName;
         networks = [ "internal" ];
-        environment = { POSTGRES_USER = "postgres"; };
+        environment = {
+          POSTGRES_USER = "postgres";
+        };
         env_file = [ config.age.secrets.linkwarden-pg-env.path ];
-        volumes = [
-          "${
-            config.lib.server.mkConfigDir "linkwarden/postgres"
-          }:/var/lib/postgresql/data"
-        ];
+        volumes = [ "${config.lib.server.mkConfigDir "linkwarden/postgres"}:/var/lib/postgresql/data" ];
         restart = "unless-stopped";
       };
 
@@ -56,24 +55,27 @@ in {
         image = "ghcr.io/linkwarden/linkwarden:latest";
         container_name = "linkwarden";
         hostname = config.networking.hostName;
-        networks = [ "proxy" "internal" ];
+        networks = [
+          "proxy"
+          "internal"
+        ];
         environment = {
           NEXT_PUBLIC_DISABLE_REGISTRATION = "true";
-          NEXTAUTH_URL =
-            "https://${cfg.subdomain}.${config.server.domain}/api/v1/auth";
+          NEXTAUTH_URL = "https://${cfg.subdomain}.${config.server.domain}/api/v1/auth";
         };
-        volumes =
-          [ "${config.lib.server.mkConfigDir "linkwarden/data"}:/data/data" ];
+        volumes = [ "${config.lib.server.mkConfigDir "linkwarden/data"}:/data/data" ];
         env_file = [ config.age.secrets.linkwarden-env.path ];
         depends_on = [ "linkwarden-pg" ];
-        labels = config.lib.server.mkTraefikLabels {
-          name = "linkwarden";
-          port = "3000";
-          subdomain = "${cfg.subdomain}";
-          forwardAuth = cfg.auth;
-        } // {
-          "com.centurylinklabs.watchtower.enable" = "true";
-        };
+        labels =
+          config.lib.server.mkTraefikLabels {
+            name = "linkwarden";
+            port = "3000";
+            subdomain = "${cfg.subdomain}";
+            forwardAuth = cfg.auth;
+          }
+          // {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
         restart = "unless-stopped";
       };
     };
