@@ -25,6 +25,4 @@
   boot.loader.grub.useOSProber = true;
 
   services.qemuGuest.enable = true;
-
-  systemd.enableUnifiedCgroupHierarchy = false;
 }
