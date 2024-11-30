@@ -195,6 +195,10 @@
           pkgs = (import nixpkgs) {
             system = "x86_64-linux";
             config.allowUnfree = true;
+            overlays = [
+              (import ./overlays/teamspeak_client.nix { })
+              (import ./overlays/btop.nix { })
+            ];
           };
           modules =
             server-modules
