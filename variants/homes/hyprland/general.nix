@@ -28,7 +28,6 @@
     };
 
     dwindle = {
-      no_gaps_when_only = false;
       pseudotile = true;
       preserve_split = true;
     };
@@ -47,14 +46,16 @@
       rounding = 8;
       active_opacity = 1.0;
       inactive_opacity = 1.0;
-
-      drop_shadow = true;
       dim_inactive = false;
-      shadow_ignore_window = true;
-      shadow_offset = "2 2";
-      shadow_range = 4;
-      shadow_render_power = 2;
-      "col.shadow" = "0x66000000";
+
+      shadow = {
+        enabled = true;
+        ignore_window = true;
+        offset = "2 2";
+        range = 4;
+        render_power = 2;
+        color = "0x66000000";
+      };
 
       blur = {
         enabled = true;
