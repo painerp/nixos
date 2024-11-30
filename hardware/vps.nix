@@ -25,6 +25,4 @@
       efi.canTouchEfiVariables = true;
     };
   };
-
-  systemd.enableUnifiedCgroupHierarchy = false;
 }
