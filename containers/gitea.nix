@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.server.gitea;
-in {
+let
+  cfg = config.server.gitea;
+in
+{
   options.server.gitea = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -35,8 +37,7 @@ in {
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.gitea.settings = {
       project.name = "gitea";
@@ -57,18 +58,19 @@ in {
           "/etc/timezone:/etc/timezone:ro"
           "/etc/localtime:/etc/localtime:ro"
         ];
-        ports = [ "127.0.0.1:2222:22/tcp" ] ++ (if (cfg.internal) then
-          [ "${cfg.internal-ip}:3000:3000/tcp" ]
-        else
-          [ ]);
-        labels = config.lib.server.mkTraefikLabels {
-          name = "gitea";
-          port = "3000";
-          subdomain = "${cfg.subdomain}";
-          forwardAuth = cfg.auth;
-        } // {
-          "com.centurylinklabs.watchtower.enable" = "true";
-        };
+        ports = [
+          "127.0.0.1:2222:22/tcp"
+        ] ++ (if (cfg.internal) then [ "${cfg.internal-ip}:3000:3000/tcp" ] else [ ]);
+        labels =
+          config.lib.server.mkTraefikLabels {
+            name = "gitea";
+            port = "3000";
+            subdomain = "${cfg.subdomain}";
+            forwardAuth = cfg.auth;
+          }
+          // {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
         restart = "unless-stopped";
       };
     };

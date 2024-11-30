@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.server.jellystat;
-in {
+let
+  cfg = config.server.jellystat;
+in
+{
   options.server.jellystat = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -32,8 +34,7 @@ in {
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.jellystat.settings = {
       project.name = "jellystat";
@@ -46,13 +47,11 @@ in {
         container_name = "jellystat-pg";
         hostname = config.networking.hostName;
         networks = [ "internal" ];
-        environment = { POSTGRES_USER = "postgres"; };
+        environment = {
+          POSTGRES_USER = "postgres";
+        };
         env_file = [ config.age.secrets.jellystat-pg-env.path ];
-        volumes = [
-          "${
-            config.lib.server.mkConfigDir "jellystat"
-          }:/var/lib/postgresql/data"
-        ];
+        volumes = [ "${config.lib.server.mkConfigDir "jellystat"}:/var/lib/postgresql/data" ];
         restart = "unless-stopped";
       };
 
@@ -60,7 +59,10 @@ in {
         image = "cyfershepard/jellystat:latest";
         container_name = "jellystat";
         hostname = config.networking.hostName;
-        networks = [ "proxy" "internal" ];
+        networks = [
+          "proxy"
+          "internal"
+        ];
         environment = {
           POSTGRES_USER = "postgres";
           POSTGRES_IP = "jellystat-pg";
@@ -70,14 +72,16 @@ in {
         env_file = [ config.age.secrets.jellystat-env.path ];
         extra_hosts = cfg.extra-hosts;
         depends_on = [ "jellystat-pg" ];
-        labels = config.lib.server.mkTraefikLabels {
-          name = "jellystat";
-          port = "3000";
-          subdomain = "${cfg.subdomain}";
-          forwardAuth = cfg.auth;
-        } // {
-          "com.centurylinklabs.watchtower.enable" = "true";
-        };
+        labels =
+          config.lib.server.mkTraefikLabels {
+            name = "jellystat";
+            port = "3000";
+            subdomain = "${cfg.subdomain}";
+            forwardAuth = cfg.auth;
+          }
+          // {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
         restart = "unless-stopped";
       };
     };

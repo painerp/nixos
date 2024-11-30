@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.server.protonbridge;
-in {
+let
+  cfg = config.server.protonbridge;
+in
+{
   options.server.protonbridge = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -34,13 +36,13 @@ in {
         image = "${cfg.image}";
         container_name = "protonbridge";
         hostname = config.networking.hostName;
-        ports = (if (cfg.expose) then [ "25:25/tcp" ] else [ ])
-          ++ (if (cfg.internal) then
-            [ "${config.server.tailscale-ip}:25:25/tcp" ]
-          else
-            [ ]);
+        ports =
+          (if (cfg.expose) then [ "25:25/tcp" ] else [ ])
+          ++ (if (cfg.internal) then [ "${config.server.tailscale-ip}:25:25/tcp" ] else [ ]);
         volumes = [ "${config.lib.server.mkConfigDir "protonbridge"}:/root" ];
-        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
+        labels = {
+          "com.centurylinklabs.watchtower.enable" = "true";
+        };
         restart = "unless-stopped";
       };
     };

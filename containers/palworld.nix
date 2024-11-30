@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.server.palworld;
-in {
+let
+  cfg = config.server.palworld;
+in
+{
   options.server.palworld = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -46,13 +48,13 @@ in {
           COMMUNITY = "false";
         };
         env_file = [ config.age.secrets.palworld-env.path ];
-        ports = (if cfg.expose then [ "8211:8211/udp" ] else [ ])
-          ++ (if cfg.internal then
-            [ "${config.server.tailscale-ip}:8211:8211/udp" ]
-          else
-            [ ]);
+        ports =
+          (if cfg.expose then [ "8211:8211/udp" ] else [ ])
+          ++ (if cfg.internal then [ "${config.server.tailscale-ip}:8211:8211/udp" ] else [ ]);
         volumes = [ "${config.lib.server.mkConfigDir "palworld"}:/palworld" ];
-        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
+        labels = {
+          "com.centurylinklabs.watchtower.enable" = "true";
+        };
         restart = "unless-stopped";
       };
     };

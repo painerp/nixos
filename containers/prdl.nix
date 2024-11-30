@@ -3,7 +3,8 @@
 let
   cfg = config.server.prdl;
   config-dir = "${config.lib.server.mkConfigDir "prdl"}";
-in {
+in
+{
   options.server.prdl = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -28,8 +29,7 @@ in {
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
     age.secrets.prdl-env.file = cfg.env-file;
 
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.gluetun.settings = {
       services.gluetun.service.labels = config.lib.server.mkTraefikLabels {
@@ -50,9 +50,10 @@ in {
           TZ = config.time.timeZone;
         };
         env_file = [ config.age.secrets.prdl-env.path ];
-        volumes = [ "${config.lib.server.mkConfigDir "prdl"}/data:/app/data" ]
-          ++ cfg.volumes;
-        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
+        volumes = [ "${config.lib.server.mkConfigDir "prdl"}/data:/app/data" ] ++ cfg.volumes;
+        labels = {
+          "com.centurylinklabs.watchtower.enable" = "true";
+        };
         restart = "unless-stopped";
       };
     };

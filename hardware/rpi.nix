@@ -5,7 +5,11 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    initrd.availableKernelModules = [ "xhci_pci" "usbhid" "usb_storage" ];
+    initrd.availableKernelModules = [
+      "xhci_pci"
+      "usbhid"
+      "usb_storage"
+    ];
     loader = {
       grub.enable = false;
       generic-extlinux-compatible.enable = true;
@@ -32,9 +36,7 @@
 
   # tries to enable hdmi-cec support
   nixpkgs.overlays = [
-    (self: super: {
-      libcec = super.libcec.override { withLibraspberrypi = true; };
-    })
+    (self: super: { libcec = super.libcec.override { withLibraspberrypi = true; }; })
   ];
 
   environment.systemPackages = with pkgs; [ libcec ];

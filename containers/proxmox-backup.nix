@@ -3,7 +3,8 @@
 let
   cfg = config.server.proxmox-backup;
   config-dir = config.lib.server.mkConfigDir "proxmox-backup";
-in {
+in
+{
   options.server.proxmox-backup = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -11,8 +12,7 @@ in {
     };
     subdomain = lib.mkOption {
       type = lib.types.str;
-      default =
-        if config.server.short-subdomain then "pb" else "proxmox-backup";
+      default = if config.server.short-subdomain then "pb" else "proxmox-backup";
     };
     auth = lib.mkOption {
       type = lib.types.bool;
@@ -34,8 +34,7 @@ in {
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.proxmox-backup.settings = {
       project.name = "proxmox-backup";
@@ -46,26 +45,29 @@ in {
         container_name = "proxmox-backup";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];
-        environment = { TZ = config.time.timeZone; };
+        environment = {
+          TZ = config.time.timeZone;
+        };
         stop_signal = "SIGHUP";
         tmpfs = [ "/run" ];
-        ports = lib.mkIf (cfg.internal)
-          [ "${config.server.tailscale-ip}:8007:8007/tcp" ];
+        ports = lib.mkIf (cfg.internal) [ "${config.server.tailscale-ip}:8007:8007/tcp" ];
         volumes = [
           "${config-dir}/etc:/etc/proxmox-backup"
           "${config-dir}/logs:/var/log/proxmox-backup"
           "${config-dir}/lib:/var/lib/proxmox-backup"
         ] ++ cfg.volumes;
-        labels = config.lib.server.mkTraefikLabels {
-          name = "proxmox-backup";
-          port = "8007";
-          scheme = "https";
-          transport = "skip-verify@file";
-          subdomain = "${cfg.subdomain}";
-          forwardAuth = cfg.auth;
-        } // {
-          "com.centurylinklabs.watchtower.enable" = "true";
-        };
+        labels =
+          config.lib.server.mkTraefikLabels {
+            name = "proxmox-backup";
+            port = "8007";
+            scheme = "https";
+            transport = "skip-verify@file";
+            subdomain = "${cfg.subdomain}";
+            forwardAuth = cfg.auth;
+          }
+          // {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
         restart = "unless-stopped";
       };
     };

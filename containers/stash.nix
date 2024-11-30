@@ -3,7 +3,8 @@
 let
   cfg = config.server.stash;
   config-dir = config.lib.server.mkConfigDir "stash";
-in {
+in
+{
   options.server.stash = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -29,8 +30,7 @@ in {
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.stash.settings = {
       project.name = "stash";
@@ -56,14 +56,16 @@ in {
           "${config-dir}/blobs:/blobs"
           "${config-dir}/generated:/generated"
         ] ++ cfg.volumes;
-        labels = config.lib.server.mkTraefikLabels {
-          name = "stash";
-          port = "9999";
-          subdomain = "${cfg.subdomain}";
-          forwardAuth = cfg.auth;
-        } // {
-          "com.centurylinklabs.watchtower.enable" = "true";
-        };
+        labels =
+          config.lib.server.mkTraefikLabels {
+            name = "stash";
+            port = "9999";
+            subdomain = "${cfg.subdomain}";
+            forwardAuth = cfg.auth;
+          }
+          // {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
         restart = "unless-stopped";
       };
     };

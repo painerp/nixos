@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.server.jellyfin-vue;
-in {
+let
+  cfg = config.server.jellyfin-vue;
+in
+{
   options.server.jellyfin-vue = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -28,8 +30,7 @@ in {
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases =
-      config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
+    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.jellyfin-vue.settings = {
       project.name = "jellyfin-vue";
@@ -45,14 +46,16 @@ in {
           HISTORY_ROUTER_MODE = 0;
           DEFAULT_SERVERS = "${cfg.server}";
         };
-        labels = config.lib.server.mkTraefikLabels {
-          name = "jellyfin-vue";
-          port = "80";
-          subdomain = "${cfg.subdomain}";
-          forwardAuth = cfg.auth;
-        } // {
-          "com.centurylinklabs.watchtower.enable" = "true";
-        };
+        labels =
+          config.lib.server.mkTraefikLabels {
+            name = "jellyfin-vue";
+            port = "80";
+            subdomain = "${cfg.subdomain}";
+            forwardAuth = cfg.auth;
+          }
+          // {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
         restart = "unless-stopped";
       };
     };

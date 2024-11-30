@@ -1,7 +1,14 @@
-{ lib, inputs, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
-let cfg = config.modules.autoUpgrade;
-in {
+let
+  cfg = config.modules.autoUpgrade;
+in
+{
   options.modules.autoUpgrade = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -25,8 +32,7 @@ in {
     persistent = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description =
-        "If true, the timer will be persistent. It will start immediately if it would have been missed otherwise.";
+      description = "If true, the timer will be persistent. It will start immediately if it would have been missed otherwise.";
     };
   };
 
@@ -39,10 +45,13 @@ in {
 
       serviceConfig.Type = "oneshot";
 
-      environment = config.nix.envVars // {
-        inherit (config.environment.sessionVariables) NIX_PATH;
-        HOME = "/root";
-      } // config.networking.proxy.envVars;
+      environment =
+        config.nix.envVars
+        // {
+          inherit (config.environment.sessionVariables) NIX_PATH;
+          HOME = "/root";
+        }
+        // config.networking.proxy.envVars;
 
       path = with pkgs; [
         coreutils
@@ -54,16 +63,17 @@ in {
         config.programs.ssh.package
       ];
 
-      script = let
-        nixos-rebuild =
-          "${config.system.build.nixos-rebuild}/bin/nixos-rebuild";
-        git = "${pkgs.git}/bin/git";
-      in ''
-        cd /etc/nixos
-        if ! git pull | grep -q 'Already up to date.'; then
-          ${nixos-rebuild} switch --flake "/etc/nixos#${config.system.flake}" --no-write-lock-file -L
-        fi
-      '';
+      script =
+        let
+          nixos-rebuild = "${config.system.build.nixos-rebuild}/bin/nixos-rebuild";
+          git = "${pkgs.git}/bin/git";
+        in
+        ''
+          cd /etc/nixos
+          if ! ${git} pull | grep -q 'Already up to date.'; then
+            ${nixos-rebuild} switch --flake "/etc/nixos#${config.system.flake}" --no-write-lock-file -L
+          fi
+        '';
 
       startAt = cfg.dates;
 

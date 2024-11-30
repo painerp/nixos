@@ -1,7 +1,14 @@
-{ lib, config, secrets, ... }:
+{
+  lib,
+  config,
+  secrets,
+  ...
+}:
 
-let cfg = config.server.renovate;
-in {
+let
+  cfg = config.server.renovate;
+in
+{
   options.server.renovate = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -44,7 +51,9 @@ in {
           RENOVATE_PERSIST_REPO_DATA = "true";
         };
         env_file = [ config.age.secrets.renovate-env.path ];
-        labels = { "com.centurylinklabs.watchtower.enable" = "true"; };
+        labels = {
+          "com.centurylinklabs.watchtower.enable" = "true";
+        };
       };
     };
   };
