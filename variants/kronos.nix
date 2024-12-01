@@ -106,6 +106,10 @@ in
     toggle-refresh.enable = true;
     brightness.enable = true;
     screenshot-upload.enable = true;
+    upload-file = {
+      enable = true;
+      key-file = secrets.pkgs-upload-file;
+    };
   };
 
   # users
@@ -120,6 +124,7 @@ in
       "input"
       "docker"
     ];
+    hashedPasswordFile = config.age.secrets.kronos-pw.path;
   };
 
   nix.settings.trusted-users = [ "@wheel" ];

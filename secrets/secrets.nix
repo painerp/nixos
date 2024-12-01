@@ -13,6 +13,7 @@ let
   gam = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEbkOe5w4Tj2hEkG2HdL4UqbwC7kVmS7Z4IsMgQvUcQD";
   cit = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL9kVFMfWDbqbzfFaOnEHSlofWUKZAJUATkHN+nlUK/X";
   arr = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGF1rLbYjyiGRfdPHKxmuiTd650+Iy0VR2/qM5T06PAv";
+  kronos = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMzWDG01ypPUCmsrLBhr8xFMiIPeAcz51l5urH3itjMc";
   dionysus = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICXwKn5oP1LcWZY0iXwHRqaKbAHadyrLkAKRJgCYAklU";
   systems = [
     jpi
@@ -25,6 +26,7 @@ let
     cit
     gra
     arr
+    kronos
     dionysus
   ];
 in
@@ -33,7 +35,10 @@ in
   "containers/traefik.env.age".publicKeys = users ++ systems;
   "containers/watchtower.env.age".publicKeys = users ++ systems;
 
-  "pkgs/upload-file.age".publicKeys = users ++ [ dionysus ];
+  "pkgs/upload-file.age".publicKeys = users ++ [
+    kronos
+    dionysus
+  ];
 
   "jpi/wifi.age".publicKeys = users ++ [ jpi ];
 
@@ -86,4 +91,6 @@ in
   "log/pve-exporter.env.age".publicKeys = users ++ [ log ];
 
   "dionysus/dionysus-pw.age".publicKeys = users ++ [ dionysus ];
+
+  "kronos/kronos-pw.age".publicKeys = users ++ [ kronos ];
 }

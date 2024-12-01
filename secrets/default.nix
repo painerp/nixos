@@ -57,4 +57,6 @@
   log-pve-exporter-env = ./log/pve-exporter.env.age;
 
   dionysus-dionysus-pw = ./dionysus/dionysus-pw.age;
+
+  kronos-kronos-pw = ./kronos/kronos-pw.age;
 }
