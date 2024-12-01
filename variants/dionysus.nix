@@ -103,6 +103,7 @@ in
     arion.enable = true;
     packages.full = true;
     logitech.enable = true;
+    waydroid.enable = true;
     hyprland = {
       enable = true;
       monitor = [
