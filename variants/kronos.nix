@@ -1,7 +1,5 @@
 {
-  pkgs,
   config,
-  modulesPath,
   secrets,
   lib,
   ...
@@ -13,6 +11,8 @@ let
 in
 {
   imports = [ ./secrets ];
+
+  age.secrets.kronos-pw.file = secrets.kronos-kronos-pw;
 
   networking = {
     hostName = "${flake}";
@@ -113,18 +113,20 @@ in
   };
 
   # users
-  users.mutableUsers = false;
-  users.users."${flake}" = {
-    isNormalUser = true;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "audio"
-      "video"
-      "input"
-      "docker"
-    ];
-    hashedPasswordFile = config.age.secrets.kronos-pw.path;
+  users = {
+    mutableUsers = false;
+    users."${flake}" = {
+      isNormalUser = true;
+      extraGroups = [
+        "wheel"
+        "networkmanager"
+        "audio"
+        "video"
+        "input"
+        "docker"
+      ];
+      hashedPasswordFile = config.age.secrets.kronos-pw.path;
+    };
   };
 
   nix.settings.trusted-users = [ "@wheel" ];
