@@ -185,6 +185,7 @@ in
       gamemode.enable = cfg.gaming;
       kdeconnect.enable = cfg.desktop;
       xfconf.enable = cfg.desktop;
+      nix-ld.enable = cfg.dev;
       thunar = {
         enable = cfg.desktop;
         plugins = with pkgs.xfce; [
