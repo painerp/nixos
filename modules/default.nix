@@ -34,5 +34,6 @@
     ./ssh-server.nix
     ./system.nix
     ./tailscale.nix
+    ./waydroid.nix
   ];
 }
