@@ -94,7 +94,13 @@ in
   };
   modules = {
     arion.enable = true;
-    hyprland.enable = true;
+    hyprland = {
+      enable = true;
+      monitor = [
+        "eDP-1,highrr,0x0,1"
+        ",preferred,auto,1,mirror,eDP-1"
+      ];
+    };
     packages.full = true;
     nvidia = {
       enable = true;
