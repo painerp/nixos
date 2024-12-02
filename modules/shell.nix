@@ -59,6 +59,7 @@
         "yt-flac" = "${yt-dlp}/bin/yt-dlp --extract-audio --audio-format flac";
       };
     systemPackages = [
+      fzf
       fishPlugins.done
       fishPlugins.puffer
       fishPlugins.fzf-fish
