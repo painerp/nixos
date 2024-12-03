@@ -330,6 +330,9 @@ in
                 image = "prompve/prometheus-pve-exporter:latest";
                 container_name = "pve-exporter";
                 networks = [ "external" ] ++ (if (cfg.prometheus.enable) then [ "exporter" ] else [ ]);
+                sysctls = {
+                  "net.ipv6.conf.all.disable_ipv6" = 1;
+                };
                 ports =
                   (if (cfg.pve-exporter.expose) then [ "9221:9221/tcp" ] else [ ])
                   ++ (

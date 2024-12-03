@@ -161,6 +161,9 @@ in
                   "proxy"
                   "teamspeak"
                 ];
+                sysctls = {
+                  "net.ipv6.conf.all.disable_ipv6" = 1;
+                };
                 env_file = [ config.age.secrets.nuxt-pages-env.path ];
                 volumes = [
                   "${config-dir}/nuxt-app/upload:/srv/upload"
