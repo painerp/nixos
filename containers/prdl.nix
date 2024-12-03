@@ -44,6 +44,9 @@ in
         container_name = "prdl";
         network_mode = "service:gluetun";
         depends_on = [ "gluetun" ];
+        sysctls = {
+          "net.ipv6.conf.all.disable_ipv6" = 1;
+        };
         environment = {
           RATING_THRESHOLD = 7;
           RATELIMIT = 8;

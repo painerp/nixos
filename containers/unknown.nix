@@ -121,6 +121,9 @@ in
               "backend"
               "proxy"
             ];
+            sysctls = {
+              "net.ipv6.conf.all.disable_ipv6" = 1;
+            };
             depends_on = [ "mysql" ];
             environment = {
               PMA_HOST = "unknown-mysql";

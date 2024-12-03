@@ -36,6 +36,9 @@ in
         container_name = "dashboard";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];
+        sysctls = {
+          "net.ipv6.conf.all.disable_ipv6" = 1;
+        };
         volumes = [
           "${config.lib.server.mkConfigDir "dashboard/config"}:/app/config"
           "${config.lib.server.mkConfigDir "dashboard/images"}:/app/public/images"
