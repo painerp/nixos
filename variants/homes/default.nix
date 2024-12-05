@@ -29,6 +29,7 @@ in
     ++ (
       if (osConfig.modules.hyprland.enable) then
         [
+          ./apod-wallpaper.nix
           ./hyprland
           ./hypridle.nix
           ./hyprlock.nix
