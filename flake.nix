@@ -48,162 +48,171 @@
       server-modules = [
         agenix.nixosModules.default
         ./modules
+        ./containers
+      ];
+      desktop-modules = server-modules ++ [
+        ./pkgs
+      ];
+      desktop-overlays = [
+        (import ./overlays/teamspeak_client.nix { })
+        (import ./overlays/btop.nix { })
       ];
     in
     {
       nixosConfigurations = {
-        jpi = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          system = "aarch64-linux";
-          pkgs = (import nixpkgs) { system = "aarch64-linux"; };
-          modules =
-            server-modules
-            ++ [ ./containers ]
-            ++ [
+        jpi =
+          let
+            system = "aarch64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit specialArgs system;
+            pkgs = (import nixpkgs) { inherit system; };
+            modules = server-modules ++ [
               ./variants/jpi.nix
               ./hardware/rpi.nix
             ];
-        };
+          };
 
-        bpi = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          system = "aarch64-linux";
-          pkgs = (import nixpkgs) { system = "aarch64-linux"; };
-          modules =
-            server-modules
-            ++ [ ./containers ]
-            ++ [
+        bpi =
+          let
+            system = "aarch64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit specialArgs system;
+            pkgs = (import nixpkgs) { inherit system; };
+            modules = server-modules ++ [
               ./variants/bpi.nix
               ./hardware/rpi.nix
             ];
-        };
+          };
 
-        ext = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules =
-            server-modules
-            ++ [ ./containers ]
-            ++ [
+        ext =
+          let
+            system = "x86_64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit specialArgs system;
+            pkgs = (import nixpkgs) { inherit system; };
+            modules = server-modules ++ [
               ./variants/ext.nix
               ./hardware/vps.nix
             ];
-        };
+          };
 
-        run = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules =
-            server-modules
-            ++ [ ./containers ]
-            ++ [
+        run =
+          let
+            system = "x86_64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit specialArgs system;
+            pkgs = (import nixpkgs) { inherit system; };
+            modules = server-modules ++ [
               ./variants/run.nix
               ./hardware/int-vps.nix
             ];
-        };
+          };
 
-        log = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules =
-            server-modules
-            ++ [ ./containers ]
-            ++ [
+        log =
+          let
+            system = "x86_64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit specialArgs system;
+            pkgs = (import nixpkgs) { inherit system; };
+            modules = server-modules ++ [
               ./variants/log.nix
               ./hardware/int-vps.nix
             ];
-        };
+          };
 
-        cit = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules =
-            server-modules
-            ++ [ ./containers ]
-            ++ [
+        cit =
+          let
+            system = "x86_64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit specialArgs system;
+            pkgs = (import nixpkgs) { inherit system; };
+            modules = server-modules ++ [
               ./variants/cit.nix
               ./hardware/int-vps.nix
             ];
-        };
-
-        inf = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules = server-modules ++ [
-            ./variants/inf.nix
-            ./hardware/int-vps.nix
-          ];
-        };
-
-        gra = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          pkgs = (import nixpkgs) {
-            system = "x86_64-linux";
-            overlays = [ inputs.nvidia-patch.overlays.default ];
-            config.allowUnfree = true;
           };
-          modules =
-            server-modules
-            ++ [ ./containers ]
-            ++ [
+
+        inf =
+          let
+            system = "x86_64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit specialArgs system;
+            pkgs = (import nixpkgs) { inherit system; };
+            modules = server-modules ++ [
+              ./variants/inf.nix
+              ./hardware/int-vps.nix
+            ];
+          };
+
+        gra =
+          let
+            system = "x86_64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit specialArgs system;
+            pkgs = (import nixpkgs) {
+              inherit system;
+              overlays = [ inputs.nvidia-patch.overlays.default ];
+              config.allowUnfree = true;
+            };
+            modules = server-modules ++ [
               ./variants/gra.nix
               ./hardware/int-vps.nix
             ];
-        };
+          };
 
-        gam = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules =
-            server-modules
-            ++ [ ./containers ]
-            ++ [
+        gam =
+          let
+            system = "x86_64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit specialArgs system;
+            pkgs = (import nixpkgs) { inherit system; };
+            modules = server-modules ++ [
               ./variants/gam.nix
               ./hardware/int-vps.nix
             ];
-        };
+          };
 
-        arr = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          pkgs = (import nixpkgs) { system = "x86_64-linux"; };
-          modules =
-            server-modules
-            ++ [ ./containers ]
-            ++ [
+        arr =
+          let
+            system = "x86_64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit specialArgs system;
+            pkgs = (import nixpkgs) { inherit system; };
+            modules = server-modules ++ [
               ./variants/arr.nix
               ./hardware/int-vps.nix
             ];
-        };
+          };
 
-        kronos = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs secrets;
+        kronos =
+          let
+            system = "x86_64-linux";
             pkgs-unstable = (import nixpkgs-unstable) {
-              system = "x86_64-linux";
+              inherit system;
               config.allowUnfree = true;
             };
-          };
-          system = "x86_64-linux";
-          pkgs = (import nixpkgs) {
-            system = "x86_64-linux";
-            config.allowUnfree = true;
-            overlays = [
-              (import ./overlays/teamspeak_client.nix { })
-              (import ./overlays/btop.nix { })
-            ];
-          };
-          modules =
-            server-modules
-            ++ [ ./pkgs ]
-            ++ [
+          in
+          nixpkgs.lib.nixosSystem {
+            specialArgs = {
+              inherit inputs secrets pkgs-unstable;
+            };
+            inherit system;
+            pkgs = (import nixpkgs) {
+              inherit system;
+              config.allowUnfree = true;
+              overlays = desktop-overlays;
+            };
+            modules = desktop-modules ++ [
               ./variants/kronos.nix
               ./hardware/lenovo-15arh05h.nix
               home-manager.nixosModules.home-manager
@@ -212,37 +221,30 @@
                 home-manager.useUserPackages = true;
                 home-manager.users.kronos = import ./variants/homes/default.nix;
                 home-manager.extraSpecialArgs = {
-                  inherit inputs;
-                  pkgs-unstable = (import nixpkgs-unstable) {
-                    system = "x86_64-linux";
-                    config.allowUnfree = true;
-                  };
+                  inherit inputs pkgs-unstable;
                 };
               }
             ];
-        };
+          };
 
-        dionysus = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs secrets;
+        dionysus =
+          let
+            system = "x86_64-linux";
             pkgs-unstable = (import nixpkgs-unstable) {
-              system = "x86_64-linux";
+              inherit system;
               config.allowUnfree = true;
             };
-          };
-          system = "x86_64-linux";
-          pkgs = (import nixpkgs) {
-            system = "x86_64-linux";
-            config.allowUnfree = true;
-            overlays = [
-              (import ./overlays/teamspeak_client.nix { })
-              (import ./overlays/btop.nix { })
-            ];
-          };
-          modules =
-            server-modules
-            ++ [ ./pkgs ]
-            ++ [
+          in
+          nixpkgs.lib.nixosSystem {
+            specialArgs = {
+              inherit inputs secrets pkgs-unstable;
+            };
+            pkgs = (import nixpkgs) {
+              inherit system;
+              config.allowUnfree = true;
+              overlays = desktop-overlays;
+            };
+            modules = desktop-modules ++ [
               ./variants/dionysus.nix
               ./hardware/amd-5800x3d.nix
               home-manager.nixosModules.home-manager
@@ -251,31 +253,27 @@
                 home-manager.useUserPackages = true;
                 home-manager.users.dionysus = import ./variants/homes/default.nix;
                 home-manager.extraSpecialArgs = {
-                  inherit inputs;
-                  pkgs-unstable = (import nixpkgs-unstable) {
-                    system = "x86_64-linux";
-                    config.allowUnfree = true;
-                  };
+                  inherit inputs pkgs-unstable;
                 };
               }
             ];
-        };
-
-        jbx = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          system = "x86_64-linux";
-          pkgs = (import nixpkgs) {
-            system = "x86_64-linux";
-            config.allowUnfree = true;
           };
-          modules =
-            server-modules
-            ++ [ ./containers ]
-            ++ [
+
+        jbx =
+          let
+            system = "x86_64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit specialArgs system;
+            pkgs = (import nixpkgs) {
+              inherit system;
+              config.allowUnfree = true;
+            };
+            modules = server-modules ++ [
               ./variants/jbx.nix
               ./hardware/thinkcentre-m715q.nix
             ];
-        };
+          };
       };
     };
 }
