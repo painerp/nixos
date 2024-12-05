@@ -22,10 +22,6 @@ in
       type = lib.types.bool;
       default = false;
     };
-    system = lib.mkOption {
-      type = lib.types.str;
-      default = "x86_64-linux";
-    };
     video = makeOption false;
     image = makeOption false;
     office = makeOption false;
@@ -59,6 +55,7 @@ in
       ++ (
         if cfg.desktop then
           [
+            inputs.apod-wallpaper.packages.${pkgs.system}.default
             brave
             librewolf
             nextcloud-client
@@ -148,7 +145,7 @@ in
             ungoogled-chromium
             nixfmt-rfc-style
             nixd
-            inputs.agenix.packages.${cfg.system}.default
+            inputs.agenix.packages.${pkgs.system}.default
             lazygit
             nodePackages_latest.nodejs
             nodePackages_latest.pnpm
@@ -216,6 +213,31 @@ in
         user = config.system.username;
         dataDir = "/home/${config.system.username}/Syncthing";
         configDir = "/home/${config.system.username}/.config/syncthing";
+      };
+    };
+
+    systemd.user = lib.mkIf (cfg.desktop) {
+      services.apod-wallpaper = {
+        serviceConfig.Type = "oneshot";
+        script = ''
+          export PATH=${
+            lib.makeBinPath [
+              pkgs.libnotify
+              pkgs.hyprland
+              pkgs.swww
+            ]
+          };
+          export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle.crt;
+          ${inputs.apod-wallpaper.packages.${pkgs.system}.default}/bin/apod-wallpaper -m
+        '';
+      };
+      timers.apod-wallpaper = {
+        wantedBy = [ "default.target" ];
+        timerConfig = {
+          OnCalendar = "*-*-* 07:15:00 ${config.time.timeZone}";
+          Persistent = true;
+          Unit = "apod-wallpaper.service";
+        };
       };
     };
   };
