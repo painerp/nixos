@@ -45,7 +45,7 @@
         "sce" = "systemctl enable";
         "c" = "clear";
         "cdp" = "pushd";
-        "ve" = "source ./venv/bin/activate";
+        "ve" = "source ./.venv/bin/activate.fish";
         "jctl" = "journalctl -p 3 -xb";
         "gdur" = "${gdu}/bin/gdu -x /";
       }
