@@ -47,7 +47,7 @@
         "cdp" = "pushd";
         "ve" = "source ./venv/bin/activate";
         "jctl" = "journalctl -p 3 -xb";
-        "ncdur" = "${ncdu}/bin/ncdu -x / --exclude /mnt --exclude-caches --exclude-kernfs --color dark";
+        "gdur" = "${gdu}/bin/gdu -x /";
       }
       // lib.attrsets.optionalAttrs (config.modules.packages.desktop) {
         "f" = "${xfce.thunar}/bin/thunar .";
