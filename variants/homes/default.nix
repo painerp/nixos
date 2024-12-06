@@ -87,10 +87,16 @@ in
   };
 
   gtk = {
+    enable = true;
     cursorTheme = cursor-theme;
     iconTheme = icon-theme;
     theme.name = theme.name;
+    gtk3.extraConfig.gtk-application-prefer-dark-theme = true;
+  };
+
+  qt = {
     enable = true;
+    platformTheme = "gtk";
   };
 
   home = {
