@@ -12,6 +12,7 @@ let
     MIN_MINUTES_SPENT_IN_CITY = 60;
     APPLICATION_HOSTS = "localhost,${cfg.subdomain}.${config.server.domain}";
     TIME_ZONE = config.time.timeZone;
+    DISABLE_TELEMETRY = "true";
   };
 in
 {
