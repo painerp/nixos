@@ -45,7 +45,7 @@ in
         htop
         git
         home-manager
-        ncdu
+        gdu
         jq
         ffmpeg
         zoxide
