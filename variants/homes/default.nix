@@ -68,7 +68,7 @@ in
         cpu_temp = true;
         gpu_temp = true;
         vram = true;
-        frame_timing = false;
+        frame_timing = true;
       };
     };
     fzf.enable = true;
