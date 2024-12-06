@@ -133,7 +133,7 @@ in
         if cfg.communication then
           [
             teamspeak_client
-            webcord
+            vesktop
             signal-desktop
           ]
         else
