@@ -43,8 +43,8 @@ in
         out.service = {
           deploy.resources.reservations.devices = [
             {
-              driver = "nvidia";
-              count = 1;
+              driver = "cdi";
+              device_ids = [ "nvidia.com/gpu=all" ];
               capabilities = [ "gpu" ];
             }
           ];
