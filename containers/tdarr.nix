@@ -45,6 +45,7 @@ in
             {
               driver = "cdi";
               device_ids = [ "nvidia.com/gpu=all" ];
+              capabilities = [ "gpu" ];
             }
           ];
         };
