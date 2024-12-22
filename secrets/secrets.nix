@@ -17,6 +17,7 @@ let
   dionysus = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICXwKn5oP1LcWZY0iXwHRqaKbAHadyrLkAKRJgCYAklU";
   systems = [
     jpi
+    jbx
     bpi
     ext
     log
