@@ -20,7 +20,7 @@ in
   # wlan
   networking = {
     hostName = "nix${flake}";
-    wireless.environmentFile = config.age.secrets.wifi.path;
+    wireless.secretsFile = config.age.secrets.wifi.path;
   };
 
   # system
