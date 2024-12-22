@@ -25,18 +25,18 @@ in
       ];
     };
 
-    services.xserver = {
-      enable = true;
-      desktopManager.kodi = {
+    services = {
+      xserver = {
         enable = true;
-        package = (pkgs.kodi.passthru.withPackages (kodiPackages: with kodiPackages; [ jellyfin ]));
-      };
-      displayManager = {
-        autoLogin = {
+        desktopManager.kodi = {
           enable = true;
-          user = "kodi";
+          package = (pkgs.kodi.passthru.withPackages (kodiPackages: with kodiPackages; [ jellyfin ]));
         };
-        lightdm.autoLogin.timeout = 3;
+        displayManager.lightdm.autoLogin.timeout = 3;
+      };
+      displayManager.autoLogin = {
+        enable = true;
+        user = "kodi";
       };
     };
 
