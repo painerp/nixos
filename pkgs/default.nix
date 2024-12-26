@@ -1,9 +1,10 @@
 {
   imports = [
     ./brightness.nix
-    ./upload-file.nix
-    ./screenshot-upload.nix
     ./ice-connect.nix
+    ./legion-keyboard.nix
+    ./screenshot-upload.nix
     ./toggle-refresh.nix
+    ./upload-file.nix
   ];
 }
