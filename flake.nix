@@ -15,7 +15,7 @@
       inputs.darwin.follows = "";
     };
 
-    ags.url = "github:Aylur/ags/v1";
+    hyprpanel.url = "github:painerp/HyprPanel";
 
     apod-wallpaper.url = "github:painerp/apod-wallpaper";
 
@@ -56,6 +56,7 @@
       desktop-overlays = [
         (import ./overlays/teamspeak_client.nix { })
         (import ./overlays/btop.nix { })
+        inputs.hyprpanel.overlay
       ];
     in
     {

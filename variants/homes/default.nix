@@ -25,7 +25,7 @@ let
 in
 {
   imports =
-    [ inputs.ags.homeManagerModules.default ]
+    [ ]
     ++ (
       if (osConfig.modules.hyprland.enable) then
         [
@@ -40,13 +40,6 @@ in
     );
 
   programs = {
-    ags = lib.mkIf (osConfig.modules.hyprland.enable) {
-      enable = true;
-      extraPackages = with pkgs; [
-        gtksourceview
-        webkitgtk
-      ];
-    };
     git = lib.mkIf (pkg-config.dev) {
       enable = true;
       userName = "painerp";

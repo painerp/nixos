@@ -53,16 +53,11 @@ in
         rofi-wayland
         pavucontrol
         brightnessctl
-        ags
-        libdbusmenu-gtk3
-        bun
-        sass
         networkmanagerapplet
-        libgtop
-        glib
         swww
         matugen
         grimblast
+        hyprpanel
       ];
       sessionVariables = {
         NIXOS_OZONE_WL = "1";
