@@ -25,7 +25,9 @@ in
           ];
         }
         ''
-          import argparse, re, usb.core
+          import argparse
+          import re
+          import usb.core
 
           colors = {
               'black': [0, 0, 0],
@@ -92,19 +94,21 @@ in
                           if section < len(colors):
                               color = colors[section].lower()
 
-                              model = None
                               # Detect color model
                               if re.match(r"^[0-9a-f]{6}$", color):
                                   # HEX model
                                   chunk = [
-                                      int(color[i: i + 2], 16) for i in range(0, len(color), 2)
+                                      int(color[i: i + 2], 16) for i in
+                                          range(0, len(color), 2)
                                   ]
                               else:
                                   components = color.split(",")
 
                                   if components[0].isdigit():
                                       # RGB model
-                                      components = list(map(lambda c: int(c), components))
+                                      components = list(
+                                          map(lambda c: int(c), components)
+                                      )
 
                                       # Validate RGB input
                                       for component in components:
@@ -117,7 +121,9 @@ in
 
                                   elif re.match(r"^\d+\.\d+$", components[0]):
                                       # HSV model
-                                      components = list(map(lambda c: float(c), components))
+                                      components = list(
+                                          map(lambda c: float(c), components)
+                                      )
 
                                       # Validate HSV input
                                       for component in components:
@@ -128,9 +134,9 @@ in
 
                                       from colorsys import hsv_to_rgb
 
-                                      chunk = list(
-                                          map(lambda c: int(c * 255), hsv_to_rgb(*components))
-                                      )
+                                      chunk = list(map(
+                                          lambda c: int(c * 255), hsv_to_rgb(*components)
+                                      ))
 
                                   else:
                                       raise ValueError(f"Invalid color model: {color}")
