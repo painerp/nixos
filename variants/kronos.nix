@@ -109,6 +109,7 @@ in
   };
   cpkgs = {
     ice-connect.enable = true;
+    legion-keyboard.enable = true;
     toggle-refresh.enable = true;
     brightness.enable = true;
     screenshot-upload.enable = true;
