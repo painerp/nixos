@@ -98,8 +98,9 @@ in
                               if re.match(r"^[0-9a-f]{6}$", color):
                                   # HEX model
                                   chunk = [
-                                      int(color[i: i + 2], 16) for i in
-                                          range(0, len(color), 2)
+                                      int(color[i: i + 2], 16) for i in range(
+                                          0, len(color), 2
+                                      )
                                   ]
                               else:
                                   components = color.split(",")
