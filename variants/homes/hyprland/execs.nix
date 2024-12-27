@@ -1,6 +1,6 @@
 {
   wayland.windowManager.hyprland.settings.exec-once = [
-    "ags"
+    "hyprpanel"
     "wl-paste --watch cliphist store"
     "udiskie &"
     "keepassxc"
