@@ -110,7 +110,7 @@ in
     mediathekarr = {
       enable = true;
       volumes = [
-        "${unprocessed}/downloads:/completed"
+        "${unprocessed}/downloads:/downloads"
         "${temp}:/app/downloads"
       ];
     };
