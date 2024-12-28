@@ -43,7 +43,7 @@ in
           PUID = 1000;
           PGID = 1000;
           TZ = config.time.timeZone;
-          DOWNLOAD_FOLDER_PATH_MAPPING = "/completed";
+          DOWNLOAD_FOLDER_PATH_MAPPING = "/downloads";
         };
         volumes = cfg.volumes;
         labels = {
