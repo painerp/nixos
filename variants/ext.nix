@@ -93,6 +93,7 @@ in
       expose = true;
       env-file = secrets.ext-teamspeak-env;
     };
+    tsmusicbot.enable = true;
     traefik = {
       enable = true;
       subdomain = "t";
