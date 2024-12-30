@@ -91,6 +91,7 @@ in
     ./syncthing.nix
     ./teamspeak.nix
     ./traefik.nix
+    ./tsmusicbot.nix
     ./tdarr.nix
     ./unknown.nix
     ./uptime-kuma.nix
