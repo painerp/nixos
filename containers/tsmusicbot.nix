@@ -38,10 +38,13 @@ in
       services.tsmusicbot.service = {
         image = "ghcr.io/painerp/tsmusicbot:dev";
         container_name = "tsmusicbot";
+        hostname = config.networking.hostName;
         networks = [
           "proxy"
         ] ++ (if (config.server.teamspeak.enable) then [ "teamspeak" ] else [ ]);
-        hostname = config.networking.hostName;
+        environment = {
+          PRE_RESOLVE_HOST = "true";
+        };
         volumes = [ "${config.lib.server.mkConfigDir "tsmusicbot"}/config.json:/app/config.json" ];
         labels =
           config.lib.server.mkTraefikLabels {
