@@ -37,8 +37,10 @@ in
   swapDevices = [ { device = "/dev/disk/by-uuid/040cc9dd-71cf-4c88-8cfa-cf52e21bc9e5"; } ];
 
   boot.initrd.luks.devices = {
-    "luks-1fea4deb-b91d-46cb-9fc2-abb4e15cb2c6".device = "/dev/disk/by-uuid/1fea4deb-b91d-46cb-9fc2-abb4e15cb2c6";
-    "luks-97fed62b-bdc0-43b3-b670-ed83775644aa".device = "/dev/disk/by-uuid/97fed62b-bdc0-43b3-b670-ed83775644aa";
+    "luks-1fea4deb-b91d-46cb-9fc2-abb4e15cb2c6".device =
+      "/dev/disk/by-uuid/1fea4deb-b91d-46cb-9fc2-abb4e15cb2c6";
+    "luks-97fed62b-bdc0-43b3-b670-ed83775644aa".device =
+      "/dev/disk/by-uuid/97fed62b-bdc0-43b3-b670-ed83775644aa";
   };
 
   fileSystems."/mnt/backup-arch" = {
