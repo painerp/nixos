@@ -33,14 +33,14 @@ in
     virtualisation.arion.projects.tsmusicbot.settings = {
       project.name = "tsmusicbot";
       networks.proxy.external = true;
-      networks.teamspeak.external = lib.mkIf (config.server.teamspeak) true;
+      networks.teamspeak.external = lib.mkIf (config.server.teamspeak.enable) true;
 
       services.tsmusicbot.service = {
         image = "ghcr.io/painerp/tsmusicbot:dev";
         container_name = "tsmusicbot";
         networks = [
           "proxy"
-        ] ++ (if (config.server.teamspeak) then [ "teamspeak" ] else [ ]);
+        ] ++ (if (config.server.teamspeak.enable) then [ "teamspeak" ] else [ ]);
         hostname = config.networking.hostName;
         volumes = [ "${config.lib.server.mkConfigDir "tsmusicbot"}/config.json:/app/config.json" ];
         labels =
