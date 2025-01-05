@@ -111,7 +111,7 @@ in
     };
     nginx = {
       enable = true;
-      rule = "Host(`jf.${config.server.domain}`) || PathPrefix(`/extras`)";
+      rule = "Host(`jf.${config.server.domain}`) && PathPrefix(`/extras`)";
       auth = false;
     };
     uptime-kuma = {
