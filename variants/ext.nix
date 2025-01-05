@@ -109,6 +109,11 @@ in
         # "8211:8211/udp"
       ];
     };
+    nginx = {
+      enable = true;
+      rule = "Host(`jf.${config.server.domain}`) || PathPrefix(`/extras`)";
+      auth = false;
+    };
     uptime-kuma = {
       enable = true;
       subdomain = "st";
