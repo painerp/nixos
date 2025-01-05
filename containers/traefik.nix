@@ -230,7 +230,6 @@ in
           "${config.lib.server.mkConfigDir "traefik"}/acme.json:/acme.json"
           "${config.lib.server.mkConfigDir "traefik"}/logs:/var/log/traefik"
           "${config.lib.server.mkConfigDir "traefik/dynamic"}:/dynamic"
-          "${config.lib.server.mkConfigDir "traefik/public"}:/public"
           "/var/run/docker.sock:/var/run/docker.sock:ro"
           "/etc/localtime:/etc/localtime:ro"
         ];
