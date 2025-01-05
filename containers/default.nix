@@ -72,6 +72,7 @@ in
     ./minecraft-router.nix
     ./monitoring.nix
     ./nextcloud.nix
+    ./nginx.nix
     ./nuxt-pages.nix
     ./ollama.nix
     ./open-webui.nix
