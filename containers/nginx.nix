@@ -66,7 +66,7 @@ in
             root = cfg.root;
             rule = cfg.rule;
             forwardAuth = cfg.auth;
-            middlware = cfg.middleware;
+            middleware = cfg.middleware;
           }
           // {
             "com.centurylinklabs.watchtower.enable" = "true";
