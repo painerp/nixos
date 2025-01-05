@@ -25,6 +25,14 @@ in
       type = lib.types.str;
       default = "Host(`${cfg.subdomain}.${config.server.domain}`)";
     };
+    middleware = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+    };
+    labels = lib.mkOption {
+      type = lib.types.attrs;
+      default = { };
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -58,10 +66,12 @@ in
             root = cfg.root;
             rule = cfg.rule;
             forwardAuth = cfg.auth;
+            middlware = cfg.middleware;
           }
           // {
             "com.centurylinklabs.watchtower.enable" = "true";
-          };
+          }
+          // cfg.labels;
         restart = "unless-stopped";
       };
     };
