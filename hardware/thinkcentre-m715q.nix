@@ -33,4 +33,10 @@
   modules.pipewire.enable = true;
 
   hardware.cpu.amd.updateMicrocode = true;
+
+  bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings.General.Experimental = true;
+  };
 }
