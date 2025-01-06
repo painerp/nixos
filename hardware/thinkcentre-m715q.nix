@@ -32,11 +32,13 @@
   security.rtkit.enable = true;
   modules.pipewire.enable = true;
 
-  hardware.cpu.amd.updateMicrocode = true;
+  hardware = {
+    cpu.amd.updateMicrocode = true;
 
-  bluetooth = {
-    enable = true;
-    powerOnBoot = true;
-    settings.General.Experimental = true;
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+      settings.General.Experimental = true;
+    };
   };
 }
