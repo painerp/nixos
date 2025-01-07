@@ -57,6 +57,7 @@ in
         };
         volumes = [
           "${config.lib.server.mkConfigDir "nginx/public"}:/usr/share/nginx/html:ro"
+          "${config.lib.server.mkConfigDir "nginx/logs"}:/var/log/nginx"
         ];
         labels =
           config.lib.server.mkTraefikLabels {
