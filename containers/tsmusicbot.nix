@@ -45,7 +45,10 @@ in
         environment = {
           PRE_RESOLVE_HOST = "true";
         };
-        volumes = [ "${config.lib.server.mkConfigDir "tsmusicbot"}/config.json:/app/config.json" ];
+        volumes = [
+          "${config.lib.server.mkConfigDir "tsmusicbot"}/config.json:/app/config.json"
+          "${config.lib.server.mkConfigDir "tsmusicbot"}/cookies.txt:/app/cookies.txt"
+        ];
         labels =
           config.lib.server.mkTraefikLabels {
             name = "tsmusicbot";
