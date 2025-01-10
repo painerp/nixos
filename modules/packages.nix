@@ -57,7 +57,6 @@ in
           [
             inputs.apod-wallpaper.packages.${pkgs.system}.default
             brave
-            librewolf
             nextcloud-client
             nomacs
             kdePackages.kate
@@ -198,6 +197,47 @@ in
       java = {
         enable = cfg.dev;
         package = pkgs.jdk;
+      };
+      firefox = {
+        enable = cfg.desktop;
+        package = pkgs.librewolf;
+        policies = {
+          DisableTelemetry = true;
+          DisableFirefoxStudies = true;
+          Preferences = {
+            "cookiebanners.service.mode.privateBrowsing" = 1;
+            "cookiebanners.service.mode" = 1;
+            "privacy.donottrackheader.enabled" = false;
+            "privacy.fingerprintingProtection" = true;
+            "privacy.resistFingerprinting" = true;
+            "privacy.trackingprotection.emailtracking.enabled" = true;
+            "privacy.trackingprotection.enabled" = true;
+            "privacy.trackingprotection.fingerprinting.enabled" = true;
+            "privacy.trackingprotection.socialtracking.enabled" = true;
+          };
+          ExtensionSettings = {
+            "keepassxc-browser@keepassxc.org" = {
+              install_url = "https://addons.mozilla.org/firefox/downloads/latest/keepassxc-browser/latest.xpi";
+              installation_mode = "force_installed";
+            };
+            "addon@darkreader.org" = {
+              install_url = "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi";
+              installation_mode = "force_installed";
+            };
+            "uMatrix@raymondhill.net" = {
+              install_url = "https://addons.mozilla.org/firefox/downloads/latest/umatrix/latest.xpi";
+              installation_mode = "force_installed";
+            };
+            "uBlock0@raymondhill.net" = {
+              install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
+              installation_mode = "force_installed";
+            };
+            "newtaboverride@agenedia.com" = {
+              install_url = "https://addons.mozilla.org/firefox/downloads/latest/new-tab-override/latest.xpi";
+              installation_mode = "force_installed";
+            };
+          };
+        };
       };
     };
 
