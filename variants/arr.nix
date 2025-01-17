@@ -107,13 +107,6 @@ in
         "${temp}:/temp"
       ];
     };
-    mediathekarr = {
-      enable = true;
-      volumes = [
-        "${unprocessed}/downloads:/downloads"
-        "${temp}:/app/downloads"
-      ];
-    };
     sonarr = {
       enable = true;
       volumes = [
