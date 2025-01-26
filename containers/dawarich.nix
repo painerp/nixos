@@ -4,7 +4,7 @@ let
   cfg = config.server.dawarich;
   config-dir = "${config.lib.server.mkConfigDir "dawarich"}";
   default-env = {
-    RAIL_ENV = "development";
+    RAIL_ENV = "production";
     REDIS_URL = "redis://redis:6379/0";
     DATABASE_HOST = "database";
     DATABASE_USERNAME = "postgres";
@@ -76,13 +76,19 @@ in
             "proxy"
             "backend"
           ];
-          entrypoint = "dev-entrypoint.sh";
-          command = [ "bin/dev" ];
+          entrypoint = "web-entrypoint.sh";
+          command = [
+            "bin/rails"
+            "server"
+            "-p"
+            "3000"
+            "-b"
+            "::"
+          ];
           tty = true;
           environment = default-env;
           env_file = [ config.age.secrets.dawarich-env.path ];
           volumes = [
-            "${config-dir}/gem-cache:/usr/local/bundle/gems_app"
             "${config-dir}/public:/var/app/public"
           ];
           depends_on = [
@@ -112,15 +118,18 @@ in
             "proxy"
             "backend"
           ];
-          entrypoint = "dev-entrypoint.sh";
-          command = [ "sidekiq" ];
+          entrypoint = "sidekiq-entrypoint.sh";
+          command = [
+            "bundle"
+            "exec"
+            "sidekiq"
+          ];
           tty = true;
           environment = default-env // {
             BACKGROUND_PROCESSING_CONCURRENCY = "10";
           };
           env_file = [ config.age.secrets.dawarich-env.path ];
           volumes = [
-            "${config-dir}/gem-cache:/usr/local/bundle/gems_sidekiq"
             "${config-dir}/public:/var/app/public"
           ];
           depends_on = [
@@ -140,6 +149,7 @@ in
         container_name = "dawarich_redis";
         hostname = config.networking.hostName;
         networks = [ "backend" ];
+        volumes = [ "${config-dir}/shared:/data" ];
         labels = {
           "com.centurylinklabs.watchtower.enable" = "true";
         };
@@ -156,7 +166,10 @@ in
           POSTGRES_DB = "${default-env.DATABASE_NAME}";
         };
         env_file = [ config.age.secrets.dawarich-pg-env.path ];
-        volumes = [ "${config-dir}/postgres:/var/lib/postgresql/data" ];
+        volumes = [
+          "${config-dir}/postgres:/var/lib/postgresql/data"
+          "${config-dir}/shared:/var/shared"
+        ];
         labels = {
           "com.centurylinklabs.watchtower.enable" = "true";
         };
