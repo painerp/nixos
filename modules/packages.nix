@@ -90,6 +90,8 @@ in
         if cfg.office then
           [
             libreoffice
+            hunspell
+            hunspellDicts.de_DE
             okular
             obsidian
           ]
