@@ -66,6 +66,8 @@ in
     };
     fzf.enable = true;
     zoxide.enable = true;
+    bash.enable = true;
+    fish.enable = true;
   };
 
   services = {
