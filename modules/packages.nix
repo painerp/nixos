@@ -64,6 +64,7 @@ in
             vlc
             vorta
             keepassxc
+            gparted
           ]
           ++ (
             if config.modules.amd.enable then
