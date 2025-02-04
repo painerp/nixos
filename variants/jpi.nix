@@ -46,15 +46,13 @@ in
       expose = true;
       wildcard = true;
     };
-    watchtower.enable = true;
+    watchtower = {
+      enable = true;
+      schedule = "0 0 3 * * *";
+    };
   };
 
   # users
   users.mutableUsers = false;
   nix.settings.trusted-users = [ "@wheel" ];
-
-  # docker
-  virtualisation.arion.projects = {
-    watchtower.settings.services.watchtower.service.environment.WATCHTOWER_SCHEDULE = lib.mkForce "0 0 3 * * *";
-  };
 }
