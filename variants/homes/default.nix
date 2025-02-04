@@ -53,7 +53,7 @@ in
         ms-python.python
         github.copilot
         github.copilot-chat
-        vscode-tailscale
+        tailscale.vscode-tailscale
       ];
     };
     mangohud = lib.mkIf (pkg-config.gaming) {
