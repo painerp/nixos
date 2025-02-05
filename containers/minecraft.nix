@@ -74,7 +74,7 @@ in
           TYPE = cfg.server-type;
           SNOOPER_ENABLED = "FALSE";
           MAX_MEMORY = cfg.max-memory;
-          VANILLATWEAKS_FILE = "/config/vt-datapacks.json,/config/vt-craftingtweaks.json";
+          VANILLATWEAKS_FILE = "/data/config/vt-datapacks.json,/data/config/vt-craftingtweaks.json";
         };
         env_file = [ config.age.secrets.minecraft-env.path ];
         ports =
