@@ -48,6 +48,10 @@ in
         enable = true;
         interval = "2h";
       };
+      extras = {
+        plugins.modrinth = "axgraves,invsee++,keepchunks,luckperms,worldedit";
+        vanillatweaks = "/data/config/vt-datapacks.json,/data/config/vt-craftingtweaks.json";
+      };
     };
     minecraft-bluemap = {
       enable = true;
