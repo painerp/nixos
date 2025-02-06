@@ -51,6 +51,18 @@ in
         default = "24h";
       };
     };
+    extras = {
+      plugins = {
+        modrinth = lib.mkOption {
+          type = lib.types.str;
+          default = "";
+        };
+      };
+      vanillatweaks = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+      };
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -69,13 +81,19 @@ in
         container_name = "minecraft";
         hostname = config.networking.hostName;
         tty = true;
-        environment = {
-          EULA = "TRUE";
-          TYPE = cfg.server-type;
-          SNOOPER_ENABLED = "FALSE";
-          MAX_MEMORY = cfg.max-memory;
-          VANILLATWEAKS_FILE = "/data/config/vt-datapacks.json,/data/config/vt-craftingtweaks.json";
-        };
+        environment =
+          {
+            EULA = "TRUE";
+            TYPE = cfg.server-type;
+            SNOOPER_ENABLED = "FALSE";
+            MAX_MEMORY = cfg.max-memory;
+          }
+          // lib.attrsets.optionalAttrs (cfg.extras.vanillatweaks != "") {
+            VANILLATWEAKS_FILE = cfg.extras.vanillatweaks;
+          }
+          // lib.attrsets.optionalAttrs (cfg.extras.plugins.modrinth != "") {
+            MODRINTH_PROJECTS = cfg.extras.plugins.modrinth;
+          };
         env_file = [ config.age.secrets.minecraft-env.path ];
         ports =
           (if (cfg.expose) then [ "25565:25565/tcp" ] else [ ])
