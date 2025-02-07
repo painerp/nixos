@@ -197,9 +197,9 @@ in
       configFile = pkgs.writeText "logrotate.conf" ''
         ${config.lib.server.mkConfigDir "traefik/logs"}/access.log {
           weekly
-          rotate 30
           missingok
           notifempty
+          compress
           postrotate
           docker kill --signal="USR1" traefik
           endscript
