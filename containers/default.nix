@@ -59,6 +59,7 @@ in
     ./gitea.nix
     ./gluetun.nix
     ./gotify.nix
+    ./goaccess.nix
     ./home-assistant.nix
     ./immich.nix
     ./jellyfin.nix
