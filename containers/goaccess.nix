@@ -33,7 +33,7 @@ in
 
       services.nginx.service = {
         image = "nginx:latest";
-        container_name = "nginx";
+        container_name = "goaccess-nginx";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];
         environment = {
