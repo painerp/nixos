@@ -49,7 +49,7 @@ in
         interval = "2h";
       };
       extras = {
-        plugins.modrinth = "axgraves,invsee++,keepchunks,luckperms,worldedit";
+        plugins.modrinth = "axgraves,invsee++,keepchunks:v7LjD3AV,luckperms,worldedit";
         vanillatweaks = "/data/config/vt-datapacks.json,/data/config/vt-craftingtweaks.json";
       };
     };
