@@ -192,6 +192,21 @@ in
       "net.core.wmem_max" = 2500000;
     };
 
+    services.logrotate = {
+      enable = true;
+      configFile = pkgs.writeText "logrotate.conf" ''
+        ${config.lib.server.mkConfigDir "traefik/logs"}/access.log {
+          weekly
+          rotate 30
+          missingok
+          notifempty
+          postrotate
+          docker kill --signal="USR1" traefik
+          endscript
+        }
+      '';
+    };
+
     virtualisation.arion.projects.traefik.settings = {
       project.name = "traefik";
       networks.proxy.name = "proxy";
@@ -228,7 +243,7 @@ in
         volumes = [
           "${staticConfigFile}:/traefik.yaml"
           "${config.lib.server.mkConfigDir "traefik"}/acme.json:/acme.json"
-          "${config.lib.server.mkConfigDir "traefik"}/logs:/var/log/traefik"
+          "${config.lib.server.mkConfigDir "traefik/logs"}:/var/log/traefik"
           "${config.lib.server.mkConfigDir "traefik/dynamic"}:/dynamic"
           "/var/run/docker.sock:/var/run/docker.sock:ro"
           "/etc/localtime:/etc/localtime:ro"
