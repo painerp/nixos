@@ -41,7 +41,7 @@ in
         };
         volumes = [
           "${config.lib.server.mkConfigDir "goaccess/public"}:/usr/share/nginx/html"
-          "${config.lib.server.mkConfigDir "goaccess/config"}:/etc/nginx"
+          "${config.lib.server.mkConfigDir "goaccess/config"}/nginx.conf:/etc/nginx/nginx.conf"
         ];
         labels =
           config.lib.server.mkTraefikLabels {
@@ -69,7 +69,7 @@ in
         };
         volumes =
           [
-            "${config.lib.server.mkConfigDir "goaccess/config"}:/srv/config"
+            "${config.lib.server.mkConfigDir "goaccess/config"}/goaccess.conf:/srv/config/goaccess.conf"
             "${config.lib.server.mkConfigDir "goaccess/geoip"}:/srv/geoip"
             "${config.lib.server.mkConfigDir "goaccess/public"}:/srv/report"
           ]
