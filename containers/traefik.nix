@@ -197,6 +197,7 @@ in
       configFile = pkgs.writeText "logrotate.conf" ''
         ${config.lib.server.mkConfigDir "traefik/logs"}/access.log {
           weekly
+          rotate 90
           missingok
           notifempty
           compress
