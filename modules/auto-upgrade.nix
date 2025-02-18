@@ -6,10 +6,10 @@
 }:
 
 let
-  cfg = config.modules.autoUpgrade;
+  cfg = config.modules.auto-upgrade;
 in
 {
-  options.modules.autoUpgrade = {
+  options.modules.auto-upgrade = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;
