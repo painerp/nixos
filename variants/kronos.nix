@@ -96,6 +96,7 @@ in
   };
   modules = {
     arion.enable = true;
+    auto-upgrade.enable = false;
     hyprland = {
       enable = true;
       monitor = [
