@@ -135,6 +135,7 @@ in
         if cfg.communication then
           [
             teamspeak_client
+            pkgs-unstable.teamspeak6-client
             vesktop
             signal-desktop
           ]
