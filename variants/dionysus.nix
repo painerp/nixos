@@ -43,8 +43,10 @@ in
   };
 
   boot.initrd.luks.devices = {
-    "luks-c7261900-049b-433c-8c8b-d96d9a68a9d6".device = "/dev/disk/by-uuid/c7261900-049b-433c-8c8b-d96d9a68a9d6";
-    "luks-8089a368-5043-4915-a251-08688916a613".device = "/dev/disk/by-uuid/8089a368-5043-4915-a251-08688916a613";
+    "luks-c7261900-049b-433c-8c8b-d96d9a68a9d6".device =
+      "/dev/disk/by-uuid/c7261900-049b-433c-8c8b-d96d9a68a9d6";
+    "luks-8089a368-5043-4915-a251-08688916a613".device =
+      "/dev/disk/by-uuid/8089a368-5043-4915-a251-08688916a613";
   };
 
   fileSystems."/mnt/backup-arch" = {
@@ -101,6 +103,7 @@ in
   modules = {
     amd.enable = true;
     arion.enable = true;
+    auto-upgrade.enable = false;
     packages.full = true;
     logitech.enable = true;
     waydroid.enable = true;
