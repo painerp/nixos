@@ -100,6 +100,19 @@
             ];
           };
 
+        sex =
+          let
+            system = "x86_64-linux";
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit specialArgs system;
+            pkgs = (import nixpkgs) { inherit system; };
+            modules = server-modules ++ [
+              ./variants/sex.nix
+              ./hardware/vps.nix
+            ];
+          };
+
         run =
           let
             system = "x86_64-linux";
