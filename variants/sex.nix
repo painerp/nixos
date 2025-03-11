@@ -20,16 +20,16 @@ in
   networking.hostName = "nix${flake}";
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/ea881f84-b512-47e8-af97-4260a2fb4e51";
+    device = "/dev/disk/by-uuid/27f84bd7-9372-4254-ac51-ad7b0f2acffb";
     fsType = "ext4";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/E900-FD3F";
+    device = "/dev/disk/by-uuid/DCCB-DD8F";
     fsType = "vfat";
   };
 
-  swapDevices = [ { device = "/dev/disk/by-uuid/55f7d97a-a438-4ac9-8909-2e08a78e3ef5"; } ];
+  swapDevices = [ { device = "/dev/disk/by-uuid/4922412f-2a31-4239-8c30-ad2b0f0c94ca"; } ];
 
   # system
   system = {
