@@ -9,7 +9,7 @@
 
 let
   flake = "sex";
-  tailscale-ip = "100.114.178.125";
+  tailscale-ip = "100.82.15.66";
 in
 {
   imports = [
