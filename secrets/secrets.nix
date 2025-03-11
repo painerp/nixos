@@ -6,6 +6,7 @@ let
   jbx = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPwNnBrvLYanuWqr1PUEI97pmsXCTDPdcp/N8+ozYkZn";
   bpi = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMsEvJHm2Nyaps1z7Pk7tUAqNd6HZLhGeV4P8JVPbkla";
   ext = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAK9i6Ywzx4IFy5I7N4/OQJfd36cShHtWa9N+7tkEn3I";
+  sex = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPD+qFhPBrdV9MYBjlZf+EjoTLLnMKfElYQOZjufCu3E";
   log = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC2TuNrV3HTsPpPg2f3ziB2Iug4rqOvvi078DsBe/5GP";
   run = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDukRN3AKfGtGhjagYmCu3U8rr0Mh/FywyJDA2GN8iPE";
   inf = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID+uAHS+HxLB0UnSoi64GYFO4KE9ypNdiL0AR6+R5sKN";
@@ -20,6 +21,7 @@ let
     jbx
     bpi
     ext
+    sex
     log
     run
     inf
@@ -29,6 +31,10 @@ let
     arr
     kronos
     dionysus
+  ];
+  external_systems = [
+    ext
+    sex
   ];
 in
 {
@@ -47,16 +53,16 @@ in
 
   "bpi/wifi.age".publicKeys = users ++ [ bpi ];
 
-  "ext/authentik.env.age".publicKeys = users ++ [ ext ];
-  "ext/authentik-pg.env.age".publicKeys = users ++ [ ext ];
-  "ext/bachelor.env.age".publicKeys = users ++ [ ext ];
-  "ext/bachelor-pg.env.age".publicKeys = users ++ [ ext ];
-  "ext/nuxt-pages.env.age".publicKeys = users ++ [ ext ];
-  "ext/nuxt-pages-pma.env.age".publicKeys = users ++ [ ext ];
-  "ext/nuxt-pages-mysql.env.age".publicKeys = users ++ [ ext ];
-  "ext/nuxt-pages-g2g.env.age".publicKeys = users ++ [ ext ];
-  "ext/open-webui.env.age".publicKeys = users ++ [ ext ];
-  "ext/teamspeak.env.age".publicKeys = users ++ [ ext ];
+  "ext/authentik.env.age".publicKeys = users ++ external_systems;
+  "ext/authentik-pg.env.age".publicKeys = users ++ external_systems;
+  "ext/bachelor.env.age".publicKeys = users ++ external_systems;
+  "ext/bachelor-pg.env.age".publicKeys = users ++ external_systems;
+  "ext/nuxt-pages.env.age".publicKeys = users ++ external_systems;
+  "ext/nuxt-pages-pma.env.age".publicKeys = users ++ external_systems;
+  "ext/nuxt-pages-mysql.env.age".publicKeys = users ++ external_systems;
+  "ext/nuxt-pages-g2g.env.age".publicKeys = users ++ external_systems;
+  "ext/open-webui.env.age".publicKeys = users ++ external_systems;
+  "ext/teamspeak.env.age".publicKeys = users ++ external_systems;
 
   "inf/authentik-proxy.env.age".publicKeys = users ++ [ inf ];
   "inf/jellystat.env.age".publicKeys = users ++ [ inf ];
