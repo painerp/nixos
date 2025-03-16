@@ -39,6 +39,9 @@ in
         sysctls = {
           "net.ipv6.conf.all.disable_ipv6" = 1;
         };
+        environment = {
+          HOMEPAGE_ALLOWED_HOSTS = "${cfg.subdomain}.${config.server.domain}";
+        };
         volumes = [
           "${config.lib.server.mkConfigDir "dashboard/config"}:/app/config"
           "${config.lib.server.mkConfigDir "dashboard/images"}:/app/public/images"
