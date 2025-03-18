@@ -30,6 +30,10 @@ in
       type = lib.types.bool;
       default = false;
     };
+    delay-notification = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -53,7 +57,8 @@ in
             WATCHTOWER_SCHEDULE = cfg.schedule;
           }
           // lib.attrsets.optionalAttrs (cfg.rolling-restart) { WATCHTOWER_ROLLING_RESTART = "true"; }
-          // lib.attrsets.optionalAttrs (cfg.only-label) { WATCHTOWER_LABEL_ENABLE = "true"; };
+          // lib.attrsets.optionalAttrs (cfg.only-label) { WATCHTOWER_LABEL_ENABLE = "true"; }
+          // lib.attrsets.optionalAttrs (cfg.delay-notification) { WATCHTOWER_NOTIFICATIONS_DELAY = "120"; };
         env_file = [ config.age.secrets.watchtower-env.path ];
         volumes = [
           "/var/run/docker.sock:/var/run/docker.sock"
