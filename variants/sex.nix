@@ -126,6 +126,7 @@ in
     watchtower = {
       enable = true;
       internal-services = true;
+      delay-notification = true;
     };
   };
 
