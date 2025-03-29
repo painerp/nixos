@@ -125,6 +125,7 @@ in
         if cfg.tor then
           [
             tor
+            tor-browser
             nyx
             protonvpn-gui
           ]
