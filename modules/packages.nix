@@ -51,6 +51,7 @@ in
         zoxide
         zip
         tealdeer
+        screen
       ]
       ++ (
         if cfg.desktop then
