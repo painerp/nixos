@@ -135,7 +135,10 @@ in
       enable = true;
       subdomain = "t-gra";
     };
-    watchtower.enable = true;
+    watchtower = {
+      enable = true;
+      schedule = "0 0 6 * * *";
+    };
   };
 
   # users
