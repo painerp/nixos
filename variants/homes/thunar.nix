@@ -75,7 +75,7 @@
       };
       Service = {
         Type = "dbus";
-        ExecStart = "${thunar-with-plugins}/bin/Thunar --daemon";
+        ExecStart = "${thunar}/bin/Thunar --daemon";
         WantedBy = [ "graphical-session.target" ];
         BusName = "org.xfce.FileManager";
         KillMode = "process";
