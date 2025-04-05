@@ -105,6 +105,7 @@ in
       theme.package
       cursor-theme.package
       icon-theme.package
+      papirus-folders
     ];
     pointerCursor = cursor-theme // {
       gtk.enable = true;
