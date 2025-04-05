@@ -32,6 +32,7 @@ in
           ./hyprland
           ./hypridle.nix
           ./hyprlock.nix
+          ./hyprpanel.nix
           ./rofi
           ./wlogout
         ]
