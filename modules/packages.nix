@@ -66,6 +66,7 @@ in
             vorta
             keepassxc
             gparted
+            xfce.xfconf
           ]
           ++ (
             if config.modules.amd.enable then

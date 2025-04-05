@@ -34,6 +34,7 @@ in
           ./hyprlock.nix
           ./hyprpanel.nix
           ./rofi
+          ./thunar
           ./wlogout
         ]
       else
