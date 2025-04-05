@@ -5,47 +5,44 @@
 
   programs.hyprpanel = {
     enable = true;
-    systemd.enable = true;
     hyprland.enable = true;
     overwrite.enable = true;
 
-    theme = "catppuccin_mocha";
-
-    layout = {
-      "bar.layouts" = {
-        "0" = {
-          left = [
-            "dashboard"
-            "clock"
-            "workspaces"
-          ];
-          middle = [ "windowtitle" ];
-          right = [
-            "systray"
-            "volume"
-            "bluetooth"
-            "network"
-            "hypridle"
-            "battery"
-            "notifications"
-          ];
-        };
-        "*" = {
-          left = [
-            "dashboard"
-            "workspaces"
-          ];
-          middle = [ "windowtitle" ];
-          right = [
-            "volume"
-            "clock"
-            "notifications"
-          ];
+    settings = {
+      layout = {
+        "bar.layouts" = {
+          "0" = {
+            left = [
+              "dashboard"
+              "clock"
+              "workspaces"
+            ];
+            middle = [ "windowtitle" ];
+            right = [
+              "systray"
+              "volume"
+              "bluetooth"
+              "network"
+              "hypridle"
+              "battery"
+              "notifications"
+            ];
+          };
+          "*" = {
+            left = [
+              "dashboard"
+              "workspaces"
+            ];
+            middle = [ "windowtitle" ];
+            right = [
+              "volume"
+              "clock"
+              "notifications"
+            ];
+          };
         };
       };
-    };
 
-    settings = {
       bar = {
         launcher.icon = "󱄅";
         windowtitle = {
@@ -94,13 +91,13 @@
       };
 
       theme = {
+        name = "catppuccin_mocha";
         font.size = "1rem";
         bar = {
           outer_spacing = "0.25em";
           floating = false;
           transparent = true;
         };
-        buttons.modules.cava.spacing = "0em";
         osd.muted_zero = true;
       };
     };
