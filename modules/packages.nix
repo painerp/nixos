@@ -264,8 +264,8 @@ in
 
     systemd.user = lib.mkIf (cfg.desktop) {
       services.apod-wallpaper = {
-        Wants = [ "network-online.target" ];
-        After = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        after = [ "network-online.target" ];
         serviceConfig.Type = "oneshot";
         script = ''
           export PATH=${
@@ -281,8 +281,8 @@ in
       };
       timers.apod-wallpaper = {
         wantedBy = [ "default.target" ];
-        Wants = [ "network-online.target" ];
-        After = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        after = [ "network-online.target" ];
         timerConfig = {
           OnCalendar = "*-*-* 07:15:00 ${config.time.timeZone}";
           Persistent = true;
