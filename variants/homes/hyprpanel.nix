@@ -52,6 +52,7 @@
           truncation_size = 100;
         };
         workspaces = {
+          monitorSpecific = false;
           numbered_active_indicator = "highlight";
           workspaces = 6;
         };
@@ -63,7 +64,7 @@
         bluetooth.label = false;
         clock = {
           showIcon = false;
-          format = "%H:%M %a; %d %b";
+          format = "%H:%M %a, %d %b";
         };
         customModules = {
           hypridle = {
