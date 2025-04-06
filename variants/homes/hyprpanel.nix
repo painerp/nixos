@@ -86,7 +86,39 @@
           time.military = true;
           weather.enabled = false;
         };
-        dashboard.powermenu.enabled = false;
+        dashboard = {
+          powermenu.enabled = false;
+          directories = {
+            left = {
+              directory1 = {
+                command = "bash -c \"thunar $HOME/\"";
+                label = "󱂵 Home";
+              };
+              directory2 = {
+                command = "bash -c \"thunar $HOME/Videos/\"";
+                label = "󰉏 Videos";
+              };
+              directory3 = {
+                command = "bash -c \"thunar $HOME/Projects/\"";
+                label = "󰚝 Projects";
+              };
+            };
+            right = {
+              directory1 = {
+                command = "bash -c \"thunar $HOME/Documents/\"";
+                label = "󱧶 Documents";
+              };
+              directory2 = {
+                command = "bash -c \"thunar $HOME/Pictures/\"";
+                label = "󰉏 Pictures";
+              };
+              directory3 = {
+                command = "bash -c \"thunar $HOME/Downloads/\"";
+                label = "󰉍 Downloads";
+              };
+            };
+          };
+        };
         power.lowBatteryNotification = true;
         volume.raiseMaximumVolume = true;
       };
