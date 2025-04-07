@@ -33,6 +33,7 @@ in
           ./hypridle.nix
           ./hyprlock.nix
           ./hyprpanel.nix
+          ./mime.nix
           ./rofi
           ./thunar.nix
           ./wlogout
