@@ -43,15 +43,6 @@ in
       "/dev/disk/by-uuid/97fed62b-bdc0-43b3-b670-ed83775644aa";
   };
 
-  fileSystems."/mnt/backup-arch" = {
-    device = "${truenas-ip}:/mnt/hdd/backup/archtop";
-    fsType = "nfs";
-    options = [
-      "x-systemd.automount"
-      "x-systemd.idle-timeout=600"
-    ];
-  };
-
   fileSystems."/mnt/backup" = {
     device = "${truenas-ip}:/mnt/hdd/backup/kronos";
     fsType = "nfs";
@@ -72,15 +63,6 @@ in
 
   fileSystems."/mnt/unknown" = {
     device = "${truenas-ip}:/mnt/hdd/unknown";
-    fsType = "nfs";
-    options = [
-      "x-systemd.automount"
-      "x-systemd.idle-timeout=600"
-    ];
-  };
-
-  fileSystems."/mnt/rebuild" = {
-    device = "${truenas-ip}:/mnt/hdd/rebuild";
     fsType = "nfs";
     options = [
       "x-systemd.automount"
