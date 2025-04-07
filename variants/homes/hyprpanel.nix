@@ -130,8 +130,27 @@
           outer_spacing = "0.25em";
           floating = false;
           transparent = true;
+
+          menus = {
+            popover.scaling = 80;
+            menu = {
+              battery.scaling = 90;
+              bluetooth.scaling = 90;
+              clock.scaling = 90;
+              dashboard.confirmation_scaling = 90;
+              dashboard.scaling = 90;
+              media.scaling = 90;
+              network.scaling = 90;
+              notifications.scaling = 90;
+              power.scaling = 90;
+              volume.scaling = 90;
+            };
+          };
         };
         osd.muted_zero = true;
+        notification.scaling = 90;
+        osd.scaling = 90;
+        tooltip.scaling = 90;
       };
     };
   };
