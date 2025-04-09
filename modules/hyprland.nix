@@ -19,6 +19,16 @@ in
       type = lib.types.listOf lib.types.str;
       default = [ ];
     };
+    hyprpanel = {
+      main-monitor = lib.mkOption {
+        type = lib.types.str;
+        default = "0";
+      };
+      battery = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
