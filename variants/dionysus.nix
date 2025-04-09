@@ -96,6 +96,10 @@ in
         "DP-2,highrr,1920x0,1"
         ",preferred,auto,1,mirror,HDMI-A-1"
       ];
+      hyprpanel = {
+        main-monitor = "1";
+        battery = false;
+      };
     };
     pipewire.audiosink = {
       enable = true;
