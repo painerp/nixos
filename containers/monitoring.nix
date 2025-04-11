@@ -271,7 +271,6 @@ in
                   "-common.storage.filesystem.chunk-directory=/loki/chunks"
                   "-common.storage.filesystem.rules-directory=/loki/rules"
                   "-common.storage.ring.instance-addr=127.0.0.1"
-                  "-common.storage.ring.replication-factor=1"
                   "-common.storage.ring.store=inmemory"
                   "-local.chunk-directory=/loki/storage"
                   "-ruler.alertmanager-url=http://alertmanager:9093"
