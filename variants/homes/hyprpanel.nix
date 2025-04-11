@@ -130,9 +130,12 @@
         name = "catppuccin_mocha";
         font.size = "1rem";
         bar = {
-          outer_spacing = "0.25em";
-          floating = false;
+          floating = true;
           transparent = true;
+          outer_spacing = "0.2em";
+          margin_top = "0.2em";
+          margin_sides = "0.2em";
+          buttons.y_margins = "0em";
 
           menus = {
             popover.scaling = 80;
@@ -150,9 +153,11 @@
             };
           };
         };
-        osd.muted_zero = true;
+        osd = {
+          muted_zero = true;
+          scaling = 90;
+        };
         notification.scaling = 90;
-        osd.scaling = 90;
         tooltip.scaling = 90;
       };
     };
