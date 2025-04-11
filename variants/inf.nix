@@ -1,8 +1,5 @@
 {
-  config,
-  modulesPath,
   secrets,
-  lib,
   ...
 }:
 

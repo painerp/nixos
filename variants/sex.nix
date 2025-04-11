@@ -1,9 +1,6 @@
 {
-  pkgs,
   config,
-  modulesPath,
   secrets,
-  lib,
   ...
 }:
 
