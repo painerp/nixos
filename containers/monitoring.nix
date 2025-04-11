@@ -268,7 +268,7 @@ in
                   "-compactor.retention-enabled=true"
                   "-compactor.delete-request-store=filesystem"
                   "-common.path-prefix=/loki"
-                  "-common.storage.filesystem.chunks-directory=/loki/chunks"
+                  "-common.storage.filesystem.chunk-directory=/loki/chunks"
                   "-common.storage.filesystem.rules-directory=/loki/rules"
                   "-common.storage.ring.instance-addr=127.0.0.1"
                   "-common.storage.ring.replication-factor=1"
