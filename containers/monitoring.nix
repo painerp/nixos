@@ -231,12 +231,13 @@ in
                   "--web.enable-admin-api"
                   "--config.file=/etc/prometheus/prometheus.yml"
                   "--storage.tsdb.path=/prometheus"
+                  "--storage.tsdb.retention.time=1y"
                   "--web.console.libraries=/usr/share/prometheus/console_libraries"
                   "--web.console.templates=/usr/share/prometheus/consoles"
                 ];
                 volumes = [
                   "${config.lib.server.mkConfigDir "prometheus"}/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
-                  "${config.lib.server.mkConfigDir "prometheus"}/rules:/etc/prometheus/rules:ro"
+                  "${config.lib.server.mkConfigDir "prometheus/rules"}:/etc/prometheus/rules:ro"
                   "${config.lib.server.mkConfigDir "prometheus/data"}:/prometheus"
                 ];
                 labels =
@@ -260,7 +261,10 @@ in
                 networks = [ "exporter" ] ++ (if (cfg.loki.internal) then [ "external" ] else [ ]);
                 ports = (if (cfg.loki.internal) then [ "${config.server.tailscale-ip}:20100:3100/tcp" ] else [ ]);
                 command = [ "-config.file=/etc/loki/config.yml" ];
-                volumes = [ "${config.lib.server.mkConfigDir "loki"}:/etc/loki" ];
+                volumes = [
+                  "${config.lib.server.mkConfigDir "loki/config"}:/etc/loki"
+                  "${config.lib.server.mkConfigDir "loki/data"}:/loki"
+                ];
                 labels = {
                   "com.centurylinklabs.watchtower.enable" = "true";
                 };
