@@ -132,7 +132,7 @@
         bar = {
           floating = true;
           transparent = true;
-          outer_spacing = "0.2em";
+          outer_spacing = "0em";
           margin_top = "0.2em";
           margin_sides = "0.2em";
           buttons.y_margins = "0em";
