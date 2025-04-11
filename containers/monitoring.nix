@@ -260,7 +260,23 @@ in
                 container_name = "loki";
                 networks = [ "exporter" ] ++ (if (cfg.loki.internal) then [ "external" ] else [ ]);
                 ports = (if (cfg.loki.internal) then [ "${config.server.tailscale-ip}:20100:3100/tcp" ] else [ ]);
-                command = [ "-config.file=/etc/loki/config.yml" ];
+                command = [
+                  "-config.file=/etc/loki/config.yml"
+                  "-auth.enabled=false"
+                  "-server.http-listen-port=3100"
+                  "-store.retention=360d"
+                  "-compactor.retention-enabled=true"
+                  "-compactor.delete-request-store=filesystem"
+                  "-common.path-prefix=/loki"
+                  "-common.storage.filesystem.chunks-directory=/loki/chunks"
+                  "-common.storage.filesystem.rules-directory=/loki/rules"
+                  "-common.storage.ring.instance-addr=127.0.0.1"
+                  "-common.storage.ring.replication-factor=1"
+                  "-common.storage.ring.store=inmemory"
+                  "-local.chunk-directory=/loki/storage"
+                  "-ruler.alertmanager-url=http://alertmanager:9093"
+                  "-reporting.enabled=false"
+                ];
                 volumes = [
                   "${config.lib.server.mkConfigDir "loki/config"}:/etc/loki"
                   "${config.lib.server.mkConfigDir "loki/data"}:/loki"
