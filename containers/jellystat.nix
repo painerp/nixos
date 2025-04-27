@@ -55,34 +55,42 @@ in
         restart = "unless-stopped";
       };
 
-      services.jellystat.service = {
-        image = "cyfershepard/jellystat:latest";
-        container_name = "jellystat";
-        hostname = config.networking.hostName;
-        networks = [
-          "proxy"
-          "internal"
-        ];
-        environment = {
-          POSTGRES_USER = "postgres";
-          POSTGRES_IP = "jellystat-pg";
-          POSTGRES_PORT = 5432;
-          TZ = config.time.timeZone;
-        };
-        env_file = [ config.age.secrets.jellystat-env.path ];
-        extra_hosts = cfg.extra-hosts;
-        depends_on = [ "jellystat-pg" ];
-        labels =
-          config.lib.server.mkTraefikLabels {
-            name = "jellystat";
-            port = "3000";
-            subdomain = "${cfg.subdomain}";
-            forwardAuth = cfg.auth;
-          }
-          // {
-            "com.centurylinklabs.watchtower.enable" = "true";
+      services.jellystat = {
+        out.service = {
+          deploy.resources.limits = {
+            cpus = "0.2";
+            memory = "1G";
           };
-        restart = "unless-stopped";
+        };
+        service = {
+          image = "cyfershepard/jellystat:latest";
+          container_name = "jellystat";
+          hostname = config.networking.hostName;
+          networks = [
+            "proxy"
+            "internal"
+          ];
+          environment = {
+            POSTGRES_USER = "postgres";
+            POSTGRES_IP = "jellystat-pg";
+            POSTGRES_PORT = 5432;
+            TZ = config.time.timeZone;
+          };
+          env_file = [ config.age.secrets.jellystat-env.path ];
+          extra_hosts = cfg.extra-hosts;
+          depends_on = [ "jellystat-pg" ];
+          labels =
+            config.lib.server.mkTraefikLabels {
+              name = "jellystat";
+              port = "3000";
+              subdomain = "${cfg.subdomain}";
+              forwardAuth = cfg.auth;
+            }
+            // {
+              "com.centurylinklabs.watchtower.enable" = "true";
+            };
+          restart = "unless-stopped";
+        };
       };
     };
   };
