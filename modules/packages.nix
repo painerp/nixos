@@ -58,6 +58,7 @@ in
           [
             inputs.apod-wallpaper.packages.${pkgs.system}.default
             brave
+            easyeffects
             nextcloud-client
             nomacs
             kdePackages.kate
