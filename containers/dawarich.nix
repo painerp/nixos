@@ -13,6 +13,7 @@ let
     APPLICATION_HOSTS = "localhost,${cfg.subdomain}.${config.server.domain}";
     TIME_ZONE = config.time.timeZone;
     DISABLE_TELEMETRY = "true";
+    SELF_HOSTED = "true";
   };
 in
 {
@@ -90,6 +91,8 @@ in
           env_file = [ config.age.secrets.dawarich-env.path ];
           volumes = [
             "${config-dir}/public:/var/app/public"
+            "${config-dir}/watched:/var/app/tmp/imports/watched"
+            "${config-dir}/storage:/var/app/storage"
           ];
           depends_on = [
             "database"
@@ -131,6 +134,8 @@ in
           env_file = [ config.age.secrets.dawarich-env.path ];
           volumes = [
             "${config-dir}/public:/var/app/public"
+            "${config-dir}/watched:/var/app/tmp/imports/watched"
+            "${config-dir}/storage:/var/app/storage"
           ];
           depends_on = [
             "database"
