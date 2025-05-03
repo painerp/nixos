@@ -45,7 +45,7 @@ in
     postgres = {
       image = lib.mkOption {
         type = lib.types.str;
-        default = "postgres:14.2-alpine";
+        default = "postgis/postgis:14-3.5-alpine";
       };
       env-file = lib.mkOption { type = lib.types.path; };
     };
