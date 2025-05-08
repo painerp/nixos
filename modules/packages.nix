@@ -166,6 +166,7 @@ in
             jetbrains.rust-rover
             jetbrains.pycharm-professional
             jetbrains.idea-ultimate
+            jetbrains.clion
           ]
         else
           [ ]
