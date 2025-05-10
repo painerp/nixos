@@ -52,6 +52,7 @@ in
         zip
         tealdeer
         screen
+        smartmontools
       ]
       ++ (
         if cfg.desktop then
