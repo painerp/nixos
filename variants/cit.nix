@@ -45,6 +45,15 @@ in
     ];
   };
 
+  fileSystems."/mnt/monero" = {
+    device = "10.0.10.1:/mnt/hdd/monero";
+    fsType = "nfs";
+    options = [
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
+    ];
+  };
+
   # system
   system = {
     inherit flake;
@@ -80,6 +89,10 @@ in
       enable = true;
       subdomain = "sync";
       path = "/mnt/syncthing";
+    };
+    monerod = {
+      enable = true;
+      volumes = [ "/mnt/monero:/home/monero/.bitmonero" ];
     };
     monitoring = {
       node-exporter.enable = true;
