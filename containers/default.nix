@@ -71,6 +71,7 @@ in
     ./minecraft.nix
     ./minecraft-bluemap.nix
     ./minecraft-router.nix
+    ./monerod.nix
     ./monitoring.nix
     ./nextcloud.nix
     ./nginx.nix
