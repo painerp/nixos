@@ -25,8 +25,6 @@ in
       after = [ "network-online.target" ];
     };
 
-    server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
-
     virtualisation.arion.projects.monerod.settings = {
       project.name = "monerod";
       networks.proxy.external = true;
