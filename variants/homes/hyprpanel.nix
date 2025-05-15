@@ -72,8 +72,8 @@
         customModules = {
           hypridle = {
             label = false;
-            onIcon = "";
-            offIcon = "";
+            onIcon = "";
+            offIcon = "";
             pollingInterval = 30000;
           };
           cava = {
