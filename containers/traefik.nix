@@ -195,15 +195,16 @@ in
     services.logrotate = {
       enable = true;
       settings = {
-      "${config.lib.server.mkConfigDir "traefik/logs"}/access.log" = {
-        frequency = "weekly";
-        rotate = 90;
-        missingok = true;
-        notifempty = true;
-        compress = true;
-        postrotate = ''
-          docker kill --signal="USR1" traefik
-        '';
+        "${config.lib.server.mkConfigDir "traefik/logs"}/access.log" = {
+          frequency = "weekly";
+          rotate = 90;
+          missingok = true;
+          notifempty = true;
+          compress = true;
+          postrotate = ''
+            docker kill --signal="USR1" traefik
+          '';
+        };
       };
     };
 
