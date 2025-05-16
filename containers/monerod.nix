@@ -17,6 +17,10 @@ in
       type = lib.types.listOf lib.types.str;
       default = [ ];
     };
+    gluetun = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -32,6 +36,7 @@ in
       services.monerod.service = {
         image = "sethsimmons/simple-monerod:latest";
         container_name = "monerod";
+        network_mode = if cfg.gluetun then "service:gluetun" else "bridge";
         user = "1026:100";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];
