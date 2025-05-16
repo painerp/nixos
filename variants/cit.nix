@@ -90,6 +90,10 @@ in
       subdomain = "sync";
       path = "/mnt/syncthing";
     };
+    gluetun = {
+      enable = true;
+      env-file = secrets.cit-gluetun-env;
+    };
     monerod = {
       enable = true;
       volumes = [ "/mnt/monero:/home/monero/.bitmonero" ];
