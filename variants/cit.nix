@@ -96,7 +96,6 @@ in
     };
     monerod = {
       enable = true;
-      gluetun = true;
       volumes = [ "/mnt/monero:/home/monero/.bitmonero" ];
     };
     monitoring = {

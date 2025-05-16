@@ -17,26 +17,18 @@ in
       type = lib.types.listOf lib.types.str;
       default = [ ];
     };
-    gluetun = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
-    systemd.services.arion-monerod = {
-      wants = [ "network-online.target" ];
-      after = [ "network-online.target" ];
-    };
-
-    virtualisation.arion.projects.monerod.settings = {
-      project.name = "monerod";
-      networks.proxy.external = true;
+    virtualisation.arion.projects.gluetun.settings = {
+      services.gluetun.service.ports = lib.mkIf (cfg.internal) [
+        "${config.server.tailscale-ip}:18089:18089"
+      ];
 
       services.monerod.service = {
         image = "sethsimmons/simple-monerod:latest";
         container_name = "monerod";
-        network_mode = if cfg.gluetun then "container:gluetun" else "bridge";
+        network_mode = "service:gluetun";
         user = "1026:100";
         command = [
           "--rpc-restricted-bind-ip=0.0.0.0"
@@ -45,7 +37,6 @@ in
           "--enable-dns-blocklist"
           "--prune-blockchain"
         ];
-        ports = lib.mkIf (cfg.internal) [ "${config.server.tailscale-ip}:18089:18089" ];
         volumes = cfg.volumes;
         restart = "unless-stopped";
       };
