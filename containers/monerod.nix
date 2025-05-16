@@ -36,7 +36,7 @@ in
       services.monerod.service = {
         image = "sethsimmons/simple-monerod:latest";
         container_name = "monerod";
-        network_mode = if cfg.gluetun then "service:gluetun" else "bridge";
+        network_mode = if cfg.gluetun then "container:gluetun" else "bridge";
         user = "1026:100";
         hostname = config.networking.hostName;
         command = [
