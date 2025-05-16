@@ -38,7 +38,6 @@ in
         container_name = "monerod";
         network_mode = if cfg.gluetun then "container:gluetun" else "bridge";
         user = "1026:100";
-        hostname = config.networking.hostName;
         command = [
           "--rpc-restricted-bind-ip=0.0.0.0"
           "--rpc-restricted-bind-port=18089"
