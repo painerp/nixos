@@ -41,6 +41,7 @@
   cit-git-pw = ./cit/git-pw.age;
   cit-authentik-env = ./cit/authentik.env.age;
   cit-authentik-pg-env = ./cit/authentik-pg.env.age;
+  cit-gluetun-env = ./cit/gluetun.env.age;
 
   gam-palworld-env = ./gam/palworld.env.age;
   gam-minecraft-env = ./gam/minecraft.env.age;
