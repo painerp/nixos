@@ -39,7 +39,6 @@ in
         network_mode = if cfg.gluetun then "service:gluetun" else "bridge";
         user = "1026:100";
         hostname = config.networking.hostName;
-        networks = [ "proxy" ];
         command = [
           "--rpc-restricted-bind-ip=0.0.0.0"
           "--rpc-restricted-bind-port=18089"
