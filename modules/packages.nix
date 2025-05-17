@@ -128,7 +128,6 @@ in
       ++ (
         if cfg.tor then
           [
-            tor
             tor-browser
             nyx
             protonvpn-gui
@@ -258,6 +257,7 @@ in
 
     services = {
       tumbler.enable = cfg.desktop;
+      tor.enable = cfg.tor;
       syncthing = {
         enable = cfg.desktop;
         user = config.system.username;
