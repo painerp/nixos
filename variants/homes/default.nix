@@ -83,6 +83,7 @@ in
       enable = true;
       startInBackground = true;
     };
+    easyeffects.enable = true;
   };
 
   gtk = {
