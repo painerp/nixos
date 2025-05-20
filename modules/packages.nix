@@ -84,7 +84,7 @@ in
           [
             pkgs-unstable.freetube
             handbrake
-            kdenlive
+            kdePackages.kdenlive
             yt-dlp
             (pkgs.wrapOBS { plugins = with pkgs.obs-studio-plugins; [ advanced-scene-switcher ]; })
           ]
@@ -97,7 +97,7 @@ in
             libreoffice
             hunspell
             hunspellDicts.de_DE
-            okular
+            kdePackages.okular
             obsidian
           ]
         else
