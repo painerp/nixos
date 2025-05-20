@@ -51,7 +51,7 @@ in
     vscode = lib.mkIf (pkg-config.dev) {
       enable = true;
       package = pkgs-unstable.vscodium;
-      extensions = with pkgs-unstable.vscode-extensions; [
+      profiles.default.extensions = with pkgs-unstable.vscode-extensions; [
         jnoortheen.nix-ide
         ms-python.python
         github.copilot
