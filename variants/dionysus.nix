@@ -89,8 +89,8 @@ in
     hyprland = {
       enable = true;
       monitor = [
-        "HDMI-A-1,highrr,0x0,1"
-        "DP-2,highrr,1920x0,1"
+        "HDMI-A-1,1920x1080@144,0x0,1"
+        "DP-2,1920x1080@120,1920x0,1"
         ",preferred,auto,1,mirror,HDMI-A-1"
       ];
       hyprpanel = {
