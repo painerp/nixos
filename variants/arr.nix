@@ -112,14 +112,14 @@ in
       ];
     };
     lidarr = {
-      enable = true;
+      enable = false;
       volumes = [
         "${temp}/music:/temp/music"
         "${media}/music:/music"
       ];
     };
     readarr = {
-      enable = true;
+      enable = false;
       volumes = [
         "${temp}/books:/temp/books"
         "${media}/books:/books"
