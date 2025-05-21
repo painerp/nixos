@@ -64,6 +64,7 @@ in
           "--no-global-config"
           "--config-file=/srv/config/goaccess.conf"
         ];
+        networks = [ "proxy" ];
         environment = {
           TZ = config.time.timeZone;
         };
@@ -79,9 +80,16 @@ in
             else
               [ ]
           );
-        labels = {
-          "com.centurylinklabs.watchtower.enable" = "true";
-        };
+        labels =
+          config.lib.server.mkTraefikLabels {
+            name = "goaccess-wss";
+            port = "443";
+            subdomain = "${cfg.subdomain}w";
+            forwardAuth = cfg.auth;
+          }
+          // {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
         restart = "unless-stopped";
       };
     };
