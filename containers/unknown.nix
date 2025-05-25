@@ -115,7 +115,7 @@ in
         }
         // lib.attrsets.optionalAttrs (cfg.pma.enable) {
           phpmyadmin.service = {
-            image = "phpmyadmin:latest";
+            image = "phpmyadmin:fpm-alpine";
             container_name = "unknown-pma";
             networks = [
               "backend"
