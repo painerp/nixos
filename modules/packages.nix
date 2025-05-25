@@ -47,6 +47,7 @@ in
         home-manager
         gdu
         jq
+        ripgrep
         ffmpeg
         zoxide
         zip
