@@ -75,7 +75,12 @@ in
       };
     };
 
-    fonts.packages = with pkgs; [ nerdfonts ];
+    fonts.packages = with pkgs; [
+      nerd-fonts.hack
+      nerd-fonts.ubuntu
+      nerd-fonts.ubuntu-mono
+      nerd-fonts.jetbrains-mono
+    ];
 
     programs = {
       hyprland.enable = true;
