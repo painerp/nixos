@@ -46,6 +46,7 @@ in
         git
         home-manager
         gdu
+        fd
         jq
         ripgrep
         ffmpeg
@@ -70,6 +71,7 @@ in
             keepassxc
             gparted
             xfce.xfconf
+            ncspot
           ]
           ++ (
             if config.modules.amd.enable then
@@ -162,6 +164,7 @@ in
               python-pkgs.requests
             ]))
             jdk
+            tokei
             pkgs-unstable.uv
             jetbrains.webstorm
             jetbrains.rust-rover
