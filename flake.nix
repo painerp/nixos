@@ -56,6 +56,7 @@
       desktop-overlays = [
         (import ./overlays/teamspeak_client.nix { })
         (import ./overlays/btop.nix { })
+        inputs.hyprpanel.overlay
       ];
     in
     {
