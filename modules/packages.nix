@@ -72,6 +72,8 @@ in
             gparted
             xfce.xfconf
             ncspot
+            bluez
+            bluez-tools
           ]
           ++ (
             if config.modules.amd.enable then
