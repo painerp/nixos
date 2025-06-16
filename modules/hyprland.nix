@@ -1,5 +1,6 @@
 {
   pkgs,
+  pkgs-unstable,
   lib,
   config,
   ...
@@ -66,7 +67,7 @@ in
         networkmanagerapplet
         swww
         matugen
-        grimblast
+        pkgs-unstable.grimblast
         hyprpanel
       ];
       sessionVariables = {
@@ -75,11 +76,12 @@ in
       };
     };
 
-    fonts.packages = with pkgs; [
-      nerd-fonts.hack
-      nerd-fonts.ubuntu
-      nerd-fonts.ubuntu-mono
-      nerd-fonts.jetbrains-mono
+    fonts.packages = with pkgs.nerd-fonts; [
+      hack
+      ubuntu
+      ubuntu-mono
+      jetbrains-mono
+      noto
     ];
 
     programs = {
