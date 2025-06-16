@@ -233,6 +233,7 @@
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
+                home-manager.backupFileExtension = "bak";
                 home-manager.users.kronos = import ./variants/homes/default.nix;
                 home-manager.extraSpecialArgs = {
                   inherit inputs pkgs-unstable;
@@ -265,6 +266,7 @@
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
+                home-manager.backupFileExtension = "bak";
                 home-manager.users.dionysus = import ./variants/homes/default.nix;
                 home-manager.extraSpecialArgs = {
                   inherit inputs pkgs-unstable;
