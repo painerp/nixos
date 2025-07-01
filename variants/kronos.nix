@@ -77,7 +77,10 @@ in
     home-manager = true;
   };
   modules = {
-    arion.enable = true;
+    arion = {
+      enable = true;
+      rewrite-bip = true;
+    };
     auto-upgrade.enable = false;
     hyprland = {
       enable = true;
