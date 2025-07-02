@@ -1,13 +1,9 @@
-{ inputs, osConfig, ... }:
+{ osConfig, ... }:
 
 {
-  imports = [ inputs.hyprpanel.homeManagerModules.hyprpanel ];
-
   programs.hyprpanel = {
     enable = true;
     systemd.enable = true;
-    hyprland.enable = true;
-    overwrite.enable = true;
 
     settings = {
       layout = {
