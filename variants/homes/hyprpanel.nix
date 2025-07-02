@@ -6,8 +6,8 @@
     systemd.enable = true;
 
     settings = {
-      layout = {
-        "bar.layouts" = {
+      bar = {
+        layouts = {
           "${osConfig.modules.hyprland.hyprpanel.main-monitor}" = {
             left = [
               "dashboard"
@@ -41,9 +41,6 @@
             ];
           };
         };
-      };
-
-      bar = {
         launcher.icon = "󱄅";
         windowtitle = {
           class_name = false;
