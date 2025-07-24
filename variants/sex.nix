@@ -75,12 +75,6 @@ in
         env-file = secrets.ext-nuxt-pages-env;
       };
     };
-    open-webui = {
-      enable = true;
-      subdomain = "chat";
-      auth = false;
-      env-file = secrets.ext-open-webui-env;
-    };
     minecraft-router = {
       enable = true;
       expose = true;
