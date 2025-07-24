@@ -12,11 +12,26 @@ in
   };
 
   config = lib.mkIf (cfg.enable) {
-    services.openssh = {
-      enable = true;
-      settings = {
-        PasswordAuthentication = false;
-        KbdInteractiveAuthentication = false;
+    services = {
+      openssh = {
+        enable = true;
+        allowSFTP = false;
+        ports = [ 22 ];
+        settings = {
+          PasswordAuthentication = false;
+          KbdInteractiveAuthentication = false;
+        };
+
+        extraConfig = ''
+          MaxAuthTries 5
+          MaxSessions 2
+          TCPKeepAlive no
+        '';
+      };
+      fail2ban = {
+        enable = true;
+        maxretry = 10;
+        bantime-increment.enable = true;
       };
     };
     security.pam.sshAgentAuth.enable = true;
