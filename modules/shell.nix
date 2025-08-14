@@ -31,33 +31,38 @@
   users.defaultUserShell = pkgs.fish;
   environment = with pkgs; {
     shells = [ fish ];
-    shellAliases =
-      {
-        "cat" = "${bat}/bin/bat";
-        "l" = "${eza}/bin/eza -l";
-        "ls" = "${eza}/bin/eza -la";
-        "ll" = "${eza}/bin/eza -la --tree";
-        "cp" = "cp -i";
-        "mv" = "mv -i";
-        "sc" = "systemctl";
-        "scs" = "systemctl status";
-        "scr" = "systemctl restart";
-        "sce" = "systemctl enable";
-        "c" = "clear";
-        "cdp" = "pushd";
-        "ve" = "source ./.venv/bin/activate.fish";
-        "jctl" = "journalctl -p 3 -xb";
-        "gdur" = "${gdu}/bin/gdu -x /";
-      }
-      // lib.attrsets.optionalAttrs (config.modules.packages.desktop) {
-        "f" = "${xfce.thunar}/bin/thunar .";
-      }
-      // lib.attrsets.optionalAttrs (config.modules.packages.dev) { "lgit" = "${lazygit}/bin/lazygit"; }
-      // lib.attrsets.optionalAttrs (config.modules.packages.video) {
-        "yt-best" = "${yt-dlp}/bin/yt-dlp -f bestvideo+bestaudio/best";
-        "yt-mp3" = "${yt-dlp}/bin/yt-dlp --extract-audio --audio-format mp3";
-        "yt-flac" = "${yt-dlp}/bin/yt-dlp --extract-audio --audio-format flac";
-      };
+    shellAliases = {
+      "cat" = "${bat}/bin/bat";
+      "l" = "${eza}/bin/eza -l";
+      "ls" = "${eza}/bin/eza -la";
+      "ll" = "${eza}/bin/eza -la --tree";
+      "cp" = "cp -i";
+      "mv" = "mv -i";
+      "sc" = "systemctl";
+      "scs" = "systemctl status";
+      "scr" = "systemctl restart";
+      "sce" = "systemctl enable";
+      "c" = "clear";
+      "cdp" = "pushd";
+      "ve" = "source ./.venv/bin/activate.fish";
+      "jctl" = "journalctl -p 3 -xb";
+      "gdur" = "${gdu}/bin/gdu -x /";
+    }
+    // lib.attrsets.optionalAttrs (config.modules.packages.desktop) {
+      "f" = "${xfce.thunar}/bin/thunar .";
+    }
+    // lib.attrsets.optionalAttrs (config.modules.packages.dev) {
+      "lgit" = "${lazygit}/bin/lazygit";
+      "ws" = "webstorm -Dnosplash=True";
+      "rr" = "rust-rover -Dnosplash=True";
+      "pc" = "pycharm-professional -Dnosplash=True";
+      "cl" = "clion -Dnosplash=True";
+    }
+    // lib.attrsets.optionalAttrs (config.modules.packages.video) {
+      "yt-best" = "${yt-dlp}/bin/yt-dlp -f bestvideo+bestaudio/best";
+      "yt-mp3" = "${yt-dlp}/bin/yt-dlp --extract-audio --audio-format mp3";
+      "yt-flac" = "${yt-dlp}/bin/yt-dlp --extract-audio --audio-format flac";
+    };
     systemPackages = [
       fzf
       fishPlugins.done
