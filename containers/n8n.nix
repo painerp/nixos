@@ -20,8 +20,6 @@ in
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
-    age.secrets.n8n-env.file = cfg.env-file;
-
     systemd.services.arion-n8n = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
