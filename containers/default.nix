@@ -73,6 +73,7 @@ in
     ./minecraft-router.nix
     ./monerod.nix
     ./monitoring.nix
+    ./n8n.nix
     ./nextcloud.nix
     ./nginx.nix
     ./nuxt-pages.nix
