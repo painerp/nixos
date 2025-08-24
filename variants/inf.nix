@@ -28,7 +28,7 @@ in
     fsType = "ext4";
   };
 
-  swapDevices = [ { device = "/dev/disk/by-uuid/bb391dc3-1cc6-40ff-8463-6b378d285f11"; } ];
+  swapDevices = [ { device = "/dev/disk/by-uuid/2c3aafdb-cb5a-41bc-a2e6-99059466a03b"; } ];
 
   fileSystems."/mnt/unknown" = {
     device = "10.0.10.1:/mnt/hdd/unknown";
