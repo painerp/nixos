@@ -80,6 +80,7 @@ in
       env-file = secrets.inf-dawarich-env;
       postgres.env-file = secrets.inf-dawarich-pg-env;
     };
+    n8n.enable = true;
     monitoring = {
       node-exporter.enable = true;
       cadvisor.enable = true;
