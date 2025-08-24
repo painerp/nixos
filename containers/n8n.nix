@@ -44,11 +44,11 @@ in
           GENERIC_TIMEZONE = config.time.timeZone;
           N8N_HOST = "${cfg.subdomain}.${config.server.domain}";
           N8N_PROTOCOL = "https";
-          N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS = true;
-          N8N_RUNNERS_ENABLED = true;
+          N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS = "true";
+          N8N_RUNNERS_ENABLED = "true";
           WEBHOOK_URL = "https://${cfg.subdomain}.${config.server.domain}";
-          N8N_VERSION_NOTIFICATIONS_ENABLED = false;
-          N8N_DIAGNOSTICS_ENABLED = false;
+          N8N_VERSION_NOTIFICATIONS_ENABLED = "false";
+          N8N_DIAGNOSTICS_ENABLED = "false";
         };
         volumes = [
           "${config.lib.server.mkConfigDir "n8n"}:/home/node/.n8n"
