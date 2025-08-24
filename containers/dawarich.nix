@@ -5,7 +5,7 @@ let
   config-dir = "${config.lib.server.mkConfigDir "dawarich"}";
   default-env = {
     RAIL_ENV = "production";
-    REDIS_URL = "redis://redis:6379/0";
+    REDIS_URL = "redis://redis:6379";
     DATABASE_HOST = "database";
     DATABASE_USERNAME = "postgres";
     DATABASE_NAME = "dawarich";
@@ -46,7 +46,7 @@ in
     postgres = {
       image = lib.mkOption {
         type = lib.types.str;
-        default = "postgis/postgis:14-3.5-alpine";
+        default = "postgis/postgis:17-3.5-alpine";
       };
       env-file = lib.mkOption { type = lib.types.path; };
     };
@@ -163,7 +163,7 @@ in
 
       services.database.service = {
         image = "${cfg.postgres.image}";
-        container_name = "dawarich_postgres";
+        container_name = "dawarich_db";
         hostname = config.networking.hostName;
         networks = [ "backend" ];
         environment = {
@@ -172,7 +172,7 @@ in
         };
         env_file = [ config.age.secrets.dawarich-pg-env.path ];
         volumes = [
-          "${config-dir}/postgres:/var/lib/postgresql/data"
+          "${config-dir}/database:/var/lib/postgresql/data"
           "${config-dir}/shared:/var/shared"
         ];
         labels = {
