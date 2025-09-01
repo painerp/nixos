@@ -31,22 +31,30 @@
     {
       "matchDatasources": ["docker"],
       "matchPackageNames": ["immich"],
-      "aliases": ["ghcr.io/immich-app/immich-server"]
+      "registryAliases": {
+        "immich": "ghcr.io/immich-app/immich-server"
+      }
     },
     {
       "matchDatasources": ["docker"],
       "matchPackageNames": ["jellyfin"],
-      "aliases": ["lscr.io/linuxserver/jellyfin"]
+      "registryAliases": {
+        "jellyfin": "lscr.io/linuxserver/jellyfin"
+      }
     },
     {
       "matchDatasources": ["docker"],
       "matchPackageNames": ["n8n"],
-      "aliases": ["docker.n8n.io/n8nio/n8n"]
+      "registryAliases": {
+        "n8n": "docker.n8n.io/n8nio/n8n"
+      }
     },
     {
       "matchDatasources": ["docker"],
       "matchPackageNames": ["dawarich"],
-      "aliases": ["freikin/dawarich"]
+      "registryAliases": {
+        "dawarich": "freikin/dawarich"
+      }
     }
   ]
 }
