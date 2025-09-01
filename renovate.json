@@ -9,18 +9,27 @@
   "nix": {
     "enabled": true
   },
-  "customManagers": [
+  "regexManagers": [
     {
-      "customType": "regex",
       "fileMatch": ["variants/.+\\.nix$"],
       "matchStrings": [
         "(?<serviceName>[a-zA-Z0-9_-]+)\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver",
-      "depNameTemplate": "{{{packageName}}}",
-      "extractVersionTemplate": "^v?(?<version>.*)$",
-      "packageNameTemplate": "#{{ with (fromJson (await (datasource \"file\" \"path=docker-mappings.json\"))) }}{{lookup . serviceName}}{{else}}{{serviceName}}{{end}}"
+      "depNameTemplate": "{{{serviceName}}}"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["jellyfin", "immich", "n8n", "dawarich"],
+      "packageNameMapping": {
+        "jellyfin": "lscr.io/linuxserver/jellyfin",
+        "immich": "ghcr.io/immich-app/immich-server",
+        "n8n": "docker.n8n.io/n8nio/n8n",
+        "dawarich": "freikin/dawarich"
+      }
     }
   ]
 }
