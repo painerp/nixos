@@ -9,15 +9,18 @@
   "nix": {
     "enabled": true
   },
-  "regexManagers": [
+  "customManagers": [
     {
+      "customType": "regex",
       "fileMatch": ["variants/.+\\.nix$"],
       "matchStrings": [
         "(?<serviceName>[a-zA-Z0-9_-]+)\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
-      "depNameTemplate": "{{#if lookup (fromJson (readFile 'docker-mappings.json')) serviceName}}{{lookup (fromJson (readFile 'docker-mappings.json')) serviceName}}{{else}}{{serviceName}}{{/if}}",
       "datasourceTemplate": "docker",
-      "versioningTemplate": "semver"
+      "versioningTemplate": "semver",
+      "depNameTemplate": "{{{packageName}}}",
+      "extractVersionTemplate": "^v?(?<version>.*)$",
+      "packageNameTemplate": "#{{ with (fromJson (await (datasource \"file\" \"path=docker-mappings.json\"))) }}{{lookup . serviceName}}{{else}}{{serviceName}}{{end}}"
     }
   ]
 }
