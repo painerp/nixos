@@ -23,13 +23,23 @@
   "packageRules": [
     {
       "matchDatasources": ["docker"],
-      "matchPackageNames": ["jellyfin", "immich", "n8n", "dawarich"],
-      "packageNameMapping": {
-        "jellyfin": "lscr.io/linuxserver/jellyfin",
-        "immich": "ghcr.io/immich-app/immich-server",
-        "n8n": "docker.n8n.io/n8nio/n8n",
-        "dawarich": "freikin/dawarich"
-      }
+      "matchPackageNames": ["jellyfin"],
+      "packageName": "lscr.io/linuxserver/jellyfin"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["immich"],
+      "packageName": "ghcr.io/immich-app/immich-server"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["n8n"],
+      "packageName": "docker.n8n.io/n8nio/n8n"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["dawarich"],
+      "packageName": "freikin/dawarich"
     }
   ]
 }
