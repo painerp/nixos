@@ -1,17 +1,24 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base"],
+  "extends": [
+    "config:recommended"
+  ],
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true,
-    "extends": ["schedule:daily"]
+    "extends": [
+      "schedule:daily"
+    ]
   },
   "nix": {
     "enabled": true
   },
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": ["variants/.+\\.nix$"],
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/variants/.+\\.nix$/"
+      ],
       "matchStrings": [
         "(?<serviceName>[a-zA-Z0-9_-]+)\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
@@ -22,24 +29,36 @@
   ],
   "packageRules": [
     {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["jellyfin"],
-      "packageName": "lscr.io/linuxserver/jellyfin"
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "lscr.io/linuxserver/jellyfin"
+      ]
     },
     {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["immich"],
-      "packageName": "ghcr.io/immich-app/immich-server"
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "ghcr.io/immich-app/immich-server"
+      ]
     },
     {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["n8n"],
-      "packageName": "docker.n8n.io/n8nio/n8n"
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "docker.n8n.io/n8nio/n8n"
+      ]
     },
     {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["dawarich"],
-      "packageName": "freikin/dawarich"
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "freikin/dawarich"
+      ]
     }
   ]
 }
