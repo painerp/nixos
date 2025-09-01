@@ -16,45 +16,43 @@
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": [
-        "/variants/.+\\.nix$/"
-      ],
+      "managerFilePatterns": ["/variants/.+\\.nix$/"],
       "matchStrings": [
-        "(?<serviceName>[a-zA-Z0-9_-]+)\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+        "immich\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver",
-      "depNameTemplate": "{{serviceName}}"
-    }
-  ],
-  "packageRules": [
-    {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["immich"],
-      "registryAliases": {
-        "immich": "ghcr.io/immich-app/immich-server"
-      }
+      "depNameTemplate": "ghcr.io/immich-app/immich-server"
     },
     {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["jellyfin"],
-      "registryAliases": {
-        "jellyfin": "lscr.io/linuxserver/jellyfin"
-      }
+      "customType": "regex",
+      "managerFilePatterns": ["/variants/.+\\.nix$/"],
+      "matchStrings": [
+        "jellyfin\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver",
+      "depNameTemplate": "lscr.io/linuxserver/jellyfin"
     },
     {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["n8n"],
-      "registryAliases": {
-        "n8n": "docker.n8n.io/n8nio/n8n"
-      }
+      "customType": "regex",
+      "managerFilePatterns": ["/variants/.+\\.nix$/"],
+      "matchStrings": [
+        "n8n\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver",
+      "depNameTemplate": "docker.n8n.io/n8nio/n8n"
     },
     {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["dawarich"],
-      "registryAliases": {
-        "dawarich": "freikin/dawarich"
-      }
+      "customType": "regex",
+      "managerFilePatterns": ["/variants/.+\\.nix$/"],
+      "matchStrings": [
+        "dawarich\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver",
+      "depNameTemplate": "freikin/dawarich"
     }
   ]
 }
