@@ -24,7 +24,7 @@
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver",
-      "depNameTemplate": "{{#if (eq serviceName \"immich\")}}ghcr.io/immich-app/immich-server{{else if (eq serviceName \"jellyfin\")}}lscr.io/linuxserver/jellyfin{{else if (eq serviceName \"n8n\")}}docker.n8n.io/n8nio/n8n{{else if (eq serviceName \"dawarich\")}}freikin/dawarich{{else}}{{serviceName}}{{/if}}",
+      "depNameTemplate": "{{#if (eq serviceName \"immich\")}}ghcr.io/immich-app/immich-server{{else if (eq serviceName \"jellyfin\")}}lscr.io/linuxserver/jellyfin{{else if (eq serviceName \"n8n\")}}docker.n8n.io/n8nio/n8n{{else if (eq serviceName \"dawarich\")}}freikin/dawarich{{else}}{{serviceName}}{{/if}}"
     }
   ]
 }
