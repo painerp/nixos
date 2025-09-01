@@ -21,6 +21,10 @@ in
       type = lib.types.bool;
       default = false;
     };
+    version = lib.mkOption {
+      type = lib.types.str;
+      default = "latest";
+    };
     volumes = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
@@ -50,7 +54,7 @@ in
           ];
         };
         service = {
-          image = "lscr.io/linuxserver/jellyfin:latest";
+          image = "lscr.io/linuxserver/jellyfin:${cfg.version}";
           container_name = "jellyfin";
           hostname = config.networking.hostName;
           networks = [ "proxy" ];
