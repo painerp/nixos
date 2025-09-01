@@ -38,6 +38,7 @@ in
     };
     renovate = {
       enable = true;
+      timer = "1h";
       env-file = secrets.run-renovate-env;
     };
     monitoring = {
