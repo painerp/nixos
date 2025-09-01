@@ -26,5 +26,5 @@ jobs:
       - name: Commit mapping file
         uses: stefanzweifel/git-auto-commit-action@v6
         with:
-          commit_message: 'chore: update docker image mappings'
-          file_pattern: 'docker-mappings.json'
+          commit_message: 'chore: update docker image mappings in renovate.json'
+          file_pattern: 'renovate.json'
