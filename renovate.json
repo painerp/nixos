@@ -16,17 +16,33 @@
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": ["/variants/.+\\.nix$/"],
+      "managerFilePatterns": [
+        "/variants/.+\\.nix$/"
+      ],
       "matchStrings": [
-        "immich\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+        "n8n\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver",
-      "depNameTemplate": "ghcr.io/immich-app/immich-server"
+      "depNameTemplate": "docker.n8n.io/n8nio/n8n"
     },
     {
       "customType": "regex",
-      "managerFilePatterns": ["/variants/.+\\.nix$/"],
+      "managerFilePatterns": [
+        "/variants/.+\\.nix$/"
+      ],
+      "matchStrings": [
+        "dawarich\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver",
+      "depNameTemplate": "freikin/dawarich"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/variants/.+\\.nix$/"
+      ],
       "matchStrings": [
         "jellyfin\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
@@ -37,23 +53,15 @@
     },
     {
       "customType": "regex",
-      "managerFilePatterns": ["/variants/.+\\.nix$/"],
+      "managerFilePatterns": [
+        "/variants/.+\\.nix$/"
+      ],
       "matchStrings": [
-        "n8n\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+        "immich\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver",
-      "depNameTemplate": "docker.n8n.io/n8nio/n8n"
-    },
-    {
-      "customType": "regex",
-      "managerFilePatterns": ["/variants/.+\\.nix$/"],
-      "matchStrings": [
-        "dawarich\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
-      ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "semver",
-      "depNameTemplate": "freikin/dawarich"
+      "depNameTemplate": "ghcr.io/immich-app/immich-server"
     }
   ]
 }
