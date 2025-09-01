@@ -8,5 +8,16 @@
   },
   "nix": {
     "enabled": true
-  }
+  },
+  "regexManagers": [
+    {
+      "fileMatch": ["variants/.+\\.nix$"],
+      "matchStrings": [
+        "(?<serviceName>[a-zA-Z0-9_-]+)\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+      ],
+      "depNameTemplate": "{{#if lookup (fromJson (readFile 'docker-mappings.json')) serviceName}}{{lookup (fromJson (readFile 'docker-mappings.json')) serviceName}}{{else}}{{serviceName}}{{/if}}",
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver"
+    }
+  ]
 }
