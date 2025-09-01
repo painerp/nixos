@@ -1,0 +1,29 @@
+name: Update Docker Mappings
+
+on:
+  push:
+    paths:
+      - 'containers/**.nix'
+  schedule:
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+
+jobs:
+  update-mappings:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Generate Docker mappings
+        run: python .gitea/scripts/generate_docker_mappings.py
+
+      - name: Commit mapping file
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'chore: update docker image mappings'
+          file_pattern: 'docker-mappings.json'
