@@ -29,36 +29,24 @@
   ],
   "packageRules": [
     {
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchPackageNames": [
-        "lscr.io/linuxserver/jellyfin"
-      ]
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["jellyfin"],
+      "packageName": "lscr.io/linuxserver/jellyfin"
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchPackageNames": [
-        "ghcr.io/immich-app/immich-server"
-      ]
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["immich"],
+      "packageName": "ghcr.io/immich-app/immich-server"
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchPackageNames": [
-        "docker.n8n.io/n8nio/n8n"
-      ]
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["n8n"],
+      "packageName": "docker.n8n.io/n8nio/n8n"
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchPackageNames": [
-        "freikin/dawarich"
-      ]
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["dawarich"],
+      "packageName": "freikin/dawarich"
     }
   ]
 }
