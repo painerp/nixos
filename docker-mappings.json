@@ -1,0 +1,6 @@
+{
+  "n8n": "docker.n8n.io/n8nio/n8n",
+  "dawarich": "freikin/dawarich",
+  "jellyfin": "lscr.io/linuxserver/jellyfin",
+  "immich": "ghcr.io/immich-app/immich-server"
+}
