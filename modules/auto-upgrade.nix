@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  secrets,
   pkgs,
   ...
 }:
@@ -34,7 +35,10 @@ in
       default = true;
       description = "If true, the timer will be persistent. It will start immediately if it would have been missed otherwise.";
     };
-    env-file = lib.mkOption { type = lib.types.path; };
+    env-file = lib.mkOption {
+      type = lib.types.path;
+      default = secrets.extras-smtp;
+    };
   };
 
   config = lib.mkIf (cfg.enable) {
