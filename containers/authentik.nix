@@ -44,6 +44,10 @@ in
       type = lib.types.bool;
       default = false;
     };
+    version = lib.mkOption {
+      type = lib.types.str;
+      default = "latest";
+    };
     extra-headers = lib.mkOption {
       type = lib.types.str;
       default = "";
@@ -78,7 +82,7 @@ in
         if (cfg.proxy) then
           {
             authentik-proxy.service = {
-              image = "ghcr.io/goauthentik/proxy:latest";
+              image = "ghcr.io/goauthentik/proxy:${cfg.version}";
               container_name = "authentik-proxy";
               networks = [ "proxy" ];
               environment = {
@@ -140,7 +144,7 @@ in
             };
 
             server.service = {
-              image = "ghcr.io/goauthentik/server:latest";
+              image = "ghcr.io/goauthentik/server:${cfg.version}";
               container_name = "authentik-server";
               command = "server";
               environment = env-auth;
@@ -162,7 +166,7 @@ in
             };
 
             worker.service = {
-              image = "ghcr.io/goauthentik/server:latest";
+              image = "ghcr.io/goauthentik/server:${cfg.version}";
               container_name = "authentik-worker";
               command = "worker";
               user = "root";
