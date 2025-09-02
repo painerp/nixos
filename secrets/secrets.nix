@@ -47,6 +47,8 @@ in
     dionysus
   ];
 
+  "extras/smtp.age".publicKeys = users ++ systems;
+
   "jpi/wifi.age".publicKeys = users ++ [ jpi ];
 
   "jbx/wifi.age".publicKeys = users ++ [ jbx ];
