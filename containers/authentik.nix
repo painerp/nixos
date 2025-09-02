@@ -96,7 +96,7 @@ in
         else
           {
             postgresql.service = {
-              image = "docker.io/library/postgres:12-alpine";
+              image = "docker.io/library/postgres:16-alpine";
               container_name = "authentik-pg";
               networks = [ "authentik-internal" ];
               environment = {
