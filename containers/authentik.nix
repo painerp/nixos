@@ -166,7 +166,10 @@ in
               container_name = "authentik-worker";
               command = "worker";
               user = "root";
-              networks = [ "authentik-internal" ];
+              networks = [
+                "proxy"
+                "authentik-internal"
+              ];
               environment = env-auth;
               env_file = [ config.age.secrets.authentik-env.path ];
               volumes = [
