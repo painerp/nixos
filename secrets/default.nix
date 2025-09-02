@@ -5,6 +5,8 @@
 
   pkgs-upload-file = ./pkgs/upload-file.age;
 
+  extras-smtp = ./extras/smtp.age;
+
   # variants
   bpi-wifi = ./bpi/wifi.age;
 
