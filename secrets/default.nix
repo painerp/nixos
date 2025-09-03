@@ -62,4 +62,6 @@
   dionysus-dionysus-pw = ./dionysus/dionysus-pw.age;
 
   kronos-kronos-pw = ./kronos/kronos-pw.age;
+
+  artemis-artemis-pw = ./artemis/artemis-pw.age;
 }
