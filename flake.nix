@@ -316,7 +316,7 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.backupFileExtension = "bak";
-                home-manager.users.dionysus = import ./variants/homes/default.nix;
+                home-manager.users.artemis = import ./variants/homes/default.nix;
                 home-manager.extraSpecialArgs = {
                   inherit inputs pkgs-unstable;
                 };
