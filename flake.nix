@@ -290,6 +290,39 @@
               ./hardware/thinkcentre-m715q.nix
             ];
           };
+
+        artemis =
+          let
+            system = "x86_64-linux";
+            pkgs-unstable = (import nixpkgs-unstable) {
+              inherit system;
+              config.allowUnfree = true;
+            };
+          in
+          nixpkgs.lib.nixosSystem {
+            specialArgs = {
+              inherit inputs secrets pkgs-unstable;
+            };
+            pkgs = (import nixpkgs) {
+              inherit system;
+              config.allowUnfree = true;
+              overlays = desktop-overlays;
+            };
+            modules = desktop-modules ++ [
+              ./variants/artemis.nix
+              ./hardware/tuxedo-infinitybook-pro-14-gen10.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.backupFileExtension = "bak";
+                home-manager.users.dionysus = import ./variants/homes/default.nix;
+                home-manager.extraSpecialArgs = {
+                  inherit inputs pkgs-unstable;
+                };
+              }
+            ];
+          };
       };
     };
 }

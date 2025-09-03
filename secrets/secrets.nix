@@ -16,6 +16,7 @@ let
   arr = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGF1rLbYjyiGRfdPHKxmuiTd650+Iy0VR2/qM5T06PAv";
   kronos = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMzWDG01ypPUCmsrLBhr8xFMiIPeAcz51l5urH3itjMc";
   dionysus = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICXwKn5oP1LcWZY0iXwHRqaKbAHadyrLkAKRJgCYAklU";
+  artemis = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIYTIFFl8OW824+BS94juW4b9PAt5ZvYYJzUm11njeBI";
   systems = [
     jpi
     jbx
@@ -103,4 +104,6 @@ in
   "dionysus/dionysus-pw.age".publicKeys = users ++ [ dionysus ];
 
   "kronos/kronos-pw.age".publicKeys = users ++ [ kronos ];
+
+  "artemis/artemis-pw.age".publicKeys = users ++ [ artemis ];
 }
