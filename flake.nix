@@ -57,6 +57,7 @@
         (import ./overlays/teamspeak_client.nix { })
         (import ./overlays/btop.nix { })
         (import ./overlays/hyprpanel.nix { })
+        (import ./overlays/tailscale-patch.nix { })
       ];
     in
     {
