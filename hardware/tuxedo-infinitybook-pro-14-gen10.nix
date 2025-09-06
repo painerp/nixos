@@ -21,33 +21,8 @@
       "sd_mod"
       "sdhci_pci"
     ];
-    kernelPackages = pkgs.linuxPackages_latest;
-    #    kernelPackages =
-    #      let
-    #        linux_tuxedo_pkg =
-    #          { fetchFromGitLab, buildLinux, ... }@args:
-    #          buildLinux (
-    #            args
-    #            // rec {
-    #              version = "6.11";
-    #              modDirVersion = version;
-    #
-    #              src = fetchFromGitLab {
-    #                owner = "tuxedocomputers/development/packages";
-    #                repo = "linux";
-    #                #                url = "https://gitlab.com/tuxedocomputers/development/packages/linux";
-    #                rev = "69f9c936b9403a9a0008b89da93edac402bcdb8b";
-    #                hash = "";
-    #              };
-    #
-    #              extraMeta.branch = "6.11";
-    #            }
-    #            // (args.argsOverride or { })
-    #          );
-    #        linux_tuxedo = pkgs.callPackage linux_tuxedo_pkg { };
-    #      in
-    #      pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor tuxedo);
-
+    kernelPackages = pkgs.linuxPackages_testing;
+    kernelParams = [ "amdgpu.dcdebugmask=0x600" "acpi.ec_no_wakeup=1" "i8042.nomux=1" "i8042.reset=1,1,1" "i8042.kbdreset=1" ];
     kernelModules = [ "kvm-amd" ];
     loader = {
       systemd-boot = {
@@ -58,10 +33,10 @@
     };
   };
 
-  hardware.tuxedo-rs = {
-    enable = true;
-    tailor-gui.enable = true;
-  };
+  #  hardware.tuxedo-rs = {
+  #    enable = true;
+  #    tailor-gui.enable = true;
+  #  };
 
   security.rtkit.enable = true;
   modules.pipewire.enable = true;
