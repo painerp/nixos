@@ -30,8 +30,11 @@ let
     cit
     gra
     arr
+  ];
+  main_systems = [
     kronos
     dionysus
+    artemis
   ];
   external_systems = [
     ext
@@ -43,12 +46,9 @@ in
   "containers/traefik.env.age".publicKeys = users ++ systems;
   "containers/watchtower.env.age".publicKeys = users ++ systems;
 
-  "pkgs/upload-file.age".publicKeys = users ++ [
-    kronos
-    dionysus
-  ];
+  "pkgs/upload-file.age".publicKeys = users ++ main_systems;
 
-  "extras/smtp.age".publicKeys = users ++ systems;
+  "extras/smtp.age".publicKeys = users ++ systems ++ main_systems ++ external_systems;
 
   "jpi/wifi.age".publicKeys = users ++ [ jpi ];
 
