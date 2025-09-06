@@ -7,7 +7,7 @@
 
 let
   flake = "artemis";
-  truenas-ip = "100.119.140.1";
+  truenas-ip = "100.111.75.128";
 in
 {
   imports = [ ./secrets ];
@@ -37,6 +37,8 @@ in
   swapDevices = [ { device = "/dev/disk/by-uuid/73350b87-60ae-4b36-aff7-898f1077bc36"; } ];
 
   boot.initrd.luks.devices = {
+    "luks-1c8482e1-c564-4a5d-9945-b849b8ea7725".device =
+      "/dev/disk/by-uuid/1c8482e1-c564-4a5d-9945-b849b8ea7725";
     "luks-d6eeba2f-1c7e-45f2-bad8-ccafdbd03559".device =
       "/dev/disk/by-uuid/d6eeba2f-1c7e-45f2-bad8-ccafdbd03559";
   };
@@ -83,7 +85,7 @@ in
     hyprland = {
       enable = true;
       monitor = [
-        "eDP-1,highrr,0x0,1"
+        "eDP-1,highrr,0x0,1.5"
         ",preferred,auto,1,mirror,eDP-1"
       ];
     };
