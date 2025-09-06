@@ -6,6 +6,7 @@
     systemd.enable = true;
 
     settings = {
+      scalingPriority = "hyprland";
       bar = {
         layouts = {
           "${osConfig.modules.hyprland.hyprpanel.main-monitor}" = {
