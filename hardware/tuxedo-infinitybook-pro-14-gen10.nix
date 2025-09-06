@@ -23,11 +23,7 @@
     ];
     kernelPackages = pkgs.linuxPackages_testing;
     kernelParams = [
-      "amdgpu.dcdebugmask=0x600"
-      "i8042.nomux=1"
-      "i8042.reset=1,1,1"
-      "i8042.noloop=1"
-      "i8042.nopnp=1"
+      "amdgpu.dcdebugmask=0x400"
     ];
     kernelModules = [ "kvm-amd" ];
     loader = {
@@ -63,6 +59,10 @@
         WOL_DISABLE = "Y";
       };
     };
+    udev.extraRules = ''
+      # Disable wakeup on PS/2 controller (8042)
+      SUBSYSTEM=="serio", KERNEL=="serio0", ATTR{power/wakeup}="disabled"
+    '';
   };
 
   hardware = {
