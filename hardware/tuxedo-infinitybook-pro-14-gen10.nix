@@ -22,7 +22,13 @@
       "sdhci_pci"
     ];
     kernelPackages = pkgs.linuxPackages_testing;
-    kernelParams = [ "amdgpu.dcdebugmask=0x600" "acpi.ec_no_wakeup=1" "i8042.nomux=1" "i8042.reset=1,1,1" "i8042.kbdreset=1" ];
+    kernelParams = [
+      "amdgpu.dcdebugmask=0x600"
+      "i8042.nomux=1"
+      "i8042.reset=1,1,1"
+      "i8042.noloop=1"
+      "i8042.nopnp=1"
+    ];
     kernelModules = [ "kvm-amd" ];
     loader = {
       systemd-boot = {
