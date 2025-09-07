@@ -40,6 +40,7 @@
     ./firewall.nix
     ./gnome.nix
     ./hyprland.nix
+    ./kde.nix
     ./kodi.nix
     ./logitech.nix
     ./micro.nix
