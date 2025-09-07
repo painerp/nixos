@@ -1,4 +1,9 @@
-{ lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   options.system = {
@@ -24,7 +29,7 @@
     latest-kernel = lib.mkOption {
       description = "Whether the latest kernel should be used";
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
   };
 
@@ -47,4 +52,8 @@
     ./tailscale.nix
     ./waydroid.nix
   ];
+
+  config = {
+    kernelPackages = lib.mkIf (config.system.latest-kernel) lib.mkDefault pkgs.linuxPackages_latest;
+  };
 }
