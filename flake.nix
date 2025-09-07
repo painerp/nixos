@@ -243,6 +243,40 @@
             ];
           };
 
+        demeter =
+          let
+            system = "x86_64-linux";
+            pkgs-unstable = (import nixpkgs-unstable) {
+              inherit system;
+              config.allowUnfree = true;
+            };
+          in
+          nixpkgs.lib.nixosSystem {
+            specialArgs = {
+              inherit inputs secrets pkgs-unstable;
+            };
+            inherit system;
+            pkgs = (import nixpkgs) {
+              inherit system;
+              config.allowUnfree = true;
+              overlays = desktop-overlays;
+            };
+            modules = desktop-modules ++ [
+              ./variants/demeter.nix
+              ./hardware/lenovo-legion-15arh05h.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.backupFileExtension = "bak";
+                home-manager.users.demeter = import ./variants/homes/default.nix;
+                home-manager.extraSpecialArgs = {
+                  inherit inputs pkgs-unstable;
+                };
+              }
+            ];
+          };
+
         dionysus =
           let
             system = "x86_64-linux";
