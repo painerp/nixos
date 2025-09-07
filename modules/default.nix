@@ -23,6 +23,7 @@
     ./arion.nix
     ./auto-upgrade.nix
     ./firewall.nix
+    ./gnome.nix
     ./hyprland.nix
     ./kodi.nix
     ./logitech.nix
