@@ -229,7 +229,7 @@
             };
             modules = desktop-modules ++ [
               ./variants/kronos.nix
-              ./hardware/lenovo-15arh05h.nix
+              ./hardware/lenovo-legion-15arh05h.nix
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
