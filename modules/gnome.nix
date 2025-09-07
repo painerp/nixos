@@ -30,7 +30,7 @@ in
     };
     environment = {
       systemPackages = with pkgs; [ gnomeExtensions.appindicator ];
-      gnome.excludePackages = with pkgs.gnome; [
+      gnome.excludePackages = with pkgs; [
         gedit # text editor
         geary # email reader
         evince # document viewer
