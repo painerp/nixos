@@ -44,7 +44,7 @@
   modules.pipewire.enable = true;
   services = {
     tlp = {
-      enable = lib.mkIf (!config.modules.gnome.enable) true;
+      enable = lib.mkIf (config.modules.hyprland.enable) true;
       settings = {
         CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
         CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
