@@ -269,7 +269,7 @@ in
       };
     };
 
-    systemd.user = lib.mkIf (cfg.desktop) {
+    systemd.user = lib.mkIf (cfg.desktop && config.modules.hyprland) {
       services.apod-wallpaper = {
         wants = [ "network-online.target" ];
         after = [ "network-online.target" ];
