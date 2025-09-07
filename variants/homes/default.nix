@@ -84,10 +84,6 @@ in
       startInBackground = true;
     };
     easyeffects.enable = lib.mkIf (pkg-config.desktop-extras) true;
-    udisks2.enable = true;
-    upower.enable = true;
-    printing.enable = true;
-    gnome.gnome-keyring.enable = true;
   };
 
   gtk = {

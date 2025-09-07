@@ -94,6 +94,10 @@ in
       gvfs.enable = true;
       blueman.enable = true;
       hypridle.enable = if hm then false else true;
+      udisks2.enable = true;
+      upower.enable = true;
+      printing.enable = true;
+      gnome.gnome-keyring.enable = true;
     };
 
     security = {
