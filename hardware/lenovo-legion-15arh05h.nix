@@ -7,7 +7,16 @@
   ...
 }:
 
+let
+  cfg = config.hardware.lenovo-legion-15arh05h;
+in
 {
+  options.modules.lenovo-legion-15arh05h = {
+    latest-kernel = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+    };
+  };
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     inputs.nixos-hardware.nixosModules.lenovo-legion-15arh05h
@@ -22,7 +31,7 @@
       "usb_storage"
       "sd_mod"
     ];
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = lib.mkIf (cfg.latest-kernel) pkgs.linuxPackages_latest;
     kernelModules = [ "kvm-amd" ];
     loader = {
       systemd-boot = {
