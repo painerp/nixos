@@ -53,8 +53,8 @@ in
     username = flake;
     home-manager = true;
     language = "de_DE.UTF-8";
+    latest-kernel = false;
   };
-  hardware.lenovo-legion-15arh05h.latest-kernel = false;
   modules = {
     auto-upgrade.enable = true;
     gnome.enable = true;
