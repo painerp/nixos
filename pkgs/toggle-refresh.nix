@@ -14,6 +14,14 @@ in
       type = lib.types.bool;
       default = false;
     };
+    resolution = lib.mkOption {
+      type = lib.types.string;
+      default = "0x0";
+    };
+    scale = lib.mkOption {
+      type = lib.types.string;
+      default = "1";
+    };
   };
 
   config = lib.mkIf (cfg.enable) {
@@ -33,10 +41,10 @@ in
         HIGH_RATE="$(echo "$MONITORS" | ${pkgs.jq}/bin/jq -r .[0].availableModes.[0] | sed 's/.*@\(.*\)Hz/\1/')"
 
         if [[ $(printf "%.0f" "$CURRENT_RATE") -eq "$LOW_RATE" ]]; then
-          hyprctl keyword monitor "$MONITOR",1920x1080@"$HIGH_RATE",auto,1
+          hyprctl keyword monitor "$MONITOR",${cfg.resolution}@"$HIGH_RATE",auto,${cfg.scale}
           echo "Setting refresh rate to: $HIGH_RATE"
         else
-          hyprctl keyword monitor "$MONITOR",1920x1080@"$LOW_RATE",auto,1
+          hyprctl keyword monitor "$MONITOR",${cfg.resolution}@"$LOW_RATE",auto,${cfg.scale}
           echo "Setting refresh rate to: $LOW_RATE"
         fi
       '')
