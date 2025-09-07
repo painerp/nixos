@@ -53,7 +53,6 @@ in
     username = flake;
     home-manager = true;
     language = "de_DE.UTF-8";
-    latest-kernel = false;
   };
   modules = {
     auto-upgrade.enable = true;

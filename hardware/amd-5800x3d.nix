@@ -18,7 +18,6 @@
       "usb_storage"
       "sd_mod"
     ];
-    kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [ "kvm-amd" ];
     loader = {
       systemd-boot = {
