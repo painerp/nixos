@@ -93,11 +93,7 @@ in
     services = {
       gvfs.enable = true;
       blueman.enable = true;
-      udisks2.enable = true;
-      upower.enable = true;
       hypridle.enable = if hm then false else true;
-      printing.enable = true;
-      gnome.gnome-keyring.enable = true;
     };
 
     security = {

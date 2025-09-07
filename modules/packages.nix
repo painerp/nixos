@@ -26,6 +26,7 @@ in
     image = makeOption false;
     office = makeOption false;
     desktop = makeOption false;
+    desktop-extras = makeOption false;
     gaming = makeOption false;
     tor = makeOption false;
     communication = makeOption false;
@@ -59,16 +60,12 @@ in
       ++ (
         if cfg.desktop then
           [
-            inputs.apod-wallpaper.packages.${pkgs.system}.default
             brave
-            easyeffects
-            nextcloud-client
             nomacs
             kdePackages.kate
             kdePackages.ark
             vlc
             vorta
-            keepassxc
             gparted
             xfce.xfconf
           ]
@@ -78,6 +75,17 @@ in
             else
               (if config.modules.nvidia.enable then [ btop_nvidia ] else [ btop ])
           )
+        else
+          [ ]
+      )
+      ++ (
+        if cfg.desktop-extras then
+          [
+            inputs.apod-wallpaper.packages.${pkgs.system}.default
+            easyeffects
+            nextcloud-client
+            keepassxc
+          ]
         else
           [ ]
       )
