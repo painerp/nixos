@@ -21,6 +21,11 @@
       type = lib.types.str;
       default = "en_US.UTF-8";
     };
+    latest-kernel = lib.mkOption {
+      description = "Whether the latest kernel should be used";
+      type = lib.types.bool;
+      default = true;
+    };
   };
 
   imports = [
