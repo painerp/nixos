@@ -198,7 +198,7 @@ in
         gamescopeSession.enable = true;
       };
       gamemode.enable = cfg.gaming;
-      kdeconnect.enable = cfg.desktop;
+      kdeconnect.enable = cfg.desktop-extras;
       xfconf.enable = cfg.desktop;
       nix-ld.enable = cfg.dev;
       thunar = {
@@ -270,7 +270,7 @@ in
       tumbler.enable = cfg.desktop;
       tor.enable = cfg.tor;
       syncthing = {
-        enable = cfg.desktop;
+        enable = cfg.desktop-extras;
         user = config.system.username;
         dataDir = "/home/${config.system.username}/Syncthing";
         configDir = "/home/${config.system.username}/.config/syncthing";
