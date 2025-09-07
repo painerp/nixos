@@ -54,6 +54,8 @@
   ];
 
   config = {
-    kernelPackages = lib.mkIf (config.system.latest-kernel) lib.mkDefault pkgs.linuxPackages_latest;
+    boot.kernelPackages = lib.mkIf (config.system.latest-kernel) (
+      lib.mkDefault pkgs.linuxPackages_latest
+    );
   };
 }
