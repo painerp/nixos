@@ -15,11 +15,11 @@ in
       default = false;
     };
     resolution = lib.mkOption {
-      type = lib.types.string;
+      type = lib.types.str;
       default = "0x0";
     };
     scale = lib.mkOption {
-      type = lib.types.string;
+      type = lib.types.str;
       default = "1";
     };
   };
