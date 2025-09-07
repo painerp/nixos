@@ -17,6 +17,7 @@ let
   kronos = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMzWDG01ypPUCmsrLBhr8xFMiIPeAcz51l5urH3itjMc";
   dionysus = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICXwKn5oP1LcWZY0iXwHRqaKbAHadyrLkAKRJgCYAklU";
   artemis = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIYTIFFl8OW824+BS94juW4b9PAt5ZvYYJzUm11njeBI";
+  demeter = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM3rWgNK9oXQ8BavFG7HfGBZNPeereDeBJc8hrfEqduF";
   systems = [
     jpi
     jbx
@@ -35,6 +36,7 @@ let
     kronos
     dionysus
     artemis
+    demeter
   ];
   external_systems = [
     ext
@@ -106,4 +108,6 @@ in
   "kronos/kronos-pw.age".publicKeys = users ++ [ kronos ];
 
   "artemis/artemis-pw.age".publicKeys = users ++ [ artemis ];
+
+  "demeter/demeter-pw.age".publicKeys = users ++ [ demeter ];
 }

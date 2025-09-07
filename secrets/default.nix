@@ -64,4 +64,6 @@
   kronos-kronos-pw = ./kronos/kronos-pw.age;
 
   artemis-artemis-pw = ./artemis/artemis-pw.age;
+
+  demeter-demeter-pw = ./demeter/demeter-pw.age;
 }
