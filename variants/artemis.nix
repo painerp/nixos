@@ -77,6 +77,7 @@ in
     home-manager = true;
   };
   modules = {
+    amd.enable = true;
     arion = {
       enable = true;
       rewrite-bip = true;
