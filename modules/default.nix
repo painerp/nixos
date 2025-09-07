@@ -16,6 +16,11 @@
       type = lib.types.bool;
       default = false;
     };
+    language = lib.mkOption {
+      description = "The default language of the system";
+      type = lib.types.str;
+      default = "en_US.UTF-8";
+    };
   };
 
   imports = [
