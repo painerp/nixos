@@ -71,7 +71,6 @@ in
             keepassxc
             gparted
             xfce.xfconf
-            ncspot
           ]
           ++ (
             if config.modules.amd.enable then
