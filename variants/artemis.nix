@@ -94,7 +94,10 @@ in
   };
   cpkgs = {
     ice-connect.enable = true;
-    toggle-refresh.enable = true;
+    toggle-refresh = {
+      enable = true;
+      scale = "1.5";
+    };
     brightness.enable = true;
     screenshot-upload.enable = true;
     upload-file = {
