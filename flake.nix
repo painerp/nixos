@@ -58,6 +58,7 @@
         (import ./overlays/btop.nix { })
         (import ./overlays/hyprpanel.nix { })
         (import ./overlays/tailscale-patch.nix { })
+        (import ./overlays/tuxedo-drivers.nix { })
       ];
     in
     {
