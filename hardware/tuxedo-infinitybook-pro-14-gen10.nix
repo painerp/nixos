@@ -35,11 +35,6 @@
     };
   };
 
-  #  hardware.tuxedo-rs = {
-  #    enable = true;
-  #    tailor-gui.enable = true;
-  #  };
-
   security.rtkit.enable = true;
   modules.pipewire.enable = true;
   services = {
@@ -73,5 +68,11 @@
       powerOnBoot = true;
       settings.General.Experimental = true;
     };
+
+    tuxedo-drivers.enable = true;
+    #    tuxedo-rs = {
+    #      enable = true;
+    #      tailor-gui.enable = true;
+    #    };
   };
 }
