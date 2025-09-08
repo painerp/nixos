@@ -26,6 +26,7 @@ in
     image = makeOption false;
     office = makeOption false;
     desktop = makeOption false;
+    desktop-extras = makeOption false;
     gaming = makeOption false;
     tor = makeOption false;
     communication = makeOption false;
@@ -59,19 +60,14 @@ in
       ++ (
         if cfg.desktop then
           [
-            inputs.apod-wallpaper.packages.${pkgs.system}.default
             brave
-            easyeffects
-            nextcloud-client
             nomacs
             kdePackages.kate
             kdePackages.ark
             vlc
             vorta
-            keepassxc
             gparted
             xfce.xfconf
-            ncspot
           ]
           ++ (
             if config.modules.amd.enable then
@@ -79,6 +75,17 @@ in
             else
               (if config.modules.nvidia.enable then [ btop_nvidia ] else [ btop ])
           )
+        else
+          [ ]
+      )
+      ++ (
+        if cfg.desktop-extras then
+          [
+            inputs.apod-wallpaper.packages.${pkgs.system}.default
+            easyeffects
+            nextcloud-client
+            keepassxc
+          ]
         else
           [ ]
       )
@@ -191,7 +198,7 @@ in
         gamescopeSession.enable = true;
       };
       gamemode.enable = cfg.gaming;
-      kdeconnect.enable = cfg.desktop;
+      kdeconnect.enable = cfg.desktop-extras;
       xfconf.enable = cfg.desktop;
       nix-ld.enable = cfg.dev;
       thunar = {
@@ -263,14 +270,14 @@ in
       tumbler.enable = cfg.desktop;
       tor.enable = cfg.tor;
       syncthing = {
-        enable = cfg.desktop;
+        enable = cfg.desktop-extras;
         user = config.system.username;
         dataDir = "/home/${config.system.username}/Syncthing";
         configDir = "/home/${config.system.username}/.config/syncthing";
       };
     };
 
-    systemd.user = lib.mkIf (cfg.desktop) {
+    systemd.user = lib.mkIf (cfg.desktop && config.modules.hyprland.enable) {
       services.apod-wallpaper = {
         wants = [ "network-online.target" ];
         after = [ "network-online.target" ];
