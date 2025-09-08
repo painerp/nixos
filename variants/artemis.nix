@@ -75,8 +75,10 @@ in
     inherit flake;
     username = flake;
     home-manager = true;
+    latest-kernel = true;
   };
   modules = {
+    amd.enable = true;
     arion = {
       enable = true;
       rewrite-bip = true;
@@ -93,7 +95,10 @@ in
   };
   cpkgs = {
     ice-connect.enable = true;
-    toggle-refresh.enable = true;
+    toggle-refresh = {
+      enable = true;
+      scale = "1.5";
+    };
     brightness.enable = true;
     screenshot-upload.enable = true;
     upload-file = {

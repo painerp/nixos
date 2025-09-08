@@ -4,7 +4,6 @@
   imports = [ inputs.nixos-hardware.nixosModules.raspberry-pi-4 ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
     initrd.availableKernelModules = [
       "xhci_pci"
       "usbhid"
