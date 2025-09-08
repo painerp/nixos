@@ -16,18 +16,17 @@
               "workspaces"
             ];
             middle = [ "windowtitle" ];
-            right =
-              [
-                "systray"
-                "volume"
-                "bluetooth"
-                "network"
-                "hypridle"
-              ]
-              ++ (if osConfig.modules.hyprland.hyprpanel.battery then [ "battery" ] else [ ])
-              ++ [
-                "notifications"
-              ];
+            right = [
+              "systray"
+              "volume"
+              "bluetooth"
+              "network"
+              "hypridle"
+            ]
+            ++ (if osConfig.modules.hyprland.hyprpanel.battery then [ "battery" ] else [ ])
+            ++ [
+              "notifications"
+            ];
           };
           "*" = {
             left = [
@@ -122,7 +121,6 @@
       };
 
       theme = {
-        name = "catppuccin_mocha";
         font.size = "1rem";
         bar = {
           floating = true;

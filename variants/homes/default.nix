@@ -75,15 +75,15 @@ in
   };
 
   services = {
-    kdeconnect = lib.mkIf (pkg-config.desktop) {
+    kdeconnect = lib.mkIf (pkg-config.desktop-extras) {
       enable = true;
       indicator = true;
     };
-    nextcloud-client = lib.mkIf (pkg-config.desktop) {
+    nextcloud-client = lib.mkIf (pkg-config.desktop-extras) {
       enable = true;
       startInBackground = true;
     };
-    easyeffects.enable = true;
+    easyeffects.enable = lib.mkIf (pkg-config.desktop-extras) true;
   };
 
   gtk = {

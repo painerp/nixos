@@ -78,6 +78,7 @@ in
     inherit flake;
     username = flake;
     home-manager = true;
+    latest-kernel = true;
   };
   modules = {
     amd.enable = true;

@@ -1,3 +1,5 @@
+{ config, ... }:
+
 {
   nix.settings = {
     experimental-features = [
@@ -11,7 +13,7 @@
   console.keyMap = "de";
   time.timeZone = "Europe/Berlin";
   i18n = {
-    defaultLocale = "en_US.UTF-8";
+    defaultLocale = config.system.language;
     supportedLocales = [
       "en_US.UTF-8/UTF-8"
       "de_DE.UTF-8/UTF-8"
@@ -29,5 +31,5 @@
     };
   };
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }
