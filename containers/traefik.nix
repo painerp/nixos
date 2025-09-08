@@ -7,73 +7,73 @@
 }:
 let
   cfg = config.server.traefik;
-  staticConfig =
-    {
-      global = {
-        checkNewVersion = false;
-        sendAnonymousUsage = false;
+  staticConfig = {
+    global = {
+      checkNewVersion = false;
+      sendAnonymousUsage = false;
+    };
+    api = {
+      dashboard = true;
+      insecure = true;
+      debug = false;
+    };
+    log = {
+      level = "ERROR";
+      format = "common";
+      filePath = "/var/log/traefik/traefik.log";
+    };
+    accesslog = {
+      format = "common";
+      filePath = "/var/log/traefik/access.log";
+    };
+    providers = {
+      docker = {
+        endpoint = "unix:///var/run/docker.sock";
+        exposedByDefault = false;
       };
-      api = {
-        dashboard = true;
-        insecure = true;
-        debug = false;
-      };
-      log = {
-        level = "ERROR";
-        format = "common";
-        filePath = "/var/log/traefik/traefik.log";
-      };
-      accesslog = {
-        format = "common";
-        filePath = "/var/log/traefik/access.log";
-      };
-      providers = {
-        docker = {
-          endpoint = "unix:///var/run/docker.sock";
-          exposedByDefault = false;
-        };
-        file = {
-          directory = "/dynamic";
-          watch = true;
-        };
-      };
-      entrypoints = {
-        http = {
-          address = ":80";
-          http.redirections.entryPoint = {
-            to = "https";
-            scheme = "https";
-          };
-        };
-        https = {
-          address = ":443";
-          http.tls = {
-            certResolver = "hetzner";
-          };
-          http3.advertisedPort = 443;
-        };
-        metrics.address = ":20003";
-      } // lib.attrsets.optionalAttrs (cfg.extra-entrypoints != { }) cfg.extra-entrypoints;
-      certificatesResolvers.hetzner.acme = {
-        email = "help@${config.server.base-domain}";
-        storage = "acme.json";
-        dnsChallenge = {
-          provider = "hetzner";
-          resolvers = [
-            "213.133.100.98:53"
-            "193.47.99.5:53"
-            "88.198.229.192:53"
-          ];
-        };
-      };
-    }
-    // lib.attrsets.optionalAttrs cfg.monitoring {
-      metrics.prometheus = {
-        entryPoint = "metrics";
-        addEntryPointsLabels = true;
-        addServicesLabels = true;
+      file = {
+        directory = "/dynamic";
+        watch = true;
       };
     };
+    entrypoints = {
+      http = {
+        address = ":80";
+        http.redirections.entryPoint = {
+          to = "https";
+          scheme = "https";
+        };
+      };
+      https = {
+        address = ":443";
+        http.tls = {
+          certResolver = "hetzner";
+        };
+        http3.advertisedPort = 443;
+      };
+      metrics.address = ":20003";
+    }
+    // lib.attrsets.optionalAttrs (cfg.extra-entrypoints != { }) cfg.extra-entrypoints;
+    certificatesResolvers.hetzner.acme = {
+      email = "help@${config.server.base-domain}";
+      storage = "acme.json";
+      dnsChallenge = {
+        provider = "hetzner";
+        resolvers = [
+          "213.133.100.98:53"
+          "193.47.99.5:53"
+          "88.198.229.192:53"
+        ];
+      };
+    };
+  }
+  // lib.attrsets.optionalAttrs cfg.monitoring {
+    metrics.prometheus = {
+      entryPoint = "metrics";
+      addEntryPointsLabels = true;
+      addServicesLabels = true;
+    };
+  };
   staticConfigFile = builtins.toFile "traefik.yaml" (builtins.toJSON staticConfig);
 in
 {
