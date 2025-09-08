@@ -196,11 +196,12 @@ in
       enable = true;
       settings.traefik = {
         files = "${config.lib.server.mkConfigDir "traefik/logs"}/access.log";
-        frequency = "weekly";
+        frequency = "daily";
         rotate = 90;
         missingok = true;
         notifempty = true;
         compress = true;
+        minsize = "10M";
         postrotate = ''
           /run/current-system/sw/bin/docker kill --signal="USR1" traefik
         '';
