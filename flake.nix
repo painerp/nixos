@@ -54,7 +54,7 @@
         ./pkgs
       ];
       desktop-overlays = [
-        (import ./overlays/teamspeak_client.nix { })
+        (import ./overlays/teamspeak-client.nix { })
         (import ./overlays/btop.nix { })
         (import ./overlays/hyprpanel.nix { })
         (import ./overlays/tailscale-patch.nix { })
