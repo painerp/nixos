@@ -2,6 +2,7 @@
 
 let
   cfg = config.server.jellyfin;
+  default-version = "latest";
 in
 {
   options.server.jellyfin = {
@@ -23,7 +24,7 @@ in
     };
     version = lib.mkOption {
       type = lib.types.str;
-      default = "latest";
+      default = default-version;
     };
     volumes = lib.mkOption {
       type = lib.types.listOf lib.types.str;
@@ -74,7 +75,7 @@ in
               forwardAuth = cfg.auth;
             }
             // {
-              "com.centurylinklabs.watchtower.enable" = "true";
+              "com.centurylinklabs.watchtower.enable" = builtins.toString (cfg.version == default-version);
             };
           restart = "unless-stopped";
         };
