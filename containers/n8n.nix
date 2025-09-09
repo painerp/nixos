@@ -2,6 +2,7 @@
 
 let
   cfg = config.server.n8n;
+  default-version = "latest";
 in
 {
   options.server.n8n = {
@@ -15,7 +16,7 @@ in
     };
     version = lib.mkOption {
       type = lib.types.str;
-      default = "latest";
+      default = default-version;
     };
   };
 
@@ -60,7 +61,7 @@ in
             subdomain = "${cfg.subdomain}";
           }
           // {
-            "com.centurylinklabs.watchtower.enable" = "false";
+            "com.centurylinklabs.watchtower.enable" = builtins.toString (cfg.version == default-version);
           };
         restart = "unless-stopped";
       };
