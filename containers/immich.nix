@@ -7,6 +7,8 @@ let
     DB_USERNAME = "postgres";
     DB_DATABASE_NAME = "immich";
   };
+  default-version = "release";
+  default-redis-image = "redis:alpine";
 in
 {
   options.server.immich = {
@@ -29,11 +31,11 @@ in
     };
     version = lib.mkOption {
       type = lib.types.str;
-      default = "release";
+      default = default-version;
     };
     redis.image = lib.mkOption {
       type = lib.types.str;
-      default = "redis:alpine";
+      default = default-redis-image;
     };
     postgres = {
       image = lib.mkOption { type = lib.types.str; };
@@ -95,7 +97,7 @@ in
               forwardAuth = cfg.auth;
             }
             // {
-              "com.centurylinklabs.watchtower.enable" = "false";
+              "com.centurylinklabs.watchtower.enable" = builtins.toString (cfg.version == default-version);
             };
           restart = "unless-stopped";
         };
@@ -121,7 +123,7 @@ in
           ];
           volumes = [ "${config-dir}/model-cache:/cache" ];
           labels = {
-            "com.centurylinklabs.watchtower.enable" = "false";
+            "com.centurylinklabs.watchtower.enable" = builtins.toString (cfg.version == default-version);
           };
           restart = "unless-stopped";
         };
@@ -133,7 +135,9 @@ in
         hostname = config.networking.hostName;
         networks = [ "backend" ];
         labels = {
-          "com.centurylinklabs.watchtower.enable" = "false";
+          "com.centurylinklabs.watchtower.enable" = builtins.toString (
+            cfg.redis.image == default-redis-image
+          );
         };
         restart = "unless-stopped";
       };
@@ -150,7 +154,7 @@ in
         env_file = [ config.age.secrets.immich-pg-env.path ];
         volumes = [ "${config-dir}/postgres:/var/lib/postgresql/data" ];
         labels = {
-          "com.centurylinklabs.watchtower.enable" = "false";
+          "com.centurylinklabs.watchtower.enable" = builtins.toString (cfg.version == default-version);
         };
         restart = "unless-stopped";
       };
