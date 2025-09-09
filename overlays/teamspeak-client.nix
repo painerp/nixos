@@ -23,12 +23,10 @@ final: prev: rec {
       extension = "zip";
       stripRoot = false;
     };
-    installPhase =
-      oldAttrs.installPhase
-      + ''
-        cp -r ${soundpack}/sound/dukenukem $out/opt/teamspeak/sound
-        cp -r ${iconpack}/gfx/DarkenTS $out/opt/teamspeak/gfx
-        cp -r ${style}/styles/* $out/opt/teamspeak/styles
-      '';
+    installPhase = oldAttrs.installPhase + ''
+      cp -r ${soundpack}/sound/dukenukem $out/opt/teamspeak/sound
+      cp -r ${iconpack}/gfx/DarkenTS $out/opt/teamspeak/gfx
+      cp -r ${style}/styles/* $out/opt/teamspeak/styles
+    '';
   });
 }
