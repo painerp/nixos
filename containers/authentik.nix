@@ -21,7 +21,7 @@ let
         "${headers}" + (if cfg.extra-headers != "" then "," + cfg.extra-headers else "");
     }
     // {
-      "com.centurylinklabs.watchtower.enable" = "true";
+      "com.centurylinklabs.watchtower.enable" = builtins.toString (cfg.version == default-version);
     };
   env-auth = {
     AUTHENTIK_REDIS__HOST = "authentik-redis";
@@ -29,6 +29,7 @@ let
     AUTHENTIK_POSTGRESQL__USER = "authentik";
     AUTHENTIK_POSTGRESQL__NAME = "authentik";
   };
+  default-version = "latest";
 in
 {
   options.server.authentik = {
@@ -46,7 +47,7 @@ in
     };
     version = lib.mkOption {
       type = lib.types.str;
-      default = "latest";
+      default = default-version;
     };
     extra-headers = lib.mkOption {
       type = lib.types.str;
@@ -183,7 +184,7 @@ in
                 "${config-dir}/templates:/templates"
               ];
               labels = {
-                "com.centurylinklabs.watchtower.enable" = "true";
+                "com.centurylinklabs.watchtower.enable" = builtins.toString (cfg.version == default-version);
               };
               depends_on = [
                 "postgresql"
