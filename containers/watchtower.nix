@@ -34,6 +34,10 @@ in
       type = lib.types.bool;
       default = false;
     };
+    include-stopped = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -51,19 +55,20 @@ in
         image = "containrrr/watchtower:latest";
         container_name = "watchtower";
         hostname = config.networking.hostName;
-        environment =
-          {
-            WATCHTOWER_CLEANUP = "true";
-            WATCHTOWER_SCHEDULE = cfg.schedule;
-          }
-          // lib.attrsets.optionalAttrs (cfg.rolling-restart) { WATCHTOWER_ROLLING_RESTART = "true"; }
-          // lib.attrsets.optionalAttrs (cfg.only-label) { WATCHTOWER_LABEL_ENABLE = "true"; }
-          // lib.attrsets.optionalAttrs (cfg.delay-notification) { WATCHTOWER_NOTIFICATIONS_DELAY = "120"; };
+        environment = {
+          WATCHTOWER_CLEANUP = "true";
+          WATCHTOWER_SCHEDULE = cfg.schedule;
+        }
+        // lib.attrsets.optionalAttrs (cfg.rolling-restart) { WATCHTOWER_ROLLING_RESTART = "true"; }
+        // lib.attrsets.optionalAttrs (cfg.only-label) { WATCHTOWER_LABEL_ENABLE = "true"; }
+        // lib.attrsets.optionalAttrs (cfg.delay-notification) { WATCHTOWER_NOTIFICATIONS_DELAY = "120"; }
+        // lib.attrsets.optionalAttrs (cfg.include-stopped) { WATCHTOWER_INCLUDE_STOPPED = "true"; };
         env_file = [ config.age.secrets.watchtower-env.path ];
         volumes = [
           "/var/run/docker.sock:/var/run/docker.sock"
           "/etc/localtime:/etc/localtime:ro"
-        ] ++ (if (cfg.internal-services) then [ "/root/.docker/config.json:/config.json" ] else [ ]);
+        ]
+        ++ (if (cfg.internal-services) then [ "/root/.docker/config.json:/config.json" ] else [ ]);
         labels = {
           "com.centurylinklabs.watchtower.enable" = "true";
         };
