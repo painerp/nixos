@@ -52,6 +52,7 @@ in
     watchtower = {
       enable = true;
       only-label = true;
+      include-stopped = true;
     };
   };
 
