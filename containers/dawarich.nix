@@ -15,6 +15,9 @@ let
     DISABLE_TELEMETRY = "true";
     SELF_HOSTED = "true";
   };
+  default-version = "latest";
+  default-redis-image = "redis:7.0-alpine";
+  default-postgres-image = "postgis/postgis:17-3.5-alpine";
 in
 {
   options.server.dawarich = {
@@ -37,16 +40,16 @@ in
     };
     version = lib.mkOption {
       type = lib.types.str;
-      default = "latest";
+      default = default-version;
     };
     redis.image = lib.mkOption {
       type = lib.types.str;
-      default = "redis:7.0-alpine";
+      default = default-redis-image;
     };
     postgres = {
       image = lib.mkOption {
         type = lib.types.str;
-        default = "postgis/postgis:17-3.5-alpine";
+        default = default-postgres-image;
       };
       env-file = lib.mkOption { type = lib.types.path; };
     };
@@ -106,7 +109,7 @@ in
               forwardAuth = cfg.auth;
             }
             // {
-              "com.centurylinklabs.watchtower.enable" = "false";
+              "com.centurylinklabs.watchtower.enable" = builtins.toString (cfg.version == default-version);
             };
           restart = "unless-stopped";
         };
@@ -156,7 +159,9 @@ in
         networks = [ "backend" ];
         volumes = [ "${config-dir}/shared:/data" ];
         labels = {
-          "com.centurylinklabs.watchtower.enable" = "true";
+          "com.centurylinklabs.watchtower.enable" = builtins.toString (
+            cfg.redis.image == default-redis-image
+          );
         };
         restart = "unless-stopped";
       };
@@ -176,7 +181,9 @@ in
           "${config-dir}/shared:/var/shared"
         ];
         labels = {
-          "com.centurylinklabs.watchtower.enable" = "true";
+          "com.centurylinklabs.watchtower.enable" = builtins.toString (
+            cfg.postgres.image == default-postgres-image
+          );
         };
         restart = "unless-stopped";
       };
