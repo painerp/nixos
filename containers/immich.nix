@@ -97,7 +97,9 @@ in
               forwardAuth = cfg.auth;
             }
             // {
-              "com.centurylinklabs.watchtower.enable" = lib.server.boolToStr (cfg.version == default-version);
+              "com.centurylinklabs.watchtower.enable" = config.lib.server.boolToStr (
+                cfg.version == default-version
+              );
             };
           restart = "unless-stopped";
         };
@@ -123,7 +125,9 @@ in
           ];
           volumes = [ "${config-dir}/model-cache:/cache" ];
           labels = {
-            "com.centurylinklabs.watchtower.enable" = lib.server.boolToStr (cfg.version == default-version);
+            "com.centurylinklabs.watchtower.enable" = config.lib.server.boolToStr (
+              cfg.version == default-version
+            );
           };
           restart = "unless-stopped";
         };
@@ -135,7 +139,7 @@ in
         hostname = config.networking.hostName;
         networks = [ "backend" ];
         labels = {
-          "com.centurylinklabs.watchtower.enable" = lib.server.boolToStr (
+          "com.centurylinklabs.watchtower.enable" = config.lib.server.boolToStr (
             cfg.redis.image == default-redis-image
           );
         };
@@ -154,7 +158,9 @@ in
         env_file = [ config.age.secrets.immich-pg-env.path ];
         volumes = [ "${config-dir}/postgres:/var/lib/postgresql/data" ];
         labels = {
-          "com.centurylinklabs.watchtower.enable" = lib.server.boolToStr (cfg.version == default-version);
+          "com.centurylinklabs.watchtower.enable" = config.lib.server.boolToStr (
+            cfg.version == default-version
+          );
         };
         restart = "unless-stopped";
       };
