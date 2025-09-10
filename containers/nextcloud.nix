@@ -46,7 +46,7 @@ in
       docker-compose.volumes.nextcloud_aio_mastercontainer.name = "nextcloud_aio_mastercontainer";
 
       services.nextcloud.service = {
-        image = "nextcloud/all-in-one:latest";
+        image = "docker.io/nextcloud/all-in-one:latest";
         container_name = "nextcloud-aio-mastercontainer";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];

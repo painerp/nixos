@@ -44,7 +44,7 @@ in
       networks.proxy.external = true;
 
       services.gitea.service = {
-        image = "gitea/gitea:latest";
+        image = "docker.io/gitea/gitea:latest";
         container_name = "gitea";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];
@@ -60,7 +60,8 @@ in
         ];
         ports = [
           "127.0.0.1:2222:22/tcp"
-        ] ++ (if (cfg.internal) then [ "${cfg.internal-ip}:3000:3000/tcp" ] else [ ]);
+        ]
+        ++ (if (cfg.internal) then [ "${cfg.internal-ip}:3000:3000/tcp" ] else [ ]);
         labels =
           config.lib.server.mkTraefikLabels {
             name = "gitea";

@@ -42,7 +42,7 @@ in
           ];
         };
         service = {
-          image = "ollama/ollama:latest";
+          image = "docker.io/ollama/ollama:latest";
           container_name = "ollama";
           hostname = config.networking.hostName;
           networks = [ "proxy" ];

@@ -26,7 +26,7 @@ in
       ];
 
       services.monerod.service = {
-        image = "sethsimmons/simple-monerod:latest";
+        image = "docker.io/sethsimmons/simple-monerod:latest";
         container_name = "monerod";
         network_mode = "service:gluetun";
         user = "1026:100";

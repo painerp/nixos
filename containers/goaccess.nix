@@ -32,7 +32,7 @@ in
       networks.proxy.external = true;
 
       services.nginx.service = {
-        image = "nginx:latest";
+        image = "docker.io/nginx:latest";
         container_name = "goaccess-nginx";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];
@@ -57,7 +57,7 @@ in
       };
 
       services.goaccess.service = {
-        image = "allinurl/goaccess:latest";
+        image = "docker.io/allinurl/goaccess:latest";
         container_name = "goaccess";
         hostname = config.networking.hostName;
         command = [
@@ -68,18 +68,17 @@ in
         environment = {
           TZ = config.time.timeZone;
         };
-        volumes =
-          [
-            "${config.lib.server.mkConfigDir "goaccess/config"}/goaccess.conf:/srv/config/goaccess.conf"
-            "${config.lib.server.mkConfigDir "goaccess/geoip"}:/srv/geoip"
-            "${config.lib.server.mkConfigDir "goaccess/public"}:/srv/report"
-          ]
-          ++ (
-            if (config.server.traefik.enable) then
-              [ "${config.lib.server.mkConfigDir "traefik/logs"}:/srv/logs" ]
-            else
-              [ ]
-          );
+        volumes = [
+          "${config.lib.server.mkConfigDir "goaccess/config"}/goaccess.conf:/srv/config/goaccess.conf"
+          "${config.lib.server.mkConfigDir "goaccess/geoip"}:/srv/geoip"
+          "${config.lib.server.mkConfigDir "goaccess/public"}:/srv/report"
+        ]
+        ++ (
+          if (config.server.traefik.enable) then
+            [ "${config.lib.server.mkConfigDir "traefik/logs"}:/srv/logs" ]
+          else
+            [ ]
+        );
         labels =
           config.lib.server.mkTraefikLabels {
             name = "goaccess-wss";

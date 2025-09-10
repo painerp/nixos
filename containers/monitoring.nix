@@ -194,7 +194,7 @@ in
           services =
             lib.attrsets.optionalAttrs (cfg.grafana.enable) {
               grafana.service = {
-                image = "grafana/grafana-oss:latest";
+                image = "docker.io/grafana/grafana-oss:latest";
                 container_name = "grafana";
                 networks = [ "proxy" ] ++ (if (cfg.loki.enable) then [ "exporter" ] else [ ]);
                 user = "0:0";
@@ -221,7 +221,7 @@ in
             }
             // lib.attrsets.optionalAttrs (cfg.prometheus.enable) {
               prometheus.service = {
-                image = "prom/prometheus:latest";
+                image = "docker.io/prom/prometheus:latest";
                 container_name = "prometheus";
                 networks = [
                   "proxy"
@@ -257,7 +257,7 @@ in
             }
             // lib.attrsets.optionalAttrs (cfg.loki.enable) {
               loki.service = {
-                image = "grafana/loki:latest";
+                image = "docker.io/grafana/loki:latest";
                 container_name = "loki";
                 networks = [ "exporter" ] ++ (if (cfg.loki.internal) then [ "external" ] else [ ]);
                 ports = (if (cfg.loki.internal) then [ "${config.server.tailscale-ip}:20100:3100/tcp" ] else [ ]);
@@ -347,7 +347,7 @@ in
             }
             // lib.attrsets.optionalAttrs (cfg.pve-exporter.enable) {
               pve-exporter.service = {
-                image = "prompve/prometheus-pve-exporter:latest";
+                image = "docker.io/prompve/prometheus-pve-exporter:latest";
                 container_name = "pve-exporter";
                 networks = [ "external" ] ++ (if (cfg.prometheus.enable) then [ "exporter" ] else [ ]);
                 sysctls = {
@@ -365,7 +365,7 @@ in
             }
             // lib.attrsets.optionalAttrs (cfg.promtail.enable) {
               promtail.service = {
-                image = "grafana/promtail:latest";
+                image = "docker.io/grafana/promtail:latest";
                 container_name = "promtail";
                 networks = (if (cfg.loki.enable) then [ "exporter" ] else [ "external" ]);
                 command = [ "-config.file=/promtail_config.yml" ];
@@ -384,7 +384,7 @@ in
             }
             // lib.attrsets.optionalAttrs (cfg.alertmanager.enable) {
               alertmanager.service = {
-                image = "prom/alertmanager:latest";
+                image = "docker.io/prom/alertmanager:latest";
                 container_name = "alertmanager";
                 networks = [ "proxy" ] ++ (if (cfg.prometheus.enable) then [ "exporter" ] else [ ]);
                 volumes = [ "${config.lib.server.mkConfigDir "alertmanager"}:/etc/alertmanager" ];

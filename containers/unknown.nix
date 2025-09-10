@@ -55,7 +55,8 @@ in
     age.secrets = {
       unknown-env.file = cfg.env-file;
       unknown-mysql-env.file = cfg.mysql.env-file;
-    } // (if (cfg.pma.enable) then { unknown-pma-env.file = cfg.pma.env-file; } else { });
+    }
+    // (if (cfg.pma.enable) then { unknown-pma-env.file = cfg.pma.env-file; } else { });
 
     systemd.services.arion-unknown = {
       wants = [ "network-online.target" ];
@@ -69,84 +70,83 @@ in
       networks.proxy.external = true;
       networks.backend.internal = true;
 
-      services =
-        {
-          mysql.service = {
-            image = "mariadb:latest";
-            container_name = "unknown-mysql";
-            networks = [ "backend" ];
-            environment = {
-              MARIADB_AUTO_UPGRADE = "yes";
-            };
-            env_file = [ config.age.secrets.unknown-mysql-env.path ];
-            volumes = [ "${config-dir}/mysql:/var/lib/mysql" ];
-            labels = {
+      services = {
+        mysql.service = {
+          image = "docker.io/mariadb:latest";
+          container_name = "unknown-mysql";
+          networks = [ "backend" ];
+          environment = {
+            MARIADB_AUTO_UPGRADE = "yes";
+          };
+          env_file = [ config.age.secrets.unknown-mysql-env.path ];
+          volumes = [ "${config-dir}/mysql:/var/lib/mysql" ];
+          labels = {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
+          restart = "unless-stopped";
+        };
+
+        unknown.service = {
+          image = "${cfg.image}";
+          container_name = "unknown";
+          depends_on = [ "mysql" ];
+          networks = [
+            "backend"
+            "proxy"
+          ];
+          env_file = [ config.age.secrets.unknown-env.path ];
+          volumes = [
+            "${cfg.extras-dir}/files:/srv/extras/files"
+            "${cfg.extras-dir}/thumbnails:/srv/extras/thumbnails"
+          ];
+          labels =
+            config.lib.server.mkTraefikLabels {
+              name = "unknown";
+              port = "3000";
+              subdomain = "${cfg.subdomain}";
+              forwardAuth = cfg.auth;
+            }
+            // {
               "com.centurylinklabs.watchtower.enable" = "true";
             };
-            restart = "unless-stopped";
-          };
-
-          unknown.service = {
-            image = "${cfg.image}";
-            container_name = "unknown";
-            depends_on = [ "mysql" ];
-            networks = [
-              "backend"
-              "proxy"
-            ];
-            env_file = [ config.age.secrets.unknown-env.path ];
-            volumes = [
-              "${cfg.extras-dir}/files:/srv/extras/files"
-              "${cfg.extras-dir}/thumbnails:/srv/extras/thumbnails"
-            ];
-            labels =
-              config.lib.server.mkTraefikLabels {
-                name = "unknown";
-                port = "3000";
-                subdomain = "${cfg.subdomain}";
-                forwardAuth = cfg.auth;
-              }
-              // {
-                "com.centurylinklabs.watchtower.enable" = "true";
-              };
-            restart = "unless-stopped";
-          };
-
-        }
-        // lib.attrsets.optionalAttrs (cfg.pma.enable) {
-          phpmyadmin.service = {
-            image = "phpmyadmin:latest";
-            container_name = "unknown-pma";
-            networks = [
-              "backend"
-              "proxy"
-            ];
-            sysctls = {
-              "net.ipv6.conf.all.disable_ipv6" = 1;
-            };
-            depends_on = [ "mysql" ];
-            environment = {
-              PMA_HOST = "unknown-mysql";
-              PMA_PMADB = "phpmyadmin";
-              PMA_CONTROLUSER = "root";
-              PMA_ABSOLUTE_URI = "https://${cfg.pma.subdomain}.${cfg.subdomain}.${config.server.domain}";
-              HIDE_PHP_VERSION = "yes";
-              UPLOAD_LIMIT = "64M";
-            };
-            env_file = [ config.age.secrets.unknown-pma-env.path ];
-            labels =
-              config.lib.server.mkTraefikLabels {
-                name = "unknown-pma";
-                port = "80";
-                subdomain = "${cfg.pma.subdomain}.${cfg.subdomain}";
-                forwardAuth = cfg.pma.auth;
-              }
-              // {
-                "com.centurylinklabs.watchtower.enable" = "true";
-              };
-            restart = "unless-stopped";
-          };
+          restart = "unless-stopped";
         };
+
+      }
+      // lib.attrsets.optionalAttrs (cfg.pma.enable) {
+        phpmyadmin.service = {
+          image = "phpmyadmin:latest";
+          container_name = "unknown-pma";
+          networks = [
+            "backend"
+            "proxy"
+          ];
+          sysctls = {
+            "net.ipv6.conf.all.disable_ipv6" = 1;
+          };
+          depends_on = [ "mysql" ];
+          environment = {
+            PMA_HOST = "unknown-mysql";
+            PMA_PMADB = "phpmyadmin";
+            PMA_CONTROLUSER = "root";
+            PMA_ABSOLUTE_URI = "https://${cfg.pma.subdomain}.${cfg.subdomain}.${config.server.domain}";
+            HIDE_PHP_VERSION = "yes";
+            UPLOAD_LIMIT = "64M";
+          };
+          env_file = [ config.age.secrets.unknown-pma-env.path ];
+          labels =
+            config.lib.server.mkTraefikLabels {
+              name = "unknown-pma";
+              port = "80";
+              subdomain = "${cfg.pma.subdomain}.${cfg.subdomain}";
+              forwardAuth = cfg.pma.auth;
+            }
+            // {
+              "com.centurylinklabs.watchtower.enable" = "true";
+            };
+          restart = "unless-stopped";
+        };
+      };
     };
   };
 }

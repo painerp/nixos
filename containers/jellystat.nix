@@ -43,7 +43,7 @@ in
       networks.internal.internal = true;
 
       services.jellystat-pg.service = {
-        image = "postgres:16-alpine";
+        image = "docker.io/postgres:16-alpine";
         container_name = "jellystat-pg";
         hostname = config.networking.hostName;
         networks = [ "internal" ];
@@ -63,7 +63,7 @@ in
           };
         };
         service = {
-          image = "cyfershepard/jellystat:latest";
+          image = "docker.io/cyfershepard/jellystat:latest";
           container_name = "jellystat";
           hostname = config.networking.hostName;
           networks = [
