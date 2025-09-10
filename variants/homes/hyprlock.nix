@@ -1,16 +1,15 @@
 {
   programs.hyprlock = {
     enable = true;
-    importantPrefixes = [
-      "$text_color = rgba(E2E2E2FF)"
-      "$entry_background_color = rgba(13131311)"
-      "$entry_border_color = rgba(91919155)"
-      "$entry_color = rgba(C6C6C6FF)"
-      "$font_family = Gabarito"
-      "$font_family_clock = Gabarito"
-      "$font_material_symbols = Material Symbols Rounded"
-    ];
     extraConfig = ''
+      $text_color = rgba(E2E2E2FF)
+      $entry_background_color = rgba(13131311)
+      $entry_border_color = rgba(91919155)
+      $entry_color = rgba(C6C6C6FF)
+      $font_family = Gabarito
+      $font_family_clock = Gabarito
+      $font_material_symbols = Material Symbols Rounded
+
       general {
         no_fade_in = true
         grace = 1
@@ -55,7 +54,7 @@
       }
       label { # Greeting
           monitor =
-          text = hi $USER !!!
+          text = Welcome Back!
           shadow_passes = 1
           shadow_boost = 0.5
           color = $text_color
@@ -88,7 +87,7 @@
           font_size = 14
           font_family = $font_family
 
-          position = 0, 50
+          position = 0, 45
           halign = center
           valign = bottom
       }'';
