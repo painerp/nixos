@@ -74,7 +74,7 @@ in
         inherit autoPrune;
       };
       arion = {
-        backend = cfg.backend;
+        backend = if cfg.backend == "docker" then "docker" else "podman-socket";
       };
     };
 
