@@ -11,10 +11,8 @@
       $font_material_symbols = Material Symbols Rounded
 
       general {
-        no_fade_in = true
-        grace = 1
-        disable_loading_bar = false
         hide_cursor = true
+        immediate_render = true
         ignore_empty_input = true
         text_trim = true
       }
