@@ -61,7 +61,7 @@ in
             subdomain = "${cfg.subdomain}";
           }
           // {
-            "com.centurylinklabs.watchtower.enable" = builtins.toString (cfg.version == default-version);
+            "com.centurylinklabs.watchtower.enable" = lib.server.boolToStr (cfg.version == default-version);
           };
         restart = "unless-stopped";
       };
