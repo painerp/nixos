@@ -34,7 +34,7 @@ in
       networks.teamspeak.name = "teamspeak";
 
       services.teamspeak.service = {
-        image = "teamspeak:latest";
+        image = "docker.io/teamspeak:latest";
         container_name = "teamspeak";
         hostname = config.networking.hostName;
         networks = [ "teamspeak" ];

@@ -45,7 +45,7 @@ in
       networks.proxy.external = true;
 
       services.syncthing.service = {
-        image = "syncthing/syncthing:latest";
+        image = "docker.io/syncthing/syncthing:latest";
         container_name = "syncthing";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];

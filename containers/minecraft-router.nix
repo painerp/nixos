@@ -33,7 +33,7 @@ in
       project.name = "minecraft-router";
 
       services.minecraft-router.service = {
-        image = "itzg/mc-router:latest";
+        image = "docker.io/itzg/mc-router:latest";
         container_name = "minecraft-router";
         hostname = config.networking.hostName;
         environment.MAPPING = cfg.mapping;

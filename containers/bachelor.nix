@@ -60,7 +60,7 @@ in
       networks.backend.internal = true;
 
       services.postgres.service = {
-        image = "postgres:latest";
+        image = "docker.io/postgres:latest";
         container_name = "bachelor-pg";
         networks = [ "backend" ];
         environment = {
@@ -73,7 +73,7 @@ in
       };
 
       services.redis.service = {
-        image = "redis:alpine";
+        image = "docker.io/redis:alpine";
         container_name = "bachelor-redis";
         networks = [ "backend" ];
         volumes = [ "${config-dir}/redis:/data" ];

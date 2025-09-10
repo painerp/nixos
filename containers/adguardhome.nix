@@ -47,7 +47,7 @@ in
       networks.adguardhome.name = "adguardhome";
 
       services.adguardhome.service = {
-        image = "adguard/adguardhome:latest";
+        image = "docker.io/adguard/adguardhome:latest";
         container_name = "adguardhome";
         hostname = config.networking.hostName;
         networks = [

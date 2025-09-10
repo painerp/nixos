@@ -37,7 +37,7 @@ in
       networks.proxy.external = true;
 
       services.stash.service = {
-        image = "stashapp/stash:latest";
+        image = "docker.io/stashapp/stash:latest";
         container_name = "stash";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];
@@ -55,7 +55,8 @@ in
           "${config-dir}/cache:/cache"
           "${config-dir}/blobs:/blobs"
           "${config-dir}/generated:/generated"
-        ] ++ cfg.volumes;
+        ]
+        ++ cfg.volumes;
         labels =
           config.lib.server.mkTraefikLabels {
             name = "stash";

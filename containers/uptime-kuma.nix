@@ -32,7 +32,7 @@ in
       networks.proxy.external = true;
 
       services.uptime-kuma.service = {
-        image = "louislam/uptime-kuma:latest";
+        image = "docker.io/louislam/uptime-kuma:latest";
         container_name = "uptime-kuma";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];

@@ -24,7 +24,7 @@ in
       project.name = "act-runner";
 
       services.act-runner.service = {
-        image = "gitea/act_runner:latest";
+        image = "docker.io/gitea/act_runner:latest";
         container_name = "act-runner";
         hostname = config.networking.hostName;
         env_file = [ config.age.secrets.act-runner-env.path ];

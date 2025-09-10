@@ -32,7 +32,7 @@ in
       project.name = "palworld";
 
       services.palworld.service = {
-        image = "thijsvanloef/palworld-server-docker:latest";
+        image = "docker.io/thijsvanloef/palworld-server-docker:latest";
         container_name = "palworld";
         stop_grace_period = "30s";
         hostname = config.networking.hostName;

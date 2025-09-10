@@ -16,8 +16,8 @@ let
     SELF_HOSTED = "true";
   };
   default-version = "latest";
-  default-redis-image = "redis:7.0-alpine";
-  default-postgres-image = "postgis/postgis:17-3.5-alpine";
+  default-redis-image = "docker.io/redis:7.0-alpine";
+  default-postgres-image = "docker.io/postgis/postgis:17-3.5-alpine";
 in
 {
   options.server.dawarich = {
@@ -73,7 +73,7 @@ in
 
       services.dawarich-server = {
         service = {
-          image = "freikin/dawarich:${cfg.version}";
+          image = "docker.io/freikin/dawarich:${cfg.version}";
           container_name = "dawarich_app";
           hostname = config.networking.hostName;
           networks = [
@@ -119,7 +119,7 @@ in
 
       services.dawarich-sidekiq = {
         service = {
-          image = "freikin/dawarich:${cfg.version}";
+          image = "docker.io/freikin/dawarich:${cfg.version}";
           container_name = "dawarich_sidekiq";
           hostname = config.networking.hostName;
           networks = [

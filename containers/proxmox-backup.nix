@@ -41,7 +41,7 @@ in
       networks.proxy.external = true;
 
       services.proxmox-backup.service = {
-        image = "ayufan/proxmox-backup-server:latest";
+        image = "docker.io/ayufan/proxmox-backup-server:latest";
         container_name = "proxmox-backup";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];
@@ -55,7 +55,8 @@ in
           "${config-dir}/etc:/etc/proxmox-backup"
           "${config-dir}/logs:/var/log/proxmox-backup"
           "${config-dir}/lib:/var/lib/proxmox-backup"
-        ] ++ cfg.volumes;
+        ]
+        ++ cfg.volumes;
         labels =
           config.lib.server.mkTraefikLabels {
             name = "proxmox-backup";

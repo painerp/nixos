@@ -35,7 +35,7 @@ in
       };
 
       services.mediathekarr.service = {
-        image = "pcjones/mediathekarr:latest";
+        image = "docker.io/pcjones/mediathekarr:latest";
         container_name = "mediathekarr";
         network_mode = "service:gluetun";
         depends_on = [ "gluetun" ];

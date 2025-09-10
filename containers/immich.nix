@@ -8,7 +8,7 @@ let
     DB_DATABASE_NAME = "immich";
   };
   default-version = "release";
-  default-redis-image = "redis:alpine";
+  default-redis-image = "docker.io/redis:alpine";
 in
 {
   options.server.immich = {

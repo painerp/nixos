@@ -52,7 +52,7 @@ in
       project.name = "watchtower";
 
       services.watchtower.service = {
-        image = "containrrr/watchtower:latest";
+        image = "docker.io/containrrr/watchtower:latest";
         container_name = "watchtower";
         hostname = config.networking.hostName;
         environment = {

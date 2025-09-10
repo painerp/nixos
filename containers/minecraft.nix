@@ -77,23 +77,22 @@ in
       project.name = "minecraft";
 
       services.minecraft.service = {
-        image = "itzg/minecraft-server:latest";
+        image = "docker.io/itzg/minecraft-server:latest";
         container_name = "minecraft";
         hostname = config.networking.hostName;
         tty = true;
-        environment =
-          {
-            EULA = "TRUE";
-            TYPE = cfg.server-type;
-            SNOOPER_ENABLED = "FALSE";
-            MAX_MEMORY = cfg.max-memory;
-          }
-          // lib.attrsets.optionalAttrs (cfg.extras.vanillatweaks != "") {
-            VANILLATWEAKS_FILE = cfg.extras.vanillatweaks;
-          }
-          // lib.attrsets.optionalAttrs (cfg.extras.plugins.modrinth != "") {
-            MODRINTH_PROJECTS = cfg.extras.plugins.modrinth;
-          };
+        environment = {
+          EULA = "TRUE";
+          TYPE = cfg.server-type;
+          SNOOPER_ENABLED = "FALSE";
+          MAX_MEMORY = cfg.max-memory;
+        }
+        // lib.attrsets.optionalAttrs (cfg.extras.vanillatweaks != "") {
+          VANILLATWEAKS_FILE = cfg.extras.vanillatweaks;
+        }
+        // lib.attrsets.optionalAttrs (cfg.extras.plugins.modrinth != "") {
+          MODRINTH_PROJECTS = cfg.extras.plugins.modrinth;
+        };
         env_file = [ config.age.secrets.minecraft-env.path ];
         ports =
           (if (cfg.expose) then [ "25565:25565/tcp" ] else [ ])
@@ -113,7 +112,7 @@ in
       };
 
       services.minecraft-backup.service = lib.mkIf (cfg.backup.enable) {
-        image = "itzg/mc-backup:latest";
+        image = "docker.io/itzg/mc-backup:latest";
         container_name = "minecraft-backup";
         hostname = config.networking.hostName;
         environment = {
