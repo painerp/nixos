@@ -70,7 +70,7 @@ in
         enable = cfg.backend == "podman";
         dockerSocket.enable = true;
         dockerCompat = true;
-        defaultNetwork.dnsname.enable = true;
+        defaultNetwork.settings.dns_enable = true;
         inherit autoPrune;
       };
       arion = {
