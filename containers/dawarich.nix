@@ -109,7 +109,9 @@ in
               forwardAuth = cfg.auth;
             }
             // {
-              "com.centurylinklabs.watchtower.enable" = lib.server.boolToStr (cfg.version == default-version);
+              "com.centurylinklabs.watchtower.enable" = config.lib.server.boolToStr (
+                cfg.version == default-version
+              );
             };
           restart = "unless-stopped";
         };
@@ -146,7 +148,9 @@ in
             "dawarich-server"
           ];
           labels = {
-            "com.centurylinklabs.watchtower.enable" = lib.server.boolToStr (cfg.version == default-version);
+            "com.centurylinklabs.watchtower.enable" = config.lib.server.boolToStr (
+              cfg.version == default-version
+            );
           };
           restart = "unless-stopped";
         };
@@ -159,7 +163,7 @@ in
         networks = [ "backend" ];
         volumes = [ "${config-dir}/shared:/data" ];
         labels = {
-          "com.centurylinklabs.watchtower.enable" = lib.server.boolToStr (
+          "com.centurylinklabs.watchtower.enable" = config.lib.server.boolToStr (
             cfg.redis.image == default-redis-image
           );
         };
@@ -181,7 +185,7 @@ in
           "${config-dir}/shared:/var/shared"
         ];
         labels = {
-          "com.centurylinklabs.watchtower.enable" = lib.server.boolToStr (
+          "com.centurylinklabs.watchtower.enable" = config.lib.server.boolToStr (
             cfg.postgres.image == default-postgres-image
           );
         };

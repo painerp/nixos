@@ -21,7 +21,9 @@ let
         "${headers}" + (if cfg.extra-headers != "" then "," + cfg.extra-headers else "");
     }
     // {
-      "com.centurylinklabs.watchtower.enable" = lib.server.boolToStr (cfg.version == default-version);
+      "com.centurylinklabs.watchtower.enable" = config.lib.server.boolToStr (
+        cfg.version == default-version
+      );
     };
   env-auth = {
     AUTHENTIK_REDIS__HOST = "authentik-redis";
@@ -184,7 +186,9 @@ in
                 "${config-dir}/templates:/templates"
               ];
               labels = {
-                "com.centurylinklabs.watchtower.enable" = lib.server.boolToStr (cfg.version == default-version);
+                "com.centurylinklabs.watchtower.enable" = config.lib.server.boolToStr (
+                  cfg.version == default-version
+                );
               };
               depends_on = [
                 "postgresql"
