@@ -105,5 +105,6 @@ in
   config = {
     lib.server.mkServiceSubdomain = subdomain: "${subdomain}.${config.server.domain}";
     lib.server.mkConfigDir = name: "${config.server.config-dir}/${name}";
+    lib.server.boolToStr = b: if b then "true" else "false";
   };
 }
