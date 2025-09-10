@@ -41,7 +41,7 @@ in
       project.name = "renovate";
 
       services.renovate.service = {
-        image = "renovate/renovate:latest";
+        image = "docker.io/renovate/renovate:latest";
         container_name = "renovate";
         hostname = config.networking.hostName;
         environment = {

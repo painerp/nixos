@@ -39,7 +39,7 @@ in
       networks.internal.internal = true;
 
       services.linkwarden-pg.service = {
-        image = "postgres:16-alpine";
+        image = "docker.io/postgres:16-alpine";
         container_name = "linkwarden-pg";
         hostname = config.networking.hostName;
         networks = [ "internal" ];

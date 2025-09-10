@@ -42,7 +42,7 @@ in
       networks.dnscrypt.internal = true;
 
       services.pihole.service = {
-        image = "pihole/pihole:latest";
+        image = "docker.io/pihole/pihole:latest";
         container_name = "pihole";
         hostname = config.networking.hostName;
         networks = [
@@ -91,7 +91,7 @@ in
       };
 
       services.dnscrypt.service = {
-        image = "klutchell/dnscrypt-proxy:latest";
+        image = "docker.io/klutchell/dnscrypt-proxy:latest";
         container_name = "dnscrypt";
         networks = [
           "proxy"

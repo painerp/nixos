@@ -32,7 +32,7 @@ in
       networks.proxy.external = true;
 
       services.gotify.service = {
-        image = "gotify/server:latest";
+        image = "docker.io/gotify/server:latest";
         container_name = "gotify";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];

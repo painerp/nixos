@@ -218,7 +218,7 @@ in
       networks.proxy.name = "proxy";
 
       services.traefik.service = {
-        image = "traefik:latest";
+        image = "docker.io/traefik:latest";
         container_name = "traefik";
         hostname = config.networking.hostName;
         networks.proxy.aliases = cfg.aliases;

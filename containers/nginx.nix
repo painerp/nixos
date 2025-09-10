@@ -48,7 +48,7 @@ in
       networks.proxy.external = true;
 
       services.nginx.service = {
-        image = "nginx:alpine";
+        image = "docker.io/nginx:alpine";
         container_name = "nginx";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];
