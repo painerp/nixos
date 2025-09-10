@@ -8,6 +8,10 @@
 
 let
   cfg = config.modules.arion;
+  autoPrune = {
+    enable = true;
+    dates = "01:00";
+  };
 in
 {
   options.modules.arion = {
@@ -20,6 +24,14 @@ in
       default = false;
       description = "changes the default bridge network ips";
     };
+    backend = lib.mkOption {
+      type = lib.types.enum [
+        "docker"
+        "podman"
+      ];
+      default = "docker";
+      description = "Container backend to use for arion";
+    };
   };
 
   imports = [
@@ -28,16 +40,18 @@ in
   ];
 
   config = lib.mkIf (cfg.enable) {
-    environment.systemPackages = [ pkgs.arion ];
+    environment.systemPackages = [
+      pkgs.arion
+    ]
+    ++ lib.optionals (cfg.backend == "podman") [
+      pkgs.docker-client
+    ];
 
     virtualisation = {
       docker = {
-        enable = true;
+        enable = cfg.backend == "docker";
         liveRestore = false;
-        autoPrune = {
-          enable = true;
-          dates = "01:00";
-        };
+        inherit autoPrune;
         daemon.settings = lib.mkIf (cfg.rewrite-bip) {
           bip = "172.30.0.1/24";
           default-address-pools = [
@@ -52,9 +66,18 @@ in
           ];
         };
       };
+      podman = {
+        enable = cfg.backend == "podman";
+        dockerSocket.enable = true;
+        dockerCompat = true;
+        defaultNetwork.dnsname.enable = true;
+        inherit autoPrune;
+      };
       arion = {
-        backend = "docker";
+        backend = cfg.backend;
       };
     };
+
+    users.users."${config.system.username}".extraGroups = [ "${cfg.backend}" ];
   };
 }
