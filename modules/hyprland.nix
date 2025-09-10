@@ -76,13 +76,16 @@ in
       };
     };
 
-    fonts.packages = with pkgs.nerd-fonts; [
-      hack
-      ubuntu
-      ubuntu-mono
-      jetbrains-mono
-      noto
-    ];
+    fonts.packages =
+      with pkgs.nerd-fonts;
+      [
+        hack
+        ubuntu
+        ubuntu-mono
+        jetbrains-mono
+        noto
+      ]
+      ++ [ pkgs.material-symbols ];
 
     programs = {
       hyprland.enable = true;
