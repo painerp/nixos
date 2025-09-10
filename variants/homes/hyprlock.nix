@@ -19,7 +19,7 @@
       background {
           color = rgba(13131377)
           path = screenshot
-          blur_size = 5
+          blur_size = 7
           blur_passes = 4
       }
       input-field {
