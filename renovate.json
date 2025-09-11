@@ -48,7 +48,7 @@
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver",
-      "depNameTemplate": "freikin/dawarich"
+      "depNameTemplate": "docker.io/freikin/dawarich"
     },
     {
       "customType": "regex",
