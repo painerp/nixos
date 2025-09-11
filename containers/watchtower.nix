@@ -38,6 +38,10 @@ in
       type = lib.types.bool;
       default = false;
     };
+    disable-swappiness = lib.mkOption {
+      type = lib.types.bool;
+      default = config.modules.arion.backend == "podman";
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -62,7 +66,10 @@ in
         // lib.attrsets.optionalAttrs (cfg.rolling-restart) { WATCHTOWER_ROLLING_RESTART = "true"; }
         // lib.attrsets.optionalAttrs (cfg.only-label) { WATCHTOWER_LABEL_ENABLE = "true"; }
         // lib.attrsets.optionalAttrs (cfg.delay-notification) { WATCHTOWER_NOTIFICATIONS_DELAY = "120"; }
-        // lib.attrsets.optionalAttrs (cfg.include-stopped) { WATCHTOWER_INCLUDE_STOPPED = "true"; };
+        // lib.attrsets.optionalAttrs (cfg.include-stopped) { WATCHTOWER_INCLUDE_STOPPED = "true"; }
+        // lib.attrsets.optionalAttrs (cfg.disable-swappiness) {
+          WATCHTOWER_DISABLE_MEMORY_SWAPPINESS = "true";
+        };
         env_file = [ config.age.secrets.watchtower-env.path ];
         volumes = [
           "/var/run/docker.sock:/var/run/docker.sock"
