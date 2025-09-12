@@ -302,7 +302,7 @@ in
                   "--path.rootfs=/rootfs"
                   "--path.procfs=/host/proc"
                   "--path.sysfs=/host/sys"
-                  "--collector.filesystem.ignored-mount-points='^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)'"
+                  "--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc|var/lib/docker/containers|var/lib/docker/overlay2|run/docker/netns|var/lib/docker/aufs|var/lib/containers/storage/overlay-containers/.*/userdata/shm)($$|/)"
                 ];
                 volumes = [
                   "/proc:/host/proc:ro"
