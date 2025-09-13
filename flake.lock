@@ -240,23 +240,23 @@
         "type": "github"
       }
     },
-    "nix-updater": {
+    "nix-deploy": {
       "inputs": {
         "flake-utils": "flake-utils_3",
         "nixpkgs": "nixpkgs_3",
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1757778590,
-        "narHash": "sha256-gYTd2Sl2SZwmGC2cTjnldR9qeIRdkaseDOBymZsFde8=",
+        "lastModified": 1757780060,
+        "narHash": "sha256-P1m7AHpuRV/C9yU4GJEn6DRPQ9LbispyJe8K4HhWuX8=",
         "owner": "painerp",
-        "repo": "nix-updater",
-        "rev": "f84e189c55cf0e34081af9c6d2e7119a9531f06c",
+        "repo": "nix-deploy",
+        "rev": "591316fc4e0458a3ab4bf8f761f3efb7b111d615",
         "type": "github"
       },
       "original": {
         "owner": "painerp",
-        "repo": "nix-updater",
+        "repo": "nix-deploy",
         "type": "github"
       }
     },
@@ -420,7 +420,7 @@
         "arion": "arion",
         "home-manager": "home-manager_2",
         "hyprpanel": "hyprpanel",
-        "nix-updater": "nix-updater",
+        "nix-deploy": "nix-deploy",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_5",
         "nixpkgs-unstable": "nixpkgs-unstable",
