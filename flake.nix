@@ -18,6 +18,7 @@
     hyprpanel.url = "github:painerp/HyprPanel";
 
     apod-wallpaper.url = "github:painerp/apod-wallpaper";
+    nix-updater.url = "github:painerp/nix-updater";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
