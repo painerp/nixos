@@ -162,6 +162,7 @@ in
             ungoogled-chromium
             nixfmt-rfc-style
             nixd
+            inputs.nix-updater.packages.${pkgs.system}.default
             inputs.agenix.packages.${pkgs.system}.default
             lazygit
             nodePackages_latest.nodejs
