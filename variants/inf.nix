@@ -56,7 +56,7 @@ in
     authentik = {
       enable = true;
       proxy = true;
-      version = "2025.8.1";
+      version = "2025.8.2";
       env-file = secrets.inf-authentik-proxy-env;
     };
     dashboard.enable = true;
