@@ -24,6 +24,10 @@
     kernelPackages = pkgs.linuxPackages_testing;
     kernelParams = [
       "amdgpu.dcdebugmask=0x400"
+      "i8042.nomux=1"
+      "i8042.reset=1,1,1"
+      "i8042.noloop=1"
+      "i8042.nopnp=1"
     ];
     kernelModules = [ "kvm-amd" ];
     loader = {
