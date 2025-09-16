@@ -27,6 +27,8 @@
       "float, title:^(Nextcloud)$"
       "float, title:^(File Operation Progress)$"
       "float, title:^(.*shufti)$"
+      "float, title:^(APOD Wallpaper Switcher)$"
+      "dimaround, title:^(APOD Wallpaper Switcher)$"
       "move 100%-580 40, title:^(Nextcloud)$"
       "size 800 600, title:^(Volume Control)$"
       "move 100%-820 48, title:^(Volume Control)$"
