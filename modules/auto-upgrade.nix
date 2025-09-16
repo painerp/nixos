@@ -67,30 +67,30 @@ in
         git
         mailutils
         msmtp
+        ripgrep
+        hostname
         config.nix.package.out
         config.programs.ssh.package
+        config.system.build.nixos-rebuild
       ];
 
-      script =
-        let
-          nixos-rebuild = "${config.system.build.nixos-rebuild}/bin/nixos-rebuild";
-          git = "${pkgs.git}/bin/git";
-        in
-        ''
-          # Function to send email on failure
-          send_failure_email() {
-            if [ -f ${config.age.secrets.smtp.path} ]; then
-              source ${config.age.secrets.smtp.path}
-            else
-              echo "Error: SMTP configuration file not found at ${config.age.secrets.smtp.path}"
-              return 1
-            fi
+      script = ''
+        set -euo pipefail
 
-            if [ -z "$EMAIL_TO" ] || [ -z "$EMAIL_FROM" ] || [ -z "$SMTP_SERVER" ] || \
-               [ -z "$SMTP_PORT" ] || [ -z "$SMTP_USERNAME" ] || [ -z "$SMTP_PASSWORD" ]; then
-              echo "Error: Missing required SMTP configuration variables"
-              return 1
-            fi
+        # Function to send email on failure
+        send_failure_email() {
+          if [ -f ${config.age.secrets.smtp.path} ]; then
+            source ${config.age.secrets.smtp.path}
+          else
+            echo "Error: SMTP configuration file not found at ${config.age.secrets.smtp.path}"
+            return 1
+          fi
+
+          if [ -z "$EMAIL_TO" ] || [ -z "$EMAIL_FROM" ] || [ -z "$SMTP_SERVER" ] || \
+             [ -z "$SMTP_PORT" ] || [ -z "$SMTP_USERNAME" ] || [ -z "$SMTP_PASSWORD" ]; then
+            echo "Error: Missing required SMTP configuration variables"
+            return 1
+          fi
 
             echo "Subject: [NixOS] Auto-upgrade failed on $(hostname)" | cat - "$1" | msmtp \
               -t "$EMAIL_TO" \
@@ -99,47 +99,47 @@ in
               --port="$SMTP_PORT" \
               --auth=on \
               --user="$SMTP_USERNAME" \
-              --password="$SMTP_PASSWORD" \
+              --passwordeval="echo $SMTP_PASSWORD" \
               --tls=on \
               --tls-starttls=on
           }
 
-          cd /etc/nixos
-          if ! ${git} pull | grep -q 'Already up to date.'; then
-            echo "Updates found, rebuilding system..."
-            mkdir -p $HOME/auto-update
+        cd /etc/nixos
+        if ! git pull | rg -q 'Already up to date.'; then
+          echo "Updates found, rebuilding system..."
+          mkdir -p $HOME/auto-update
 
-            TIMESTAMP=$(date '+%Y-%m-%d_%H-%M-%S')
-            LOG_FILE="$HOME/auto-update/$TIMESTAMP.log"
+          TIMESTAMP=$(date '+%Y-%m-%d_%H-%M-%S')
+          LOG_FILE="$HOME/auto-update/$TIMESTAMP.log"
 
-            {
-              echo "=== NixOS auto-upgrade started at $(date) ==="
-              echo "Working directory: $(pwd)"
+          {
+            echo "=== NixOS auto-upgrade started at $(date) ==="
+            echo "Working directory: $(pwd)"
 
-              if ! ${nixos-rebuild} switch --flake "/etc/nixos#${config.system.flake}" --no-write-lock-file -L; then
-                echo "=== NixOS auto-upgrade FAILED at $(date) ==="
-                send_failure_email "$LOG_FILE"
-                exit 1
-              fi
-
-              echo "=== NixOS auto-upgrade completed at $(date) ==="
-
-              ${lib.optionalString cfg.reboot ''
-                if [ -f /run/reboot-required ]; then
-                  echo "Rebooting..."
-                  systemctl reboot
-                fi
-              ''}
-            } 2>&1 | tee "$LOG_FILE"
-
-            if [ $? -ne 0 ]; then
+            if ! nixos-rebuild switch --flake "/etc/nixos#${config.system.flake}" --no-write-lock-file -L; then
+              echo "=== NixOS auto-upgrade FAILED at $(date) ==="
               send_failure_email "$LOG_FILE"
               exit 1
             fi
-          else
-            echo "No updates found. Nothing to do."
+
+            echo "=== NixOS auto-upgrade completed at $(date) ==="
+
+            ${lib.optionalString cfg.reboot ''
+              if [ -f /run/reboot-required ]; then
+                echo "Rebooting..."
+                systemctl reboot
+              fi
+            ''}
+          } 2>&1 | tee "$LOG_FILE"
+
+          if [ $? -ne 0 ]; then
+            send_failure_email "$LOG_FILE"
+            exit 1
           fi
-        '';
+        else
+          echo "No updates found. Nothing to do."
+        fi
+      '';
 
       startAt = cfg.dates;
 
