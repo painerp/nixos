@@ -19,7 +19,19 @@
       "usb_storage"
       "sd_mod"
     ];
-    kernelModules = [ "kvm-amd" ];
+    kernelPackages = pkgs.linuxPackages_latest;
+    kernelModules = [
+      "kvm-amd"
+      "softdog"
+    ];
+    kernelParams = [
+      "idle=nomwait"
+      "processor.max_cstate=5"
+      "rcu_nocbs=0-3"
+    ];
+    kernel.sysctl = {
+      "kernel.watchdog_thresh" = 10;
+    };
     loader = {
       systemd-boot = {
         enable = true;
@@ -28,6 +40,11 @@
       efi.canTouchEfiVariables = true;
     };
   };
+
+  services.journald.extraConfig = ''
+    Storage=persistent
+    SystemMaxUse=500M
+  '';
 
   security.rtkit.enable = true;
   modules.pipewire.enable = true;
