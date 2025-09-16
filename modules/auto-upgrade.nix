@@ -92,8 +92,7 @@ in
             return 1
           fi
 
-            echo "Subject: [NixOS] Auto-upgrade failed on $(hostname)" | cat - "$1" | msmtp \
-              -t "$EMAIL_TO" \
+            echo -e "To: $EMAIL_TO\nSubject: [NixOS] Auto-upgrade failed on $(hostname)" | cat - "$1" | msmtp -t \
               --from="$EMAIL_FROM" \
               --host="$SMTP_SERVER" \
               --port="$SMTP_PORT" \
