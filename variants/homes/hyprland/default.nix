@@ -7,4 +7,5 @@
   ];
 
   wayland.windowManager.hyprland.enable = true;
+  services.swww.enable = true;
 }
