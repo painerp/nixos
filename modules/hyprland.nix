@@ -65,7 +65,6 @@ in
         pavucontrol
         brightnessctl
         networkmanagerapplet
-        swww
         matugen
         pkgs-unstable.grimblast
       ];
