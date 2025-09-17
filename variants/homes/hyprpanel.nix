@@ -1,8 +1,14 @@
-{ osConfig, ... }:
+{
+  inputs,
+  osConfig,
+  pkgs,
+  ...
+}:
 
 {
   programs.hyprpanel = {
     enable = true;
+    package = inputs.hyprpanel.packages.${pkgs.system}.default;
     systemd.enable = true;
 
     settings = {
