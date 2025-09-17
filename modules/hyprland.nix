@@ -68,7 +68,6 @@ in
         swww
         matugen
         pkgs-unstable.grimblast
-        hyprpanel
       ];
       sessionVariables = {
         NIXOS_OZONE_WL = "1";
