@@ -17,7 +17,7 @@ in
     fsType = "ext4";
   };
 
-  swapDevices = [ { device = "/dev/disk/by-uuid/e0150fb6-eead-4bb7-a5e6-30c3ed675907"; } ];
+  swapDevices = [ { device = "/dev/disk/by-uuid/80758004-c3ef-42ff-aae8-5239606bc697"; } ];
 
   # system
   system = {
