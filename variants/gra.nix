@@ -103,10 +103,6 @@ in
         "${media}/xtra:/xtra"
       ];
     };
-    ollama = {
-      enable = true;
-      auth = false;
-    };
     immich = {
       enable = true;
       auth = false;
