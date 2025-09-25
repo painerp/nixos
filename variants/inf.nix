@@ -30,6 +30,15 @@ in
 
   swapDevices = [ { device = "/dev/disk/by-uuid/2c3aafdb-cb5a-41bc-a2e6-99059466a03b"; } ];
 
+  fileSystems."/mnt/backup" = {
+    device = "10.0.10.1:/mnt/hdd/backup/servers/nix${flake}";
+    fsType = "nfs";
+    options = [
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
+    ];
+  };
+
   fileSystems."/mnt/unknown" = {
     device = "10.0.10.1:/mnt/hdd/unknown";
     fsType = "nfs";
@@ -43,9 +52,12 @@ in
   system = {
     inherit flake;
   };
-  modules.arion = {
-    enable = true;
-    backend = "podman";
+  modules = {
+    arion = {
+      enable = true;
+      backend = "podman";
+    };
+    borg.enable = true;
   };
 
   # services
