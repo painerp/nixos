@@ -38,6 +38,15 @@ in
     fsType = "ext4";
   };
 
+  fileSystems."/mnt/backup" = {
+    device = "10.0.10.1:/mnt/hdd/backup/servers/nix${flake}";
+    fsType = "nfs";
+    options = [
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
+    ];
+  };
+
   fileSystems."${media}" = {
     device = "10.0.10.1:/mnt/hdd/media";
     fsType = "nfs";
@@ -53,6 +62,7 @@ in
   };
   modules = {
     arion.enable = true;
+    borg.enable = true;
   };
 
   # services
