@@ -37,6 +37,7 @@
     ./amd.nix
     ./arion.nix
     ./auto-upgrade.nix
+    ./borg.nix
     ./firewall.nix
     ./gnome.nix
     ./hyprland.nix
