@@ -51,7 +51,7 @@ in
           POSTGRES_USER = "postgres";
         };
         env_file = [ config.age.secrets.jellystat-pg-env.path ];
-        volumes = [ "${config.lib.server.mkConfigDir "jellystat"}:/var/lib/postgresql/data" ];
+        volumes = [ "${config.lib.server.mkConfigDir "jellystat/database"}:/var/lib/postgresql/data" ];
         restart = "unless-stopped";
       };
 
@@ -77,6 +77,7 @@ in
             TZ = config.time.timeZone;
           };
           env_file = [ config.age.secrets.jellystat-env.path ];
+          volumes = [ "${config.lib.server.mkConfigDir "jellystat/backup"}:/app/backend/backup-data" ];
           extra_hosts = cfg.extra-hosts;
           depends_on = [ "jellystat-pg" ];
           labels =
