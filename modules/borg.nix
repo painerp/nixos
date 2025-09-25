@@ -1,8 +1,6 @@
 {
   lib,
-  inputs,
   config,
-  pkgs,
   ...
 }:
 
@@ -11,6 +9,7 @@ let
   common-excludes = [
     ".cache"
     ".local/share/Trash"
+    "manual"
   ];
 in
 {
