@@ -28,6 +28,15 @@ in
   swapDevices = [ { device = "/dev/disk/by-uuid/ab983818-1f80-49a0-9beb-0e5329843b83"; } ];
 
   fileSystems."/mnt/backup" = {
+    device = "10.0.10.1:/mnt/hdd/backup/servers/nix${flake}";
+    fsType = "nfs";
+    options = [
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
+    ];
+  };
+
+  fileSystems."/mnt/pve-backup" = {
     device = "10.0.10.1:/mnt/hdd/backup/pve";
     fsType = "nfs";
     options = [
@@ -60,6 +69,7 @@ in
   };
   modules = {
     arion.enable = true;
+    borg.enable = true;
   };
 
   # services
@@ -77,7 +87,7 @@ in
     proxmox-backup = {
       enable = true;
       internal = true;
-      volumes = [ "/mnt/backup:/backups" ];
+      volumes = [ "/mnt/pve-backup:/backups" ];
     };
     gitea = {
       enable = true;
