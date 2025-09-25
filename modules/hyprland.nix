@@ -1,5 +1,6 @@
 {
   pkgs,
+  pkgs-unstable,
   lib,
   config,
   ...
@@ -35,7 +36,7 @@ in
     services.greetd = {
       enable = true;
       settings.default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --remember-session --cmd Hyprland";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-session --cmd Hyprland";
         user = "greeter";
       };
     };
@@ -60,12 +61,12 @@ in
         egl-wayland
         kitty
         udiskie
-        rofi
+        rofi-wayland
         pavucontrol
         brightnessctl
         networkmanagerapplet
         matugen
-        grimblast
+        pkgs-unstable.grimblast
       ];
       sessionVariables = {
         NIXOS_OZONE_WL = "1";
@@ -98,7 +99,6 @@ in
       upower.enable = true;
       printing.enable = true;
       gnome.gnome-keyring.enable = true;
-      gnome.gcr-ssh-agent.enable = false;
     };
 
     security = {
