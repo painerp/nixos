@@ -28,6 +28,15 @@ in
 
   swapDevices = [ { device = "/dev/disk/by-uuid/0c680e6b-a520-4d4a-87e7-15d21b709e5b"; } ];
 
+  fileSystems."/mnt/backup" = {
+    device = "10.0.10.1:/mnt/hdd/backup/servers/nix${flake}";
+    fsType = "nfs";
+    options = [
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
+    ];
+  };
+
   fileSystems."/mnt/nextcloud" = {
     device = "10.0.10.1:/mnt/hdd/nextcloud";
     fsType = "nfs";
@@ -61,6 +70,7 @@ in
   };
   modules = {
     arion.enable = true;
+    borg.enable = true;
     nvidia = {
       enable = true;
       patch = true;
