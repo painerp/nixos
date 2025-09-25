@@ -3,7 +3,6 @@
   lib,
   config,
   pkgs,
-  pkgs-unstable,
   ...
 }:
 
@@ -92,7 +91,7 @@ in
       ++ (
         if cfg.video then
           [
-            pkgs-unstable.freetube
+            freetube
             handbrake
             kdePackages.kdenlive
             yt-dlp
@@ -149,7 +148,7 @@ in
         if cfg.communication then
           [
             teamspeak_client
-            pkgs-unstable.teamspeak6-client
+            teamspeak6-client
             vesktop
             signal-desktop
           ]
@@ -167,13 +166,9 @@ in
             lazygit
             nodePackages_latest.nodejs
             nodePackages_latest.pnpm
-            (python3Full.withPackages (python-pkgs: [
-              python-pkgs.pytest
-              python-pkgs.requests
-            ]))
             jdk
             tokei
-            pkgs-unstable.uv
+            uv
             jetbrains.webstorm
             jetbrains.rust-rover
             jetbrains.pycharm-professional

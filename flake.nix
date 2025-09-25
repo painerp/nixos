@@ -21,7 +21,7 @@
     nix-deploy.url = "github:painerp/nix-deploy";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -214,17 +214,12 @@
         kronos =
           let
             system = "x86_64-linux";
-            pkgs-unstable = (import nixpkgs-unstable) {
-              inherit system;
-              config.allowUnfree = true;
-            };
           in
-          nixpkgs.lib.nixosSystem {
+          nixpkgs-unstable.lib.nixosSystem {
             specialArgs = {
-              inherit inputs secrets pkgs-unstable;
+              inherit inputs secrets;
             };
-            inherit system;
-            pkgs = (import nixpkgs) {
+            pkgs = (import nixpkgs-unstable) {
               inherit system;
               config.allowUnfree = true;
               overlays = desktop-overlays;
@@ -239,7 +234,7 @@
                 home-manager.backupFileExtension = "bak";
                 home-manager.users.kronos = import ./variants/homes/default.nix;
                 home-manager.extraSpecialArgs = {
-                  inherit inputs pkgs-unstable;
+                  inherit inputs;
                 };
               }
             ];
@@ -257,7 +252,6 @@
             specialArgs = {
               inherit inputs secrets pkgs-unstable;
             };
-            inherit system;
             pkgs = (import nixpkgs) {
               inherit system;
               config.allowUnfree = true;
@@ -282,16 +276,12 @@
         dionysus =
           let
             system = "x86_64-linux";
-            pkgs-unstable = (import nixpkgs-unstable) {
-              inherit system;
-              config.allowUnfree = true;
-            };
           in
-          nixpkgs.lib.nixosSystem {
+          nixpkgs-unstable.lib.nixosSystem {
             specialArgs = {
-              inherit inputs secrets pkgs-unstable;
+              inherit inputs secrets;
             };
-            pkgs = (import nixpkgs) {
+            pkgs = (import nixpkgs-unstable) {
               inherit system;
               config.allowUnfree = true;
               overlays = desktop-overlays;
@@ -306,7 +296,7 @@
                 home-manager.backupFileExtension = "bak";
                 home-manager.users.dionysus = import ./variants/homes/default.nix;
                 home-manager.extraSpecialArgs = {
-                  inherit inputs pkgs-unstable;
+                  inherit inputs;
                 };
               }
             ];
@@ -331,16 +321,12 @@
         artemis =
           let
             system = "x86_64-linux";
-            pkgs-unstable = (import nixpkgs-unstable) {
-              inherit system;
-              config.allowUnfree = true;
-            };
           in
-          nixpkgs.lib.nixosSystem {
+          nixpkgs-unstable.lib.nixosSystem {
             specialArgs = {
-              inherit inputs secrets pkgs-unstable;
+              inherit inputs secrets;
             };
-            pkgs = (import nixpkgs) {
+            pkgs = (import nixpkgs-unstable) {
               inherit system;
               config.allowUnfree = true;
               overlays = desktop-overlays;
@@ -355,7 +341,7 @@
                 home-manager.backupFileExtension = "bak";
                 home-manager.users.artemis = import ./variants/homes/default.nix;
                 home-manager.extraSpecialArgs = {
-                  inherit inputs pkgs-unstable;
+                  inherit inputs;
                 };
               }
             ];
