@@ -30,6 +30,16 @@ in
       type = lib.types.listOf lib.types.str;
       default = [ ];
     };
+    exporter = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
+      token = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+      };
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -81,6 +91,19 @@ in
             };
           restart = "unless-stopped";
         };
+      };
+
+      services.jellyfin-exporter.service = lib.mkIf (cfg.exporter.enable) {
+        image = "docker.io/rebelcore/jellyfin-exporter:latest";
+        container_name = "jellyfin-exporter";
+        networks = [ "proxy" ];
+        command = [
+          "--jellyfin.address=http://jellyfin:8096"
+          "--jellyfin.token=${cfg.exporter.token}"
+          "--collector.activity"
+        ];
+        ports = [ "${config.server.tailscale-ip}:20010:9594" ];
+        restart = "unless-stopped";
       };
     };
   };
