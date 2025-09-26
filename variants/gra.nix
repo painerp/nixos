@@ -9,7 +9,10 @@ let
   media = "/mnt/media";
 in
 {
-  imports = [ ./secrets ];
+  imports = [
+    ./secrets
+    ./secrets/gra.nix
+  ];
 
   networking = {
     hostName = "nix${flake}";
@@ -102,6 +105,7 @@ in
         "${media}/movies:/movies"
         "${media}/music:/music"
       ];
+      exporter.enable = true;
     };
     tdarr = {
       enable = true;
