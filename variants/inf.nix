@@ -72,11 +72,6 @@ in
       env-file = secrets.inf-authentik-proxy-env;
     };
     dashboard.enable = true;
-    jellystat = {
-      enable = true;
-      env-file = secrets.inf-jellystat-env;
-      postgres.env-file = secrets.inf-jellystat-pg-env;
-    };
     unknown = {
       enable = true;
       extras-dir = "/mnt/unknown";
