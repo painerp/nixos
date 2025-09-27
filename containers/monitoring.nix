@@ -324,7 +324,7 @@ in
                   "--housekeeping_interval=30s"
                   "--raw_cgroup_prefix_whitelist=/machine.slice/libpod"
                   "--store_container_labels=false"
-                  "--disable_metrics=disk,diskIO"
+                  "--disable_metrics=disk,diskIO,cpu_topology,percpu"
                 ]
                 ++ (if config.modules.arion.backend == "docker" then [ "--docker_only" ] else [ ]);
                 networks = lib.mkIf (cfg.prometheus.enable) [ "exporter" ];
