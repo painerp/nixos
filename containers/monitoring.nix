@@ -321,21 +321,27 @@ in
                 image = "gcr.io/cadvisor/cadvisor:latest";
                 container_name = "cadvisor";
                 command = [
-                  "--housekeeping_interval=10s"
-                  "--docker_only"
+                  "--housekeeping_interval=30s"
+                  "--raw_cgroup_prefix_whitelist=/machine.slice/libpod"
                   "--store_container_labels=false"
-                ];
+                  "--disable_metrics=disk,diskIO"
+                ]
+                ++ (if config.modules.arion.backend == "docker" then [ "--docker_only" ] else [ ]);
                 networks = lib.mkIf (cfg.prometheus.enable) [ "exporter" ];
                 ports =
                   (if (cfg.cadvisor.expose) then [ "8080:8080/tcp" ] else [ ])
                   ++ (if (cfg.cadvisor.internal) then [ "${config.server.tailscale-ip}:20000:8080/tcp" ] else [ ]);
                 volumes = [
                   "/:/rootfs:ro"
-                  "/var/run:/var/run:ro"
-                  "/sys:/sys:ro"
-                  "/var/lib/docker/:/var/lib/docker:ro"
+                  "/sys/fs/cgroup:/sys/fs/cgroup:ro"
                   "/dev/disk/:/dev/disk:ro"
-                ];
+                ]
+                ++ (
+                  if config.modules.arion.backend == "docker" then
+                    [ "/var/run/docker.sock:/var/run/docker.sock:ro" ]
+                  else
+                    [ "/run/podman/podman.sock:/run/podman/podman.sock:ro" ]
+                );
                 labels = {
                   "com.centurylinklabs.watchtower.enable" = "true";
                 };
