@@ -10,13 +10,16 @@ let
     DATABASE_USERNAME = "postgres";
     DATABASE_NAME = "dawarich";
     MIN_MINUTES_SPENT_IN_CITY = 60;
+    BACKGROUND_PROCESSING_CONCURRENCY = 10;
     APPLICATION_HOSTS = "localhost,${cfg.subdomain}.${config.server.domain}";
+    APPLICATION_PROTOCOL = "http";
     TIME_ZONE = config.time.timeZone;
+    PROMETHEUS_EXPORTER_ENABLED = "false";
     DISABLE_TELEMETRY = "true";
     SELF_HOSTED = "true";
   };
   default-version = "latest";
-  default-redis-image = "docker.io/redis:7.0-alpine";
+  default-redis-image = "docker.io/redis:7.4-alpine";
   default-postgres-image = "docker.io/postgis/postgis:17-3.5-alpine";
 in
 {
@@ -128,8 +131,6 @@ in
           ];
           entrypoint = "sidekiq-entrypoint.sh";
           command = [
-            "bundle"
-            "exec"
             "sidekiq"
           ];
           tty = true;
