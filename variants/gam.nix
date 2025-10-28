@@ -59,10 +59,7 @@ in
       enable = true;
       env-file = secrets.gam-minecraft-env;
       rcon.enable = true;
-      backup = {
-        enable = true;
-        interval = "2h";
-      };
+      backup.enable = true;
       extras = {
         plugins.modrinth = "axgraves,invsee++,keepchunks:v7LjD3AV,luckperms,worldedit";
         vanillatweaks = "/data/config/vt-datapacks.json,/data/config/vt-craftingtweaks.json";
