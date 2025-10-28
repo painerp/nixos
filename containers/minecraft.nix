@@ -104,7 +104,7 @@ in
             else
               [ ]
           );
-        volumes = [ "${config.lib.server.mkConfigDir "minecraft"}:/data" ];
+        volumes = [ "${config-dir}:/data" ];
         labels = {
           "com.centurylinklabs.watchtower.enable" = "false";
         };
