@@ -26,7 +26,6 @@ let
       );
     };
   env-auth = {
-    AUTHENTIK_REDIS__HOST = "authentik-redis";
     AUTHENTIK_POSTGRESQL__HOST = "authentik-pg";
     AUTHENTIK_POSTGRESQL__USER = "authentik";
     AUTHENTIK_POSTGRESQL__NAME = "authentik";
@@ -124,28 +123,6 @@ in
               restart = "unless-stopped";
             };
 
-            redis.service = {
-              image = "docker.io/library/redis:alpine";
-              container_name = "authentik-redis";
-              command = "--save 60 1 --loglevel warning";
-              networks = [ "authentik-internal" ];
-              healthcheck = {
-                test = [
-                  "CMD-SHELL"
-                  "redis-cli ping | grep PONG"
-                ];
-                start_period = "20s";
-                interval = "30s";
-                retries = 5;
-                timeout = "3s";
-              };
-              volumes = [ "${config-dir}/redis:/data" ];
-              labels = {
-                "com.centurylinklabs.watchtower.enable" = "true";
-              };
-              restart = "unless-stopped";
-            };
-
             server.service = {
               image = "ghcr.io/goauthentik/server:${cfg.version}";
               container_name = "authentik-server";
@@ -158,7 +135,6 @@ in
               env_file = [ config.age.secrets.authentik-env.path ];
               depends_on = [
                 "postgresql"
-                "redis"
               ];
               networks = [
                 "proxy"
@@ -192,7 +168,6 @@ in
               };
               depends_on = [
                 "postgresql"
-                "redis"
               ];
               restart = "unless-stopped";
             };
