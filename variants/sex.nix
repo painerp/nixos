@@ -91,14 +91,13 @@ in
       subdomain = "t";
       expose = true;
       extra-entrypoints = {
-        talk-tcp.address = ":3478";
-        talk-udp.address = ":3478/udp";
-        # palworld-udp.address = ":8211/udp";
+        satisfactory-tcp1.address = ":7777/tcp";
+        satisfactory-udp.address = ":7777/udp";
+        satisfactory-tcp2.address = ":8888/tcp";
       };
       extra-ports = [
-        "3478:3478/tcp"
-        "3478:3478/udp"
-        # "8211:8211/udp"
+        "7777:7777/udp"
+        "8888:8888/udp"
       ];
     };
     goaccess.enable = true;
