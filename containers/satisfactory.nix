@@ -46,7 +46,8 @@ in
           (
             if cfg.expose then
               [
-                "7777:7777"
+                "7777:7777/tcp"
+                "7777:7777/udp"
                 "8888:8888/tcp"
               ]
             else
@@ -55,7 +56,8 @@ in
           ++ (
             if cfg.internal then
               [
-                "${config.server.tailscale-ip}:7777:7777"
+                "${config.server.tailscale-ip}:7777:7777/tcp"
+                "${config.server.tailscale-ip}:7777:7777/udp"
                 "${config.server.tailscale-ip}:8888:8888/tcp"
               ]
             else
