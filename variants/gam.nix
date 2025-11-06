@@ -55,6 +55,7 @@ in
       enable = false;
       env-file = secrets.gam-palworld-env;
     };
+    satisfactory.enable = true;
     minecraft = {
       enable = true;
       env-file = secrets.gam-minecraft-env;
