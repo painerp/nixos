@@ -90,6 +90,7 @@ in
     ./readarr.nix
     ./renovate.nix
     ./sabnzbd.nix
+    ./satisfactory.nix
     ./sonarr.nix
     ./stash.nix
     ./syncthing.nix
