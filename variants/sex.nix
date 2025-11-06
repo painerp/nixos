@@ -96,8 +96,9 @@ in
         satisfactory-tcp2.address = ":8888/tcp";
       };
       extra-ports = [
+        "7777:7777/tcp"
         "7777:7777/udp"
-        "8888:8888/udp"
+        "8888:8888/tcp"
       ];
     };
     goaccess.enable = true;
