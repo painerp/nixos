@@ -29,45 +29,53 @@ in
     virtualisation.arion.projects.satisfactory.settings = {
       project.name = "satisfactory";
 
-      services.satisfactory.service = {
-        image = "docker.io/wolveix/satisfactory-server:latest";
-        container_name = "satisfactory";
-        stop_grace_period = "30s";
-        hostname = config.networking.hostName;
-        environment = {
-          PUID = 1102;
-          GUID = 1102;
-          MAXPLAYERS = "4";
-          STEAMBETA = "false";
-          AUTOPAUSE = "false";
-          AUTOSAVENUM = "20";
+      services.satisfactory = {
+        out.service = {
+          deploy.resources = {
+            limits.memory = "8G";
+            reservations.memory = "4G";
+          };
         };
-        ports =
-          (
-            if cfg.expose then
-              [
-                "7777:7777/tcp"
-                "7777:7777/udp"
-                "8888:8888/tcp"
-              ]
-            else
-              [ ]
-          )
-          ++ (
-            if cfg.internal then
-              [
-                "${config.server.tailscale-ip}:7777:7777/tcp"
-                "${config.server.tailscale-ip}:7777:7777/udp"
-                "${config.server.tailscale-ip}:8888:8888/tcp"
-              ]
-            else
-              [ ]
-          );
-        volumes = [ "${config.lib.server.mkConfigDir "satisfactory"}:/config" ];
-        labels = {
-          "com.centurylinklabs.watchtower.enable" = "true";
+        service = {
+          image = "docker.io/wolveix/satisfactory-server:latest";
+          container_name = "satisfactory";
+          stop_grace_period = "30s";
+          hostname = config.networking.hostName;
+          environment = {
+            PUID = 1102;
+            GUID = 1102;
+            MAXPLAYERS = "4";
+            STEAMBETA = "false";
+            AUTOPAUSE = "false";
+            AUTOSAVENUM = "20";
+          };
+          ports =
+            (
+              if cfg.expose then
+                [
+                  "7777:7777/tcp"
+                  "7777:7777/udp"
+                  "8888:8888/tcp"
+                ]
+              else
+                [ ]
+            )
+            ++ (
+              if cfg.internal then
+                [
+                  "${config.server.tailscale-ip}:7777:7777/tcp"
+                  "${config.server.tailscale-ip}:7777:7777/udp"
+                  "${config.server.tailscale-ip}:8888:8888/tcp"
+                ]
+              else
+                [ ]
+            );
+          volumes = [ "${config.lib.server.mkConfigDir "satisfactory"}:/config" ];
+          labels = {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
+          restart = "unless-stopped";
         };
-        restart = "unless-stopped";
       };
     };
   };
