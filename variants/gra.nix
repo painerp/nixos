@@ -99,7 +99,7 @@ in
       enable = true;
       internal = true;
       auth = false;
-      version = "10.11.2";
+      version = "10.11.3";
       volumes = [
         "${media}/shows:/shows"
         "${media}/movies:/movies"
