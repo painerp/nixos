@@ -159,6 +159,7 @@ in
       ++ (
         if cfg.dev then
           [
+            opentofu
             ungoogled-chromium
             nixfmt-rfc-style
             nixd
