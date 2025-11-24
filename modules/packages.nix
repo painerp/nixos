@@ -180,6 +180,9 @@ in
             jetbrains.pycharm-professional
             jetbrains.idea-ultimate
             jetbrains.clion
+            pkgs-unstable.jetbrains.rider
+            haskell-language-server
+            ormolu
           ]
         else
           [ ]
