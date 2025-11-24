@@ -86,6 +86,7 @@ in
     dawarich = {
       enable = true;
       version = "0.35.1";
+      auth = false;
       env-file = secrets.inf-dawarich-env;
       postgres.env-file = secrets.inf-dawarich-pg-env;
     };
