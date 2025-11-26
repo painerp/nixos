@@ -225,7 +225,7 @@ in
       };
       firefox = {
         enable = cfg.desktop;
-        package = pkgs.librewolf;
+        package = pkgs.librewolf-bin;
         policies = {
           DisableTelemetry = true;
           DisableFirefoxStudies = true;
