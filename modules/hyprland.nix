@@ -61,7 +61,7 @@ in
         egl-wayland
         kitty
         udiskie
-        rofi-wayland
+        rofi
         pavucontrol
         brightnessctl
         networkmanagerapplet
