@@ -1,7 +1,7 @@
 { }:
 
 final: prev: rec {
-  teamspeak_client = prev.teamspeak_client.overrideAttrs (oldAttrs: rec {
+  teamspeak3 = prev.teamspeak3.overrideAttrs (oldAttrs: rec {
     soundpack = final.fetchzip {
       name = "Teamspeak_DukeNukem_Soundpack";
       url = "https://addons-content.teamspeak.com/8a9a93a7-5dd6-403e-8d15-435e5bfbd970/files/3/dukenukem-2.0.0.ts3_soundpack";

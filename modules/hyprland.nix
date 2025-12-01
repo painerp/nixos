@@ -36,7 +36,7 @@ in
     services.greetd = {
       enable = true;
       settings.default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-session --cmd Hyprland";
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --remember-session --cmd Hyprland";
         user = "greeter";
       };
     };
@@ -61,7 +61,7 @@ in
         egl-wayland
         kitty
         udiskie
-        rofi-wayland
+        rofi
         pavucontrol
         brightnessctl
         networkmanagerapplet
@@ -99,6 +99,7 @@ in
       upower.enable = true;
       printing.enable = true;
       gnome.gnome-keyring.enable = true;
+      gnome.gcr-ssh-agent.enable = false;
     };
 
     security = {
