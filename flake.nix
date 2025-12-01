@@ -1,7 +1,7 @@
 {
   description = "system config";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     arion = {
@@ -17,11 +17,11 @@
 
     hyprpanel.url = "github:painerp/HyprPanel";
 
-    apod-wallpaper.url = "github:painerp/apod-wallpaper";
+    apod-wallpaper.url = "github:painerp/apod-wallpaper-rs";
     nix-deploy.url = "github:painerp/nix-deploy";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -55,7 +55,7 @@
         ./pkgs
       ];
       desktop-overlays = [
-        (import ./overlays/teamspeak-client.nix { })
+        (import ./overlays/teamspeak3.nix { })
         (import ./overlays/btop.nix { })
         (import ./overlays/hyprpanel.nix { })
         (import ./overlays/tailscale-patch.nix { })
@@ -226,7 +226,12 @@
             inherit system;
             pkgs = (import nixpkgs) {
               inherit system;
-              config.allowUnfree = true;
+              config = {
+                allowUnfree = true;
+                permittedInsecurePackages = [
+                  "qtwebengine-5.15.19"
+                ];
+              };
               overlays = desktop-overlays;
             };
             modules = desktop-modules ++ [
@@ -293,7 +298,12 @@
             };
             pkgs = (import nixpkgs) {
               inherit system;
-              config.allowUnfree = true;
+              config = {
+                allowUnfree = true;
+                permittedInsecurePackages = [
+                  "qtwebengine-5.15.19"
+                ];
+              };
               overlays = desktop-overlays;
             };
             modules = desktop-modules ++ [
@@ -342,7 +352,12 @@
             };
             pkgs = (import nixpkgs) {
               inherit system;
-              config.allowUnfree = true;
+              config = {
+                allowUnfree = true;
+                permittedInsecurePackages = [
+                  "qtwebengine-5.15.19"
+                ];
+              };
               overlays = desktop-overlays;
             };
             modules = desktop-modules ++ [
