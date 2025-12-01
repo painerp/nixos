@@ -15,9 +15,9 @@
       };
     };
 
-    gestures = {
-      workspace_swipe = true;
-    };
+    gestures = [
+      "3, horizontal, workspace"
+    ];
 
     general = {
       gaps_in = 3;
