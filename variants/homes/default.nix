@@ -45,8 +45,10 @@ in
   programs = {
     git = lib.mkIf (pkg-config.dev) {
       enable = true;
-      userName = "painerp";
-      userEmail = "8081128+painerp@users.noreply.github.com";
+      settings.user = {
+        name = "painerp";
+        email = "8081128+painerp@users.noreply.github.com";
+      };
     };
     vscode = lib.mkIf (pkg-config.dev) {
       enable = true;
@@ -112,6 +114,6 @@ in
     pointerCursor = cursor-theme // {
       gtk.enable = true;
     };
-    stateVersion = "25.05";
+    stateVersion = "25.11";
   };
 }

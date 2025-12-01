@@ -128,7 +128,7 @@ in
             mangohud
             heroic
             lutris
-            protonup
+            protonup-ng
             steamguard-cli
             prismlauncher
           ]
@@ -148,7 +148,7 @@ in
       ++ (
         if cfg.communication then
           [
-            teamspeak_client
+            teamspeak3
             pkgs-unstable.teamspeak6-client
             vesktop
             signal-desktop
@@ -168,7 +168,7 @@ in
             lazygit
             nodePackages_latest.nodejs
             nodePackages_latest.pnpm
-            (python3Full.withPackages (python-pkgs: [
+            (python3.withPackages (python-pkgs: [
               python-pkgs.pytest
               python-pkgs.requests
             ]))
@@ -180,6 +180,9 @@ in
             jetbrains.pycharm-professional
             jetbrains.idea-ultimate
             jetbrains.clion
+            pkgs-unstable.jetbrains.rider
+            haskell-language-server
+            ormolu
           ]
         else
           [ ]
@@ -222,7 +225,7 @@ in
       };
       firefox = {
         enable = cfg.desktop;
-        package = pkgs.librewolf;
+        package = pkgs.librewolf-bin;
         policies = {
           DisableTelemetry = true;
           DisableFirefoxStudies = true;
