@@ -53,6 +53,7 @@ in
         ffmpeg
         zoxide
         zip
+        unzip
         tealdeer
         screen
         smartmontools
@@ -273,7 +274,13 @@ in
 
     services = {
       tumbler.enable = cfg.desktop;
-      tor.enable = cfg.tor;
+      tor = {
+        enable = cfg.tor;
+        settings = {
+          SOCKSPort = 9050;
+          ControlPort = 9051;
+        };
+      };
       syncthing = {
         enable = cfg.desktop-extras;
         user = config.system.username;
