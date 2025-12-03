@@ -184,6 +184,7 @@ in
             pkgs-unstable.jetbrains.rider
             haskell-language-server
             ormolu
+            eduvpn-client
           ]
         else
           [ ]
