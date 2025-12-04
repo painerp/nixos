@@ -161,6 +161,7 @@ in
         if cfg.dev then
           [
             opentofu
+            kubectl
             ungoogled-chromium
             nixfmt-rfc-style
             nixd
