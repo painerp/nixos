@@ -296,14 +296,14 @@ in
         wants = [ "network-online.target" ];
         after = [ "network-online.target" ];
         serviceConfig.Type = "oneshot";
+        path = with pkgs; [
+          bash
+          which
+          libnotify
+          hyprland
+          swww
+        ];
         script = ''
-          export PATH=${
-            lib.makeBinPath [
-              pkgs.libnotify
-              pkgs.hyprland
-              pkgs.swww
-            ]
-          };
           export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle.crt;
           ${inputs.apod-wallpaper.packages.${pkgs.system}.default}/bin/apod-wallpaper -m
         '';
