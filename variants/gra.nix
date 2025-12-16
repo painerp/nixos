@@ -88,7 +88,7 @@ in
     authentik = {
       enable = true;
       proxy = true;
-      version = "2025.10.2";
+      version = "2025.10.3";
       env-file = secrets.gra-authentik-proxy-env;
     };
     nextcloud = {
