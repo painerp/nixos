@@ -129,8 +129,8 @@ in
               command = "server";
               environment = env-auth;
               volumes = [
-                "${config-dir}/media:/media"
-                "${config-dir}/custom-templates:/templates"
+                "${config-dir}/data:/data"
+                "${config-dir}/templates:/templates"
               ];
               env_file = [ config.age.secrets.authentik-env.path ];
               depends_on = [
@@ -157,7 +157,7 @@ in
               env_file = [ config.age.secrets.authentik-env.path ];
               volumes = [
                 "/var/run/docker.sock:/var/run/docker.sock"
-                "${config-dir}/media:/media"
+                "${config-dir}/data:/data"
                 "${config-dir}/certs:/certs"
                 "${config-dir}/templates:/templates"
               ];
