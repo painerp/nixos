@@ -73,7 +73,7 @@ in
     authentik = {
       enable = true;
       proxy = true;
-      version = "2025.12.2";
+      version = "2025.12.3";
       extra-headers = "authorization";
       env-file = secrets.arr-authentik-proxy-env;
     };
