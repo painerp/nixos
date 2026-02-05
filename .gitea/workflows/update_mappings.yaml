@@ -24,7 +24,7 @@ jobs:
         run: python .gitea/scripts/update_docker_renovate.py
 
       - name: Commit mapping file
-        uses: stefanzweifel/git-auto-commit-action@v6
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: 'chore: update docker image mappings in renovate.json'
           file_pattern: 'renovate.json'
