@@ -292,13 +292,14 @@ in
               node-exporter.service = {
                 image = "quay.io/prometheus/node-exporter:latest";
                 container_name = "node-exporter";
-                networks = lib.mkIf (cfg.prometheus.enable) [ "exporter" ];
-                ports =
-                  (if (cfg.node-exporter.expose) then [ "9100:9100/tcp" ] else [ ])
-                  ++ (
-                    if (cfg.node-exporter.internal) then [ "${config.server.tailscale-ip}:20001:9100/tcp" ] else [ ]
-                  );
+                network_mode = "host";
                 command = [
+                  "--web.listen-address=${
+                    if (cfg.node-exporter.expose) then
+                      ""
+                    else
+                      (if cfg.node-exporter.internal then config.server.tailscale-ip else "127.0.0.1")
+                  }:20001"
                   "--path.rootfs=/rootfs"
                   "--path.procfs=/host/proc"
                   "--path.sysfs=/host/sys"
