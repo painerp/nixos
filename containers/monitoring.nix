@@ -88,6 +88,10 @@ in
         type = lib.types.bool;
         default = !cfg.node-exporter.expose;
       };
+      host = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+      };
     };
     cadvisor = {
       enable = lib.mkOption {
@@ -292,19 +296,25 @@ in
               node-exporter.service = {
                 image = "quay.io/prometheus/node-exporter:latest";
                 container_name = "node-exporter";
-                network_mode = "host";
                 command = [
-                  "--web.listen-address=${
-                    if (cfg.node-exporter.expose) then
-                      ""
-                    else
-                      (if cfg.node-exporter.internal then config.server.tailscale-ip else "127.0.0.1")
-                  }:20001"
                   "--path.rootfs=/rootfs"
                   "--path.procfs=/host/proc"
                   "--path.sysfs=/host/sys"
                   "--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc|var/lib/docker/containers|var/lib/docker/overlay2|run/docker/netns|var/lib/docker/aufs|var/lib/containers/storage/overlay-containers/.*/userdata/shm)($$|/)"
-                ];
+                ]
+                ++ (
+                  if cfg.node-exporter.host then
+                    [
+                      "--web.listen-address=${
+                        if (cfg.node-exporter.expose) then
+                          ""
+                        else
+                          (if cfg.node-exporter.internal then config.server.tailscale-ip else "127.0.0.1")
+                      }:20001"
+                    ]
+                  else
+                    [ ]
+                );
                 volumes = [
                   "/proc:/host/proc:ro"
                   "/sys:/host/sys:ro"
@@ -314,7 +324,20 @@ in
                   "com.centurylinklabs.watchtower.enable" = "true";
                 };
                 restart = "unless-stopped";
-              };
+              }
+              // (
+                if cfg.node-exporter.host then
+                  { network_mode = "host"; }
+                else
+                  {
+                    networks = lib.mkIf (cfg.prometheus.enable) [ "exporter" ];
+                    ports =
+                      (if (cfg.node-exporter.expose) then [ "9100:9100/tcp" ] else [ ])
+                      ++ (
+                        if (cfg.node-exporter.internal) then [ "${config.server.tailscale-ip}:20001:9100/tcp" ] else [ ]
+                      );
+                  }
+              );
 
             }
             // lib.attrsets.optionalAttrs (cfg.cadvisor.enable) {
