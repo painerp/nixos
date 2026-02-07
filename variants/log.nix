@@ -70,10 +70,7 @@ in
         enable = true;
         internal = true;
       };
-      node-exporter = {
-        enable = true;
-        internal = false;
-      };
+      node-exporter.enable = true;
       pve-exporter = {
         enable = true;
         internal = false;
