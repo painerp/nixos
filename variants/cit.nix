@@ -77,6 +77,9 @@ in
     base-domain = "redacted";
     subdomain = "local";
     inherit tailscale-ip;
+    adguardhome = {
+      enable = true;
+    };
     authentik = {
       enable = true;
       subdomain = "auth";
