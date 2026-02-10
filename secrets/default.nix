@@ -41,6 +41,7 @@
   gra-immich-pg-env = ./gra/immich-pg.env.age;
 
   cit-git-pw = ./cit/git-pw.age;
+  cit-adguardhome-sync-env = ./cit/adguardhome-sync.env.age;
   cit-authentik-env = ./cit/authentik.env.age;
   cit-authentik-pg-env = ./cit/authentik-pg.env.age;
   cit-gluetun-env = ./cit/gluetun.env.age;
