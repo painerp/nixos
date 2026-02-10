@@ -112,36 +112,36 @@ in
             };
           restart = "unless-stopped";
         };
-      };
 
-      adguardhome-sync.service = lib.mkIf (cfg.enable) {
-        image = "ghcr.io/bakito/adguardhome-sync:latest";
-        container_name = "adguardhome-sync";
-        hostname = config.networking.hostName;
-        networks = [
-          "proxy"
-          "adguardhome"
-        ];
-        volumes = [
-          "${config.lib.server.mkConfigDir "adguardhome-sync"}:/config"
-        ];
-        environment = {
-          TZ = config.time.timeZone;
-          CRON = "*/10 * * * *";
-          RUN_ON_START = "true";
-        };
-        env_file = [ config.age.secrets.adguardhome-sync-env.path ];
-        labels =
-          config.lib.server.mkTraefikLabels {
-            name = "adguardhome-sync";
-            port = "8080";
-            subdomain = "${cfg.sync.subdomain}";
-            forwardAuth = cfg.sync.auth;
-          }
-          // {
-            "com.centurylinklabs.watchtower.enable" = "true";
+        adguardhome-sync.service = lib.mkIf (cfg.sync.enable) {
+          image = "ghcr.io/bakito/adguardhome-sync:latest";
+          container_name = "adguardhome-sync";
+          hostname = config.networking.hostName;
+          networks = [
+            "proxy"
+            "adguardhome"
+          ];
+          volumes = [
+            "${config.lib.server.mkConfigDir "adguardhome-sync"}:/config"
+          ];
+          environment = {
+            TZ = config.time.timeZone;
+            CRON = "*/10 * * * *";
+            RUN_ON_START = "true";
           };
-        restart = "unless-stopped";
+          env_file = [ config.age.secrets.adguardhome-sync-env.path ];
+          labels =
+            config.lib.server.mkTraefikLabels {
+              name = "adguardhome-sync";
+              port = "8080";
+              subdomain = "${cfg.sync.subdomain}";
+              forwardAuth = cfg.sync.auth;
+            }
+            // {
+              "com.centurylinklabs.watchtower.enable" = "true";
+            };
+          restart = "unless-stopped";
+        };
       };
     };
 
