@@ -79,6 +79,10 @@ in
     inherit tailscale-ip;
     adguardhome = {
       enable = true;
+      sync = {
+        enable = true;
+        env-file = secrets.cit-adguardhome-sync-env;
+      };
     };
     authentik = {
       enable = true;
