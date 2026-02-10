@@ -61,7 +61,6 @@ in
       project.name = "adguardhome";
 
       networks.proxy.external = true;
-      networks.adguardhome.name = "adguardhome";
 
       services = {
         adguardhome.service = lib.mkIf (cfg.enable) {
@@ -70,7 +69,6 @@ in
           hostname = config.networking.hostName;
           networks = [
             "proxy"
-            "adguardhome"
           ];
           volumes = [
             "${config-dir}/work:/opt/adguardhome/work"
@@ -119,7 +117,6 @@ in
           hostname = config.networking.hostName;
           networks = [
             "proxy"
-            "adguardhome"
           ];
           volumes = [
             "${config.lib.server.mkConfigDir "adguardhome-sync"}:/config"
