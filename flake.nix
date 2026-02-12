@@ -61,6 +61,10 @@
         (import ./overlays/tailscale-patch.nix { })
         (import ./overlays/tuxedo-drivers.nix { })
       ];
+      desktop-insecure-packages = [
+        "qtwebengine-5.15.19"
+        "librewolf-147.0.2-1"
+      ];
     in
     {
       nixosConfigurations = {
@@ -228,9 +232,7 @@
               inherit system;
               config = {
                 allowUnfree = true;
-                permittedInsecurePackages = [
-                  "qtwebengine-5.15.19"
-                ];
+                permittedInsecurePackages = desktop-insecure-packages;
               };
               overlays = desktop-overlays;
             };
@@ -300,9 +302,7 @@
               inherit system;
               config = {
                 allowUnfree = true;
-                permittedInsecurePackages = [
-                  "qtwebengine-5.15.19"
-                ];
+                permittedInsecurePackages = desktop-insecure-packages;
               };
               overlays = desktop-overlays;
             };
@@ -354,9 +354,7 @@
               inherit system;
               config = {
                 allowUnfree = true;
-                permittedInsecurePackages = [
-                  "qtwebengine-5.15.19"
-                ];
+                permittedInsecurePackages = desktop-insecure-packages;
               };
               overlays = desktop-overlays;
             };
