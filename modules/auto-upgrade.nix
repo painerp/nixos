@@ -56,10 +56,12 @@ in
         // {
           inherit (config.environment.sessionVariables) NIX_PATH;
           HOME = "/root";
+          NIX_SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
         }
         // config.networking.proxy.envVars;
 
       path = with pkgs; [
+        cacert
         coreutils
         gnutar
         xz.bin
