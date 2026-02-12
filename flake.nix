@@ -64,6 +64,7 @@
       desktop-insecure-packages = [
         "qtwebengine-5.15.19"
         "librewolf-147.0.2-1"
+        "librewolf-unwrapped-147.0.2-1"
       ];
     in
     {
