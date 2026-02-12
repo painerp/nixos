@@ -132,6 +132,7 @@ in
             protonup-ng
             steamguard-cli
             prismlauncher
+            runelite
           ]
         else
           [ ]
@@ -179,13 +180,14 @@ in
             pkgs-unstable.uv
             jetbrains.webstorm
             jetbrains.rust-rover
-            jetbrains.pycharm-professional
-            jetbrains.idea-ultimate
+            jetbrains.pycharm
+            jetbrains.idea
             jetbrains.clion
             pkgs-unstable.jetbrains.rider
             haskell-language-server
             ormolu
             eduvpn-client
+            pkgs-unstable.pince
           ]
         else
           [ ]
