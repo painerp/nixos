@@ -15,8 +15,13 @@
   },
   "packageRules": [
     {
-      "matchManagers": ["nix"],
-      "matchPackagePatterns": ["nixos-private", "git\\+ssh://.*nixos-private"],
+      "matchManagers": [
+        "nix"
+      ],
+      "matchPackagePatterns": [
+        "nixos-private",
+        "git\\+ssh://.*nixos-private"
+      ],
       "enabled": false
     }
   ],
