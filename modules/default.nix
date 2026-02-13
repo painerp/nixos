@@ -41,6 +41,7 @@
   imports = [
     ./amd.nix
     ./arion.nix
+    ./attic-builder.nix
     ./auto-upgrade.nix
     ./borg.nix
     ./firewall.nix
