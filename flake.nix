@@ -31,6 +31,7 @@
       url = "github:icewind1991/nvidia-patch-nixos";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-private.url = "git+ssh://git@github.com/painerp/nixos-private.git";
   };
 
   outputs =
@@ -63,8 +64,8 @@
       ];
       desktop-insecure-packages = [
         "qtwebengine-5.15.19"
-        "librewolf-147.0.2-1"
-        "librewolf-unwrapped-147.0.2-1"
+        "librewolf-bin-147.0.2-1"
+        "librewolf-bin-unwrapped-147.0.2-1"
       ];
     in
     {
@@ -92,19 +93,6 @@
             modules = server-modules ++ [
               ./variants/bpi.nix
               ./hardware/rpi.nix
-            ];
-          };
-
-        ext =
-          let
-            system = "x86_64-linux";
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit specialArgs system;
-            pkgs = (import nixpkgs) { inherit system; };
-            modules = server-modules ++ [
-              ./variants/ext.nix
-              ./hardware/vps.nix
             ];
           };
 

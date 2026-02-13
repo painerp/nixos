@@ -1,6 +1,7 @@
 {
   config,
   secrets,
+  inputs,
   ...
 }:
 
@@ -9,11 +10,6 @@ let
   tailscale-ip = "100.103.104.35";
 in
 {
-  imports = [
-    ./secrets
-    ./secrets/jbx.nix
-  ];
-  # secrets
   age.secrets.wifi.file = secrets.jbx-wifi;
 
   # wlan
@@ -22,6 +18,10 @@ in
     wireless = {
       enable = true;
       secretsFile = config.age.secrets.wifi.path;
+      networks = {
+        "${inputs.nixos-private.common.wifi.ssid}".pskRaw = "ext:psk_fu";
+        "${inputs.nixos-private.hosts."${flake}".wifi.ssid}".pskRaw = "ext:psk_ju";
+      };
     };
   };
 
@@ -50,7 +50,6 @@ in
 
   # services
   server = {
-    base-domain = "redacted";
     subdomain = "ju";
     inherit tailscale-ip;
     adguardhome = {

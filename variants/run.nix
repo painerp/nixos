@@ -8,8 +8,6 @@ let
   tailscale-ip = "100.113.149.64";
 in
 {
-  imports = [ ./secrets ];
-
   networking.hostName = "nix${flake}";
 
   fileSystems."/" = {
@@ -30,7 +28,6 @@ in
 
   # services
   server = {
-    base-domain = "redacted";
     subdomain = "local";
     inherit tailscale-ip;
     act-runner = {

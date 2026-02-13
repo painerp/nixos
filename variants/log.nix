@@ -8,8 +8,6 @@ let
   tailscale-ip = "100.73.203.96";
 in
 {
-  imports = [ ./secrets ];
-
   networking = {
     hostName = "nix${flake}";
     interfaces.ens19.ipv4.addresses = [
@@ -50,7 +48,6 @@ in
 
   # services
   server = {
-    base-domain = "redacted";
     subdomain = "local";
     inherit tailscale-ip;
     authentik = {
