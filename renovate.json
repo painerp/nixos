@@ -13,10 +13,11 @@
   "nix": {
     "enabled": true
   },
-  "hostRules": [
+  "packageRules": [
     {
-      "hostType": "github",
-      "matchHost": "github.com"
+      "matchManagers": ["nix"],
+      "matchPackagePatterns": ["nixos-private", "git\\+ssh://.*nixos-private"],
+      "enabled": false
     }
   ],
   "customManagers": [
