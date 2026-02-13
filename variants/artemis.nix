@@ -10,8 +10,6 @@ let
   truenas-ip = "100.111.75.128";
 in
 {
-  imports = [ ./secrets ];
-
   age.secrets.artemis-pw.file = secrets.artemis-artemis-pw;
 
   networking = {

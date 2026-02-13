@@ -32,7 +32,10 @@ in
     communication = makeOption false;
     dev = makeOption false;
     crypto = makeOption false;
-    vm = makeOption false;
+    vm = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   config = {

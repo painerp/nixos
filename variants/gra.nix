@@ -1,5 +1,6 @@
 {
   secrets,
+  inputs,
   ...
 }:
 
@@ -9,11 +10,6 @@ let
   media = "/mnt/media";
 in
 {
-  imports = [
-    ./secrets
-    ./secrets/gra.nix
-  ];
-
   networking = {
     hostName = "nix${flake}";
     interfaces.ens19.ipv4.addresses = [
@@ -82,7 +78,6 @@ in
 
   # services
   server = {
-    base-domain = "redacted";
     subdomain = "local";
     inherit tailscale-ip;
     authentik = {
@@ -105,7 +100,10 @@ in
         "${media}/movies:/movies"
         "${media}/music:/music"
       ];
-      exporter.enable = true;
+      exporter = {
+        enable = true;
+        token = inputs.nixos-private.hosts."${flake}".jellyfin.exporter.token;
+      };
     };
     tdarr = {
       enable = true;

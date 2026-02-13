@@ -1,6 +1,7 @@
 {
   config,
   secrets,
+  inputs,
   ...
 }:
 
@@ -9,11 +10,6 @@ let
   tailscale-ip = "100.116.126.150";
 in
 {
-  imports = [
-    ./secrets
-    ./secrets/bpi.nix
-  ];
-  # secrets
   age.secrets.wifi.file = secrets.bpi-wifi;
 
   # wlan
@@ -22,6 +18,10 @@ in
     wireless = {
       enable = true;
       secretsFile = config.age.secrets.wifi.path;
+      networks = {
+        "${inputs.nixos-private.common.wifi.ssid}".pskRaw = "ext:psk_fu";
+        "${inputs.nixos-private.hosts."${flake}".wifi.ssid}".pskRaw = "ext:psk_bi";
+      };
     };
   };
 
@@ -34,7 +34,6 @@ in
   };
 
   server = {
-    base-domain = "redacted";
     subdomain = "bi";
     inherit tailscale-ip;
     adguardhome = {

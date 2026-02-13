@@ -1,5 +1,6 @@
 {
   secrets,
+  inputs,
   ...
 }:
 
@@ -8,11 +9,6 @@ let
   tailscale-ip = "100.115.5.117";
 in
 {
-  imports = [
-    ./secrets
-    ./secrets/inf.nix
-  ];
-
   networking = {
     hostName = "nix${flake}";
     interfaces.ens19.ipv4.addresses = [
@@ -62,7 +58,6 @@ in
 
   # services
   server = {
-    base-domain = "redacted";
     subdomain = "local";
     inherit tailscale-ip;
     authentik = {
@@ -74,6 +69,7 @@ in
     dashboard.enable = true;
     unknown = {
       enable = true;
+      image = inputs.nixos-private.hosts."${flake}".unknown.image;
       extras-dir = "/mnt/unknown";
       env-file = secrets.inf-unknown-env;
       mysql.env-file = secrets.inf-unknown-mysql-env;

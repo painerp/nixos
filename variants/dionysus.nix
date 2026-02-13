@@ -10,8 +10,6 @@ let
   truenas-ip = "100.111.75.128";
 in
 {
-  imports = [ ./secrets ];
-
   age.secrets.dionysus-pw.file = secrets.dionysus-dionysus-pw;
 
   networking = {
