@@ -29,6 +29,8 @@ in
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
+    age.secrets.attic-env.file = cfg.env-file;
+
     systemd.services.arion-attic = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
