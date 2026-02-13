@@ -74,6 +74,7 @@ in
     username = flake;
     home-manager = true;
     latest-kernel = true;
+    github-trusted = false;
   };
   modules = {
     amd.enable = true;

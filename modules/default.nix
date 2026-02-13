@@ -31,6 +31,11 @@
       type = lib.types.bool;
       default = false;
     };
+    github-trusted = lib.mkOption {
+      description = "Whether to rewrite ssh config to trust github.com";
+      type = lib.types.bool;
+      default = true;
+    };
   };
 
   imports = [
