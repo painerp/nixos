@@ -149,7 +149,7 @@ let
     ${pkgs.procps}/bin/free -h
     echo ""
     echo "=== Nix Store Size ==="
-    ${pkgs.du}/bin/du -sh /nix/store 2>/dev/null || echo "Could not calculate store size"
+    ${pkgs.gdu}/bin/gdu -n /nix/store 2>/dev/null || echo "Could not calculate store size"
   '';
 in
 {
@@ -220,6 +220,7 @@ in
       pkgs.git
       pkgs.nix-fast-build
       pkgs.jq
+      pkgs.gdu
       build-script
     ];
 
@@ -260,7 +261,7 @@ in
         pkgs.jq
         pkgs.coreutils
         pkgs.procps
-        pkgs.du
+        pkgs.gdu
         build-script
       ];
 
