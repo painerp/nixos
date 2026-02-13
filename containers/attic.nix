@@ -57,7 +57,11 @@ in
         volumes = [
           "${config-dir}/config:/config"
           "${config-dir}/data:/var/lib/atticd"
+          "${config-dir}/tmp:/tmp"
           "${cfg.storage-path}:/var/lib/atticd/storage"
+        ];
+        tmpfs = [
+          "/tmp/attic:size=8G,mode=1777"
         ];
         labels =
           config.lib.server.mkTraefikLabels {
