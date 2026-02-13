@@ -24,6 +24,15 @@ in
 
   swapDevices = [ { device = "/dev/disk/by-uuid/ab983818-1f80-49a0-9beb-0e5329843b83"; } ];
 
+  fileSystems."/mnt/attic" = {
+    device = "10.0.10.1:/mnt/hdd/attic";
+    fsType = "nfs";
+    options = [
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
+    ];
+  };
+
   fileSystems."/mnt/backup" = {
     device = "10.0.10.1:/mnt/hdd/backup/servers/nix${flake}";
     fsType = "nfs";
@@ -79,6 +88,11 @@ in
         enable = true;
         env-file = secrets.cit-adguardhome-sync-env;
       };
+    };
+    attic = {
+      enable = true;
+      auth = false;
+      storage-path = "/mnt/attic";
     };
     authentik = {
       enable = true;
