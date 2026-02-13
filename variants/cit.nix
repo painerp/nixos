@@ -93,6 +93,7 @@ in
       enable = true;
       auth = false;
       storage-path = "/mnt/attic";
+      env-file = secrets.cit-attic-env;
     };
     authentik = {
       enable = true;
