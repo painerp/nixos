@@ -1,5 +1,6 @@
 {
   secrets,
+  inputs,
   ...
 }:
 
@@ -11,11 +12,6 @@ let
   temp = "/tmp/unprocessed";
 in
 {
-  imports = [
-    ./secrets
-    ./secrets/arr.nix
-  ];
-
   networking = {
     hostName = "nix${flake}";
     interfaces.ens19.ipv4.addresses = [
@@ -67,7 +63,6 @@ in
 
   # services
   server = {
-    base-domain = "redacted";
     subdomain = "local";
     inherit tailscale-ip;
     authentik = {
@@ -91,7 +86,7 @@ in
     prdl = {
       enable = true;
       auth = false;
-      image = "redacted";
+      image = inputs.nixos-private.hosts."${flake}".prdl.image;
       env-file = secrets.arr-prdl-env;
       volumes = [
         "${unprocessed}/movies:/movies"

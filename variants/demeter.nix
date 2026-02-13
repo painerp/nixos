@@ -10,8 +10,6 @@ let
   truenas-ip = "100.111.75.128";
 in
 {
-  imports = [ ./secrets ];
-
   age.secrets.demeter-pw.file = secrets.demeter-demeter-pw;
 
   networking = {

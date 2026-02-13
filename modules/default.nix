@@ -48,6 +48,7 @@
     ./nvidia.nix
     ./packages.nix
     ./pipewire.nix
+    ./private.nix
     ./shell.nix
     ./ssh-server.nix
     ./system.nix

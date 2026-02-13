@@ -5,9 +5,6 @@ let
   tailscale-ip = "100.77.215.64";
 in
 {
-  imports = [ ./secrets ];
-
-  # secrets
   age.secrets.git-pw.file = secrets.cit-git-pw;
 
   networking = {
@@ -74,7 +71,6 @@ in
 
   # services
   server = {
-    base-domain = "redacted";
     subdomain = "local";
     inherit tailscale-ip;
     adguardhome = {

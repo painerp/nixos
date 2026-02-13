@@ -9,8 +9,6 @@ let
   minecraft-path = "/root/config/minecraft";
 in
 {
-  imports = [ ./secrets ];
-
   networking = {
     hostName = "nix${flake}";
     interfaces.ens19.ipv4.addresses = [
@@ -48,7 +46,6 @@ in
 
   # services
   server = {
-    base-domain = "redacted";
     subdomain = "local";
     inherit tailscale-ip;
     palworld = {
