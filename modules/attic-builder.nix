@@ -149,7 +149,7 @@ let
     ${pkgs.procps}/bin/free -h
     echo ""
     echo "=== Nix Store Size ==="
-    ${pkgs.gdu}/bin/gdu -n /nix/store 2>/dev/null || echo "Could not calculate store size"
+    ${pkgs.gdu}/bin/gdu -sn /nix/store 2>/dev/null || echo "Could not calculate store size"
   '';
 in
 {
