@@ -23,6 +23,9 @@ in
       default = config-dir;
       description = "Path to store binary cache data";
     };
+    env-file = lib.mkOption {
+      type = lib.types.path;
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -48,6 +51,7 @@ in
           "/config/server.toml"
         ];
         networks = [ "proxy" ];
+        env_file = [ config.age.secrets.attic-env.path ];
         volumes = [
           "${config-dir}/config:/config"
           "${config-dir}/data:/var/lib/atticd"
