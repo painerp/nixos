@@ -122,17 +122,44 @@ let
 
       if [ -n "$RESULT" ]; then
         echo "Pushing $system ($RESULT)..."
-        if ${pkgs.attic-client}/bin/attic push "$CACHE_NAME" "$RESULT"; then
-          echo "✓ Successfully pushed $system"
-          PUSHED=$((PUSHED + 1))
-        else
-          echo "✗ Failed to push $system"
+
+        # Retry logic: Try up to 5 times with exponential backoff
+        RETRY_COUNT=0
+        MAX_RETRIES=5
+        SUCCESS=false
+        BACKOFF=5  # Start with 5 second delay
+
+        while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+          if [ $RETRY_COUNT -gt 0 ]; then
+            echo "  Retry attempt $RETRY_COUNT/$MAX_RETRIES (waiting ''${BACKOFF}s)..."
+            sleep $BACKOFF
+            BACKOFF=$((BACKOFF * 2))  # Double the backoff each retry (5s -> 10s -> 20s -> 40s -> 80s)
+          fi
+
+          if ${pkgs.attic-client}/bin/attic push "$CACHE_NAME" "$RESULT"; then
+            echo "✓ Successfully pushed $system"
+            PUSHED=$((PUSHED + 1))
+            SUCCESS=true
+            break
+          else
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              echo "  Push failed, will retry..."
+            fi
+          fi
+        done
+
+        if [ "$SUCCESS" = false ]; then
+          echo "✗ Failed to push $system after $MAX_RETRIES attempts"
           FAILED=$((FAILED + 1))
         fi
       else
         echo "✗ No result for $system (build may have failed)"
         FAILED=$((FAILED + 1))
       fi
+
+      # Brief pause between pushes to let Attic recover
+      sleep 2
     done
 
     # Summary
@@ -149,7 +176,7 @@ let
     ${pkgs.procps}/bin/free -h
     echo ""
     echo "=== Nix Store Size ==="
-    ${pkgs.gdu}/bin/gdu -sn /nix/store 2>/dev/null || echo "Could not calculate store size"
+    ${pkgs.gdu}/bin/gdu -snp /nix/store 2>/dev/null || echo "Could not calculate store size"
   '';
 in
 {
