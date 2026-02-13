@@ -67,6 +67,11 @@ in
             forwardAuth = cfg.auth;
           }
           // {
+            "traefik.http.middlewares.attic-timeout.buffering.maxRequestBodyBytes" = "0";
+            "traefik.http.middlewares.attic-timeout.buffering.maxResponseBodyBytes" = "0";
+            "traefik.http.routers.attic.middlewares" = "attic-timeout@docker";
+          }
+          // {
             "com.centurylinklabs.watchtower.enable" = "true";
           };
         restart = "unless-stopped";
