@@ -274,6 +274,21 @@
         "type": "github"
       }
     },
+    "nixos-private": {
+      "locked": {
+        "lastModified": 1770982813,
+        "narHash": "sha256-iBZ23SDTkLH62WSAdKsebof1Ob4RQB/oiAv9PqRp3AQ=",
+        "ref": "refs/heads/main",
+        "rev": "d6bbe53b2232cedf3528ee841b4e7180c11fc5cd",
+        "revCount": 4,
+        "type": "git",
+        "url": "ssh://git@github.com/painerp/nixos-private.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/painerp/nixos-private.git"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1759381078,
@@ -416,6 +431,7 @@
         "hyprpanel": "hyprpanel",
         "nix-deploy": "nix-deploy",
         "nixos-hardware": "nixos-hardware",
+        "nixos-private": "nixos-private",
         "nixpkgs": "nixpkgs_6",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nvidia-patch": "nvidia-patch"
