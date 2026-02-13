@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  inputs,
+  ...
+}:
 
 {
   nix.settings = {
@@ -8,6 +13,15 @@
     ];
     warn-dirty = false;
     auto-optimise-store = true;
+    substituters = [
+      "https://cache.nixos.org"
+      "https://attic.local.${inputs.nixos-private.common.domain}/nixos"
+    ];
+    trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "nixos:k+0x+qgG8Mb1k7kMi+14QIEeJHzkmaWubDmPzZNOyas="
+    ];
+    builders-use-substitutes = true;
   };
 
   programs.ssh = lib.mkIf config.system.github-trusted {
