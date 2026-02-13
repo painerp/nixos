@@ -67,6 +67,7 @@ in
     ./jellystat.nix
     ./lidarr.nix
     ./linkwarden.nix
+    ./lubelogger.nix
     ./mediathekarr.nix
     ./minecraft.nix
     ./minecraft-bluemap.nix
