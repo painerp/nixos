@@ -82,6 +82,7 @@ in
 
   "cit/git-pw.age".publicKeys = users ++ [ cit ];
   "cit/adguardhome-sync.env.age".publicKeys = users ++ [ cit ];
+  "cit/attic.env.age".publicKeys = users ++ [ cit ];
   "cit/authentik.env.age".publicKeys = users ++ [ cit ];
   "cit/authentik-pg.env.age".publicKeys = users ++ [ cit ];
   "cit/gluetun.env.age".publicKeys = users ++ [ cit ];
