@@ -27,9 +27,12 @@ in
   system = {
     inherit flake;
   };
-  modules.arion = {
-    enable = true;
-    backend = "podman";
+  modules = {
+    arion = {
+      enable = true;
+      backend = "podman";
+    };
+    attic-builder.enable = true;
   };
 
   # services
