@@ -15,39 +15,6 @@ let
     REPO_PATH="${cfg.repo-path}"
     CACHE_NAME="${cfg.cache-name}"
 
-    # Setup logging
-    mkdir -p $HOME/attic-builds
-    TIMESTAMP=$(date '+%Y-%m-%d_%H-%M-%S')
-    LOG_FILE="$HOME/attic-builds/$TIMESTAMP.log"
-
-    # Function to send email on failure
-    send_failure_email() {
-      ${lib.optionalString cfg.enable-email-notifications ''
-        if [ -f ${config.age.secrets.smtp.path} ]; then
-          source ${config.age.secrets.smtp.path}
-        else
-          echo "Error: SMTP configuration file not found at ${config.age.secrets.smtp.path}"
-          return 1
-        fi
-
-        if [ -z "$EMAIL_TO" ] || [ -z "$EMAIL_FROM" ] || [ -z "$SMTP_SERVER" ] || \
-           [ -z "$SMTP_PORT" ] || [ -z "$SMTP_USERNAME" ] || [ -z "$SMTP_PASSWORD" ]; then
-          echo "Error: Missing required SMTP configuration variables"
-          return 1
-        fi
-
-        echo -e "To: $EMAIL_TO\nSubject: [NixOS] Attic builder failed on $(${pkgs.hostname}/bin/hostname)" | cat - "$LOG_FILE" | ${pkgs.msmtp}/bin/msmtp -t \
-          --from="$EMAIL_FROM" \
-          --host="$SMTP_SERVER" \
-          --port="$SMTP_PORT" \
-          --auth=on \
-          --user="$SMTP_USERNAME" \
-          --passwordeval="echo $SMTP_PASSWORD" \
-          --tls=on \
-          --tls-starttls=on
-      ''}
-    }
-
     # Check if systems specified via command line
     if [ $# -gt 0 ]; then
       MANUAL_SYSTEMS="$@"
@@ -230,11 +197,10 @@ let
     echo "=== Nix Store Size ==="
     ${pkgs.gdu}/bin/gdu -snp /nix/store 2>/dev/null || echo "Could not calculate store size"
 
-    # Send email if there were any failures
+    # Exit with error if there were any failures
     if [ $TOTAL_FAILED -gt 0 ] || [ $FAILED -gt 0 ]; then
       echo ""
-      echo "=== Sending failure notification email ==="
-      send_failure_email
+      echo "=== Build/push failures detected ==="
       exit 1
     fi
   '';
@@ -385,7 +351,48 @@ in
       ];
 
       script = ''
-        ${build-script}/bin/build-and-cache 2>&1 | tee $HOME/attic-builds/$(date '+%Y-%m-%d_%H-%M-%S').log
+        # Setup logging
+        mkdir -p $HOME/attic-builds
+        TIMESTAMP=$(date '+%Y-%m-%d_%H-%M-%S')
+        LOG_FILE="$HOME/attic-builds/$TIMESTAMP.log"
+
+        # Function to send email on failure
+        send_failure_email() {
+          ${lib.optionalString cfg.enable-email-notifications ''
+            if [ -f ${config.age.secrets.smtp.path} ]; then
+              source ${config.age.secrets.smtp.path}
+            else
+              echo "Error: SMTP configuration file not found at ${config.age.secrets.smtp.path}"
+              return 1
+            fi
+
+            if [ -z "$EMAIL_TO" ] || [ -z "$EMAIL_FROM" ] || [ -z "$SMTP_SERVER" ] || \
+               [ -z "$SMTP_PORT" ] || [ -z "$SMTP_USERNAME" ] || [ -z "$SMTP_PASSWORD" ]; then
+              echo "Error: Missing required SMTP configuration variables"
+              return 1
+            fi
+
+            echo -e "To: $EMAIL_TO\nSubject: [NixOS] Attic builder failed on $(hostname)" | cat - "$LOG_FILE" | msmtp -t \
+              --from="$EMAIL_FROM" \
+              --host="$SMTP_SERVER" \
+              --port="$SMTP_PORT" \
+              --auth=on \
+              --user="$SMTP_USERNAME" \
+              --passwordeval="echo $SMTP_PASSWORD" \
+              --tls=on \
+              --tls-starttls=on
+          ''}
+        }
+
+        # Run the build script and capture output
+        if ${build-script}/bin/build-and-cache 2>&1 | tee "$LOG_FILE"; then
+          echo "Build completed successfully"
+        else
+          EXIT_CODE=$?
+          echo "Build failed with exit code $EXIT_CODE"
+          send_failure_email
+          exit $EXIT_CODE
+        fi
       '';
 
       # Garbage collection after build
