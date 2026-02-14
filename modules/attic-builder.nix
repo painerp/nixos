@@ -100,6 +100,8 @@ let
       ${pkgs.nix-fast-build}/bin/nix-fast-build \
         --skip-cached \
         --no-nom \
+        --max-memory-size ${toString cfg.max-memory-per-worker} \
+        --workers ${toString cfg.workers} \
         --flake ".#nixosConfigurations.$system.config.system.build.toplevel" || {
           echo "Warning: Failed to build $system, continuing..."
         }
@@ -114,7 +116,7 @@ let
     for system in $SYSTEMS; do
       echo ""
       echo ">>> Checking $system..."
-      RESULT=$(${pkgs.nix}/bin/nix build \
+      RESULT=$(timeout 60 ${pkgs.nix}/bin/nix build \
         --no-link \
         --print-out-paths \
         ".#nixosConfigurations.$system.config.system.build.toplevel" \
@@ -217,6 +219,16 @@ in
 
         Note: Can be overridden by command-line arguments when running manually.
       '';
+    };
+    max-memory-per-worker = lib.mkOption {
+      type = lib.types.int;
+      default = 4092;
+      description = "Maximum memory in MB per nix-eval-jobs worker";
+    };
+    workers = lib.mkOption {
+      type = lib.types.int;
+      default = 3;
+      description = "Number of parallel evaluation workers";
     };
     schedule = lib.mkOption {
       type = lib.types.str;
