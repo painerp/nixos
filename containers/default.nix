@@ -51,6 +51,7 @@ in
   imports = [
     ./act-runner.nix
     ./adguardhome.nix
+    ./attic.nix
     ./authentik.nix
     ./bachelor.nix
     ./bazarr.nix
@@ -67,6 +68,7 @@ in
     ./jellystat.nix
     ./lidarr.nix
     ./linkwarden.nix
+    ./lubelogger.nix
     ./mediathekarr.nix
     ./minecraft.nix
     ./minecraft-bluemap.nix

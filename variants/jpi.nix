@@ -1,6 +1,7 @@
 {
   config,
   secrets,
+  inputs,
   ...
 }:
 
@@ -9,17 +10,19 @@ let
   tailscale-ip = "100.81.246.82";
 in
 {
-  imports = [
-    ./secrets
-    ./secrets/jpi.nix
-  ];
-  # secrets
   age.secrets.wifi.file = secrets.jpi-wifi;
 
   # wlan
   networking = {
     hostName = "nix${flake}";
-    wireless.secretsFile = config.age.secrets.wifi.path;
+    wireless = {
+      enable = true;
+      secretsFile = config.age.secrets.wifi.path;
+      networks = {
+        "${inputs.nixos-private.common.wifi.ssid}".pskRaw = "ext:psk_fu";
+        "${inputs.nixos-private.hosts."${flake}".wifi.ssid}".pskRaw = "ext:psk_ju";
+      };
+    };
   };
 
   # system
@@ -33,7 +36,6 @@ in
 
   # services
   server = {
-    base-domain = "redacted";
     subdomain = "ju";
     inherit tailscale-ip;
     pihole = {

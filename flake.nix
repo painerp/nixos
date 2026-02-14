@@ -31,6 +31,7 @@
       url = "github:icewind1991/nvidia-patch-nixos";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-private.url = "git+ssh://git@github.com/painerp/nixos-private.git";
   };
 
   outputs =
@@ -59,7 +60,11 @@
         (import ./overlays/btop.nix { })
         (import ./overlays/hyprpanel.nix { })
         (import ./overlays/tailscale-patch.nix { })
-        (import ./overlays/tuxedo-drivers.nix { })
+      ];
+      desktop-insecure-packages = [
+        "qtwebengine-5.15.19"
+        "librewolf-bin-147.0.2-1"
+        "librewolf-bin-unwrapped-147.0.2-1"
       ];
     in
     {
@@ -87,19 +92,6 @@
             modules = server-modules ++ [
               ./variants/bpi.nix
               ./hardware/rpi.nix
-            ];
-          };
-
-        ext =
-          let
-            system = "x86_64-linux";
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit specialArgs system;
-            pkgs = (import nixpkgs) { inherit system; };
-            modules = server-modules ++ [
-              ./variants/ext.nix
-              ./hardware/vps.nix
             ];
           };
 
@@ -228,9 +220,7 @@
               inherit system;
               config = {
                 allowUnfree = true;
-                permittedInsecurePackages = [
-                  "qtwebengine-5.15.19"
-                ];
+                permittedInsecurePackages = desktop-insecure-packages;
               };
               overlays = desktop-overlays;
             };
@@ -265,7 +255,10 @@
             inherit system;
             pkgs = (import nixpkgs) {
               inherit system;
-              config.allowUnfree = true;
+              config = {
+                allowUnfree = true;
+                permittedInsecurePackages = desktop-insecure-packages;
+              };
               overlays = desktop-overlays;
             };
             modules = desktop-modules ++ [
@@ -300,9 +293,7 @@
               inherit system;
               config = {
                 allowUnfree = true;
-                permittedInsecurePackages = [
-                  "qtwebengine-5.15.19"
-                ];
+                permittedInsecurePackages = desktop-insecure-packages;
               };
               overlays = desktop-overlays;
             };
@@ -354,9 +345,7 @@
               inherit system;
               config = {
                 allowUnfree = true;
-                permittedInsecurePackages = [
-                  "qtwebengine-5.15.19"
-                ];
+                permittedInsecurePackages = desktop-insecure-packages;
               };
               overlays = desktop-overlays;
             };

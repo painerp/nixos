@@ -1,4 +1,9 @@
-{ config, ... }:
+{
+  config,
+  lib,
+  inputs,
+  ...
+}:
 
 {
   nix.settings = {
@@ -8,6 +13,24 @@
     ];
     warn-dirty = false;
     auto-optimise-store = true;
+    substituters = [
+      "https://cache.nixos.org"
+      "https://attic.local.${inputs.nixos-private.common.domain}/nixos"
+    ];
+    trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "nixos:k+0x+qgG8Mb1k7kMi+14QIEeJHzkmaWubDmPzZNOyas="
+    ];
+    builders-use-substitutes = true;
+  };
+
+  programs.ssh = lib.mkIf config.system.github-trusted {
+    extraConfig = ''
+      Host github.com
+        IdentityFile /etc/ssh/ssh_host_ed25519_key
+    '';
+    knownHosts."github.com".publicKey =
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
   };
 
   console.keyMap = "de";
