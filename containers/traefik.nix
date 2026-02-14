@@ -123,6 +123,11 @@ in
       description = "add extra ports to traefik service";
       default = [ ];
     };
+    extra-hosts = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      description = "add extra hosts to traefik service";
+      default = [ ];
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -223,6 +228,7 @@ in
         hostname = config.networking.hostName;
         networks.proxy.aliases = cfg.aliases;
         stop_signal = "SIGINT";
+        extra_hosts = cfg.extra-hosts;
         ports =
           (
             if (cfg.expose) then
