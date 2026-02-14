@@ -32,7 +32,10 @@ in
       enable = true;
       backend = "podman";
     };
-    attic-builder.enable = true;
+    attic-builder = {
+      enable = true;
+      max-memory-per-worker = 8192;
+    };
   };
 
   # services
