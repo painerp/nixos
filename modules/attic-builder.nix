@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  secrets,
   ...
 }:
 
@@ -13,6 +14,39 @@ let
 
     REPO_PATH="${cfg.repo-path}"
     CACHE_NAME="${cfg.cache-name}"
+
+    # Setup logging
+    mkdir -p $HOME/attic-builds
+    TIMESTAMP=$(date '+%Y-%m-%d_%H-%M-%S')
+    LOG_FILE="$HOME/attic-builds/$TIMESTAMP.log"
+
+    # Function to send email on failure
+    send_failure_email() {
+      ${lib.optionalString cfg.enable-email-notifications ''
+        if [ -f ${config.age.secrets.smtp.path} ]; then
+          source ${config.age.secrets.smtp.path}
+        else
+          echo "Error: SMTP configuration file not found at ${config.age.secrets.smtp.path}"
+          return 1
+        fi
+
+        if [ -z "$EMAIL_TO" ] || [ -z "$EMAIL_FROM" ] || [ -z "$SMTP_SERVER" ] || \
+           [ -z "$SMTP_PORT" ] || [ -z "$SMTP_USERNAME" ] || [ -z "$SMTP_PASSWORD" ]; then
+          echo "Error: Missing required SMTP configuration variables"
+          return 1
+        fi
+
+        echo -e "To: $EMAIL_TO\nSubject: [NixOS] Attic builder failed on $(${pkgs.hostname}/bin/hostname)" | cat - "$LOG_FILE" | ${pkgs.msmtp}/bin/msmtp -t \
+          --from="$EMAIL_FROM" \
+          --host="$SMTP_SERVER" \
+          --port="$SMTP_PORT" \
+          --auth=on \
+          --user="$SMTP_USERNAME" \
+          --passwordeval="echo $SMTP_PASSWORD" \
+          --tls=on \
+          --tls-starttls=on
+      ''}
+    }
 
     # Check if systems specified via command line
     if [ $# -gt 0 ]; then
@@ -195,6 +229,14 @@ let
     echo ""
     echo "=== Nix Store Size ==="
     ${pkgs.gdu}/bin/gdu -snp /nix/store 2>/dev/null || echo "Could not calculate store size"
+
+    # Send email if there were any failures
+    if [ $TOTAL_FAILED -gt 0 ] || [ $FAILED -gt 0 ]; then
+      echo ""
+      echo "=== Sending failure notification email ==="
+      send_failure_email
+      exit 1
+    fi
   '';
 in
 {
@@ -271,9 +313,24 @@ in
       default = "3d";
       description = "Delete generations older than this after build (e.g., '3d', '7d', '1w')";
     };
+    enable-email-notifications = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Send email notifications on build failures";
+    };
+    env-file = lib.mkOption {
+      type = lib.types.path;
+      default = secrets.extras-smtp;
+      description = "Path to the SMTP configuration file for email notifications";
+    };
   };
 
   config = lib.mkIf cfg.enable {
+    # Configure SMTP secret for email notifications
+    age.secrets.smtp = lib.mkIf cfg.enable-email-notifications {
+      file = cfg.env-file;
+    };
+
     # Ensure required packages are available
     environment.systemPackages = [
       pkgs.attic-client
@@ -322,10 +379,14 @@ in
         pkgs.coreutils
         pkgs.procps
         pkgs.gdu
+        pkgs.msmtp
+        pkgs.hostname
         build-script
       ];
 
-      script = "${build-script}/bin/build-and-cache";
+      script = ''
+        ${build-script}/bin/build-and-cache 2>&1 | tee $HOME/attic-builds/$(date '+%Y-%m-%d_%H-%M-%S').log
+      '';
 
       # Garbage collection after build
       postStop = lib.mkIf cfg.gc-after-build ''
