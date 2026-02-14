@@ -91,51 +91,61 @@ let
         ''
     }
 
-    # Build all systems
+    # Build all systems and track which ones succeeded
     echo ""
     echo "=== Building systems with nix-fast-build ==="
+
+    # Track successful builds
+    SUCCESSFUL_BUILDS=()
+
     for system in $SYSTEMS; do
       echo ""
       echo ">>> Building $system..."
-      ${pkgs.nix-fast-build}/bin/nix-fast-build \
+
+      if ${pkgs.nix-fast-build}/bin/nix-fast-build \
         --skip-cached \
         --no-nom \
         --max-memory-size ${toString cfg.max-memory-per-worker} \
         --workers ${toString cfg.workers} \
-        --flake ".#nixosConfigurations.$system.config.system.build.toplevel" || {
-          echo "Warning: Failed to build $system, continuing..."
-        }
+        --flake ".#nixosConfigurations.$system.config.system.build.toplevel"; then
+
+        echo "✓ Build completed for $system"
+        SUCCESSFUL_BUILDS+=("$system")
+      else
+        echo "✗ Build failed for $system, skipping push"
+      fi
     done
 
-    # Push all results to Attic cache
+    # Push only successful builds to Attic cache
     echo ""
     echo "=== Pushing to Attic cache ==="
     PUSHED=0
     FAILED=0
 
-    for system in $SYSTEMS; do
+    for system in "''${SUCCESSFUL_BUILDS[@]}"; do
       echo ""
-      echo ">>> Checking $system..."
-      RESULT=$(timeout 60 ${pkgs.nix}/bin/nix build \
+      echo ">>> Pushing $system..."
+
+      RESULT=$(${pkgs.nix}/bin/nix build \
         --no-link \
         --print-out-paths \
         ".#nixosConfigurations.$system.config.system.build.toplevel" \
         2>/dev/null || true)
 
       if [ -n "$RESULT" ]; then
-        echo "Pushing $system ($RESULT)..."
+        echo "Result: $RESULT"
 
         # Retry logic: Try up to 5 times with exponential backoff
         RETRY_COUNT=0
-        MAX_RETRIES=5
+        MAX_RETRIES=${toString cfg.max-retries}
         SUCCESS=false
-        BACKOFF=5  # Start with 5 second delay
+        BACKOFF=5
 
         while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
           if [ $RETRY_COUNT -gt 0 ]; then
             echo "  Retry attempt $RETRY_COUNT/$MAX_RETRIES (waiting ''${BACKOFF}s)..."
             sleep $BACKOFF
-            BACKOFF=$((BACKOFF * 2))  # Double the backoff each retry (5s -> 10s -> 20s -> 40s -> 80s)
+            BACKOFF=$((BACKOFF * 2))
           fi
 
           if ${pkgs.attic-client}/bin/attic push "$CACHE_NAME" "$RESULT"; then
@@ -156,21 +166,27 @@ let
           FAILED=$((FAILED + 1))
         fi
       else
-        echo "✗ No result for $system (build may have failed)"
+        echo "✗ No result found for $system"
         FAILED=$((FAILED + 1))
       fi
 
-      # Brief pause between pushes to let Attic recover
+      # Brief pause between pushes
       sleep 2
     done
+
+    # Calculate total failed (builds that never made it to push attempts)
+    TOTAL_SYSTEMS=$(echo "$SYSTEMS" | wc -w)
+    TOTAL_FAILED=$((TOTAL_SYSTEMS - ''${#SUCCESSFUL_BUILDS[@]}))
 
     # Summary
     echo ""
     echo "=== Build Summary ==="
     echo "Completed at: $(date)"
-    echo "Successfully pushed: $PUSHED systems"
-    echo "Failed: $FAILED systems"
-    echo ""
+    echo "Total systems: $TOTAL_SYSTEMS"
+    echo "Successful builds: ''${#SUCCESSFUL_BUILDS[@]}"
+    echo "Failed builds: $TOTAL_FAILED"
+    echo "Successfully pushed: $PUSHED"
+    echo "Failed to push: $FAILED"
     echo "=== Disk Usage ==="
     ${pkgs.coreutils}/bin/df -h / /nix
     echo ""
@@ -229,6 +245,11 @@ in
       type = lib.types.int;
       default = 3;
       description = "Number of parallel evaluation workers";
+    };
+    max-retries = lib.mkOption {
+      type = lib.types.int;
+      default = 5;
+      description = "Number of retry attempts for pushing to Attic cache on failure";
     };
     schedule = lib.mkOption {
       type = lib.types.str;
