@@ -1,5 +1,6 @@
 {
   secrets,
+  inputs,
   ...
 }:
 
@@ -11,11 +12,6 @@ let
   temp = "/tmp/unprocessed";
 in
 {
-  imports = [
-    ./secrets
-    ./secrets/arr.nix
-  ];
-
   networking = {
     hostName = "nix${flake}";
     interfaces.ens19.ipv4.addresses = [
@@ -31,7 +27,7 @@ in
     fsType = "ext4";
   };
 
-  swapDevices = [ { device = "/dev/disk/by-uuid/449b2af4-f258-4eb8-9c39-5a35c91fe9f3"; } ];
+  swapDevices = [ { device = "/dev/disk/by-uuid/fe045a17-5b72-45fc-8e9f-1b55989734d0"; } ];
 
   fileSystems."/tmp/unprocessed" = {
     device = "/dev/disk/by-uuid/e98ab9e9-6add-4298-a78b-6bdb55cde4d5";
@@ -67,13 +63,12 @@ in
 
   # services
   server = {
-    base-domain = "redacted";
     subdomain = "local";
     inherit tailscale-ip;
     authentik = {
       enable = true;
       proxy = true;
-      version = "2025.12.3";
+      version = "2025.12.4";
       extra-headers = "authorization";
       env-file = secrets.arr-authentik-proxy-env;
     };
@@ -91,7 +86,7 @@ in
     prdl = {
       enable = true;
       auth = false;
-      image = "redacted";
+      image = inputs.nixos-private.hosts."${flake}".prdl.image;
       env-file = secrets.arr-prdl-env;
       volumes = [
         "${unprocessed}/movies:/movies"

@@ -31,11 +31,17 @@
       type = lib.types.bool;
       default = false;
     };
+    github-trusted = lib.mkOption {
+      description = "Whether to rewrite ssh config to trust github.com";
+      type = lib.types.bool;
+      default = true;
+    };
   };
 
   imports = [
     ./amd.nix
     ./arion.nix
+    ./attic-builder.nix
     ./auto-upgrade.nix
     ./borg.nix
     ./firewall.nix
@@ -48,6 +54,7 @@
     ./nvidia.nix
     ./packages.nix
     ./pipewire.nix
+    ./private.nix
     ./shell.nix
     ./ssh-server.nix
     ./system.nix

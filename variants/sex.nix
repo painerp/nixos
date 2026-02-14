@@ -1,6 +1,7 @@
 {
   config,
   secrets,
+  inputs,
   ...
 }:
 
@@ -9,11 +10,6 @@ let
   tailscale-ip = "100.82.15.66";
 in
 {
-  imports = [
-    ./secrets
-    ./secrets/sex.nix
-  ];
-
   networking.hostName = "nix${flake}";
 
   fileSystems."/" = {
@@ -38,14 +34,13 @@ in
 
   # services
   server = {
-    base-domain = "redacted";
     inherit tailscale-ip;
     short-subdomain = true;
     adguardhome.enable = true;
     authentik = {
       enable = true;
       subdomain = "auth";
-      version = "2025.12.3";
+      version = "2025.12.4";
       env-file = secrets.ext-authentik-env;
       postgres.env-file = secrets.ext-authentik-pg-env;
     };
@@ -72,13 +67,14 @@ in
         enable = true;
         root = true;
         auth = false;
-        image = "redacted";
+        image = inputs.nixos-private.hosts."${flake}".nuxt-pages.app.image;
         env-file = secrets.ext-nuxt-pages-env;
       };
     };
     minecraft-router = {
       enable = true;
       expose = true;
+      mapping = inputs.nixos-private.hosts."${flake}".minecraft-router.mapping;
     };
     teamspeak = {
       enable = true;
@@ -100,6 +96,7 @@ in
         "7777:7777/udp"
         "8888:8888/tcp"
       ];
+      aliases = inputs.nixos-private.hosts."${flake}".traefik.aliases;
     };
     goaccess.enable = true;
     nginx = {

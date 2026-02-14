@@ -13,6 +13,18 @@
   "nix": {
     "enabled": true
   },
+  "packageRules": [
+    {
+      "matchManagers": [
+        "nix"
+      ],
+      "enabled": false,
+      "matchPackageNames": [
+        "/nixos-private/",
+        "/git\\+ssh://.*nixos-private/"
+      ]
+    }
+  ],
   "customManagers": [
     {
       "customType": "regex",

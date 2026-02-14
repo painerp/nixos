@@ -5,9 +5,6 @@ let
   tailscale-ip = "100.77.215.64";
 in
 {
-  imports = [ ./secrets ];
-
-  # secrets
   age.secrets.git-pw.file = secrets.cit-git-pw;
 
   networking = {
@@ -26,6 +23,16 @@ in
   };
 
   swapDevices = [ { device = "/dev/disk/by-uuid/ab983818-1f80-49a0-9beb-0e5329843b83"; } ];
+
+  fileSystems."/mnt/attic" = {
+    device = "/dev/disk/by-uuid/ce10438b-ca74-46b3-8c88-2f20199eb3f0";
+    fsType = "ext4";
+    options = [
+      "defaults"
+      "noatime"
+    ];
+
+  };
 
   fileSystems."/mnt/backup" = {
     device = "10.0.10.1:/mnt/hdd/backup/servers/nix${flake}";
@@ -74,13 +81,25 @@ in
 
   # services
   server = {
-    base-domain = "redacted";
     subdomain = "local";
     inherit tailscale-ip;
+    adguardhome = {
+      enable = true;
+      sync = {
+        enable = true;
+        env-file = secrets.cit-adguardhome-sync-env;
+      };
+    };
+    attic = {
+      enable = true;
+      auth = false;
+      storage-path = "/mnt/attic";
+      env-file = secrets.cit-attic-env;
+    };
     authentik = {
       enable = true;
       subdomain = "auth";
-      version = "2025.12.3";
+      version = "2025.12.4";
       env-file = secrets.cit-authentik-env;
       postgres.env-file = secrets.cit-authentik-pg-env;
     };

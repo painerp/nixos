@@ -8,8 +8,6 @@ let
   tailscale-ip = "100.113.149.64";
 in
 {
-  imports = [ ./secrets ];
-
   networking.hostName = "nix${flake}";
 
   fileSystems."/" = {
@@ -17,20 +15,31 @@ in
     fsType = "ext4";
   };
 
-  swapDevices = [ { device = "/dev/disk/by-uuid/80758004-c3ef-42ff-aae8-5239606bc697"; } ];
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-uuid/e5863ec2-52d0-4a56-a0e8-43c211e28e69";
+    fsType = "ext4";
+    options = [ "noatime" ];
+  };
+
+  swapDevices = [ { device = "/dev/disk/by-uuid/351ceb5f-c78d-4560-ad86-d78d646fd3a5"; } ];
 
   # system
   system = {
     inherit flake;
   };
-  modules.arion = {
-    enable = true;
-    backend = "podman";
+  modules = {
+    arion = {
+      enable = true;
+      backend = "podman";
+    };
+    attic-builder = {
+      enable = true;
+      max-memory-per-worker = 8192;
+    };
   };
 
   # services
   server = {
-    base-domain = "redacted";
     subdomain = "local";
     inherit tailscale-ip;
     act-runner = {
@@ -39,6 +48,7 @@ in
     };
     renovate = {
       enable = true;
+      ssh = true;
       timer = "1h";
       env-file = secrets.run-renovate-env;
     };
