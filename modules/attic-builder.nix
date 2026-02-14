@@ -117,7 +117,7 @@ let
       fi
     done
 
-    # Push only successful builds to Attic cache
+    # Push only successful builds to Attic cache and register GC roots
     echo ""
     echo "=== Pushing to Attic cache ==="
     PUSHED=0
@@ -165,6 +165,14 @@ let
         if [ "$SUCCESS" = false ]; then
           echo "✗ Failed to push $system after $MAX_RETRIES attempts"
           FAILED=$((FAILED + 1))
+        else
+          # Register GC root after successful push
+          echo "  Registering GC root for $system..."
+          if [ "$system" != "run" ]; then
+            mkdir -p /nix/var/nix/gcroots/attic-builder
+            ln -sf "$RESULT" "/nix/var/nix/gcroots/attic-builder/$system"
+            echo "  ✓ Created GC root symlink"
+          fi
         fi
       else
         echo "✗ No result found for $system"
@@ -269,15 +277,10 @@ in
       default = true;
       description = "Enable automatic scheduled builds";
     };
-    gc-after-build = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Run garbage collection after successful build";
-    };
     gc-older-than = lib.mkOption {
       type = lib.types.str;
-      default = "3d";
-      description = "Delete generations older than this after build (e.g., '3d', '7d', '1w')";
+      default = "30d";
+      description = "How old generations must be before deletion by weekly GC (e.g., '3d', '7d', '30d')";
     };
     enable-email-notifications = lib.mkOption {
       type = lib.types.bool;
@@ -393,16 +396,9 @@ in
           send_failure_email
           exit $EXIT_CODE
         fi
-      '';
 
-      # Garbage collection after build
-      postStop = lib.mkIf cfg.gc-after-build ''
-        echo "=== Running garbage collection ==="
-        ${pkgs.nix}/bin/nix-collect-garbage --delete-older-than ${cfg.gc-older-than}
-        ${pkgs.nix}/bin/nix-store --gc
-        echo "=== Garbage collection complete ==="
-        echo "Disk usage after GC:"
-        ${pkgs.coreutils}/bin/df -h /nix
+        # switch to the new configuration
+        nixos-rebuild switch --flake "/etc/nixos#run" --no-write-lock-file
       '';
     };
 
@@ -414,6 +410,27 @@ in
         OnCalendar = cfg.schedule;
         Persistent = true; # Run missed builds
         RandomizedDelaySec = "15m"; # Spread load
+      };
+    };
+
+    systemd.services.attic-weekly-gc = {
+      description = "Smart Nix Store Garbage Collection";
+      script = ''
+        ${pkgs.nix}/bin/nix-env --profile /nix/var/nix/profiles/system --delete-generations +10
+        ${pkgs.nix}/bin/nix-collect-garbage --delete-older-than ${cfg.gc-older-than}
+      '';
+      serviceConfig = {
+        Type = "oneshot";
+        User = "root";
+      };
+    };
+
+    systemd.timers.attic-weekly-gc = {
+      description = "Timer for Smart Nix Store GC";
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnCalendar = "Sun 04:00";
+        Persistent = true;
       };
     };
   };
