@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  secrets,
   ...
 }:
 
@@ -19,6 +18,10 @@ in
       default = "5m";
     };
     env-file = lib.mkOption { type = lib.types.path; };
+    ssh = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -51,6 +54,7 @@ in
           RENOVATE_PERSIST_REPO_DATA = "true";
         };
         env_file = [ config.age.secrets.renovate-env.path ];
+        volumes = lib.mkIf cfg.ssh [ "${config.lib.server.mkConfigDir "renovate"}/ssh:/home/ubuntu/.ssh" ];
         labels = {
           "com.centurylinklabs.watchtower.enable" = "true";
         };
