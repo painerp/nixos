@@ -255,7 +255,10 @@
             inherit system;
             pkgs = (import nixpkgs) {
               inherit system;
-              config.allowUnfree = true;
+              config = {
+                allowUnfree = true;
+                permittedInsecurePackages = desktop-insecure-packages;
+              };
               overlays = desktop-overlays;
             };
             modules = desktop-modules ++ [
