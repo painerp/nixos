@@ -48,6 +48,7 @@ in
     };
     renovate = {
       enable = true;
+      ssh = true;
       timer = "1h";
       env-file = secrets.run-renovate-env;
     };
