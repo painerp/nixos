@@ -14,6 +14,10 @@ in
       type = lib.types.str;
       default = if config.server.short-subdomain then "ll" else "lubelogger";
     };
+    auth = lib.mkOption {
+      type = lib.types.bool;
+      default = config.server.authentik.enable;
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
@@ -44,6 +48,7 @@ in
             name = "lubelogger";
             port = "8080";
             subdomain = "${cfg.subdomain}";
+            forwardAuth = cfg.auth;
           }
           // {
             "com.centurylinklabs.watchtower.enable" = "true";
