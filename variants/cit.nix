@@ -25,12 +25,13 @@ in
   swapDevices = [ { device = "/dev/disk/by-uuid/ab983818-1f80-49a0-9beb-0e5329843b83"; } ];
 
   fileSystems."/mnt/attic" = {
-    device = "10.0.10.1:/mnt/hdd/attic";
-    fsType = "nfs";
+    device = "/dev/disk/by-uuid/ce10438b-ca74-46b3-8c88-2f20199eb3f0";
+    fsType = "ext4";
     options = [
-      "x-systemd.automount"
-      "x-systemd.idle-timeout=600"
+      "defaults"
+      "noatime"
     ];
+
   };
 
   fileSystems."/mnt/backup" = {
