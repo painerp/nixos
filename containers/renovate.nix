@@ -54,7 +54,9 @@ in
           RENOVATE_PERSIST_REPO_DATA = "true";
         };
         env_file = [ config.age.secrets.renovate-env.path ];
-        volumes = lib.mkIf cfg.ssh [ "${config.lib.server.mkConfigDir "renovate"}/ssh:/home/ubuntu/.ssh" ];
+        volumes = lib.mkIf cfg.ssh [
+          "${config.lib.server.mkConfigDir "renovate"}/ssh:/home/ubuntu/.ssh:ro"
+        ];
         labels = {
           "com.centurylinklabs.watchtower.enable" = "true";
         };
