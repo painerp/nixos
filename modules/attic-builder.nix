@@ -105,8 +105,8 @@ let
       if ${pkgs.nix-fast-build}/bin/nix-fast-build \
         --skip-cached \
         --no-nom \
-        --max-memory-size ${toString cfg.max-memory-per-worker} \
-        --workers ${toString cfg.workers} \
+        --eval-max-memory-size ${toString cfg.max-memory-per-worker} \
+        --eval-workers ${toString cfg.workers} \
         --flake ".#nixosConfigurations.$system.config.system.build.toplevel"; then
 
         echo "✓ Build completed for $system"
