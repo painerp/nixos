@@ -1,5 +1,6 @@
 {
   secrets,
+  inputs,
   ...
 }:
 
@@ -9,11 +10,6 @@ let
   media = "/mnt/media";
 in
 {
-  imports = [
-    ./secrets
-    ./secrets/gra.nix
-  ];
-
   networking = {
     hostName = "nix${flake}";
     interfaces.ens19.ipv4.addresses = [
@@ -82,13 +78,12 @@ in
 
   # services
   server = {
-    base-domain = "redacted";
     subdomain = "local";
     inherit tailscale-ip;
     authentik = {
       enable = true;
       proxy = true;
-      version = "2025.12.3";
+      version = "2025.12.4";
       env-file = secrets.gra-authentik-proxy-env;
     };
     nextcloud = {
@@ -105,7 +100,10 @@ in
         "${media}/movies:/movies"
         "${media}/music:/music"
       ];
-      exporter.enable = true;
+      exporter = {
+        enable = true;
+        token = inputs.nixos-private.hosts."${flake}".jellyfin.exporter.token;
+      };
     };
     tdarr = {
       enable = true;
@@ -120,7 +118,7 @@ in
     immich = {
       enable = true;
       auth = false;
-      version = "v2.5.3";
+      version = "v2.5.6";
       volumes = [
         "/mnt/immich:/data"
         "/mnt/nextcloud/data/painerp/files/Bilder:/library"

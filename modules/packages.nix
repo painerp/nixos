@@ -32,7 +32,10 @@ in
     communication = makeOption false;
     dev = makeOption false;
     crypto = makeOption false;
-    vm = makeOption false;
+    vm = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   config = {
@@ -132,6 +135,7 @@ in
             protonup-ng
             steamguard-cli
             prismlauncher
+            runelite
           ]
         else
           [ ]
@@ -179,13 +183,14 @@ in
             pkgs-unstable.uv
             jetbrains.webstorm
             jetbrains.rust-rover
-            jetbrains.pycharm-professional
-            jetbrains.idea-ultimate
+            jetbrains.pycharm
+            jetbrains.idea
             jetbrains.clion
             pkgs-unstable.jetbrains.rider
             haskell-language-server
             ormolu
             eduvpn-client
+            pkgs-unstable.pince
           ]
         else
           [ ]

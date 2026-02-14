@@ -8,8 +8,6 @@ let
   tailscale-ip = "100.73.203.96";
 in
 {
-  imports = [ ./secrets ];
-
   networking = {
     hostName = "nix${flake}";
     interfaces.ens19.ipv4.addresses = [
@@ -50,13 +48,12 @@ in
 
   # services
   server = {
-    base-domain = "redacted";
     subdomain = "local";
     inherit tailscale-ip;
     authentik = {
       enable = true;
       proxy = true;
-      version = "2025.12.3";
+      version = "2025.12.4";
       env-file = secrets.log-authentik-proxy-env;
     };
     monitoring = {
@@ -73,6 +70,7 @@ in
       node-exporter = {
         enable = true;
         internal = false;
+        host = false;
       };
       pve-exporter = {
         enable = true;

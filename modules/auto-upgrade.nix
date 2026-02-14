@@ -56,10 +56,12 @@ in
         // {
           inherit (config.environment.sessionVariables) NIX_PATH;
           HOME = "/root";
+          NIX_SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
         }
         // config.networking.proxy.envVars;
 
       path = with pkgs; [
+        cacert
         coreutils
         gnutar
         xz.bin
@@ -92,16 +94,16 @@ in
             return 1
           fi
 
-            echo -e "To: $EMAIL_TO\nSubject: [NixOS] Auto-upgrade failed on $(hostname)" | cat - "$1" | msmtp -t \
-              --from="$EMAIL_FROM" \
-              --host="$SMTP_SERVER" \
-              --port="$SMTP_PORT" \
-              --auth=on \
-              --user="$SMTP_USERNAME" \
-              --passwordeval="echo $SMTP_PASSWORD" \
-              --tls=on \
-              --tls-starttls=on
-          }
+          echo -e "To: $EMAIL_TO\nSubject: [NixOS] Auto-upgrade failed on $(hostname)" | cat - "$1" | msmtp -t \
+            --from="$EMAIL_FROM" \
+            --host="$SMTP_SERVER" \
+            --port="$SMTP_PORT" \
+            --auth=on \
+            --user="$SMTP_USERNAME" \
+            --passwordeval="echo $SMTP_PASSWORD" \
+            --tls=on \
+            --tls-starttls=on
+        }
 
         cd /etc/nixos
         if ! git pull | rg -q 'Already up to date.'; then
