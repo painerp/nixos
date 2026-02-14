@@ -18,11 +18,11 @@
       "matchManagers": [
         "nix"
       ],
-      "matchPackagePatterns": [
-        "nixos-private",
-        "git\\+ssh://.*nixos-private"
-      ],
-      "enabled": false
+      "enabled": false,
+      "matchPackageNames": [
+        "/nixos-private/",
+        "/git\\+ssh://.*nixos-private/"
+      ]
     }
   ],
   "customManagers": [
