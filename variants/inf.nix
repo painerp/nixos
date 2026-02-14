@@ -86,7 +86,10 @@ in
       env-file = secrets.inf-dawarich-env;
       postgres.env-file = secrets.inf-dawarich-pg-env;
     };
-    lubelogger.enable = true;
+    lubelogger = {
+      enable = true;
+      auth = false;
+    };
     monitoring = {
       node-exporter.enable = true;
       cadvisor.enable = true;
