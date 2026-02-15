@@ -83,12 +83,10 @@ in
   server = {
     subdomain = "local";
     inherit tailscale-ip;
-    adguardhome = {
+    adguardhome.enable = true;
+    adguardhome-sync = {
       enable = true;
-      sync = {
-        enable = true;
-        env-file = secrets.cit-adguardhome-sync-env;
-      };
+      env-file = secrets.cit-adguardhome-sync-env;
     };
     attic = {
       enable = true;
@@ -139,6 +137,7 @@ in
     traefik = {
       enable = true;
       subdomain = "t-cit";
+      extra-hosts = [ "host.docker.internal:host-gateway" ];
     };
     watchtower.enable = true;
   };
