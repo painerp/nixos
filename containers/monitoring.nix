@@ -2,37 +2,29 @@
 
 let
   cfg = config.server.monitoring;
-  promtailConfig = {
-    server = {
-      http_listen_port = 9080;
-      grpc_listen_port = 0;
-    };
-    positions.filename = "/tmp/positions.yaml";
-    clients = [
-      { url = "http://${cfg.promtail.loki.address}:${cfg.promtail.loki.port}/loki/api/v1/push"; }
-    ];
-    scrape_configs = [
-      {
-        job_name = "journal";
-        journal = {
-          json = false;
-          max_age = "12h";
-          path = "/var/log/journal";
-          labels = {
-            job = "systemd-journal";
-            host = config.networking.hostName;
-          };
-        };
-        relabel_configs = [
-          {
-            source_labels = [ "__journal__systemd_unit" ];
-            target_label = "unit";
-          }
-        ];
+  alloyConfig = ''
+    loki.source.journal "read" {
+      format_as_json = false
+      max_age = "12h"
+      path = "/var/log/journal"
+      labels = {
+        job = "systemd-journal",
+        host = "${config.networking.hostName}",
       }
-    ];
-  };
-  promtailConfigFile = builtins.toFile "promtail_config.yml" (builtins.toJSON promtailConfig);
+      relabel_rules {
+        source_labels = ["__journal__systemd_unit"]
+        target_label = "unit"
+      }
+      forward_to = [loki.write.default.receiver]
+    }
+
+    loki.write "default" {
+      endpoint {
+        url = "http://${cfg.alloy.loki.address}:${cfg.alloy.loki.port}/loki/api/v1/push"
+      }
+    }
+  '';
+  alloyConfigFile = builtins.toFile "config.alloy" alloyConfig;
 in
 {
   options.server.monitoring = {
@@ -122,7 +114,7 @@ in
       };
       env-file = lib.mkOption { type = lib.types.path; };
     };
-    promtail = {
+    alloy = {
       enable = lib.mkOption {
         type = lib.types.bool;
         default = false;
@@ -134,7 +126,7 @@ in
         };
         port = lib.mkOption {
           type = lib.types.str;
-          default = if cfg.promtail.loki.address == "loki" then "3100" else "20100";
+          default = if cfg.alloy.loki.address == "loki" then "3100" else "20100";
         };
       };
     };
@@ -165,6 +157,7 @@ in
           || cfg.cadvisor.enable
           || cfg.pve-exporter.enable
           || cfg.alertmanager.enable
+          || cfg.alloy.enable
         )
       )
       {
@@ -393,17 +386,22 @@ in
               };
 
             }
-            // lib.attrsets.optionalAttrs (cfg.promtail.enable) {
-              promtail.service = {
-                image = "docker.io/grafana/promtail:latest";
-                container_name = "promtail";
+            // lib.attrsets.optionalAttrs (cfg.alloy.enable) {
+              alloy.service = {
+                image = "docker.io/grafana/alloy:latest";
+                container_name = "alloy";
                 networks = (if (cfg.loki.enable) then [ "exporter" ] else [ "external" ]);
-                command = [ "-config.file=/promtail_config.yml" ];
+                command = [
+                  "run"
+                  "--server.http.listen-addr=0.0.0.0:12345"
+                  "--storage.path=/var/lib/alloy/data"
+                  "/etc/alloy/config.alloy"
+                ];
                 volumes = [
-                  "${promtailConfigFile}:/promtail_config.yml"
-                  "/var/log/journal:/var/log/journal"
-                  "/run/log/journal:/run/log/journal"
-                  "/etc/machine-id:/etc/machine-id"
+                  "${alloyConfigFile}:/etc/alloy/config.alloy:ro"
+                  "/var/log/journal:/var/log/journal:ro"
+                  "/run/log/journal:/run/log/journal:ro"
+                  "/etc/machine-id:/etc/machine-id:ro"
                 ];
                 labels = {
                   "com.centurylinklabs.watchtower.enable" = "true";
