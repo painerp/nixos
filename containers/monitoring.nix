@@ -125,13 +125,41 @@ let
 
     ${lib.optionalString (cfg.pve-exporter.enable) ''
       // Metrics: PVE exporter
-      prometheus.scrape "pve_exporter" {
+      discovery.relabel "pve" {
         targets = [{
-          __address__ = "127.0.0.1:20002",
+          __address__ = "proxmox.example.com:443",
         }]
+
+        // Set the target parameter for the exporter
+        rule {
+          source_labels = ["__address__"]
+          target_label  = "__param_target"
+        }
+
+        // Set the instance label to the Proxmox host
+        rule {
+          source_labels = ["__param_target"]
+          target_label  = "instance"
+        }
+
+        // Replace __address__ with the exporter's address
+        rule {
+          replacement  = "127.0.0.1:20002"
+          target_label = "__address__"
+        }
+      }
+
+      prometheus.scrape "pve_exporter" {
+        targets = discovery.relabel.pve.output
         forward_to = [prometheus.remote_write.default.receiver]
         scrape_interval = "15s"
-        job_name = "pve-exporter"
+        job_name = "pve"
+        metrics_path = "/pve"
+        params = {
+          module  = ["default"],
+          cluster = ["1"],
+          node    = ["1"],
+        }
       }
     ''}
 
