@@ -77,7 +77,7 @@ in
         internal = false;
         env-file = secrets.log-pve-exporter-env;
       };
-      promtail.enable = true;
+      alloy.enable = true;
       alertmanager.enable = true;
     };
     traefik = {
