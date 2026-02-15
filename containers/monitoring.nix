@@ -3,25 +3,31 @@
 let
   cfg = config.server.monitoring;
   alloyConfig = ''
-    loki.source.journal "read" {
-      format_as_json = false
-      max_age = "12h"
-      path = "/var/log/journal"
-      labels = {
-        job = "systemd-journal",
-        host = "${config.networking.hostName}",
-      }
-      relabel_rules = [{
+    discovery.relabel "journal" {
+      targets = []
+
+      rule {
         source_labels = ["__journal__systemd_unit"]
-        target_label = "unit"
-      }]
-      forward_to = [loki.write.default.receiver]
+        target_label  = "unit"
+      }
+    }
+
+    loki.source.journal "journal" {
+      max_age       = "12h0m0s"
+      path          = "/var/log/journal"
+      relabel_rules = discovery.relabel.journal.rules
+      forward_to    = [loki.write.default.receiver]
+      labels        = {
+        host = "${config.networking.hostName}",
+        job  = "systemd-journal",
+      }
     }
 
     loki.write "default" {
       endpoint {
         url = "http://${cfg.alloy.loki.address}:${cfg.alloy.loki.port}/loki/api/v1/push"
       }
+      external_labels = {}
     }
   '';
   alloyConfigFile = builtins.toFile "config.alloy" alloyConfig;
