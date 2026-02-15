@@ -67,17 +67,16 @@ in
         enable = true;
         internal = true;
       };
-      node-exporter = {
-        enable = true;
-        internal = false;
-        host = false;
-      };
       pve-exporter = {
         enable = true;
         internal = false;
         env-file = secrets.log-pve-exporter-env;
       };
-      alloy.enable = true;
+      alloy = {
+        enable = true;
+        loki.address = tailscale-ip;
+        prometheus.address = tailscale-ip;
+      };
       alertmanager.enable = true;
     };
     traefik = {
