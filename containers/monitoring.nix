@@ -11,10 +11,10 @@ let
         job = "systemd-journal",
         host = "${config.networking.hostName}",
       }
-      relabel_rules {
+      relabel_rules = [{
         source_labels = ["__journal__systemd_unit"]
         target_label = "unit"
-      }
+      }]
       forward_to = [loki.write.default.receiver]
     }
 
