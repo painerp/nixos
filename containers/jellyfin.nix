@@ -35,14 +35,15 @@ in
         type = lib.types.bool;
         default = false;
       };
-      token = lib.mkOption {
-        type = lib.types.str;
-        default = "";
-      };
+      env-file = lib.mkOption { type = lib.types.path; };
     };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
+    age.secrets.jellyfin-exporter-env = lib.mkIf (cfg.exporter.enable) {
+      file = cfg.exporter.env-file;
+    };
+
     systemd.services.arion-jellyfin = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
@@ -99,10 +100,10 @@ in
         networks = [ "proxy" ];
         command = [
           "--jellyfin.address=http://jellyfin:8096"
-          "--jellyfin.token=${cfg.exporter.token}"
           "--collector.activity"
         ];
-        ports = [ "${config.server.tailscale-ip}:20010:9594" ];
+        ports = [ "127.0.0.1:20010:9594" ];
+        env_file = [ config.age.secrets.jellyfin-exporter-env.path ];
         restart = "unless-stopped";
       };
     };
