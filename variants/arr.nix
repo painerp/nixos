@@ -135,13 +135,10 @@ in
       enable = true;
       volumes = [ "${media}/xtra:/data" ];
     };
-    monitoring = {
-      node-exporter.enable = true;
-      cadvisor.enable = true;
-      alloy = {
-        enable = true;
-        loki.address = "100.73.203.96";
-      };
+    monitoring.alloy = {
+      enable = true;
+      loki.address = "100.73.203.96";
+      prometheus.address = "100.73.203.96";
     };
     traefik = {
       enable = true;

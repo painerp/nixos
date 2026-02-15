@@ -52,13 +52,10 @@ in
       timer = "1h";
       env-file = secrets.run-renovate-env;
     };
-    monitoring = {
-      node-exporter.enable = true;
-      cadvisor.enable = true;
-      alloy = {
-        enable = true;
-        loki.address = "100.73.203.96";
-      };
+    monitoring.alloy = {
+      enable = true;
+      loki.address = "100.73.203.96";
+      prometheus.address = "100.73.203.96";
     };
     watchtower = {
       enable = true;

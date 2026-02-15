@@ -62,6 +62,11 @@ in
       expose = true;
       wildcard = true;
     };
+    monitoring.alloy = {
+      enable = true;
+      loki.address = "100.73.203.96";
+      prometheus.address = "100.73.203.96";
+    };
     watchtower = {
       enable = true;
       schedule = "0 0 3 * * *";
