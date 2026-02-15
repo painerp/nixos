@@ -90,6 +90,7 @@ in
   "gra/authentik-proxy.env.age".publicKeys = users ++ [ gra ];
   "gra/immich.env.age".publicKeys = users ++ [ gra ];
   "gra/immich-pg.env.age".publicKeys = users ++ [ gra ];
+  "gra/jellyfin-exporter.env.age".publicKeys = users ++ [ gra ];
 
   "gam/palworld.env.age".publicKeys = users ++ [ gam ];
   "gam/minecraft.env.age".publicKeys = users ++ [ gam ];
