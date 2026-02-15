@@ -123,9 +123,9 @@ let
       }
     ''}
 
-    ${lib.optionalString (config.server.monitoring.pve-exporter.enable) ''
+    ${lib.optionalString (cfg.pve-exporter.enable) ''
       // Metrics: PVE exporter
-      prometheus.scrape "pve-exporter" {
+      prometheus.scrape "pve_exporter" {
         targets = [{
           __address__ = "127.0.0.1:20002",
         }]
