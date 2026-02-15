@@ -381,16 +381,6 @@ in
                   "${config.lib.server.mkConfigDir "loki/config"}:/etc/loki"
                   "${config.lib.server.mkConfigDir "loki/data"}:/loki"
                 ];
-                healthcheck = {
-                  test = [
-                    "CMD-SHELL"
-                    "wget --no-verbose --tries=1 --spider http://127.0.0.1:3100/ready || exit 1"
-                  ];
-                  interval = "30s";
-                  timeout = "5s";
-                  retries = 5;
-                  start_period = "10s";
-                };
                 labels = {
                   "com.centurylinklabs.watchtower.enable" = "true";
                 };
@@ -451,7 +441,7 @@ in
                     ]
                 );
                 depends_on =
-                  (if cfg.loki.enable then { loki.condition = "service_healthy"; } else { })
+                  (if cfg.loki.enable then { loki.condition = "service_started"; } else { })
                   // (if cfg.prometheus.enable then { prometheus.condition = "service_healthy"; } else { });
                 labels = {
                   "com.centurylinklabs.watchtower.enable" = "true";
