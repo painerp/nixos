@@ -80,9 +80,9 @@ let
     // Metrics: cAdvisor (container metrics)
     prometheus.exporter.cadvisor "containers" {
       docker_only = ${if config.modules.arion.backend == "docker" then "true" else "false"}
-      store_container_labels = false
+      store_container_labels = true
 
-      disable_metrics = [
+      disabled_metrics = [
         "advtcp",
         "cpu_topology",
         "cpuset",
@@ -320,6 +320,7 @@ in
                   "--storage.tsdb.retention.time=90d"
                   "--web.console.libraries=/usr/share/prometheus/console_libraries"
                   "--web.console.templates=/usr/share/prometheus/consoles"
+                  "--web.enable-remote-write-receiver"
                 ];
                 networks = [
                   "proxy"
@@ -330,6 +331,16 @@ in
                   "${config.lib.server.mkConfigDir "prometheus/rules"}:/etc/prometheus/rules:ro"
                   "${config.lib.server.mkConfigDir "prometheus/data"}:/prometheus"
                 ];
+                healthcheck = {
+                  test = [
+                    "CMD-SHELL"
+                    "wget --no-verbose --tries=1 --spider http://127.0.0.1:9090/-/ready || exit 1"
+                  ];
+                  interval = "30s";
+                  timeout = "5s";
+                  retries = 5;
+                  start_period = "30s";
+                };
                 labels =
                   config.lib.server.mkTraefikLabels {
                     name = "prometheus";
@@ -370,6 +381,16 @@ in
                   "${config.lib.server.mkConfigDir "loki/config"}:/etc/loki"
                   "${config.lib.server.mkConfigDir "loki/data"}:/loki"
                 ];
+                healthcheck = {
+                  test = [
+                    "CMD-SHELL"
+                    "wget --no-verbose --tries=1 --spider http://127.0.0.1:3100/ready || exit 1"
+                  ];
+                  interval = "30s";
+                  timeout = "5s";
+                  retries = 5;
+                  start_period = "10s";
+                };
                 labels = {
                   "com.centurylinklabs.watchtower.enable" = "true";
                 };
@@ -429,6 +450,9 @@ in
                       "/dev/disk:/dev/disk:ro"
                     ]
                 );
+                depends_on =
+                  (if cfg.loki.enable then { loki.condition = "service_healthy"; } else { })
+                  // (if cfg.prometheus.enable then { prometheus.condition = "service_healthy"; } else { });
                 labels = {
                   "com.centurylinklabs.watchtower.enable" = "true";
                 };
