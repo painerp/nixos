@@ -190,9 +190,11 @@ in
           networks.proxy.external = lib.mkIf (cfg.grafana.enable || cfg.prometheus.enable) true;
           networks.exporter.internal = lib.mkIf (
             cfg.prometheus.enable
-            && (cfg.cadvisor.enable || cfg.pve-exporter.enable || cfg.node-exporter.enable)
+            && (cfg.cadvisor.enable || cfg.pve-exporter.enable || cfg.node-exporter.enable || cfg.loki.enable)
           ) true;
-          networks.external.name = lib.mkIf (cfg.pve-exporter.enable) "external";
+          networks.external.name = lib.mkIf (
+            cfg.pve-exporter.enable || cfg.alloy.enable || (cfg.loki.enable && cfg.loki.internal)
+          ) "external";
 
           services =
             lib.attrsets.optionalAttrs (cfg.grafana.enable) {
@@ -396,7 +398,7 @@ in
               alloy.service = {
                 image = "docker.io/grafana/alloy:latest";
                 container_name = "alloy";
-                networks = (if (cfg.loki.enable) then [ "exporter" ] else [ "external" ]);
+                networks = [ "external" ] ++ (if (cfg.loki.enable) then [ "exporter" ] else [ ]);
                 command = [
                   "run"
                   "--server.http.listen-addr=0.0.0.0:12345"
