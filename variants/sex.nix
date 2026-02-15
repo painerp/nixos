@@ -96,6 +96,7 @@ in
         "7777:7777/udp"
         "8888:8888/tcp"
       ];
+      extra-hosts = [ "host.docker.internal:host-gateway" ];
       aliases = inputs.nixos-private.hosts."${flake}".traefik.aliases;
     };
     goaccess.enable = true;
