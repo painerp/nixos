@@ -250,7 +250,7 @@ in
             else
               [ ]
           )
-          ++ (if (cfg.monitoring) then [ "${config.server.tailscale-ip}:20003:20003/tcp" ] else [ ])
+          ++ (if (cfg.monitoring) then [ "127.0.0.1:20003:20003/tcp" ] else [ ])
           ++ cfg.extra-ports;
         volumes = [
           "${staticConfigFile}:/traefik.yaml"
