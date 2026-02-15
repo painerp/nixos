@@ -39,6 +39,7 @@
   gra-authentik-proxy-env = ./gra/authentik-proxy.env.age;
   gra-immich-env = ./gra/immich.env.age;
   gra-immich-pg-env = ./gra/immich-pg.env.age;
+  gra-jellyfin-exporter-env = ./gra/jellyfin-exporter.env.age;
 
   cit-git-pw = ./cit/git-pw.age;
   cit-adguardhome-sync-env = ./cit/adguardhome-sync.env.age;
