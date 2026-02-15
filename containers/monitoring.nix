@@ -77,36 +77,39 @@ let
       job_name = "node-exporter"
     }
 
-    // Metrics: cAdvisor (container metrics)
-    prometheus.exporter.cadvisor "containers" {
-      docker_only = ${if config.modules.arion.backend == "docker" then "true" else "false"}
-      store_container_labels = true
+    ${lib.optionalString (config.modules.arion.backend == "docker") ''
+      // Metrics: cAdvisor (container metrics)
+      // Note: Only enabled on Docker systems. Podman support coming in future Alloy versions.
+      prometheus.exporter.cadvisor "containers" {
+        docker_only = true
+        store_container_labels = true
 
-      disabled_metrics = [
-        "advtcp",
-        "cpu_topology",
-        "cpuset",
-        "disk",
-        "diskIO",
-        "hugetlb",
-        "memory_numa",
-        "percpu",
-        "perf_event",
-        "process",
-        "referenced_memory",
-        "resctrl",
-        "sched",
-        "tcp",
-        "udp",
-      ]
-    }
+        disabled_metrics = [
+          "advtcp",
+          "cpu_topology",
+          "cpuset",
+          "disk",
+          "diskIO",
+          "hugetlb",
+          "memory_numa",
+          "percpu",
+          "perf_event",
+          "process",
+          "referenced_memory",
+          "resctrl",
+          "sched",
+          "tcp",
+          "udp",
+        ]
+      }
 
-    prometheus.scrape "cadvisor" {
-      targets    = prometheus.exporter.cadvisor.containers.targets
-      forward_to = [prometheus.remote_write.default.receiver]
-      scrape_interval = "30s"
-      job_name = "cadvisor"
-    }
+      prometheus.scrape "cadvisor" {
+        targets    = prometheus.exporter.cadvisor.containers.targets
+        forward_to = [prometheus.remote_write.default.receiver]
+        scrape_interval = "30s"
+        job_name = "cadvisor"
+      }
+    ''}
 
     ${lib.optionalString (config.server.traefik.enable && config.server.traefik.monitoring) ''
       // Metrics: Traefik
@@ -427,18 +430,16 @@ in
                   "/:/rootfs:ro,rslave"
                 ]
                 ++ (
+                  # cAdvisor mounts only needed on Docker systems
                   if config.modules.arion.backend == "docker" then
                     [
                       "/var/run/docker.sock:/var/run/docker.sock:ro"
                       "/sys/fs/cgroup:/sys/fs/cgroup:ro"
                       "/dev/disk:/dev/disk:ro"
+                      "/var/lib/docker:/var/lib/docker:ro"
                     ]
                   else
-                    [
-                      "/run/podman/podman.sock:/run/podman/podman.sock:ro"
-                      "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-                      "/dev/disk:/dev/disk:ro"
-                    ]
+                    [ ]
                 );
                 depends_on =
                   (if cfg.loki.enable then { loki.condition = "service_started"; } else { })
