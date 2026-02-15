@@ -59,7 +59,7 @@ in
       rcon.enable = true;
       backup.enable = true;
       extras = {
-        plugins.modrinth = "axgraves,invsee++,keepchunks:v7LjD3AV,luckperms,worldedit";
+        plugins.modrinth = "axgraves,invsee++,keepchunks:v7LjD3AV,worldedit";
         vanillatweaks = "/data/config/vt-datapacks.json,/data/config/vt-craftingtweaks.json";
       };
     };
