@@ -3,6 +3,7 @@
 let
   cfg = config.server.monitoring;
   alloyConfig = ''
+    // Logs: systemd journal collection
     discovery.relabel "journal" {
       targets = []
 
@@ -28,6 +29,114 @@ let
         url = "http://${cfg.alloy.loki.address}:${cfg.alloy.loki.port}/loki/api/v1/push"
       }
       external_labels = {}
+    }
+
+    // Metrics: Node exporter (host metrics)
+    prometheus.exporter.unix "node" {
+      rootfs_path    = "/rootfs"
+      procfs_path    = "/host/proc"
+      sysfs_path     = "/host/sys"
+
+      disable_collectors = [
+        "arp",
+        "bcache",
+        "bonding",
+        "btrfs",
+        "conntrack",
+        "edac",
+        "entropy",
+        "fibrechannel",
+        "hwmon",
+        "infiniband",
+        "ipvs",
+        "mdadm",
+        "nfs",
+        "nfsd",
+        "powersupplyclass",
+        "rapl",
+        "schedstat",
+        "softnet",
+        "tapestats",
+        "textfile",
+        "thermal_zone",
+        "timex",
+        "udp_queues",
+        "xfs",
+        "zfs",
+      ]
+
+      filesystem {
+        mount_points_exclude = "^/(sys|proc|dev|host|etc|var/lib/docker/containers|var/lib/docker/overlay2|run/docker/netns|var/lib/docker/aufs|var/lib/containers/storage/overlay-containers/.*/userdata/shm)($|/)"
+      }
+    }
+
+    prometheus.scrape "node" {
+      targets    = prometheus.exporter.unix.node.targets
+      forward_to = [prometheus.remote_write.default.receiver]
+      scrape_interval = "15s"
+      job_name = "node-exporter"
+    }
+
+    // Metrics: cAdvisor (container metrics)
+    prometheus.exporter.cadvisor "containers" {
+      docker_only = ${if config.modules.arion.backend == "docker" then "true" else "false"}
+      store_container_labels = false
+
+      disable_metrics = [
+        "advtcp",
+        "cpu_topology",
+        "cpuset",
+        "disk",
+        "diskIO",
+        "hugetlb",
+        "memory_numa",
+        "percpu",
+        "perf_event",
+        "process",
+        "referenced_memory",
+        "resctrl",
+        "sched",
+        "tcp",
+        "udp",
+      ]
+    }
+
+    prometheus.scrape "cadvisor" {
+      targets    = prometheus.exporter.cadvisor.containers.targets
+      forward_to = [prometheus.remote_write.default.receiver]
+      scrape_interval = "30s"
+      job_name = "cadvisor"
+    }
+
+    ${lib.optionalString (config.server.traefik.enable && config.server.traefik.monitoring) ''
+      // Metrics: Traefik
+      prometheus.scrape "traefik" {
+        targets = [{
+          __address__ = "127.0.0.1:20003",
+        }]
+        forward_to = [prometheus.remote_write.default.receiver]
+        scrape_interval = "15s"
+        job_name = "traefik"
+      }
+    ''}
+
+    ${lib.optionalString (config.server.jellyfin.enable && config.server.jellyfin.exporter.enable) ''
+      // Metrics: Jellyfin
+      prometheus.scrape "jellyfin" {
+        targets = [{
+          __address__ = "127.0.0.1:20010",
+        }]
+        forward_to = [prometheus.remote_write.default.receiver]
+        scrape_interval = "30s"
+        job_name = "jellyfin"
+      }
+    ''}
+
+    // Metrics: Remote write to Prometheus
+    prometheus.remote_write "default" {
+      endpoint {
+        url = "http://${cfg.alloy.prometheus.address}:${cfg.alloy.prometheus.port}/api/v1/write"
+      }
     }
   '';
   alloyConfigFile = builtins.toFile "config.alloy" alloyConfig;
@@ -73,38 +182,6 @@ in
         default = false;
       };
     };
-    node-exporter = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-      };
-      expose = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-      };
-      internal = lib.mkOption {
-        type = lib.types.bool;
-        default = !cfg.node-exporter.expose;
-      };
-      host = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-      };
-    };
-    cadvisor = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-      };
-      expose = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-      };
-      internal = lib.mkOption {
-        type = lib.types.bool;
-        default = !cfg.cadvisor.expose;
-      };
-    };
     pve-exporter = {
       enable = lib.mkOption {
         type = lib.types.bool;
@@ -128,11 +205,21 @@ in
       loki = {
         address = lib.mkOption {
           type = lib.types.str;
-          default = "loki";
+          default = "127.0.0.1";
         };
         port = lib.mkOption {
           type = lib.types.str;
-          default = if cfg.alloy.loki.address == "loki" then "3100" else "20100";
+          default = "20100";
+        };
+      };
+      prometheus = {
+        address = lib.mkOption {
+          type = lib.types.str;
+          default = "127.0.0.1";
+        };
+        port = lib.mkOption {
+          type = lib.types.str;
+          default = "20101";
         };
       };
     };
@@ -159,8 +246,6 @@ in
         && (
           cfg.grafana.enable
           || cfg.prometheus.enable
-          || cfg.node-exporter.enable
-          || cfg.cadvisor.enable
           || cfg.pve-exporter.enable
           || cfg.alertmanager.enable
           || cfg.alloy.enable
@@ -189,11 +274,10 @@ in
           project.name = "monitoring";
           networks.proxy.external = lib.mkIf (cfg.grafana.enable || cfg.prometheus.enable) true;
           networks.exporter.internal = lib.mkIf (
-            cfg.prometheus.enable
-            && (cfg.cadvisor.enable || cfg.pve-exporter.enable || cfg.node-exporter.enable || cfg.loki.enable)
+            cfg.prometheus.enable && (cfg.pve-exporter.enable || cfg.loki.enable)
           ) true;
           networks.external.name = lib.mkIf (
-            cfg.pve-exporter.enable || cfg.alloy.enable || (cfg.loki.enable && cfg.loki.internal)
+            cfg.pve-exporter.enable || (cfg.loki.enable && cfg.loki.internal)
           ) "external";
 
           services =
@@ -228,10 +312,6 @@ in
               prometheus.service = {
                 image = "docker.io/prom/prometheus:latest";
                 container_name = "prometheus";
-                networks = [
-                  "proxy"
-                ]
-                ++ (if (cfg.cadvisor.enable || cfg.node-exporter.enable) then [ "exporter" ] else [ ]);
                 user = "0:0";
                 command = [
                   "--web.enable-admin-api"
@@ -241,6 +321,10 @@ in
                   "--web.console.libraries=/usr/share/prometheus/console_libraries"
                   "--web.console.templates=/usr/share/prometheus/consoles"
                 ];
+                networks = [
+                  "proxy"
+                ];
+                ports = [ "${config.server.tailscale-ip}:20101:9090/tcp" ];
                 volumes = [
                   "${config.lib.server.mkConfigDir "prometheus"}/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
                   "${config.lib.server.mkConfigDir "prometheus/rules"}:/etc/prometheus/rules:ro"
@@ -293,89 +377,6 @@ in
               };
 
             }
-            // lib.attrsets.optionalAttrs (cfg.node-exporter.enable) {
-              node-exporter.service = {
-                image = "quay.io/prometheus/node-exporter:latest";
-                container_name = "node-exporter";
-                command = [
-                  "--path.rootfs=/rootfs"
-                  "--path.procfs=/host/proc"
-                  "--path.sysfs=/host/sys"
-                  "--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc|var/lib/docker/containers|var/lib/docker/overlay2|run/docker/netns|var/lib/docker/aufs|var/lib/containers/storage/overlay-containers/.*/userdata/shm)($$|/)"
-                ]
-                ++ (
-                  if cfg.node-exporter.host then
-                    [
-                      "--web.listen-address=${
-                        if (cfg.node-exporter.expose) then
-                          ""
-                        else
-                          (if cfg.node-exporter.internal then config.server.tailscale-ip else "127.0.0.1")
-                      }:20001"
-                    ]
-                  else
-                    [ ]
-                );
-                volumes = [
-                  "/proc:/host/proc:ro"
-                  "/sys:/host/sys:ro"
-                  "/:/rootfs:ro,rslave"
-                ];
-                labels = {
-                  "com.centurylinklabs.watchtower.enable" = "true";
-                };
-                restart = "unless-stopped";
-              }
-              // (
-                if cfg.node-exporter.host then
-                  { network_mode = "host"; }
-                else
-                  {
-                    networks = lib.mkIf (cfg.prometheus.enable) [ "exporter" ];
-                    ports =
-                      (if (cfg.node-exporter.expose) then [ "9100:9100/tcp" ] else [ ])
-                      ++ (
-                        if (cfg.node-exporter.internal) then [ "${config.server.tailscale-ip}:20001:9100/tcp" ] else [ ]
-                      );
-                  }
-              );
-
-            }
-            // lib.attrsets.optionalAttrs (cfg.cadvisor.enable) {
-              cadvisor.service = {
-                image = "gcr.io/cadvisor/cadvisor:latest";
-                container_name = "cadvisor";
-                command = [
-                  "--housekeeping_interval=30s"
-                  "--raw_cgroup_prefix_whitelist=/machine.slice/libpod"
-                  "--store_container_labels=false"
-                  "--disable_metrics=advtcp,cpu_topology,disk,cpuset,diskIO,hugetlb,cpu_topology,memory_numa,percpu,perf_event,process,referenced_memory,resctrl,sched,tcp,udp"
-                ]
-                ++ (if config.modules.arion.backend == "docker" then [ "--docker_only" ] else [ ]);
-                networks = lib.mkIf (cfg.prometheus.enable) [ "exporter" ];
-                ports =
-                  (if (cfg.cadvisor.expose) then [ "8080:8080/tcp" ] else [ ])
-                  ++ (if (cfg.cadvisor.internal) then [ "${config.server.tailscale-ip}:20000:8080/tcp" ] else [ ]);
-                volumes = [
-                  "/:/rootfs:ro"
-                  "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-                  "/dev/disk/:/dev/disk:ro"
-                ]
-                ++ (
-                  if config.modules.arion.backend == "docker" then
-                    [ "/var/run/docker.sock:/var/run/docker.sock:ro" ]
-                  else
-                    [ "/run/podman/podman.sock:/run/podman/podman.sock:ro" ]
-                );
-                labels = {
-                  "com.centurylinklabs.watchtower.enable" = "true";
-                };
-                devices = [ "/dev/kmsg" ];
-                privileged = true;
-                restart = "unless-stopped";
-              };
-
-            }
             // lib.attrsets.optionalAttrs (cfg.pve-exporter.enable) {
               pve-exporter.service = {
                 image = "docker.io/prompve/prometheus-pve-exporter:latest";
@@ -387,7 +388,7 @@ in
                 ports =
                   (if (cfg.pve-exporter.expose) then [ "9221:9221/tcp" ] else [ ])
                   ++ (
-                    if (cfg.node-exporter.internal) then [ "${config.server.tailscale-ip}:20002:9221/tcp" ] else [ ]
+                    if (cfg.pve-exporter.internal) then [ "${config.server.tailscale-ip}:20002:9221/tcp" ] else [ ]
                   );
                 env_file = [ config.age.secrets.pve-exporter-env.path ];
                 restart = "unless-stopped";
@@ -398,10 +399,10 @@ in
               alloy.service = {
                 image = "docker.io/grafana/alloy:latest";
                 container_name = "alloy";
-                networks = [ "external" ] ++ (if (cfg.loki.enable) then [ "exporter" ] else [ ]);
+                network_mode = "host";
                 command = [
                   "run"
-                  "--server.http.listen-addr=0.0.0.0:12345"
+                  "--server.http.listen-addr=127.0.0.1:12345"
                   "--storage.path=/var/lib/alloy/data"
                   "/etc/alloy/config.alloy"
                 ];
@@ -410,10 +411,29 @@ in
                   "/var/log/journal:/var/log/journal:ro"
                   "/run/log/journal:/run/log/journal:ro"
                   "/etc/machine-id:/etc/machine-id:ro"
-                ];
+                  "/proc:/host/proc:ro"
+                  "/sys:/host/sys:ro"
+                  "/:/rootfs:ro,rslave"
+                ]
+                ++ (
+                  if config.modules.arion.backend == "docker" then
+                    [
+                      "/var/run/docker.sock:/var/run/docker.sock:ro"
+                      "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+                      "/dev/disk:/dev/disk:ro"
+                    ]
+                  else
+                    [
+                      "/run/podman/podman.sock:/run/podman/podman.sock:ro"
+                      "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+                      "/dev/disk:/dev/disk:ro"
+                    ]
+                );
                 labels = {
                   "com.centurylinklabs.watchtower.enable" = "true";
                 };
+                devices = [ "/dev/kmsg" ];
+                privileged = true;
                 restart = "unless-stopped";
               };
 
