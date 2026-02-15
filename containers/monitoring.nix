@@ -123,6 +123,18 @@ let
       }
     ''}
 
+    ${lib.optionalString (config.server.monitoring.pve-exporter.enable) ''
+      // Metrics: PVE exporter
+      prometheus.scrape "pve-exporter" {
+        targets = [{
+          __address__ = "127.0.0.1:20002",
+        }]
+        forward_to = [prometheus.remote_write.default.receiver]
+        scrape_interval = "15s"
+        job_name = "pve-exporter"
+      }
+    ''}
+
     ${lib.optionalString (config.server.jellyfin.enable && config.server.jellyfin.exporter.enable) ''
       // Metrics: Jellyfin
       prometheus.scrape "jellyfin" {
@@ -399,11 +411,7 @@ in
                 sysctls = {
                   "net.ipv6.conf.all.disable_ipv6" = 1;
                 };
-                ports =
-                  (if (cfg.pve-exporter.expose) then [ "9221:9221/tcp" ] else [ ])
-                  ++ (
-                    if (cfg.pve-exporter.internal) then [ "${config.server.tailscale-ip}:20002:9221/tcp" ] else [ ]
-                  );
+                ports = [ "127.0.0.1:20002:9221/tcp" ];
                 env_file = [ config.age.secrets.pve-exporter-env.path ];
                 restart = "unless-stopped";
               };
