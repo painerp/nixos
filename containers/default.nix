@@ -51,6 +51,7 @@ in
   imports = [
     ./act-runner.nix
     ./adguardhome.nix
+    ./adguardhome-sync.nix
     ./attic.nix
     ./authentik.nix
     ./bachelor.nix
