@@ -116,9 +116,10 @@ let
       prometheus.scrape "traefik" {
         targets = [{
           __address__ = "127.0.0.1:20003",
+          instance    = "${config.networking.hostName}",
         }]
         forward_to = [prometheus.remote_write.default.receiver]
-        scrape_interval = "15s"
+        scrape_interval = "30s"
         job_name = "traefik"
       }
     ''}
@@ -168,6 +169,7 @@ let
       prometheus.scrape "jellyfin" {
         targets = [{
           __address__ = "127.0.0.1:20010",
+          instance    = "${config.networking.hostName}",
         }]
         forward_to = [prometheus.remote_write.default.receiver]
         scrape_interval = "30s"
