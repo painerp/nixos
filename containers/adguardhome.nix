@@ -14,6 +14,9 @@ in
       type = lib.types.bool;
       default = false;
     };
+    traefik-network-ip = lib.mkOption {
+      type = lib.types.str;
+    };
     dot = lib.mkOption {
       type = lib.types.bool;
       default = true;
@@ -47,9 +50,15 @@ in
       };
     };
 
-    networking.firewall = lib.mkIf (cfg.expose) {
-      allowedTCPPorts = [ 53 ] ++ (if (cfg.dot) then [ 853 ] else [ ]);
-      allowedUDPPorts = [ 53 ];
+    networking.firewall = {
+      allowedTCPPorts = lib.mkIf (cfg.expose) ([ 53 ] ++ (if (cfg.dot) then [ 853 ] else [ ]));
+      allowedUDPPorts = lib.mkIf (cfg.expose) [ 53 ];
+      extraCommands = ''
+        iptables -I nixos-fw -s ${cfg.traefik-network-ip}/16 -p tcp --dport 3000 -j nixos-fw-accept
+      '';
+      extraStopCommands = ''
+        iptables -D nixos-fw -s ${cfg.traefik-network-ip}/16 -p tcp --dport 3000 -j nixos-fw-accept 2>/dev/null || true
+      '';
     };
   };
 }
