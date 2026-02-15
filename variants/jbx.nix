@@ -55,6 +55,7 @@ in
     adguardhome = {
       enable = true;
       expose = true;
+      traefik-network-ip = "172.20.0.0";
     };
     traefik = {
       enable = true;
