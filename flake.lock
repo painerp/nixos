@@ -246,11 +246,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1770997118,
-        "narHash": "sha256-iVvEVdfOKTiKVbzjxttUXJmA6dlTsT9l29iN4oc2kP8=",
+        "lastModified": 1771170890,
+        "narHash": "sha256-F56KbfdwPl+OZuRsVbKV4Q/wTsFQeqsI6Cci/cPzhJQ=",
         "owner": "painerp",
         "repo": "nix-deploy",
-        "rev": "cbb01b428a6a12fc0c0d90ea1b3e9286050f57d5",
+        "rev": "75d0e9968ec9ea9bc0b3e0ad4e5b5c6c4e15c022",
         "type": "github"
       },
       "original": {
@@ -261,11 +261,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1770882871,
-        "narHash": "sha256-nw5g+xl3veea+maxJ2/81tMEA/rPq9aF1H5XF35X+OE=",
+        "lastModified": 1771171797,
+        "narHash": "sha256-ngIarpog/Hv5r9M1YyvsaaSUBCqtWqHl6pibq6n2ppo=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "af04cb78aa85b2a4d1c15fc7270347e0d0eda97b",
+        "rev": "531af1dbaee7cfdd7aed1e595ce418b7e2e99a80",
         "type": "github"
       },
       "original": {
@@ -276,11 +276,11 @@
     },
     "nixos-private": {
       "locked": {
-        "lastModified": 1770982813,
-        "narHash": "sha256-iBZ23SDTkLH62WSAdKsebof1Ob4RQB/oiAv9PqRp3AQ=",
+        "lastModified": 1771191356,
+        "narHash": "sha256-0cWAkIAor0DSRAwXgoDtf36FJUhoOsWT33WxiZoMGhc=",
         "ref": "refs/heads/main",
-        "rev": "d6bbe53b2232cedf3528ee841b4e7180c11fc5cd",
-        "revCount": 4,
+        "rev": "98829ca58e339b64d374aecf3ea54456c0688a07",
+        "revCount": 5,
         "type": "git",
         "url": "ssh://git@github.com/painerp/nixos-private.git"
       },
@@ -409,11 +409,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1770395576,
-        "narHash": "sha256-zV6As0Unfcaz+SKVtAsgOY89RINcagSI6zHSYETIzsc=",
+        "lastModified": 1771131227,
+        "narHash": "sha256-YuWhXw8zeVyCqhXcVurmK4EtyDtTeQxCKSFxe3iz2Tg=",
         "owner": "icewind1991",
         "repo": "nvidia-patch-nixos",
-        "rev": "dc88447e64d66067e8c38cfa8a4235ad3ac644b7",
+        "rev": "0117e5b5e0fa6f8bb1e3f673544e1838027aeafb",
         "type": "github"
       },
       "original": {
