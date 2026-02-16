@@ -456,6 +456,7 @@ in
                   "run"
                   "--server.http.listen-addr=127.0.0.1:12345"
                   "--storage.path=/var/lib/alloy/data"
+                  "--disable-reporting"
                   "/etc/alloy/config.alloy"
                 ];
                 volumes = [
