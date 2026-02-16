@@ -20,7 +20,6 @@ in
       secretsFile = config.age.secrets.wifi.path;
       networks = {
         "${inputs.nixos-private.common.wifi.ssid}".pskRaw = "ext:psk_fu";
-        "${inputs.nixos-private.hosts."${flake}".wifi.ssid}".pskRaw = "ext:psk_ju";
       };
     };
   };
