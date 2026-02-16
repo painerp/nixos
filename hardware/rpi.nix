@@ -30,7 +30,6 @@
     };
   };
 
-  sound.enable = true;
   hardware.enableRedistributableFirmware = true;
 
   # tries to enable hdmi-cec support
