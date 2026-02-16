@@ -28,11 +28,11 @@ jobs:
       - name: Dry-run build all systems
         run: |
           echo "Testing all NixOS configurations..."
-          systems=$(nix flake show --json 2>/dev/null | jq -r '.nixosConfigurations | keys[]')
+          systems=$(nix flake show --json --extra-experimental-features 'nix-command flakes' --accept-flake-config 2>/dev/null | jq -r '.nixosConfigurations | keys[]')
           
           failed=0
           for system in $systems; do
-            arch=$(nix eval ".#nixosConfigurations.$host.config.nixpkgs.system" --raw 2>/dev/null)
+            arch=$(nix eval ".#nixosConfigurations.$host.config.nixpkgs.system" --raw --extra-experimental-features 'nix-command flakes' --accept-flake-config 2>/dev/null)
           
             if [ "$arch" != "x86_64-linux" ]; then
               echo "Skipping $system (Architecture: $arch)"
