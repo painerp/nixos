@@ -32,7 +32,7 @@ jobs:
           
           failed=0
           for system in $systems; do
-            arch=$(nix eval ".#nixosConfigurations.$host.config.nixpkgs.system" --raw --extra-experimental-features 'nix-command flakes' --accept-flake-config 2>/dev/null)
+            arch=$(nix eval ".#nixosConfigurations.$system.config.nixpkgs.system" --raw --extra-experimental-features 'nix-command flakes' --accept-flake-config 2>/dev/null)
           
             if [ "$arch" != "x86_64-linux" ]; then
               echo "Skipping $system (Architecture: $arch)"
