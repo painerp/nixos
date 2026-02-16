@@ -56,7 +56,7 @@ let
                 configs = flake.nixosConfigurations;
                 isX86 = name:
                   let
-                    sys = configs.''${name}.pkgs.system or null;
+                    sys = configs.''${name}.pkgs.stdenv.hostPlatform.system or null;
                   in
                     sys == "x86_64-linux";
               in
