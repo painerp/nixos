@@ -39,8 +39,8 @@ in
     adguardhome = {
       enable = true;
       expose = true;
+      traefik-network-ip = "172.19.0.0";
     };
-    protonbridge.enable = true;
     traefik = {
       enable = true;
       expose = true;
