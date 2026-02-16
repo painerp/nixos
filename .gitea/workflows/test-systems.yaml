@@ -26,7 +26,7 @@ jobs:
           git config --global url."ssh://git@github.com/".insteadOf "https://github.com/"
 
       - name: Test flake check
-        run: nix flake check --extra-experimental-features nix-command --all-systems --no-build
+        run: nix flake check --extra-experimental-features nix-command --extra-experimental-features flakes --all-systems --no-build
 
       - name: Dry-run build all systems
         run: |
