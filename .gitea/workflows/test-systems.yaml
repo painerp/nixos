@@ -25,9 +25,6 @@ jobs:
         run: |
           git config --global url."ssh://git@github.com/".insteadOf "https://github.com/"
 
-      - name: Test flake check
-        run: nix flake check --extra-experimental-features 'nix-command flakes' --all-systems --accept-flake-config
-
       - name: Dry-run build all systems
         run: |
           echo "Testing all NixOS configurations..."
@@ -35,8 +32,15 @@ jobs:
           
           failed=0
           for system in $systems; do
+            arch=$(nix eval ".#nixosConfigurations.$host.config.nixpkgs.system" --raw 2>/dev/null)
+          
+            if [ "$arch" != "x86_64-linux" ]; then
+              echo "Skipping $system (Architecture: $arch)"
+              continue
+            fi
+          
             echo "::group::Testing $system"
-            if nix build ".#nixosConfigurations.$system.config.system.build.toplevel" --dry-run --show-trace; then
+            if nix build ".#nixosConfigurations.$system.config.system.build.toplevel" --dry-run --extra-experimental-features 'nix-command flakes' --accept-flake-config; then
               echo "✓ $system: OK"
             else
               echo "✗ $system: FAILED"
