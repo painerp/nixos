@@ -289,6 +289,7 @@
             specialArgs = {
               inherit inputs secrets pkgs-unstable;
             };
+            inherit system;
             pkgs = (import nixpkgs) {
               inherit system;
               config = {
@@ -341,6 +342,7 @@
             specialArgs = {
               inherit inputs secrets pkgs-unstable;
             };
+            inherit system;
             pkgs = (import nixpkgs) {
               inherit system;
               config = {
