@@ -18,11 +18,8 @@ in
 
   config = lib.mkIf cfg.enable {
     services = {
-      xserver = {
-        enable = true;
-        displayManager.gdm.enable = true;
-        desktopManager.gnome.enable = true;
-      };
+      desktopManager.gnome.enable = true;
+      displayManager.gdm.enable = true;
       udisks2.enable = true;
       upower.enable = true;
       printing.enable = true;
