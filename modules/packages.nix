@@ -85,7 +85,7 @@ in
       ++ (
         if cfg.desktop-extras then
           [
-            inputs.apod-wallpaper.packages.${pkgs.system}.default
+            inputs.apod-wallpaper.packages.${pkgs.stdenv.hostPlatform.system}.default
             easyeffects
             nextcloud-client
             keepassxc
@@ -169,8 +169,8 @@ in
             ungoogled-chromium
             nixfmt-rfc-style
             nixd
-            inputs.nix-deploy.packages.${pkgs.system}.default
-            inputs.agenix.packages.${pkgs.system}.default
+            inputs.nix-deploy.packages.${pkgs.stdenv.hostPlatform.system}.default
+            inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
             lazygit
             nodePackages_latest.nodejs
             nodePackages_latest.pnpm
@@ -310,7 +310,7 @@ in
         ];
         script = ''
           export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle.crt;
-          ${inputs.apod-wallpaper.packages.${pkgs.system}.default}/bin/apod-wallpaper -m
+          ${inputs.apod-wallpaper.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/apod-wallpaper -m
         '';
       };
       timers.apod-wallpaper = {
