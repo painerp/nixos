@@ -73,7 +73,6 @@ in
     inherit flake;
     username = flake;
     home-manager = true;
-    latest-kernel = true;
     github-trusted = false;
   };
   modules = {
