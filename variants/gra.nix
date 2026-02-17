@@ -71,8 +71,9 @@ in
     borg = {
       enable = true;
       exclude = [
-        "config/jellyfin/data/trickplay"
-        "config/jellyfin/transcodes"
+        "config/jellyfin/data/data/trickplay"
+        "config/jellyfin/data/transcodes"
+        "config/jellyfin/cache"
       ];
     };
     nvidia = {
