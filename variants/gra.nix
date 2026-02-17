@@ -68,7 +68,13 @@ in
   };
   modules = {
     arion.enable = true;
-    borg.enable = true;
+    borg = {
+      enable = true;
+      exclude = [
+        "config/jellyfin/data/trickplay"
+        "config/jellyfin/transcodes"
+      ];
+    };
     nvidia = {
       enable = true;
       patch = true;
