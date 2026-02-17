@@ -41,7 +41,16 @@ in
   };
   modules = {
     arion.enable = true;
-    borg.enable = true;
+    borg = {
+      enable = true;
+      exclude = [
+        "config/minecraft-bluemap/web"
+        "config/minecraft-backups"
+        "config/satisfactory/gamefiles"
+        "config/palworld/Pal/Content"
+        "config/palworld/Pal/Binaries"
+      ];
+    };
   };
 
   # services
