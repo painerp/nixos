@@ -1,9 +1,6 @@
 name: Test NixOS Systems Build
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
   workflow_dispatch:
 
@@ -41,18 +38,19 @@ jobs:
           
             echo "::group::Testing $system"
             if nix build ".#nixosConfigurations.$system.config.system.build.toplevel" --dry-run --extra-experimental-features 'nix-command flakes' --accept-flake-config; then
+              echo "::endgroup::"
               echo "✓ $system: OK"
             else
+              echo "::endgroup::"
               echo "✗ $system: FAILED"
               failed=$((failed + 1))
             fi
-            echo "::endgroup::"
           done
           
           if [ $failed -gt 0 ]; then
-            echo "::error::$failed system(s) failed to build"
+            echo "$failed system(s) failed to build"
             exit 1
           fi
           
-          echo "::notice::All systems validated successfully"
+          echo "All systems validated successfully"
 
