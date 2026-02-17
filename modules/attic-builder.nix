@@ -292,10 +292,19 @@ in
       default = secrets.extras-smtp;
       description = "Path to the SMTP configuration file for email notifications";
     };
+    log-compress-after = lib.mkOption {
+      type = lib.types.int;
+      default = 7;
+      description = "Number of days after which log files should be compressed";
+    };
+    log-delete-after = lib.mkOption {
+      type = lib.types.int;
+      default = 30;
+      description = "Number of days after which compressed log files should be deleted";
+    };
   };
 
   config = lib.mkIf cfg.enable {
-    # Configure SMTP secret for email notifications
     age.secrets.smtp = lib.mkIf cfg.enable-email-notifications {
       file = cfg.env-file;
     };
@@ -350,6 +359,9 @@ in
         pkgs.gdu
         pkgs.msmtp
         pkgs.hostname
+        pkgs.nixos-rebuild
+        pkgs.findutils
+        pkgs.gzip
         build-script
       ];
 
@@ -358,6 +370,15 @@ in
         mkdir -p $HOME/attic-builds
         TIMESTAMP=$(date '+%Y-%m-%d_%H-%M-%S')
         LOG_FILE="$HOME/attic-builds/$TIMESTAMP.log"
+
+        # Cleanup old logs
+        echo "=== Cleaning up old logs ==="
+        # Compress logs older than ${toString cfg.log-compress-after} days
+        find "$HOME/attic-builds" -name "*.log" -type f -mtime +${toString cfg.log-compress-after} -exec gzip {} \; || true
+        # Delete compressed logs older than ${toString cfg.log-delete-after} days
+        find "$HOME/attic-builds" -name "*.log.gz" -type f -mtime +${toString cfg.log-delete-after} -delete || true
+        echo "Log cleanup completed"
+        echo ""
 
         # Function to send email on failure
         send_failure_email() {
@@ -388,17 +409,19 @@ in
         }
 
         # Run the build script and capture output
-        if ${build-script}/bin/build-and-cache 2>&1 | tee "$LOG_FILE"; then
+        set +e  # Don't exit on error, we want to handle it
+        ${build-script}/bin/build-and-cache 2>&1 | tee "$LOG_FILE"
+        EXIT_CODE=''${PIPESTATUS[0]}
+        set -e
+
+        if [ $EXIT_CODE -eq 0 ]; then
           echo "Build completed successfully"
+          nixos-rebuild switch --flake "/etc/nixos#run" --no-write-lock-file
         else
-          EXIT_CODE=$?
           echo "Build failed with exit code $EXIT_CODE"
           send_failure_email
           exit $EXIT_CODE
         fi
-
-        # switch to the new configuration
-        nixos-rebuild switch --flake "/etc/nixos#run" --no-write-lock-file
       '';
     };
 
@@ -408,8 +431,8 @@ in
       wantedBy = [ "timers.target" ];
       timerConfig = {
         OnCalendar = cfg.schedule;
-        Persistent = true; # Run missed builds
-        RandomizedDelaySec = "15m"; # Spread load
+        Persistent = true;
+        RandomizedDelaySec = "15m";
       };
     };
 
