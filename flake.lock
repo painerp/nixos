@@ -246,11 +246,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1771200716,
-        "narHash": "sha256-GIS3SMtAEPCWxc+/q1lCvTfO9NQM1nFX/o4Vrzc21SU=",
+        "lastModified": 1771287767,
+        "narHash": "sha256-jFW3WDEy0FlUUjcYfgQ/Sv8yyXJKnWVnl58DxxXnS1g=",
         "owner": "painerp",
         "repo": "nix-deploy",
-        "rev": "a61aa320da942583df812587ab2fcdc4927437e9",
+        "rev": "c1f259384fbde9d8efcc9676a96bf1367094e3ae",
         "type": "github"
       },
       "original": {
@@ -261,11 +261,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1771171797,
-        "narHash": "sha256-ngIarpog/Hv5r9M1YyvsaaSUBCqtWqHl6pibq6n2ppo=",
+        "lastModified": 1771257191,
+        "narHash": "sha256-H1l+zHq+ZinWH7F1IidpJ2farmbfHXjaxAm1RKWE1KI=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "531af1dbaee7cfdd7aed1e595ce418b7e2e99a80",
+        "rev": "66e1a090ded57a0f88e2b381a7d4daf4a5722c3f",
         "type": "github"
       },
       "original": {
