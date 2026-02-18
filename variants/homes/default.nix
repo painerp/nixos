@@ -45,9 +45,15 @@ in
   programs = {
     git = lib.mkIf (pkg-config.dev) {
       enable = true;
-      settings.user = {
-        name = "painerp";
-        email = "8081128+painerp@users.noreply.github.com";
+      settings = {
+        user = {
+          name = "painerp";
+          email = "8081128+painerp@users.noreply.github.com";
+          signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA8WjFpatV6S8tA1LOFIADSv0QLxiIZNjyqhN7gmZCd1";
+        };
+        commit.gpgsign = true;
+        tag.gpgSign = true;
+        gpg.format = "ssh";
       };
     };
     vscode = lib.mkIf (pkg-config.dev) {
