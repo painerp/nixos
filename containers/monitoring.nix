@@ -128,7 +128,7 @@ let
       // Metrics: PVE exporter
       discovery.relabel "pve" {
         targets = [{
-          __address__ = "proxmox.example.com:443",
+          __address__ = "proxmox.${config.server.domain}:443",
         }]
 
         // Set the target parameter for the exporter
