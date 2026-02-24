@@ -53,7 +53,7 @@ in
     authentik = {
       enable = true;
       proxy = true;
-      version = "2025.12.4";
+      version = "2026.2.0";
       env-file = secrets.log-authentik-proxy-env;
     };
     monitoring = {
