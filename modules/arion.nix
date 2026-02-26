@@ -32,6 +32,11 @@ in
       default = "docker";
       description = "Container backend to use for arion";
     };
+    tailscale-dependent = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Whether to make arion dependent on tailscale. This will cause arion to start after tailscale and stop when tailscale stops.";
+    };
   };
 
   imports = [
@@ -75,6 +80,24 @@ in
       };
       arion = {
         backend = if cfg.backend == "docker" then "docker" else "podman-socket";
+      };
+    };
+
+    systemd = lib.mkIf (cfg.tailscale-dependent) {
+      services = {
+        docker = lib.attrsets.optionalAttrs (cfg.backend == "docker") {
+          after = [ "tailscaled.service" ];
+          requires = [ "tailscaled.service" ];
+        };
+
+        podman = lib.attrsets.optionalAttrs (cfg.backend == "podman") {
+          after = [ "tailscaled.service" ];
+          requires = [ "tailscaled.service" ];
+        };
+      };
+      sockets.podman = lib.attrsets.optionalAttrs (cfg.backend == "podman") {
+        after = [ "tailscaled.service" ];
+        requires = [ "tailscaled.service" ];
       };
     };
 
