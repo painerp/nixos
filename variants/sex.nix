@@ -29,7 +29,10 @@ in
     inherit flake;
   };
   modules = {
-    arion.enable = true;
+    arion = {
+      enable = true;
+      tailscale-dependent = true;
+    };
   };
 
   # services

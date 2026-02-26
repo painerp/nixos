@@ -52,6 +52,7 @@ in
     arion = {
       enable = true;
       backend = "podman";
+      tailscale-dependent = true;
     };
     borg.enable = true;
   };
