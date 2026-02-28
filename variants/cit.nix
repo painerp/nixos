@@ -129,7 +129,7 @@ in
       env-file = secrets.cit-gluetun-env;
     };
     monerod = {
-      enable = true;
+      enable = false;
       volumes = [ "/mnt/monero:/home/monero/.bitmonero" ];
     };
     monitoring.alloy = {
