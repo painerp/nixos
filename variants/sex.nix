@@ -89,16 +89,16 @@ in
       enable = true;
       subdomain = "t";
       expose = true;
-      extra-entrypoints = {
-        satisfactory-tcp1.address = ":7777/tcp";
-        satisfactory-udp.address = ":7777/udp";
-        satisfactory-tcp2.address = ":8888/tcp";
-      };
-      extra-ports = [
-        "7777:7777/tcp"
-        "7777:7777/udp"
-        "8888:8888/tcp"
-      ];
+      # extra-entrypoints = {
+      #   satisfactory-tcp1.address = ":7777/tcp";
+      #   satisfactory-udp.address = ":7777/udp";
+      #   satisfactory-tcp2.address = ":8888/tcp";
+      # };
+      # extra-ports = [
+      #   "7777:7777/tcp"
+      #   "7777:7777/udp"
+      #   "8888:8888/tcp"
+      # ];
       aliases = inputs.nixos-private.hosts."${flake}".traefik.aliases;
     };
     goaccess.enable = true;
