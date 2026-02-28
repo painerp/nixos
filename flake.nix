@@ -15,10 +15,18 @@
       inputs.darwin.follows = "";
     };
 
-    hyprpanel.url = "github:painerp/HyprPanel";
-
-    apod-wallpaper.url = "github:painerp/apod-wallpaper-rs";
-    nix-deploy.url = "github:painerp/nix-deploy";
+    hyprpanel = {
+      url = "github:painerp/HyprPanel";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    apod-wallpaper = {
+      url = "github:painerp/apod-wallpaper-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-deploy = {
+      url = "github:painerp/nix-deploy";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
