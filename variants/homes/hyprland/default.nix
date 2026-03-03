@@ -3,6 +3,7 @@
     ./binds.nix
     ./execs.nix
     ./general.nix
+    ./monitors.nix
     ./rules.nix
   ];
 
