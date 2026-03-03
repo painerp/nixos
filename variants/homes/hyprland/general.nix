@@ -1,7 +1,6 @@
-{ osConfig, ... }:
+{ ... }:
 {
   wayland.windowManager.hyprland.settings = {
-    monitor = osConfig.modules.hyprland.monitor;
 
     input = {
       kb_layout = "de";
@@ -80,7 +79,6 @@
         "fadeDim, 1, 10, smoothIn"
         "workspaces, 1, 6, default"
       ];
-
     };
   };
 }
