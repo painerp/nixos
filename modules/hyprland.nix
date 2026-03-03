@@ -20,6 +20,17 @@ in
       type = lib.types.listOf lib.types.str;
       default = [ ];
     };
+    workspaces = {
+      custom = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+        description = ''
+          Custom workspace rules. Workspace number must be at the start of the string.
+          If no monitor is specified, it will be automatically assigned based on round-robin distribution.
+          Example: "5, on-created-empty:[float] firefox"
+        '';
+      };
+    };
     hyprpanel = {
       main-monitor = lib.mkOption {
         type = lib.types.str;
@@ -86,7 +97,11 @@ in
       ++ [ pkgs.material-symbols ];
 
     programs = {
-      hyprland.enable = true;
+      hyprland = {
+        enable = true;
+        package = pkgs-unstable.hyprland;
+        portalPackage = pkgs-unstable.xdg-desktop-portal-hyprland;
+      };
       hyprlock.enable = if hm then false else true;
       ssh.startAgent = true;
     };
