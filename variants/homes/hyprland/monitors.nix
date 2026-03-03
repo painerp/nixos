@@ -22,7 +22,7 @@ let
           monitorIndex = lib.mod i monitorCount;
           monitorName = builtins.elemAt monitors monitorIndex;
           isFirstOnMonitor = workspaceNum <= monitorCount;
-          defaultFlag = if isFirstOnMonitor then ", default: true" else "";
+          defaultFlag = if isFirstOnMonitor then ", default:true" else "";
         in
         "${toString workspaceNum}, monitor:${monitorName}${defaultFlag}"
       ) 10;

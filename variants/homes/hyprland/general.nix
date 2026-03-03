@@ -22,7 +22,6 @@
       gaps_in = 3;
       gaps_out = 5;
       border_size = 0;
-      no_border_on_floating = true;
       layout = "dwindle";
     };
 
