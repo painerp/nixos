@@ -85,9 +85,12 @@ in
     auto-upgrade.enable = false;
     hyprland = {
       enable = true;
-      monitor = [
+      monitors = [
         "eDP-1,highrr,0x0,1.5"
         ",preferred,auto,1,mirror,eDP-1"
+      ];
+      workspaces.custom = [
+        "6, on-created-empty:keepassxc"
       ];
     };
     packages.full = true;

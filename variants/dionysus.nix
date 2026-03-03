@@ -88,10 +88,13 @@ in
     waydroid.enable = true;
     hyprland = {
       enable = true;
-      monitor = [
+      monitors = [
         "HDMI-A-1,1920x1080@144,0x0,1"
         "DP-2,1920x1080@120,1920x0,1"
         ",preferred,auto,1,mirror,HDMI-A-1"
+      ];
+      workspaces.custom = [
+        "6, on-created-empty:keepassxc"
       ];
       hyprpanel = {
         main-monitor = "1";

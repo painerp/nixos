@@ -16,7 +16,7 @@ in
       type = lib.types.bool;
       default = false;
     };
-    monitor = lib.mkOption {
+    monitors = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
     };
