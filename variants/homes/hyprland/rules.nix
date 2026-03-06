@@ -12,6 +12,7 @@
       "match:class ^(org.kde.ark)$, float true"
       "match:class ^(blueman-manager)$, float true, move 100%-550 48"
       "match:class ^(Rofi)$, float true, move 10 48, dim_around true"
+      "match:class ^(net-runelite-client-RuneLite)$, float true"
       "match:class ^(Tk)$, match:title ^(Wallpaper.*)$, float true"
       "match:title ^(Open File)$, float true"
       "match:title ^(branchdialog)$, float true"
