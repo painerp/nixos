@@ -91,7 +91,7 @@ in
       enable = true;
       startInBackground = true;
     };
-    easyeffects.enable = lib.mkIf (pkg-config.desktop-extras) true;
+    easyeffects.enable = osConfig.modules.pipewire.easyeffects.enable;
   };
 
   gtk = {
