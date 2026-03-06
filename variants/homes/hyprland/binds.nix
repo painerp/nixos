@@ -23,6 +23,10 @@
       "SUPER, right, movefocus, r"
       "SUPER, up, movefocus, u"
       "SUPER, down, movefocus, d"
+      "SUPER, mouse_left, movefocus, l"
+      "SUPER, mouse_right, movefocus, r"
+      "SUPER, mouse_up, movefocus, u"
+      "SUPER, mouse_down, movefocus, d"
       # Move
       "SUPER SHIFT, left, movewindow, l"
       "SUPER SHIFT, right, movewindow, r"
