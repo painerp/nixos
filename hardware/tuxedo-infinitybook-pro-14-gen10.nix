@@ -21,7 +21,6 @@
       "sd_mod"
       "sdhci_pci"
     ];
-    kernelPackages = pkgs.linuxPackages_testing;
     kernelParams = [
       "amdgpu.dcdebugmask=0x400"
       "i8042.nomux=1"
