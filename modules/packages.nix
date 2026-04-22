@@ -164,6 +164,8 @@ in
       ++ (
         if cfg.dev then
           [
+            direnv
+            claude-code
             opentofu
             kubectl
             ungoogled-chromium
