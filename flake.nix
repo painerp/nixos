@@ -75,7 +75,7 @@
     in
     {
       nixosConfigurations = {
-        jpi =
+        fpi =
           let
             system = "aarch64-linux";
           in
@@ -83,20 +83,7 @@
             inherit specialArgs system;
             pkgs = (import nixpkgs) { inherit system; };
             modules = server-modules ++ [
-              ./variants/jpi.nix
-              ./hardware/rpi.nix
-            ];
-          };
-
-        bpi =
-          let
-            system = "aarch64-linux";
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit specialArgs system;
-            pkgs = (import nixpkgs) { inherit system; };
-            modules = server-modules ++ [
-              ./variants/bpi.nix
+              ./variants/fpi.nix
               ./hardware/rpi.nix
             ];
           };

@@ -6,11 +6,11 @@
 }:
 
 let
-  flake = "jpi";
+  flake = "fpi";
   tailscale-ip = "100.81.246.82";
 in
 {
-  age.secrets.wifi.file = secrets.jpi-wifi;
+  age.secrets.wifi.file = secrets.fpi-wifi;
 
   # wlan
   networking = {
@@ -35,7 +35,7 @@ in
 
   # services
   server = {
-    subdomain = "ju";
+    subdomain = "f";
     inherit tailscale-ip;
     adguardhome = {
       enable = true;
