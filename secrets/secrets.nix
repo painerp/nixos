@@ -2,9 +2,7 @@ let
   nix-master = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINeMjHcHigAw7K5OAemN4vu3vFEwKfHZ5HCVXfpSmKbk";
   users = [ nix-master ];
 
-  jpi = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGPwO0rR4DGyCTUTBQ8eZD57Sps/AeIYTooSFKollMAV";
   jbx = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPwNnBrvLYanuWqr1PUEI97pmsXCTDPdcp/N8+ozYkZn";
-  bpi = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMsEvJHm2Nyaps1z7Pk7tUAqNd6HZLhGeV4P8JVPbkla";
   ext = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAK9i6Ywzx4IFy5I7N4/OQJfd36cShHtWa9N+7tkEn3I";
   sex = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILo/lgKIJDIW3iRLAjkBfSKsa9y5l3wJLB21X7MCssay";
   log = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC2TuNrV3HTsPpPg2f3ziB2Iug4rqOvvi078DsBe/5GP";
@@ -14,14 +12,13 @@ let
   gam = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEbkOe5w4Tj2hEkG2HdL4UqbwC7kVmS7Z4IsMgQvUcQD";
   cit = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL9kVFMfWDbqbzfFaOnEHSlofWUKZAJUATkHN+nlUK/X";
   arr = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGF1rLbYjyiGRfdPHKxmuiTd650+Iy0VR2/qM5T06PAv";
+
   kronos = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMzWDG01ypPUCmsrLBhr8xFMiIPeAcz51l5urH3itjMc";
   dionysus = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICXwKn5oP1LcWZY0iXwHRqaKbAHadyrLkAKRJgCYAklU";
   artemis = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIYTIFFl8OW824+BS94juW4b9PAt5ZvYYJzUm11njeBI";
   demeter = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM3rWgNK9oXQ8BavFG7HfGBZNPeereDeBJc8hrfEqduF";
   systems = [
-    jpi
     jbx
-    bpi
     ext
     sex
     log
@@ -52,11 +49,9 @@ in
 
   "extras/smtp.age".publicKeys = users ++ systems ++ main_systems ++ external_systems;
 
-  "jpi/wifi.age".publicKeys = users ++ [ jpi ];
-
   "jbx/wifi.age".publicKeys = users ++ [ jbx ];
 
-  "bpi/wifi.age".publicKeys = users ++ [ bpi ];
+  "fpi/wifi.age".publicKeys = users ++ [ ];
 
   "ext/authentik.env.age".publicKeys = users ++ external_systems;
   "ext/authentik-pg.env.age".publicKeys = users ++ external_systems;

@@ -8,9 +8,7 @@
   extras-smtp = ./extras/smtp.age;
 
   # variants
-  bpi-wifi = ./bpi/wifi.age;
-
-  jpi-wifi = ./jpi/wifi.age;
+  fpi-wifi = ./fpi/wifi.age;
 
   jbx-wifi = ./jbx/wifi.age;
 
