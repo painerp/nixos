@@ -36,6 +36,7 @@ in
           ./mime.nix
           ./rofi
           ./thunar.nix
+          ./wayle.nix
           ./wlogout
         ]
       else
