@@ -37,7 +37,7 @@
               "network"
               "idle-inhibit"
             ]
-            ++ (if osConfig.modules.hyprland.hyprpanel.battery then [ "battery" ] else [ ])
+            ++ (if osConfig.modules.hyprland.wayle.battery then [ "battery" ] else [ ])
             ++ [
               "notifications"
             ];
