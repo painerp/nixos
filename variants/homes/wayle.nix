@@ -90,25 +90,25 @@
           icon-show = false;
           format = "%H:%M %a, %d %b";
           dropdown-show-seconds = false;
-          label-color = "red";
+          label-color = "accent";
         };
         hyprland-workspaces = {
-          label-color = "red";
-          active-color = "red";
-          occupied-color = "red";
+          label-color = "accent";
+          active-color = "accent";
+          occupied-color = "accent";
         };
         window-title = {
           icon-show = false;
-          label-color = "red";
+          label-color = "accent";
         };
         volume = {
           # hide muted label
-          icon-color = "red";
+          icon-color = "accent";
           icon-bg-color = "bg-surface-elevated";
         };
         microphone = {
           # hide muted label
-          icon-color = "red";
+          icon-color = "accent";
           icon-bg-color = "bg-surface-elevated";
         };
         network = {
@@ -130,7 +130,7 @@
         idle-inhibit = {
           label-show = false;
           startup-duration = 0;
-          icon-color = "red";
+          icon-color = "accent";
           icon-bg-color = "bg-surface-elevated";
         };
       };
@@ -145,8 +145,8 @@
           elevated = "#1e1e2e";
           fg = "#cdd6f4";
           fg-muted = "#bac2de";
-          primary = "#b4befe";
-          red = "#eba0ac";
+          primary = "#eba0ac";
+          red = "#f38ba8";
           yellow = "#f9e2af";
           green = "#a6e3a1";
           blue = "#74c7ec";
