@@ -175,8 +175,6 @@ in
             inputs.nix-deploy.packages.${pkgs.stdenv.hostPlatform.system}.default
             inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
             lazygit
-            nodePackages_latest.nodejs
-            nodePackages_latest.pnpm
             (python3.withPackages (python-pkgs: [
               python-pkgs.pytest
               python-pkgs.requests
@@ -190,8 +188,6 @@ in
             jetbrains.idea
             jetbrains.clion
             pkgs-unstable.jetbrains.rider
-            haskell-language-server
-            ormolu
             eduvpn-client
             pkgs-unstable.pince
           ]
