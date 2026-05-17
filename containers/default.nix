@@ -83,6 +83,7 @@ in
     ./ollama.nix
     ./open-webui.nix
     ./palworld.nix
+    ./peanut.nix
     ./pihole.nix
     ./pledo.nix
     ./prdl.nix
