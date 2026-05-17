@@ -122,7 +122,10 @@ in
       auth = false;
       internal = false;
     };
-    home-assistant.enable = true;
+    home-assistant = {
+      enable = true;
+      auth = false;
+    };
     syncthing = {
       enable = true;
       subdomain = "sync";
