@@ -1,12 +1,13 @@
 {
   inputs,
+  lib,
   osConfig,
   pkgs,
   ...
 }:
 
 {
-  programs.hyprpanel = {
+  programs.hyprpanel = lib.mkIf (osConfig.modules.hyprland.hyprpanel.enable) {
     enable = true;
     package = inputs.hyprpanel.packages.${pkgs.stdenv.hostPlatform.system}.default;
     systemd.enable = true;
