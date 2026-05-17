@@ -32,6 +32,10 @@ in
       };
     };
     hyprpanel = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
       main-monitor = lib.mkOption {
         type = lib.types.str;
         default = "0";
