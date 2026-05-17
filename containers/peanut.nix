@@ -17,9 +17,12 @@ in
       type = lib.types.bool;
       default = config.server.authentik.enable;
     };
+    env-file = lib.mkOption { type = lib.types.path; };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
+    age.secrets.peanut-env.file = cfg.env-file;
+
     systemd.services.arion-peanut = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
@@ -39,6 +42,7 @@ in
         sysctls = {
           "net.ipv6.conf.all.disable_ipv6" = 1;
         };
+        env_file = [ config.age.secrets.peanut-env.path ];
         volumes = [
           "${config.lib.server.mkConfigDir "peanut"}:/config"
         ];
