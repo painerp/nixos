@@ -90,6 +90,10 @@ in
       workspaces.custom = [
         "6, on-created-empty:keepassxc"
       ];
+      wayle = {
+        enable = true;
+        main-monitor = "eDP-1";
+      };
     };
     packages.full = true;
     nvidia.enable = true;

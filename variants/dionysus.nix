@@ -96,8 +96,9 @@ in
       workspaces.custom = [
         "6, on-created-empty:keepassxc"
       ];
-      hyprpanel = {
-        main-monitor = "1";
+      wayle = {
+        enable = true;
+        main-monitor = "HDMI-A-1";
         battery = false;
       };
     };
