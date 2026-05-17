@@ -81,6 +81,7 @@ in
   "cit/authentik.env.age".publicKeys = users ++ [ cit ];
   "cit/authentik-pg.env.age".publicKeys = users ++ [ cit ];
   "cit/gluetun.env.age".publicKeys = users ++ [ cit ];
+  "cit/peanut.env.age".publicKeys = users ++ [ cit ];
 
   "gra/authentik-proxy.env.age".publicKeys = users ++ [ gra ];
   "gra/immich.env.age".publicKeys = users ++ [ gra ];

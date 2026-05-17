@@ -107,6 +107,10 @@ in
       env-file = secrets.cit-authentik-env;
       postgres.env-file = secrets.cit-authentik-pg-env;
     };
+    peanut = {
+      enable = true;
+      env-file = secrets.cit-peanut-env;
+    };
     proxmox-backup = {
       enable = true;
       internal = true;
