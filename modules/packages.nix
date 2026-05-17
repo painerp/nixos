@@ -164,6 +164,7 @@ in
       ++ (
         if cfg.dev then
           [
+            anydesk
             direnv
             claude-code
             opentofu
