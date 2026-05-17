@@ -105,11 +105,13 @@
           # hide muted label
           icon-color = "accent";
           icon-bg-color = "bg-surface-elevated";
+          label-color = "accent";
         };
         microphone = {
           # hide muted label
           icon-color = "accent";
           icon-bg-color = "bg-surface-elevated";
+          label-color = "accent";
         };
         network = {
           label-show = false;
