@@ -38,7 +38,21 @@ in
       };
       main-monitor = lib.mkOption {
         type = lib.types.str;
-        default = "0";
+        default = "*";
+      };
+      battery = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+      };
+    };
+    wayle = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
+      main-monitor = lib.mkOption {
+        type = lib.types.str;
+        default = "*";
       };
       battery = lib.mkOption {
         type = lib.types.bool;
