@@ -36,7 +36,7 @@
 
   networking = {
     wireless = {
-      enable = true;
+      enable = lib.mkDefault true;
       interfaces = [ "wlan0" ];
     };
   };
