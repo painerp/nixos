@@ -2,6 +2,7 @@ let
   nix-master = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINeMjHcHigAw7K5OAemN4vu3vFEwKfHZ5HCVXfpSmKbk";
   users = [ nix-master ];
 
+  fpi = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK8dY2H07Px6Dh64JT7YANAWFgbFpu1KDJhwPv216Rsr";
   jbx = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPwNnBrvLYanuWqr1PUEI97pmsXCTDPdcp/N8+ozYkZn";
   ext = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAK9i6Ywzx4IFy5I7N4/OQJfd36cShHtWa9N+7tkEn3I";
   sex = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILo/lgKIJDIW3iRLAjkBfSKsa9y5l3wJLB21X7MCssay";
@@ -18,6 +19,7 @@ let
   artemis = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIYTIFFl8OW824+BS94juW4b9PAt5ZvYYJzUm11njeBI";
   demeter = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM3rWgNK9oXQ8BavFG7HfGBZNPeereDeBJc8hrfEqduF";
   systems = [
+    fpi
     jbx
     ext
     sex
@@ -51,7 +53,7 @@ in
 
   "jbx/wifi.age".publicKeys = users ++ [ jbx ];
 
-  "fpi/wifi.age".publicKeys = users ++ [ ];
+  "fpi/wifi.age".publicKeys = users ++ [ fpi ];
 
   "ext/authentik.env.age".publicKeys = users ++ external_systems;
   "ext/authentik-pg.env.age".publicKeys = users ++ external_systems;
