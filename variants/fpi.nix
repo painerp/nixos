@@ -31,6 +31,7 @@ in
   modules = {
     arion.enable = true;
     kodi.enable = false;
+    tailscale.subnet-router = true;
   };
 
   # services
