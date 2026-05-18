@@ -267,11 +267,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1778945272,
-        "narHash": "sha256-Aipz0UiBhE2a1FYJrNc2y+5vKWo5QVkhmaIJk3/ls+g=",
+        "lastModified": 1779058144,
+        "narHash": "sha256-OFaHDx6EMVUfufD2cxkLHXT3AZdhLnjS+RChKPLIyAI=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "379c1f274f0fa354d012f0600806de54e79f29b5",
+        "rev": "8ea1d787af06d65d83885264cb5572d966bfa289",
         "type": "github"
       },
       "original": {
@@ -282,11 +282,11 @@
     },
     "nixos-private": {
       "locked": {
-        "lastModified": 1771191356,
-        "narHash": "sha256-0cWAkIAor0DSRAwXgoDtf36FJUhoOsWT33WxiZoMGhc=",
+        "lastModified": 1778181004,
+        "narHash": "sha256-ZsIGtrExc4Hj+uxN+CjskOxmm1AtUvaGG/833I7KxBk=",
         "ref": "refs/heads/main",
-        "rev": "98829ca58e339b64d374aecf3ea54456c0688a07",
-        "revCount": 5,
+        "rev": "ab000d3d1b3876c57b4c1f5d55000489102d437d",
+        "revCount": 6,
         "type": "git",
         "url": "ssh://git@github.com/painerp/nixos-private.git"
       },
