@@ -1,14 +1,25 @@
-{ inputs, pkgs, ... }:
+{
+  inputs,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   imports = [ inputs.nixos-hardware.nixosModules.raspberry-pi-4 ];
 
   boot = {
-    initrd.availableKernelModules = [
-      "xhci_pci"
-      "usbhid"
-      "usb_storage"
-    ];
+    initrd = {
+      availableKernelModules = lib.mkForce [
+        "xhci_pci"
+        "usbhid"
+        "usb_storage"
+        "mmc_block"
+        "sdhci_iproc"
+      ];
+      kernelModules = [ "dm_mod" ];
+      includeDefaultModules = false;
+    };
     loader = {
       grub.enable = false;
       generic-extlinux-compatible.enable = true;
