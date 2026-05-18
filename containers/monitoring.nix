@@ -177,6 +177,23 @@ let
       }
     ''}
 
+    ${lib.optionalString (config.server.peanut.enable) ''
+      // Metrics: Peanut
+      prometheus.scrape "peanut" {
+        targets = [{
+          __address__ = "peanut.${config.server.domain}/api/v1/metrics",
+          instance    = "${config.networking.hostName}",
+        }]
+        forward_to = [prometheus.remote_write.default.receiver]
+        scrape_interval = "30s"
+        job_name = "peanut"
+        basic_auth {
+          username = env("WEB_USERNAME")
+          password = env("WEB_PASSWORD")
+        }
+      }
+    ''}
+
     // Metrics: Remote write to Prometheus
     prometheus.remote_write "default" {
       endpoint {
@@ -452,6 +469,7 @@ in
                 image = "docker.io/grafana/alloy:latest";
                 container_name = "alloy";
                 network_mode = "host";
+                env_file = lib.optional config.server.peanut.enable config.age.secrets.peanut-env.path;
                 command = [
                   "run"
                   "--server.http.listen-addr=127.0.0.1:12345"
