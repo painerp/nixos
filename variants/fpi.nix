@@ -7,7 +7,7 @@
 
 let
   flake = "fpi";
-  tailscale-ip = "100.81.246.82";
+  tailscale-ip = "100.85.123.26";
 in
 {
   age.secrets.wifi.file = secrets.fpi-wifi;
@@ -30,7 +30,7 @@ in
   };
   modules = {
     arion.enable = true;
-    kodi.enable = true;
+    kodi.enable = false;
   };
 
   # services
