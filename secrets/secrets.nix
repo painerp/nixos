@@ -4,7 +4,6 @@ let
 
   fpi = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK8dY2H07Px6Dh64JT7YANAWFgbFpu1KDJhwPv216Rsr";
   jbx = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPwNnBrvLYanuWqr1PUEI97pmsXCTDPdcp/N8+ozYkZn";
-  ext = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAK9i6Ywzx4IFy5I7N4/OQJfd36cShHtWa9N+7tkEn3I";
   sex = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILo/lgKIJDIW3iRLAjkBfSKsa9y5l3wJLB21X7MCssay";
   log = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC2TuNrV3HTsPpPg2f3ziB2Iug4rqOvvi078DsBe/5GP";
   run = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDukRN3AKfGtGhjagYmCu3U8rr0Mh/FywyJDA2GN8iPE";
@@ -21,8 +20,6 @@ let
   systems = [
     fpi
     jbx
-    ext
-    sex
     log
     run
     inf
@@ -38,18 +35,17 @@ let
     demeter
   ];
   external_systems = [
-    ext
     sex
   ];
 in
 {
   # containers
-  "containers/traefik.env.age".publicKeys = users ++ systems;
-  "containers/watchtower.env.age".publicKeys = users ++ systems;
+  "containers/traefik.env.age".publicKeys = users ++ systems ++ external_systems;
+  "containers/watchtower.env.age".publicKeys = users ++ systems ++ external_systems;
 
   "pkgs/upload-file.age".publicKeys = users ++ main_systems;
 
-  "extras/smtp.age".publicKeys = users ++ systems ++ main_systems ++ external_systems;
+  "extras/smtp.age".publicKeys = users ++ systems ++ external_systems ++ main_systems;
 
   "jbx/wifi.age".publicKeys = users ++ [ jbx ];
 
