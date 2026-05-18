@@ -16,7 +16,7 @@ in
   networking = {
     hostName = "nix${flake}";
     wireless = {
-      enable = true;
+      enable = false;
       secretsFile = config.age.secrets.wifi.path;
       networks = {
         "${inputs.nixos-private.common.wifi.ssid}".pskRaw = "ext:psk_fu";
