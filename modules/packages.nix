@@ -71,7 +71,7 @@ in
             vlc
             vorta
             gparted
-            xfce.xfconf
+            xfconf
           ]
           ++ (
             if config.modules.amd.enable then
@@ -145,7 +145,7 @@ in
           [
             tor-browser
             nyx
-            protonvpn-gui
+            proton-vpn
           ]
         else
           [ ]
@@ -169,7 +169,7 @@ in
             opentofu
             kubectl
             ungoogled-chromium
-            nixfmt-rfc-style
+            nixfmt
             nixd
             inputs.nix-deploy.packages.${pkgs.stdenv.hostPlatform.system}.default
             inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
@@ -214,7 +214,7 @@ in
       nix-ld.enable = cfg.dev;
       thunar = {
         enable = cfg.desktop;
-        plugins = with pkgs.xfce; [
+        plugins = with pkgs; [
           thunar-archive-plugin
           thunar-volman
         ];
@@ -304,7 +304,7 @@ in
           which
           libnotify
           hyprland
-          swww
+          awww
         ];
         script = ''
           export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-bundle.crt;
