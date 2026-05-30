@@ -64,14 +64,11 @@
         ./pkgs
       ];
       desktop-overlays = [
-        (import ./overlays/teamspeak3.nix { })
         (import ./overlays/btop.nix { })
         (import ./overlays/hyprpanel.nix { })
         (import ./overlays/tailscale-patch.nix { })
       ];
-      desktop-insecure-packages = [
-        "qtwebengine-5.15.19"
-      ];
+      desktop-insecure-packages = [ ];
 
       mkServer =
         {

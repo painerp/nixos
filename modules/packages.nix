@@ -153,7 +153,6 @@ in
       ++ (
         if cfg.communication then
           [
-            teamspeak3
             pkgs-unstable.teamspeak6-client
             vesktop
             signal-desktop
