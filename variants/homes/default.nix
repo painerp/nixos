@@ -125,6 +125,6 @@ in
     pointerCursor = cursor-theme // {
       gtk.enable = true;
     };
-    stateVersion = "25.11";
+    stateVersion = "26.05";
   };
 }
