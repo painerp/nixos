@@ -12,5 +12,5 @@
     package = null;
     portalPackage = null;
   };
-  services.swww.enable = true;
+  services.awww.enable = true;
 }
