@@ -123,7 +123,12 @@ let
   mergeRules =
     base: custom:
     let
-      m = lib.listToAttrs (builtins.map (r: { name = r.workspace; value = r; }) base);
+      m = lib.listToAttrs (
+        builtins.map (r: {
+          name = r.workspace;
+          value = r;
+        }) base
+      );
       withCustom = builtins.foldl' (
         acc: r:
         acc

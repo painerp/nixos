@@ -8,7 +8,7 @@ let
     "vorta -d"
   ];
 
-  startupBody = lib.concatMapStringsSep "\n" (cmd: ''  hl.exec_cmd([[${cmd}]])'') startupCommands;
+  startupBody = lib.concatMapStringsSep "\n" (cmd: "hl.exec_cmd([[${cmd}]])") startupCommands;
 in
 {
   wayland.windowManager.hyprland.settings.on = {
