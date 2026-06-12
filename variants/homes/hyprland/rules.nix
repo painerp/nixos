@@ -21,8 +21,25 @@ in
     (floatClass "^(splash)$")
     (floatClass "^(confirmreset)$")
     (floatClass "^(org.kde.ark)$")
-    (floatClass "^(blueman-manager)$" // { move = [ "100%-550" 48 ]; })
-    (floatClass "^(Rofi)$" // { move = [ 10 48 ]; dim_around = true; })
+    (
+      floatClass "^(blueman-manager)$"
+      // {
+        move = [
+          "100%-550"
+          48
+        ];
+      }
+    )
+    (
+      floatClass "^(Rofi)$"
+      // {
+        move = [
+          10
+          48
+        ];
+        dim_around = true;
+      }
+    )
     (floatClass "^(net-runelite-client-RuneLite)$")
     {
       match = {
@@ -38,14 +55,31 @@ in
     (floatTitle "^([Pp]icture.*in.*[Pp]icture)$")
     (floatTitle "^(Save File)$")
     (floatTitle "^(KeePassXC - Browser Access Request)$")
-    (floatTitle "^(Nextcloud)$" // { move = [ "100%-580" 40 ]; })
+    (
+      floatTitle "^(Nextcloud)$"
+      // {
+        move = [
+          "100%-580"
+          40
+        ];
+      }
+    )
     (floatTitle "^(File Operation Progress)$")
     (floatTitle "^(.*shufti)$")
     (floatTitle "^(APOD Wallpaper Switcher)$" // { dim_around = true; })
-    (floatTitle "^(Volume Control)$" // {
-      size = [ 800 600 ];
-      move = [ "100%-820" 48 ];
-      dim_around = true;
-    })
+    (
+      floatTitle "^(Volume Control)$"
+      // {
+        size = [
+          800
+          600
+        ];
+        move = [
+          "100%-820"
+          48
+        ];
+        dim_around = true;
+      }
+    )
   ];
 }

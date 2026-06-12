@@ -45,7 +45,8 @@ in
           "${config-dir}/config:/app/config"
           "${config-dir}/data:/app/data"
           "${config-dir}/web:/app/web"
-        ] ++ cfg.volumes;
+        ]
+        ++ cfg.volumes;
         labels = {
           "com.centurylinklabs.watchtower.enable" = "true";
         };

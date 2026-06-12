@@ -3,20 +3,24 @@ let
   inherit (lib.generators) mkLuaInline;
 
   # Convert "x1, y1, x2, y2" floats into the new hl.curve points table form.
-  mkBezier =
-    name: x1: y1: x2: y2:
-    {
-      _args = [
-        name
-        {
-          type = "bezier";
-          points = [
-            [ x1 y1 ]
-            [ x2 y2 ]
-          ];
-        }
-      ];
-    };
+  mkBezier = name: x1: y1: x2: y2: {
+    _args = [
+      name
+      {
+        type = "bezier";
+        points = [
+          [
+            x1
+            y1
+          ]
+          [
+            x2
+            y2
+          ]
+        ];
+      }
+    ];
+  };
 in
 {
   wayland.windowManager.hyprland.settings = {
