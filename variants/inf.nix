@@ -64,7 +64,7 @@ in
     authentik = {
       enable = true;
       proxy = true;
-      version = "2026.5.2";
+      version = "2026.5.3";
       env-file = secrets.inf-authentik-proxy-env;
     };
     dashboard.enable = true;
@@ -82,7 +82,7 @@ in
     };
     dawarich = {
       enable = true;
-      version = "1.7.10";
+      version = "1.8.1";
       auth = false;
       env-file = secrets.inf-dawarich-env;
       postgres.env-file = secrets.inf-dawarich-pg-env;
