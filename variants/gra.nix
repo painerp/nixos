@@ -92,7 +92,7 @@ in
     authentik = {
       enable = true;
       proxy = true;
-      version = "2026.5.2";
+      version = "2026.5.3";
       env-file = secrets.gra-authentik-proxy-env;
     };
     nextcloud = {
@@ -103,7 +103,7 @@ in
       enable = true;
       internal = true;
       auth = false;
-      version = "10.11.10";
+      version = "10.11.11";
       volumes = [
         "${media}/shows:/shows"
         "${media}/movies:/movies"
