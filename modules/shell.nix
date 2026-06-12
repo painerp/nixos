@@ -49,7 +49,7 @@
       "gdur" = "${gdu}/bin/gdu -x /";
     }
     // lib.attrsets.optionalAttrs (config.modules.packages.desktop) {
-      "f" = "${xfce.thunar}/bin/thunar .";
+      "f" = "${thunar}/bin/thunar .";
     }
     // lib.attrsets.optionalAttrs (config.modules.packages.dev) {
       "lgit" = "${lazygit}/bin/lazygit";

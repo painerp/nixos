@@ -57,9 +57,8 @@ in
         gpg.format = "ssh";
       };
     };
-    vscode = lib.mkIf (pkg-config.dev) {
+    vscodium = lib.mkIf (pkg-config.dev) {
       enable = true;
-      package = pkgs-unstable.vscodium;
       profiles.default.extensions = with pkgs-unstable.vscode-extensions; [
         jnoortheen.nix-ide
         ms-python.python
@@ -125,6 +124,6 @@ in
     pointerCursor = cursor-theme // {
       gtk.enable = true;
     };
-    stateVersion = "25.11";
+    stateVersion = "26.05";
   };
 }

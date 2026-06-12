@@ -41,7 +41,8 @@ in
         hostname = config.networking.hostName;
         networks = [
           "proxy"
-        ] ++ (if (config.server.teamspeak.enable) then [ "teamspeak" ] else [ ]);
+        ]
+        ++ (if (config.server.teamspeak.enable) then [ "teamspeak" ] else [ ]);
         environment = {
           PRE_RESOLVE_HOST = "true";
         };
