@@ -1,31 +1,85 @@
-{
-  wayland.windowManager.hyprland.settings = {
-    windowrule = [
-      "match:class ^(file_progress)$, float true"
-      "match:class ^(confirm)$, float true"
-      "match:class ^(dialog)$, float true"
-      "match:class ^(download)$, float true"
-      "match:class ^(notification)$, float true"
-      "match:class ^(error)$, float true"
-      "match:class ^(splash)$, float true"
-      "match:class ^(confirmreset)$, float true"
-      "match:class ^(org.kde.ark)$, float true"
-      "match:class ^(blueman-manager)$, float true, move 100%-550 48"
-      "match:class ^(Rofi)$, float true, move 10 48, dim_around true"
-      "match:class ^(net-runelite-client-RuneLite)$, float true"
-      "match:class ^(Tk)$, match:title ^(Wallpaper.*)$, float true"
-      "match:title ^(Open File)$, float true"
-      "match:title ^(branchdialog)$, float true"
-      "match:title ^(wlogout)$, float true, fullscreen true"
-      "match:title ^(Media viewer)$, float true"
-      "match:title ^([Pp]icture.*in.*[Pp]icture)$, float true"
-      "match:title ^(Save File)$, float true"
-      "match:title ^(KeePassXC - Browser Access Request)$, float true"
-      "match:title ^(Nextcloud)$, float true, move 100%-580 40"
-      "match:title ^(File Operation Progress)$, float true"
-      "match:title ^(.*shufti)$, float true"
-      "match:title ^(APOD Wallpaper Switcher)$, float true, dim_around true"
-      "match:title ^(Volume Control)$, float true, size 800 600, move 100%-820 48, dim_around true"
-    ];
+{ lib, ... }:
+let
+  floatClass = class: {
+    match.class = class;
+    float = true;
   };
+
+  floatTitle = title: {
+    match.title = title;
+    float = true;
+  };
+in
+{
+  wayland.windowManager.hyprland.settings.window_rule = [
+    (floatClass "^(file_progress)$")
+    (floatClass "^(confirm)$")
+    (floatClass "^(dialog)$")
+    (floatClass "^(download)$")
+    (floatClass "^(notification)$")
+    (floatClass "^(error)$")
+    (floatClass "^(splash)$")
+    (floatClass "^(confirmreset)$")
+    (floatClass "^(org.kde.ark)$")
+    (
+      floatClass "^(blueman-manager)$"
+      // {
+        move = [
+          "100%-550"
+          48
+        ];
+      }
+    )
+    (
+      floatClass "^(Rofi)$"
+      // {
+        move = [
+          10
+          48
+        ];
+        dim_around = true;
+      }
+    )
+    (floatClass "^(net-runelite-client-RuneLite)$")
+    {
+      match = {
+        class = "^(Tk)$";
+        title = "^(Wallpaper.*)$";
+      };
+      float = true;
+    }
+    (floatTitle "^(Open File)$")
+    (floatTitle "^(branchdialog)$")
+    (floatTitle "^(wlogout)$" // { fullscreen = true; })
+    (floatTitle "^(Media viewer)$")
+    (floatTitle "^([Pp]icture.*in.*[Pp]icture)$")
+    (floatTitle "^(Save File)$")
+    (floatTitle "^(KeePassXC - Browser Access Request)$")
+    (
+      floatTitle "^(Nextcloud)$"
+      // {
+        move = [
+          "100%-580"
+          40
+        ];
+      }
+    )
+    (floatTitle "^(File Operation Progress)$")
+    (floatTitle "^(.*shufti)$")
+    (floatTitle "^(APOD Wallpaper Switcher)$" // { dim_around = true; })
+    (
+      floatTitle "^(Volume Control)$"
+      // {
+        size = [
+          800
+          600
+        ];
+        move = [
+          "100%-820"
+          48
+        ];
+        dim_around = true;
+      }
+    )
+  ];
 }

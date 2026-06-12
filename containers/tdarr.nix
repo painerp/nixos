@@ -67,7 +67,8 @@ in
             "${config-dir}/configs:/app/configs"
             "${config-dir}/logs:/app/logs"
             "${config-dir}/temp:/temp"
-          ] ++ cfg.volumes;
+          ]
+          ++ cfg.volumes;
           ports = lib.mkIf (cfg.internal) [
             "${config.server.tailscale-ip}:8265:8265"
             "${config.server.tailscale-ip}:8266:8266"

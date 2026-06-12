@@ -1,7 +1,7 @@
 {
   description = "system config";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     arion = {
@@ -29,7 +29,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -64,14 +64,11 @@
         ./pkgs
       ];
       desktop-overlays = [
-        (import ./overlays/teamspeak3.nix { })
         (import ./overlays/btop.nix { })
         (import ./overlays/hyprpanel.nix { })
         (import ./overlays/tailscale-patch.nix { })
       ];
-      desktop-insecure-packages = [
-        "qtwebengine-5.15.19"
-      ];
+      desktop-insecure-packages = [ ];
 
       mkServer =
         {
