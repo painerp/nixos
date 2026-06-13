@@ -1,4 +1,5 @@
 {
+  config,
   secrets,
   ...
 }:
@@ -81,6 +82,7 @@ in
     };
     nvidia = {
       enable = true;
+      package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
       patch = true;
     };
   };
