@@ -33,6 +33,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    claude-code = {
+      url = "github:sadjow/claude-code-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
     nvidia-patch = {
@@ -67,6 +72,7 @@
         (import ./overlays/btop.nix { })
         (import ./overlays/hyprpanel.nix { })
         (import ./overlays/tailscale-patch.nix { })
+        inputs.claude-code.overlays.default
       ];
       desktop-insecure-packages = [ ];
 
