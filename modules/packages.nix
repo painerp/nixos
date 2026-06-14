@@ -165,7 +165,8 @@ in
           [
             anydesk
             direnv
-            claude-code
+            llm-agents.claude-code.override
+            { disableTelemetry = true; }
             opentofu
             kubectl
             ungoogled-chromium

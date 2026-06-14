@@ -33,8 +33,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    claude-code = {
-      url = "github:sadjow/claude-code-nix";
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -72,7 +72,7 @@
         (import ./overlays/btop.nix { })
         (import ./overlays/hyprpanel.nix { })
         (import ./overlays/tailscale-patch.nix { })
-        inputs.claude-code.overlays.default
+        inputs.llm-agents.overlays.shared-nixpkgs
       ];
       desktop-insecure-packages = [ ];
 
