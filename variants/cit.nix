@@ -88,7 +88,7 @@ in
     inherit tailscale-ip;
     adguardhome = {
       enable = true;
-      traefik-network-ip = "172.19.0.0";
+      traefik-network-ip = "172.18.0.0";
     };
     adguardhome-sync = {
       enable = true;
