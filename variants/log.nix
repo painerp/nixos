@@ -69,7 +69,7 @@ in
         internal = true;
       };
       pve-exporter = {
-        enable = true;
+        enable = false;
         env-file = secrets.log-pve-exporter-env;
       };
       alloy = {
