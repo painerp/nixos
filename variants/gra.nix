@@ -129,15 +129,15 @@ in
     immich = {
       enable = true;
       auth = false;
-      version = "v2.7.5";
+      version = "v3.0.1";
       volumes = [
         "/mnt/immich:/data"
         "/mnt/nextcloud/data/painerp/files/Bilder:/library"
       ];
       env-file = secrets.gra-immich-env;
-      redis.image = "docker.io/valkey/valkey:8-bookworm@sha256:facc1d2c3462975c34e10fccb167bfa92b0e0dbd992fc282c29a61c3243afb11";
+      redis.image = "docker.io/valkey/valkey:9@sha256:4963247afc4cd33c7d3b2d2816b9f7f8eeebab148d29056c2ca4d7cbc966f2d9";
       postgres = {
-        image = "ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:32324a2f41df5de9efe1af166b7008c3f55646f8d0e00d9550c16c9822366b4a";
+        image = "ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23";
         env-file = secrets.gra-immich-pg-env;
       };
     };
