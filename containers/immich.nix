@@ -154,6 +154,7 @@ in
         environment = {
           POSTGRES_USER = "${default-env.DB_USERNAME}";
           POSTGRES_DB = "${default-env.DB_DATABASE_NAME}";
+          POSTGRES_INITDB_ARGS = "--data-checksums";
         };
         env_file = [ config.age.secrets.immich-pg-env.path ];
         volumes = [ "${config-dir}/postgres:/var/lib/postgresql/data" ];
