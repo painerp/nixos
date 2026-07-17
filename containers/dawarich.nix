@@ -10,11 +10,14 @@ let
     DATABASE_USERNAME = "postgres";
     DATABASE_NAME = "dawarich";
     MIN_MINUTES_SPENT_IN_CITY = 60;
-    BACKGROUND_PROCESSING_CONCURRENCY = 10;
+    BACKGROUND_PROCESSING_CONCURRENCY = 3;
+    WEB_CONCURRENCY = 1;
     APPLICATION_HOSTS = "localhost,${cfg.subdomain}.${config.server.domain}";
     APPLICATION_PROTOCOL = "http";
     TIME_ZONE = config.time.timeZone;
+    RAILS_LOG_TO_STDOUT = "true";
     PROMETHEUS_EXPORTER_ENABLED = "false";
+    STORE_GEODATA = "true";
     DISABLE_TELEMETRY = "true";
     SELF_HOSTED = "true";
   };
