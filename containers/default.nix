@@ -53,6 +53,7 @@ in
     ./adguardhome.nix
     ./adguardhome-sync.nix
     ./attic.nix
+    ./atvloadly.nix
     ./authentik.nix
     ./bachelor.nix
     ./bazarr.nix
