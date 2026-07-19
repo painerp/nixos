@@ -43,6 +43,7 @@ in
       expose = true;
       traefik-network-ip = "172.19.0.0";
     };
+    atvloadly.enable = true;
     traefik = {
       enable = true;
       expose = true;
