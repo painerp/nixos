@@ -44,6 +44,11 @@ in
       traefik-network-ip = "172.19.0.0";
     };
     atvloadly.enable = true;
+    yt2atv = {
+      enable = true;
+      image = inputs.nixos-private.hosts."${flake}".yt2atv.image;
+      env-file = secrets.fpi-yt2atv-env;
+    };
     traefik = {
       enable = true;
       expose = true;
