@@ -106,6 +106,7 @@ in
     ./unknown.nix
     ./uptime-kuma.nix
     ./watchtower.nix
+    ./yt2atv.nix
   ];
 
   config = {
