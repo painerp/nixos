@@ -9,6 +9,7 @@
 
   # variants
   fpi-wifi = ./fpi/wifi.age;
+  fpi-yt2atv-env = ./fpi/yt2atv.env.age;
 
   jbx-wifi = ./jbx/wifi.age;
 
