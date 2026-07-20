@@ -50,6 +50,7 @@ in
   "jbx/wifi.age".publicKeys = users ++ [ jbx ];
 
   "fpi/wifi.age".publicKeys = users ++ [ fpi ];
+  "fpi/yt2atv.env.age".publicKeys = users ++ [ fpi ];
 
   "ext/authentik.env.age".publicKeys = users ++ external_systems;
   "ext/authentik-pg.env.age".publicKeys = users ++ external_systems;
