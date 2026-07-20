@@ -28,6 +28,9 @@ in
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
     age.secrets.yt2atv-env.file = cfg.env-file;
 
+    # yt2atv runs as uid 65534 and needs to own the bind-mounted data directory
+    systemd.tmpfiles.rules = [ "d ${config.lib.server.mkConfigDir "yt2atv"} 0755 65534 65534 -" ];
+
     systemd.services.arion-yt2atv = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
