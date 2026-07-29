@@ -81,6 +81,7 @@ in
       rewrite-bip = true;
     };
     auto-upgrade.enable = false;
+    failure-monitor.enable = false;
     hyprland = {
       enable = true;
       monitors = [

@@ -83,6 +83,7 @@ in
     amd.enable = true;
     arion.enable = true;
     auto-upgrade.enable = false;
+    failure-monitor.enable = false;
     packages.full = true;
     logitech.enable = true;
     waydroid.enable = true;
