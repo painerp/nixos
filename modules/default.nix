@@ -44,6 +44,7 @@
     ./attic-builder.nix
     ./auto-upgrade.nix
     ./borg.nix
+    ./failure-monitor.nix
     ./firewall.nix
     ./gnome.nix
     ./hyprland.nix
