@@ -54,6 +54,7 @@ in
   };
   modules = {
     auto-upgrade.enable = true;
+    failure-monitor.enable = false;
     gnome.enable = true;
     packages = {
       desktop = true;
