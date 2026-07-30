@@ -125,11 +125,13 @@ in
         ### failed systemd units ###
 
         failed_units=$(systemctl --failed --plain --no-legend | awk '{print $1}')
+        activating_units=$(systemctl list-units --state=activating --plain --no-legend | awk '{print $1}')
 
         # recovery: drop markers for units that are no longer failed
+        # (a unit we restarted may still be mid-run/activating - that is not recovery)
         for marker in "$STATE/seen/units"/*; do
           [ -e "$marker" ] || continue
-          contains "$(basename "$marker")" $failed_units || rm -f "$marker"
+          contains "$(basename "$marker")" $failed_units $activating_units || rm -f "$marker"
         done
 
         for unit in $failed_units; do
@@ -210,6 +212,9 @@ in
       '';
 
       startAt = cfg.interval;
+
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
     };
 
     systemd.timers.failure-monitor = {
