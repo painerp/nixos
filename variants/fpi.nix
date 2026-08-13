@@ -61,6 +61,7 @@ in
     };
     watchtower = {
       enable = true;
+      internal-services = true;
       schedule = "0 0 3 * * *";
     };
   };
