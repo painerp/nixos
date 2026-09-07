@@ -61,6 +61,10 @@ in
   server = {
     subdomain = "local";
     inherit tailscale-ip;
+    agentmemory = {
+      enable = true;
+      env-file = secrets.inf-agentmemory-env;
+    };
     authentik = {
       enable = true;
       proxy = true;
