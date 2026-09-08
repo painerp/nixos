@@ -64,7 +64,7 @@ in
   "ext/teamspeak.env.age".publicKeys = users ++ external_systems;
 
   "inf/authentik-proxy.env.age".publicKeys = users ++ [ inf ];
-  "inf/agentmemory.env.age".publicKeys = users ++ [ inf ];
+  "inf/agentmemory.env.age".publicKeys = users ++ main_systems ++ [ inf ];
   "inf/jellystat.env.age".publicKeys = users ++ [ inf ];
   "inf/jellystat-pg.env.age".publicKeys = users ++ [ inf ];
   "inf/linkwarden.env.age".publicKeys = users ++ [ inf ];
