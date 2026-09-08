@@ -39,6 +39,7 @@
   };
 
   imports = [
+    ./agentmemory-client.nix
     ./amd.nix
     ./arion.nix
     ./attic-builder.nix
