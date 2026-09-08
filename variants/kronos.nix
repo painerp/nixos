@@ -76,6 +76,7 @@ in
     github-trusted = false;
   };
   modules = {
+    agentmemory-client.enable = true;
     arion = {
       enable = true;
       rewrite-bip = true;
