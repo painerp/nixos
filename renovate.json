@@ -32,6 +32,18 @@
         "/variants/.+\\.nix$/"
       ],
       "matchStrings": [
+        "agentmemory\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+      ],
+      "datasourceTemplate": "npm",
+      "versioningTemplate": "npm",
+      "depNameTemplate": "@agentmemory/agentmemory"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/variants/.+\\.nix$/"
+      ],
+      "matchStrings": [
         "authentik\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
