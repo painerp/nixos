@@ -118,10 +118,18 @@ in
       default = "${cfg.subdomain}-api";
     };
     env-file = lib.mkOption { type = lib.types.path; };
+    provider.env-file = lib.mkOption {
+      type = lib.types.nullOr lib.types.path;
+      default = null;
+      description = "Server-only encrypted environment file for LLM provider credentials and settings.";
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
     age.secrets.agentmemory-env.file = cfg.env-file;
+    age.secrets.agentmemory-provider-env = lib.mkIf (cfg.provider.env-file != null) {
+      file = cfg.provider.env-file;
+    };
 
     systemd.services.arion-agentmemory = {
       wants = [ "network-online.target" ];
@@ -193,7 +201,10 @@ in
             AGENTMEMORY_ALLOW_AGENT_SDK = "false";
             CONSOLIDATION_ENABLED = "false";
           };
-          env_file = [ config.age.secrets.agentmemory-env.path ];
+          env_file = [
+            config.age.secrets.agentmemory-env.path
+          ]
+          ++ lib.optional (cfg.provider.env-file != null) config.age.secrets.agentmemory-provider-env.path;
           volumes = [
             "${config-dir}/data:/data"
             "${config-dir}/home:/home/agentmemory"
