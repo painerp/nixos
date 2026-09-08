@@ -64,6 +64,7 @@ in
     agentmemory = {
       enable = true;
       env-file = secrets.inf-agentmemory-env;
+      provider.env-file = secrets.inf-agentmemory-provider-env;
     };
     authentik = {
       enable = true;

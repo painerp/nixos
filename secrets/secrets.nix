@@ -65,6 +65,7 @@ in
 
   "inf/authentik-proxy.env.age".publicKeys = users ++ [ inf ];
   "inf/agentmemory.env.age".publicKeys = users ++ main_systems ++ [ inf ];
+  "inf/agentmemory-provider.env.age".publicKeys = users ++ [ inf ];
   "inf/jellystat.env.age".publicKeys = users ++ [ inf ];
   "inf/jellystat-pg.env.age".publicKeys = users ++ [ inf ];
   "inf/linkwarden.env.age".publicKeys = users ++ [ inf ];
