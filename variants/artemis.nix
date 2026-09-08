@@ -77,6 +77,7 @@ in
     github-trusted = false;
   };
   modules = {
+    agentmemory-client.enable = true;
     amd.enable = true;
     arion = {
       enable = true;
