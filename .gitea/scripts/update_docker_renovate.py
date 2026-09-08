@@ -41,7 +41,13 @@ def update_renovate_config():
     with open('renovate.json', 'r') as f:
         renovate_config = json.load(f)
 
-    renovate_config['customManagers'] = custom_managers
+    # Only Docker mappings are generated here; retain manually configured
+    # managers for other datasources, such as AgentMemory's npm releases.
+    preserved_managers = [
+        manager for manager in renovate_config.get('customManagers', [])
+        if manager.get('datasourceTemplate') != 'docker'
+    ]
+    renovate_config['customManagers'] = preserved_managers + custom_managers
 
     with open('renovate.json', 'w') as f:
         json.dump(renovate_config, f, indent=2)
