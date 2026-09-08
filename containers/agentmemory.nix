@@ -199,7 +199,6 @@ in
             EMBEDDING_PROVIDER = "local";
             AGENTMEMORY_AUTO_COMPRESS = "false";
             AGENTMEMORY_ALLOW_AGENT_SDK = "false";
-            CONSOLIDATION_ENABLED = "false";
           };
           env_file = [
             config.age.secrets.agentmemory-env.path
