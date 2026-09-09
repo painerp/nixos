@@ -121,7 +121,7 @@ in
         if cfg.image then
           [
             krita
-            upscayl
+            # upscayl
           ]
         else
           [ ]
@@ -131,7 +131,6 @@ in
           [
             mangohud
             heroic
-            lutris
             protonup-ng
             steamguard-cli
             prismlauncher
@@ -166,27 +165,21 @@ in
             anydesk
             direnv
             llm-agents.claude-code
-            opentofu
-            kubectl
+            llm-agents.codex
             ungoogled-chromium
             nixfmt
             nixd
             inputs.nix-deploy.packages.${pkgs.stdenv.hostPlatform.system}.default
             inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
-            lazygit
             (python3.withPackages (python-pkgs: [
               python-pkgs.pytest
               python-pkgs.requests
             ]))
-            jdk
             tokei
-            pkgs-unstable.uv
             jetbrains.webstorm
             jetbrains.rust-rover
             jetbrains.pycharm
             jetbrains.idea
-            jetbrains.clion
-            pkgs-unstable.jetbrains.rider
             eduvpn-client
             pkgs-unstable.pince
           ]
@@ -221,8 +214,10 @@ in
       };
       nh = {
         enable = true;
-        clean.enable = true;
-        clean.extraArgs = "--keep-since 30d --keep 30";
+        clean = {
+          enable = true;
+          extraArgs = "--keep-since 30d --keep 15";
+        };
         flake = "/etc/nixos";
       };
       java = {
