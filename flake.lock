@@ -309,11 +309,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1788911757,
-        "narHash": "sha256-mTCvkvYHBdWXLnH0g8vmIo5zUWw/Y+nJhxBiP4r8WR8=",
+        "lastModified": 1788932393,
+        "narHash": "sha256-xo0f0bAiTuMpm7ISCRoJGnqljcKXHBYdy9U4WgHmbGc=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "657150fbea6f6301c1f7946c8f1b84c413230570",
+        "rev": "4a6df59bfd94e0a0059455a15d0d1df8b7c7610c",
         "type": "github"
       },
       "original": {
@@ -364,11 +364,11 @@
     },
     "nixos-private": {
       "locked": {
-        "lastModified": 1784508735,
-        "narHash": "sha256-IsMr2HbyKKllMkiV2ccRee2UtEEXRN+WFQFLEfUOkTU=",
+        "lastModified": 1788934997,
+        "narHash": "sha256-JLbH40CcD23FPYJ9QVwBeYn9YaYJEWSofijuGXN5AcI=",
         "ref": "refs/heads/main",
-        "rev": "7bc909e88d9813589cd4c2193995761041f01bc6",
-        "revCount": 7,
+        "rev": "d43f5a74e57eb67cf6a87a574393d0b015e1c5db",
+        "revCount": 8,
         "type": "git",
         "url": "ssh://git@github.com/painerp/nixos-private.git"
       },
