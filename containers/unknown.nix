@@ -97,6 +97,7 @@ in
           env_file = [ config.age.secrets.unknown-env.path ];
           volumes = [
             "${cfg.extras-dir}/files:/srv/extras/files"
+            "${cfg.extras-dir}/files/unknown:/downloads"
             "${cfg.extras-dir}/thumbnails:/srv/extras/thumbnails"
           ];
           labels =
