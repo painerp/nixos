@@ -71,6 +71,8 @@ in
           hostname = config.networking.hostName;
           networks = [ "proxy" ];
           environment = {
+            JELLYFIN_CONFIG_DIR = "/config";
+            JELLYFIN_DATA_DIR = "/config/data";
             TZ = config.time.timeZone;
             NVIDIA_VISIBLE_DEVICES = "all";
           };
