@@ -66,13 +66,11 @@ in
           ];
         };
         service = {
-          image = "lscr.io/linuxserver/jellyfin:${cfg.version}";
+          image = "ghcr.io/jellyfin/jellyfin:${cfg.version}";
           container_name = "jellyfin";
           hostname = config.networking.hostName;
           networks = [ "proxy" ];
           environment = {
-            PUID = 1000;
-            PGID = 1000;
             TZ = config.time.timeZone;
             NVIDIA_VISIBLE_DEVICES = "all";
           };
