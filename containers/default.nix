@@ -85,6 +85,7 @@ in
     ./ollama.nix
     ./open-webui.nix
     ./palworld.nix
+    ./paperless.nix
     ./peanut.nix
     ./pihole.nix
     ./pledo.nix
