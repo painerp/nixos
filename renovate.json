@@ -6,9 +6,10 @@
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true,
-    "extends": [
-      "schedule:daily"
-    ]
+    "schedule": [
+      "* * * * 0"
+    ],
+    "updateNotScheduled": false
   },
   "nix": {
     "enabled": true

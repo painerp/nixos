@@ -36,6 +36,11 @@ def update_renovate_config():
             if "linuxserver" in docker_image:
                 custom_manager["extractVersionTemplate"] = "^(?<version>\\d+\\.\\d+\\.\\d+)$"
 
+            # Jellyfin 12+ tags are major.minor only (12.0, 12.1), which strict
+            # semver rejects; docker versioning keeps two-part tags compatible.
+            if docker_image == "ghcr.io/jellyfin/jellyfin":
+                custom_manager["versioningTemplate"] = "docker"
+
             custom_managers.append(custom_manager)
 
     with open('renovate.json', 'r') as f:
