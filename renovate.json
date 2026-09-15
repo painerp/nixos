@@ -93,6 +93,18 @@
         "/variants/.+\\.nix$/"
       ],
       "matchStrings": [
+        "paperless\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver",
+      "depNameTemplate": "ghcr.io/paperless-ngx/paperless-ngx"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/variants/.+\\.nix$/"
+      ],
+      "matchStrings": [
         "immich\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
