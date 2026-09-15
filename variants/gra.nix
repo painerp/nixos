@@ -105,7 +105,7 @@ in
       enable = true;
       internal = true;
       auth = false;
-      version = "12.0";
+      version = "12.1";
       volumes = [
         "${media}/shows:/shows"
         "${media}/movies:/movies"
