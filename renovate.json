@@ -84,7 +84,7 @@
         "jellyfin\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
-      "versioningTemplate": "semver",
+      "versioningTemplate": "docker",
       "depNameTemplate": "ghcr.io/jellyfin/jellyfin"
     },
     {
