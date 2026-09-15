@@ -84,8 +84,7 @@
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver",
-      "depNameTemplate": "lscr.io/linuxserver/jellyfin",
-      "extractVersionTemplate": "^(?<version>\\d+\\.\\d+\\.\\d+)$"
+      "depNameTemplate": "ghcr.io/jellyfin/jellyfin"
     },
     {
       "customType": "regex",
