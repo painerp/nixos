@@ -111,6 +111,12 @@ in
       enable = true;
       env-file = secrets.cit-peanut-env;
     };
+    paperless = {
+      enable = true;
+      auth = false;
+      env-file = secrets.cit-paperless-env;
+      postgres.env-file = secrets.cit-paperless-pg-env;
+    };
     proxmox-backup = {
       enable = true;
       internal = true;
