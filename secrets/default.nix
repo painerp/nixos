@@ -49,6 +49,8 @@
   cit-authentik-pg-env = ./cit/authentik-pg.env.age;
   cit-gluetun-env = ./cit/gluetun.env.age;
   cit-peanut-env = ./cit/peanut.env.age;
+  cit-paperless-env = ./cit/paperless.env.age;
+  cit-paperless-pg-env = ./cit/paperless-pg.env.age;
 
   gam-palworld-env = ./gam/palworld.env.age;
   gam-minecraft-env = ./gam/minecraft.env.age;
