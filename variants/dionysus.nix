@@ -10,7 +10,10 @@ let
   truenas-ip = "100.111.75.128";
 in
 {
-  age.secrets.dionysus-pw.file = secrets.dionysus-dionysus-pw;
+  age.secrets = {
+    dionysus-pw.file = secrets.dionysus-dionysus-pw;
+    age.secrets.deepseek-api-key.file = secrets.dev-deepseek-api-key;
+  };
 
   networking = {
     hostName = "${flake}";
