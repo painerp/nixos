@@ -12,7 +12,7 @@ in
 {
   age.secrets = {
     dionysus-pw.file = secrets.dionysus-dionysus-pw;
-    age.secrets.deepseek-api-key.file = secrets.dev-deepseek-api-key;
+    deepseek-api-key.file = secrets.dev-deepseek-api-key;
   };
 
   networking = {
