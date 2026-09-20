@@ -73,4 +73,6 @@
   artemis-artemis-pw = ./artemis/artemis-pw.age;
 
   demeter-demeter-pw = ./demeter/demeter-pw.age;
+
+  dev-deepseek-api-key = ./dev/deepseek-api-key.age;
 }

@@ -112,4 +112,9 @@ in
   "artemis/artemis-pw.age".publicKeys = users ++ [ artemis ];
 
   "demeter/demeter-pw.age".publicKeys = users ++ [ demeter ];
+
+  "dev/deepseek-api-key.age".publicKeys = users ++ [
+    artemis
+    dionysus
+  ];
 }
