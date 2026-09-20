@@ -12,7 +12,11 @@ in
 {
   age.secrets = {
     dionysus-pw.file = secrets.dionysus-dionysus-pw;
-    deepseek-api-key.file = secrets.dev-deepseek-api-key;
+    deepseek-api-key = {
+      file = secrets.dev-deepseek-api-key;
+      owner = config.system.username;
+      mode = "0400";
+    };
   };
 
   networking = {
