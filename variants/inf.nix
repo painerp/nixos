@@ -93,10 +93,6 @@ in
       env-file = secrets.inf-dawarich-env;
       postgres.env-file = secrets.inf-dawarich-pg-env;
     };
-    lubelogger = {
-      enable = true;
-      auth = false;
-    };
     monitoring.alloy = {
       enable = true;
       loki.address = "100.73.203.96";
