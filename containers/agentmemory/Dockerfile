@@ -8,7 +8,7 @@ WORKDIR /opt/agentmemory
 
 # Keep the SDK on the engine's protocol version. Local embeddings require
 # Transformers.js and its native optional dependencies.
-RUN printf '%s\n' '{"private":true,"overrides":{"iii-sdk":"0.11.2","@huggingface/transformers":"4.2.0"}}' > package.json \
+RUN printf '%s\n' '{"private":true,"overrides":{"iii-sdk":"0.22.1","@huggingface/transformers":"4.2.0"}}' > package.json \
     && npm install --omit=dev --include=optional --no-fund --no-audit \
         @agentmemory/agentmemory@@agentmemory-version@ @huggingface/transformers@4.2.0 \
     && npm cache clean --force
