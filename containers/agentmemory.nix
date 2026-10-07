@@ -197,7 +197,7 @@ in
             VIEWER_ALLOWED_HOSTS = viewer-host;
             VIEWER_ALLOWED_ORIGINS = "https://${viewer-host}";
             EMBEDDING_PROVIDER = "local";
-            AGENTMEMORY_AUTO_COMPRESS = "false";
+            AGENTMEMORY_AUTO_COMPRESS = "true";
             AGENTMEMORY_ALLOW_AGENT_SDK = "false";
             AGENTMEMORY_INJECT_CONTEXT = "true";
           };
