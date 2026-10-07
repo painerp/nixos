@@ -129,7 +129,7 @@ in
     immich = {
       enable = true;
       auth = false;
-      version = "v3.2.2";
+      version = "v3.2.4";
       volumes = [
         "/mnt/immich:/data"
         "/mnt/nextcloud/data/painerp/files/Bilder:/library"
