@@ -63,7 +63,7 @@ in
     inherit tailscale-ip;
     agentmemory = {
       enable = true;
-      version = "0.9.29";
+      version = "0.9.30";
       env-file = secrets.inf-agentmemory-env;
       provider.env-file = secrets.inf-agentmemory-provider-env;
     };

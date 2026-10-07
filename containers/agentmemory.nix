@@ -52,6 +52,7 @@ let
             name = "kv";
             config = {
               store_method = "file_based";
+              save_interval_ms = 2000;
               file_path = "/data/state_store.db";
             };
           };
@@ -77,6 +78,7 @@ let
               name = "kv";
               config = {
                 store_method = "file_based";
+                save_interval_ms = 2000;
                 file_path = "/data/stream_store";
               };
             };
@@ -106,8 +108,8 @@ in
     };
     version = lib.mkOption {
       type = lib.types.str;
-      default = "0.9.29";
-      description = "AgentMemory version; must remain compatible with iii-engine and iii-sdk 0.11.2.";
+      default = "0.9.30";
+      description = "AgentMemory version; must remain compatible with iii-engine and iii-sdk 0.22.1.";
     };
     subdomain = lib.mkOption {
       type = lib.types.str;
@@ -154,14 +156,21 @@ in
       services = {
         engine.service = {
           # Coupled to the worker SDK; do not update independently.
-          image = "docker.io/iiidev/iii:0.11.2";
+          image = "docker.io/iiidev/iii:0.22.1";
           container_name = "agentmemory-engine";
           user = "65532:65532";
+          command = [
+            "--config"
+            "/app/config.yaml"
+            "--no-update-check"
+          ];
           networks = [ "proxy" ];
           volumes = [
             "${config-dir}/data:/data"
             "${engine-config}:/app/config.yaml:ro"
           ];
+          # Re-seed builtin worker settings from the Nix-generated config on every start.
+          tmpfs = [ "/app/config:mode=1777" ];
           # Both listeners live in this container's network namespace.
           labels =
             config.lib.server.mkTraefikLabels {
