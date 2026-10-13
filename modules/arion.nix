@@ -101,6 +101,10 @@ in
       };
     };
 
+    # tailscaled signals ready before tailscale0 has its IP, so ordering alone can't stop
+    # "<tailscale-ip>:port" binds failing at boot (docker 29 then drops the container's networks)
+    boot.kernel.sysctl."net.ipv4.ip_nonlocal_bind" = lib.mkIf cfg.tailscale-dependent 1;
+
     users.users."${config.system.username}".extraGroups = [ "${cfg.backend}" ];
   };
 }
