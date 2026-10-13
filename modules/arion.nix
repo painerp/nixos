@@ -83,23 +83,28 @@ in
       };
     };
 
-    systemd = lib.mkIf (cfg.tailscale-dependent) {
-      services = {
-        docker = lib.attrsets.optionalAttrs (cfg.backend == "docker") {
-          after = [ "tailscaled.service" ];
-          requires = [ "tailscaled.service" ];
-        };
+    systemd = lib.mkMerge [
+      (lib.mkIf (cfg.tailscale-dependent) {
+        services = {
+          docker = lib.attrsets.optionalAttrs (cfg.backend == "docker") {
+            after = [ "tailscaled.service" ];
+            requires = [ "tailscaled.service" ];
+          };
 
-        podman = lib.attrsets.optionalAttrs (cfg.backend == "podman") {
+          podman = lib.attrsets.optionalAttrs (cfg.backend == "podman") {
+            after = [ "tailscaled.service" ];
+            requires = [ "tailscaled.service" ];
+          };
+        };
+        sockets.podman = lib.attrsets.optionalAttrs (cfg.backend == "podman") {
           after = [ "tailscaled.service" ];
           requires = [ "tailscaled.service" ];
         };
-      };
-      sockets.podman = lib.attrsets.optionalAttrs (cfg.backend == "podman") {
-        after = [ "tailscaled.service" ];
-        requires = [ "tailscaled.service" ];
-      };
-    };
+      })
+      # podman.service is socket-activated, so on change switch-to-configuration restarts podman.socket,
+      # recreating podman.sock and leaving every container's docker.sock bind mount pointing at a dead inode
+      (lib.mkIf (cfg.backend == "podman") { services.podman.stopIfChanged = false; })
+    ];
 
     # tailscaled signals ready before tailscale0 has its IP, so ordering alone can't stop
     # "<tailscale-ip>:port" binds failing at boot (docker 29 then drops the container's networks)
