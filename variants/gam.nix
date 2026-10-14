@@ -67,11 +67,13 @@ in
     satisfactory.enable = false;
     minecraft = {
       enable = true;
+      version = "2026.10.0-java25";
+      mc-version = "26.3";
       env-file = secrets.gam-minecraft-env;
       rcon.enable = true;
       backup.enable = true;
       extras = {
-        plugins.modrinth = "axgraves,invsee++,keepchunks:v7LjD3AV,worldedit";
+        plugins.modrinth = "axgraves,invsee-plus-plus,keepchunks:v7LjD3AV,worldedit:beta+,viaversion";
         vanillatweaks = "/data/config/vt-datapacks.json,/data/config/vt-craftingtweaks.json";
       };
     };
