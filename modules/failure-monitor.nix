@@ -56,22 +56,24 @@ in
         TimeoutStartSec = "10min";
       };
 
-      path = with pkgs; [
-        coreutils
-        findutils
-        gawk
-        hostname
-        msmtp
-        systemd
-      ]
-      ++ lib.optionals containersEnabled [ docker-client ];
+      path =
+        with pkgs;
+        [
+          coreutils
+          findutils
+          gawk
+          hostname
+          msmtp
+          systemd
+        ]
+        ++ lib.optionals containersEnabled [ docker-client ];
 
       script = ''
         set -uo pipefail
 
         STATE="$STATE_DIRECTORY"
         mkdir -p "$STATE/seen/units" "$STATE/seen/containers" \
-                 "$STATE/mailed/units" "$STATE/mailed/containers"
+                 "$STATE/mailed/units" "$STATE/mailed/containers" "$STATE/stopped"
 
         # prune mail markers older than the cooldown so items can alert again
         find "$STATE/mailed" -type f -mmin +${toString cfg.emailCooldown} -delete
@@ -160,20 +162,42 @@ in
 
           if $docker_ok; then
             starting=$(docker ps --filter health=starting --format "{{.Names}}" 2>/dev/null) || starting=""
+            # crash-looping containers never turn "unhealthy", docker just keeps restarting them
+            # ponytail: only sees the restarting state, track RestartCount deltas if slow crash loops slip through
+            restarting=$(docker ps --filter status=restarting --format "{{.Names}}" 2>/dev/null) || restarting=""
 
-            # recovery: a container in "starting" is not recovered, keep its marker
-            for marker in "$STATE/seen/containers"/*; do
+            # containers we stopped for crash-looping alert again (once per mail cooldown) while they stay down
+            for marker in "$STATE/stopped"/*; do
               [ -e "$marker" ] || continue
-              contains "$(basename "$marker")" $unhealthy $starting || rm -f "$marker"
+              c=$(basename "$marker")
+              if [ "$(docker inspect --format "{{.State.Status}}" "$c" 2>/dev/null)" = "exited" ]; then
+                confirm "containers/$c"
+              else
+                # started again, recreated or removed: mail right away if it breaks again
+                rm -f "$marker" "$STATE/mailed/containers/$c"
+              fi
             done
 
-            for c in $unhealthy; do
+            # recovery: a container in "starting" or stopped by us is not recovered, keep its marker
+            for marker in "$STATE/seen/containers"/*; do
+              [ -e "$marker" ] || continue
+              c=$(basename "$marker")
+              contains "$c" $unhealthy $starting $restarting || [ -e "$STATE/stopped/$c" ] || rm -f "$marker"
+            done
+
+            for c in $unhealthy $restarting; do
               contains "$c" $EXCLUDED_CONTAINERS && continue
               if [ -e "$STATE/seen/containers/$c" ]; then
                 confirm "containers/$c"
+                # stop crash loops instead of letting them spam the logs
+                if contains "$c" $restarting; then
+                  docker stop "$c" >/dev/null && touch "$STATE/stopped/$c" || echo "WARNING: could not stop container $c"
+                fi
               else
                 touch "$STATE/seen/containers/$c"
               fi
+              # docker is already restarting it
+              contains "$c" $restarting && continue
               docker restart "$c" >/dev/null || echo "WARNING: could not restart container $c"
             done
           fi
@@ -194,7 +218,9 @@ in
                   journalctl -u "$name" -n 15 --no-pager 2>&1 || true
                   ;;
                 containers/*)
+                  [ -e "$STATE/stopped/$name" ] && echo "crash-looping, stopped by failure-monitor - start it again once fixed"
                   docker inspect --format "{{range .State.Health.Log}}{{.End}} exit={{.ExitCode}} {{.Output}}{{end}}" "$name" 2>&1 | tail -5 || true
+                  docker logs --tail 15 "$name" 2>&1 || true
                   ;;
               esac
               echo
