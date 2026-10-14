@@ -66,6 +66,12 @@ in
           type = lib.types.str;
           default = "";
         };
+        # the modrinth helper skips files that already exist by name, so plugins
+        # with unversioned file names (InvSee++.jar) never update unless removed first
+        redownload = lib.mkOption {
+          type = lib.types.str;
+          default = "";
+        };
       };
       vanillatweaks = lib.mkOption {
         type = lib.types.str;
@@ -102,6 +108,10 @@ in
         }
         // lib.attrsets.optionalAttrs (cfg.extras.plugins.modrinth != "") {
           MODRINTH_PROJECTS = cfg.extras.plugins.modrinth;
+        }
+        // lib.attrsets.optionalAttrs (cfg.extras.plugins.redownload != "") {
+          REMOVE_OLD_MODS = "TRUE";
+          REMOVE_OLD_MODS_INCLUDE = cfg.extras.plugins.redownload;
         };
         env_file = [ config.age.secrets.minecraft-env.path ];
         ports =
