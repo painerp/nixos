@@ -45,7 +45,19 @@
         "/variants/.+\\.nix$/"
       ],
       "matchStrings": [
-        "authentik\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+        "minecraft\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker",
+      "depNameTemplate": "docker.io/itzg/minecraft-server"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/variants/.+\\.nix$/"
+      ],
+      "matchStrings": [
+        "authentik\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver",
@@ -57,7 +69,7 @@
         "/variants/.+\\.nix$/"
       ],
       "matchStrings": [
-        "n8n\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+        "n8n\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver",
@@ -69,7 +81,7 @@
         "/variants/.+\\.nix$/"
       ],
       "matchStrings": [
-        "dawarich\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+        "dawarich\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver",
@@ -81,7 +93,7 @@
         "/variants/.+\\.nix$/"
       ],
       "matchStrings": [
-        "jellyfin\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+        "jellyfin\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker",
@@ -93,7 +105,7 @@
         "/variants/.+\\.nix$/"
       ],
       "matchStrings": [
-        "paperless\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+        "paperless\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver",
@@ -105,7 +117,7 @@
         "/variants/.+\\.nix$/"
       ],
       "matchStrings": [
-        "immich\\s*=\\s*\\{[^}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+        "immich\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver",
