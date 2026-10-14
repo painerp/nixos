@@ -26,7 +26,8 @@ def update_renovate_config():
                 "customType": "regex",
                 "managerFilePatterns": ["/variants/.+\\.nix$/"],
                 "matchStrings": [
-                    f"{service_name}\\s*=\\s*\\{{[^}}]*?version\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}}]*?\\}}"
+                    # \s before version so options like mc-version are not matched
+                    f"{service_name}\\s*=\\s*\\{{[^}}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}}]*?\\}}"
                 ],
                 "datasourceTemplate": "docker",
                 "versioningTemplate": "semver",
@@ -38,7 +39,9 @@ def update_renovate_config():
 
             # Jellyfin 12+ tags are major.minor only (12.0, 12.1), which strict
             # semver rejects; docker versioning keeps two-part tags compatible.
-            if docker_image == "ghcr.io/jellyfin/jellyfin":
+            # itzg tags carry a java suffix (2026.10.0-java25) that semver reads
+            # as a prerelease; docker versioning only updates within the suffix.
+            if docker_image in ("ghcr.io/jellyfin/jellyfin", "docker.io/itzg/minecraft-server"):
                 custom_manager["versioningTemplate"] = "docker"
 
             custom_managers.append(custom_manager)

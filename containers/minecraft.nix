@@ -19,6 +19,15 @@ in
       default = !cfg.expose;
     };
     env-file = lib.mkOption { type = lib.types.path; };
+    version = lib.mkOption {
+      type = lib.types.str;
+      default = "latest";
+    };
+    mc-version = lib.mkOption {
+      type = lib.types.str;
+      default = "LATEST";
+      description = "Minecraft version, pin it so plugins are not broken by surprise upgrades";
+    };
     server-type = lib.mkOption {
       type = lib.types.str;
       default = "PURPUR";
@@ -77,13 +86,14 @@ in
       project.name = "minecraft";
 
       services.minecraft.service = {
-        image = "docker.io/itzg/minecraft-server:latest";
+        image = "docker.io/itzg/minecraft-server:${cfg.version}";
         container_name = "minecraft";
         hostname = config.networking.hostName;
         tty = true;
         environment = {
           EULA = "TRUE";
           TYPE = cfg.server-type;
+          VERSION = cfg.mc-version;
           SNOOPER_ENABLED = "FALSE";
           MAX_MEMORY = cfg.max-memory;
         }
