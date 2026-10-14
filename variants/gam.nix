@@ -74,6 +74,7 @@ in
       backup.enable = true;
       extras = {
         plugins.modrinth = "axgraves,invsee-plus-plus,keepchunks:v7LjD3AV,worldedit:beta+,viaversion,datapack:kath-beacon-extended,datapack:dynamic-lights?";
+        plugins.redownload = "InvSee++.jar";
         vanillatweaks = "/data/config/vt-datapacks.json,/data/config/vt-craftingtweaks.json";
       };
     };
