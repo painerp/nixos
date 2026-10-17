@@ -97,6 +97,7 @@ in
     ./radarr.nix
     ./readarr.nix
     ./renovate.nix
+    ./rndlm.nix
     ./sabnzbd.nix
     ./satisfactory.nix
     ./sonarr.nix
