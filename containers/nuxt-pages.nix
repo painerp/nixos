@@ -176,8 +176,7 @@ in
               };
               env_file = [ config.age.secrets.nuxt-pages-env.path ];
               volumes = [
-                "${config-dir}/nuxt-app/upload:/srv/upload"
-                "${config-dir}/nuxt-app/cache:/srv/public/cache"
+                "${config-dir}/nuxt-app/data:/srv/data"
               ];
               labels =
                 config.lib.server.mkTraefikLabels {
