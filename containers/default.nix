@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   arion,
   agenix,
   ...
@@ -115,5 +116,23 @@ in
     lib.server.mkServiceSubdomain = subdomain: "${subdomain}.${config.server.domain}";
     lib.server.mkConfigDir = name: "${config.server.config-dir}/${name}";
     lib.server.boolToStr = b: if b then "true" else "false";
+    lib.server.mkMysqlBackup =
+      { container, dir }:
+      {
+        startAt = "*-*-* 23:30:00";
+        path = [
+          pkgs.docker-client
+          pkgs.gzip
+        ];
+        serviceConfig.Type = "oneshot";
+        script = ''
+          set -o pipefail
+          mkdir -p ${dir}
+          docker exec ${container} sh -c 'MYSQL_PWD="''${MARIADB_ROOT_PASSWORD:-$MYSQL_ROOT_PASSWORD}" exec mariadb-dump -uroot --all-databases --single-transaction --routines --events' \
+            | gzip > ${dir}/.dump.tmp
+          mv ${dir}/.dump.tmp "${dir}/$(date +%F).sql.gz"
+          find ${dir} -name '*.sql.gz' -mtime +6 -delete
+        '';
+      };
   };
 }

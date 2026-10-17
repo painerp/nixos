@@ -90,6 +90,13 @@ in
           after = [ "network-online.target" ];
         };
 
+        systemd.services.nuxt-mysql-backup = config.lib.server.mkMysqlBackup {
+          container = "nuxt-mysql";
+          dir = "${config-dir}/mysql-backup";
+        };
+        # raw mariadb files aren't restore-safe, the dumps above cover it
+        modules.borg.exclude = [ (lib.removePrefix "/root/" "${config-dir}/mysql") ];
+
         server.traefik.aliases =
           with config.lib.server;
           mkTraefikAlias {
