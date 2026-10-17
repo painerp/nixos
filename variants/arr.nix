@@ -86,11 +86,11 @@ in
         "${media}/shows:/shows"
       ];
     };
-    prdl = {
+    rndlm = {
       enable = true;
       auth = false;
-      image = inputs.nixos-private.hosts."${flake}".prdl.image;
-      env-file = secrets.arr-prdl-env;
+      image = inputs.nixos-private.hosts."${flake}".rndlm.image;
+      env-file = secrets.arr-rndlm-env;
       volumes = [
         "${unprocessed}/movies:/movies"
         "${unprocessed}/shows:/shows"
