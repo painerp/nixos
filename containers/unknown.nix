@@ -63,6 +63,13 @@ in
       after = [ "network-online.target" ];
     };
 
+    systemd.services.unknown-mysql-backup = config.lib.server.mkMysqlBackup {
+      container = "unknown-mysql";
+      dir = "${config-dir}/mysql-backup";
+    };
+    # raw mariadb files aren't restore-safe, the dumps above cover it
+    modules.borg.exclude = [ (lib.removePrefix "/root/" "${config-dir}/mysql") ];
+
     server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.unknown.settings = {
