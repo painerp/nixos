@@ -70,6 +70,7 @@ in
         enable = true;
         root = true;
         auth = false;
+        compress = true;
         image = inputs.nixos-private.hosts."${flake}".nuxt-pages.app.image;
         env-file = secrets.ext-nuxt-pages-env;
       };
