@@ -43,6 +43,10 @@ in
         type = lib.types.bool;
         default = config.server.authentik.enable;
       };
+      compress = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
       image = lib.mkOption {
         type = lib.types.str;
         description = "The docker image to use for the nuxt app";
@@ -173,6 +177,7 @@ in
                   port = "3000";
                   subdomain = "${cfg.app.subdomain}";
                   forwardAuth = cfg.app.auth;
+                  compress = cfg.app.compress;
                   root = cfg.app.root;
                 }
                 // {
