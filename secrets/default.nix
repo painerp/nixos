@@ -57,7 +57,7 @@
 
   arr-authentik-proxy-env = ./arr/authentik-proxy.env.age;
   arr-gluetun-env = ./arr/gluetun.env.age;
-  arr-prdl-env = ./arr/prdl.env.age;
+  arr-rndlm-env = ./arr/rndlm.env.age;
 
   run-act-runner-env = ./run/act-runner.env.age;
   run-renovate-env = ./run/renovate.env.age;

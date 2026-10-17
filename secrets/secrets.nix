@@ -96,7 +96,7 @@ in
 
   "arr/authentik-proxy.env.age".publicKeys = users ++ [ arr ];
   "arr/gluetun.env.age".publicKeys = users ++ [ arr ];
-  "arr/prdl.env.age".publicKeys = users ++ [ arr ];
+  "arr/rndlm.env.age".publicKeys = users ++ [ arr ];
 
   "run/act-runner.env.age".publicKeys = users ++ [ run ];
   "run/renovate.env.age".publicKeys = users ++ [ run ];
