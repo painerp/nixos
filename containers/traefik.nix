@@ -144,6 +144,12 @@ in
             if (builtins.hasAttr "root" options && options.root) then domain else "${subdomain}.${domain}";
           rule = if (builtins.hasAttr "rule" options) then options.rule else "Host(`${host}`)";
           forwardAuth = (builtins.hasAttr "forwardAuth" options && options.forwardAuth);
+          compress = (builtins.hasAttr "compress" options && options.compress);
+          middlewares = lib.filter (m: m != "") (
+            lib.optional forwardAuth "authentik@docker"
+            ++ lib.optional (builtins.hasAttr "middleware" options) options.middleware
+            ++ lib.optional compress "compress@docker"
+          );
         in
         {
           "traefik.enable" = "true";
@@ -163,11 +169,8 @@ in
         // lib.attrsets.optionalAttrs (builtins.hasAttr "transport" options) {
           "traefik.http.services.${name}.loadbalancer.serverstransport" = "${options.transport}";
         }
-        // lib.attrsets.optionalAttrs (builtins.hasAttr "middleware" options) {
-          "traefik.http.routers.${name}.middlewares" = "${options.middleware}";
-        }
-        // lib.attrsets.optionalAttrs forwardAuth {
-          "traefik.http.routers.${name}.middlewares" = "authentik@docker";
+        // lib.attrsets.optionalAttrs (middlewares != [ ]) {
+          "traefik.http.routers.${name}.middlewares" = lib.concatStringsSep "," middlewares;
         }
         // lib.attrsets.optionalAttrs (service == "api@internal" && config.server.traefik.wildcard) {
           "traefik.http.routers.${name}.tls.domains[0].main" = "${config.server.domain}";
@@ -267,6 +270,11 @@ in
             service = "api@internal";
             subdomain = "${cfg.subdomain}";
             forwardAuth = cfg.auth;
+          }
+          // {
+            "traefik.http.middlewares.compress.compress" = "true";
+            "traefik.http.middlewares.compress.compress.includedContentTypes" =
+              "text/html,text/css,text/plain,text/javascript,application/javascript,application/json,application/manifest+json,image/svg+xml,application/xml";
           }
           // {
             "com.centurylinklabs.watchtower.enable" = "true";
