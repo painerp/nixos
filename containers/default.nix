@@ -116,8 +116,20 @@ in
     lib.server.mkServiceSubdomain = subdomain: "${subdomain}.${config.server.domain}";
     lib.server.mkConfigDir = name: "${config.server.config-dir}/${name}";
     lib.server.boolToStr = b: if b then "true" else "false";
-    lib.server.mkMysqlBackup =
-      { container, dir }:
+    lib.server.mkDbBackup =
+      {
+        type,
+        container,
+        dir,
+      }:
+      let
+        dump =
+          {
+            mysql = ''MYSQL_PWD="''${MARIADB_ROOT_PASSWORD:-$MYSQL_ROOT_PASSWORD}" exec mariadb-dump -uroot --all-databases --single-transaction --routines --events'';
+            postgres = ''exec pg_dumpall --clean --if-exists -U "$POSTGRES_USER"'';
+          }
+          .${type};
+      in
       {
         startAt = "*-*-* 23:30:00";
         path = [
@@ -128,8 +140,7 @@ in
         script = ''
           set -o pipefail
           mkdir -p ${dir}
-          docker exec ${container} sh -c 'MYSQL_PWD="''${MARIADB_ROOT_PASSWORD:-$MYSQL_ROOT_PASSWORD}" exec mariadb-dump -uroot --all-databases --single-transaction --routines --events' \
-            | gzip > ${dir}/.dump.tmp
+          docker exec ${container} sh -c '${dump}' | gzip > ${dir}/.dump.tmp
           mv ${dir}/.dump.tmp "${dir}/$(date +%F).sql.gz"
           find ${dir} -name '*.sql.gz' -mtime +6 -delete
         '';

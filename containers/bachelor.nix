@@ -48,6 +48,13 @@ in
       after = [ "network-online.target" ];
     };
 
+    systemd.services.bachelor-pg-backup = config.lib.server.mkDbBackup {
+      type = "postgres";
+      container = "bachelor-pg";
+      dir = "${config-dir}/postgres-backup";
+    };
+    modules.borg.exclude = [ (lib.removePrefix "/root/" "${config-dir}/postgres") ];
+
     server.traefik.aliases = config.lib.server.mkTraefikAlias {
       subdomain = cfg.subdomain;
       domain = cfg.domain;

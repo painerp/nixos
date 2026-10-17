@@ -70,6 +70,13 @@ in
       after = [ "network-online.target" ];
     };
 
+    systemd.services.dawarich-pg-backup = config.lib.server.mkDbBackup {
+      type = "postgres";
+      container = "dawarich_db";
+      dir = "${config-dir}/postgres-backup";
+    };
+    modules.borg.exclude = [ (lib.removePrefix "/root/" "${config-dir}/database") ];
+
     server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.dawarich.settings = {

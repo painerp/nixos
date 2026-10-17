@@ -34,6 +34,15 @@ in
       after = [ "network-online.target" ];
     };
 
+    systemd.services.jellystat-pg-backup = config.lib.server.mkDbBackup {
+      type = "postgres";
+      container = "jellystat-pg";
+      dir = "${config.lib.server.mkConfigDir "jellystat"}/postgres-backup";
+    };
+    modules.borg.exclude = [
+      (lib.removePrefix "/root/" (config.lib.server.mkConfigDir "jellystat/database"))
+    ];
+
     server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.jellystat.settings = {
