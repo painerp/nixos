@@ -73,6 +73,17 @@ in
       after = [ "network-online.target" ];
     };
 
+    systemd.services.authentik-pg-backup = lib.mkIf (!cfg.proxy) (
+      config.lib.server.mkDbBackup {
+        type = "postgres";
+        container = "authentik-pg";
+        dir = "${config-dir}/postgres-backup";
+      }
+    );
+    modules.borg.exclude = lib.mkIf (!cfg.proxy) [
+      (lib.removePrefix "/root/" "${config-dir}/database")
+    ];
+
     server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = subdomain; };
 
     virtualisation.arion.projects.authentik.settings = {

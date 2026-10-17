@@ -90,7 +90,8 @@ in
           after = [ "network-online.target" ];
         };
 
-        systemd.services.nuxt-mysql-backup = config.lib.server.mkMysqlBackup {
+        systemd.services.nuxt-mysql-backup = config.lib.server.mkDbBackup {
+          type = "mysql";
           container = "nuxt-mysql";
           dir = "${config-dir}/mysql-backup";
         };

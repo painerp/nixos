@@ -30,6 +30,15 @@ in
       after = [ "network-online.target" ];
     };
 
+    systemd.services.linkwarden-pg-backup = config.lib.server.mkDbBackup {
+      type = "postgres";
+      container = "linkwarden-pg";
+      dir = "${config.lib.server.mkConfigDir "linkwarden"}/postgres-backup";
+    };
+    modules.borg.exclude = [
+      (lib.removePrefix "/root/" (config.lib.server.mkConfigDir "linkwarden/postgres"))
+    ];
+
     server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.linkwarden.settings = {

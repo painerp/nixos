@@ -52,6 +52,13 @@ in
       after = [ "network-online.target" ];
     };
 
+    systemd.services.immich-pg-backup = config.lib.server.mkDbBackup {
+      type = "postgres";
+      container = "immich_postgres";
+      dir = "${config-dir}/postgres-backup";
+    };
+    modules.borg.exclude = [ (lib.removePrefix "/root/" "${config-dir}/postgres") ];
+
     server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 
     virtualisation.arion.projects.immich.settings = {

@@ -63,7 +63,8 @@ in
       after = [ "network-online.target" ];
     };
 
-    systemd.services.unknown-mysql-backup = config.lib.server.mkMysqlBackup {
+    systemd.services.unknown-mysql-backup = config.lib.server.mkDbBackup {
+      type = "mysql";
       container = "unknown-mysql";
       dir = "${config-dir}/mysql-backup";
     };
