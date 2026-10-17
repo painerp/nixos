@@ -8,6 +8,7 @@
 let
   flake = "sex";
   tailscale-ip = "100.82.15.66";
+  truenas-ip = "100.111.75.128";
 in
 {
   networking.hostName = "nix${flake}";
@@ -24,6 +25,15 @@ in
 
   swapDevices = [ { device = "/dev/disk/by-uuid/4922412f-2a31-4239-8c30-ad2b0f0c94ca"; } ];
 
+  fileSystems."/mnt/backup" = {
+    device = "${truenas-ip}:/mnt/hdd/backup/servers/nix${flake}";
+    fsType = "nfs";
+    options = [
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
+    ];
+  };
+
   # system
   system = {
     inherit flake;
@@ -33,6 +43,7 @@ in
       enable = true;
       tailscale-dependent = true;
     };
+    borg.enable = true;
   };
 
   # services
