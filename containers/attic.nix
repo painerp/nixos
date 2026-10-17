@@ -65,11 +65,11 @@ in
             port = "8080";
             subdomain = cfg.subdomain;
             forwardAuth = cfg.auth;
+            middleware = "attic-timeout@docker";
           }
           // {
             "traefik.http.middlewares.attic-timeout.buffering.maxRequestBodyBytes" = "0";
             "traefik.http.middlewares.attic-timeout.buffering.maxResponseBodyBytes" = "0";
-            "traefik.http.routers.attic.middlewares" = "attic-timeout@docker";
           }
           // {
             "com.centurylinklabs.watchtower.enable" = "true";
