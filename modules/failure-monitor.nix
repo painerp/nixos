@@ -73,7 +73,7 @@ in
 
         STATE="$STATE_DIRECTORY"
         mkdir -p "$STATE/seen/units" "$STATE/seen/containers" \
-                 "$STATE/mailed/units" "$STATE/mailed/containers" "$STATE/stopped"
+                 "$STATE/mailed/units" "$STATE/mailed/containers" "$STATE/stopped" "$STATE/restarts"
 
         # prune mail markers older than the cooldown so items can alert again
         find "$STATE/mailed" -type f -mmin +${toString cfg.emailCooldown} -delete
@@ -163,8 +163,17 @@ in
           if $docker_ok; then
             starting=$(docker ps --filter health=starting --format "{{.Names}}" 2>/dev/null) || starting=""
             # crash-looping containers never turn "unhealthy", docker just keeps restarting them
-            # ponytail: only sees the restarting state, track RestartCount deltas if slow crash loops slip through
             restarting=$(docker ps --filter status=restarting --format "{{.Names}}" 2>/dev/null) || restarting=""
+            # slow crash loops spend most of their time running, so a restart count that went up
+            # since the last run counts as restarting too (recreated containers start again at 0)
+            for c in $(docker ps -a --format "{{.Names}}" 2>/dev/null); do
+              n=$(docker inspect --format "{{.RestartCount}}" "$c" 2>/dev/null) || continue
+              prev=$(cat "$STATE/restarts/$c" 2>/dev/null || echo "$n")
+              echo "$n" > "$STATE/restarts/$c"
+              if [ "$n" -gt "$prev" ] && ! contains "$c" $restarting; then
+                restarting="$restarting $c"
+              fi
+            done
 
             # containers we stopped for crash-looping alert again (once per mail cooldown) while they stay down
             for marker in "$STATE/stopped"/*; do
