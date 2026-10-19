@@ -39,6 +39,7 @@ in
         container_name = "peanut";
         hostname = config.networking.hostName;
         networks = [ "proxy" ];
+        ports = [ "127.0.0.1:20004:8080/tcp" ];
         sysctls = {
           "net.ipv6.conf.all.disable_ipv6" = 1;
         };
