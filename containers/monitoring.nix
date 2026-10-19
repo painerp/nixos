@@ -178,12 +178,13 @@ let
     ''}
 
     ${lib.optionalString (config.server.peanut.enable) ''
-      // Metrics: Peanut
+      // Metrics: Peanut (local port, traefik puts it behind authentik)
       prometheus.scrape "peanut" {
         targets = [{
-          __address__ = "peanut.${config.server.domain}/api/v1/metrics",
+          __address__ = "127.0.0.1:20004",
           instance    = "${config.networking.hostName}",
         }]
+        metrics_path = "/api/v1/metrics"
         forward_to = [prometheus.remote_write.default.receiver]
         scrape_interval = "30s"
         job_name = "peanut"
