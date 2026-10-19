@@ -80,11 +80,7 @@ in
     };
     minecraft-bluemap = {
       enable = true;
-      volumes = [
-        "${minecraft-path}/world:/app/world"
-        "${minecraft-path}/world_nether:/app/world_nether"
-        "${minecraft-path}/world_the_end:/app/world_the_end"
-      ];
+      volumes = [ "${minecraft-path}/world:/app/world" ];
     };
     monitoring.alloy = {
       enable = true;
