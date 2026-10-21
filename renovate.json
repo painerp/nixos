@@ -69,6 +69,18 @@
         "/variants/.+\\.nix$/"
       ],
       "matchStrings": [
+        "forgejo-runner\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver",
+      "depNameTemplate": "data.forgejo.org/forgejo/runner"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/variants/.+\\.nix$/"
+      ],
+      "matchStrings": [
         "n8n\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
