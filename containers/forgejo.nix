@@ -2,6 +2,7 @@
 
 let
   cfg = config.server.forgejo;
+  host = "${cfg.subdomain}.${config.server.domain}";
 in
 {
   options.server.forgejo = {
@@ -40,13 +41,18 @@ in
         environment = {
           USER_UID = 1050;
           USER_GID = 1050;
-          FORGEJO__migrations__ALLOW_LOCALNETWORKS = "true";
+          FORGEJO__server__DOMAIN = host;
+          FORGEJO__server__SSH_DOMAIN = host;
+          FORGEJO__server__ROOT_URL = "https://${host}/";
+          FORGEJO__actions__DEFAULT_ACTIONS_URL = "https://github.com";
         };
         volumes = [
           "${config.lib.server.mkConfigDir "forgejo"}:/data"
+          "/home/git/.ssh/:/data/git/.ssh"
           "/etc/timezone:/etc/timezone:ro"
           "/etc/localtime:/etc/localtime:ro"
         ];
+        ports = [ "127.0.0.1:2222:22/tcp" ];
         labels =
           config.lib.server.mkTraefikLabels {
             name = "forgejo";
