@@ -57,7 +57,7 @@ in
     authentik = {
       enable = true;
       subdomain = "auth";
-      version = "2026.8.4";
+      version = "2026.8.5";
       env-file = secrets.ext-authentik-env;
       postgres.env-file = secrets.ext-authentik-pg-env;
     };
