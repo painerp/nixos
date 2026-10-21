@@ -128,6 +128,10 @@ in
       auth = false;
       internal = false;
     };
+    forgejo = {
+      enable = true;
+      version = "17.0.0";
+    };
     home-assistant = {
       enable = true;
       auth = false;
