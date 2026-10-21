@@ -17,6 +17,12 @@ in
       type = lib.types.str;
       default = "5m";
     };
+    platform = lib.mkOption {
+      type = lib.types.enum [
+        "gitea"
+        "forgejo"
+      ];
+    };
     env-file = lib.mkOption { type = lib.types.path; };
     ssh = lib.mkOption {
       type = lib.types.bool;
@@ -48,7 +54,7 @@ in
         container_name = "renovate";
         hostname = config.networking.hostName;
         environment = {
-          RENOVATE_PLATFORM = "gitea";
+          RENOVATE_PLATFORM = cfg.platform;
           RENOVATE_AUTODISCOVER = "true";
           RENOVATE_OPTIMIZE_FOR_DISABLED = "true";
           RENOVATE_PERSIST_REPO_DATA = "true";
