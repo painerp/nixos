@@ -49,6 +49,7 @@ in
     };
     renovate = {
       enable = true;
+      platform = "forgejo";
       ssh = true;
       timer = "1h";
       env-file = secrets.run-renovate-env;
