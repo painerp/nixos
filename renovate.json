@@ -93,6 +93,18 @@
         "/variants/.+\\.nix$/"
       ],
       "matchStrings": [
+        "forgejo\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver",
+      "depNameTemplate": "codeberg.org/forgejo/forgejo"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/variants/.+\\.nix$/"
+      ],
+      "matchStrings": [
         "jellyfin\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
