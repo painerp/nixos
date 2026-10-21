@@ -10,7 +10,12 @@ let
   cfg = config.modules.arion;
   autoPrune = {
     enable = true;
-    dates = "01:00";
+    dates = "05:00";
+    flags = [
+      "--all"
+      "--filter"
+      "until=24h"
+    ];
   };
 in
 {
