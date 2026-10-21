@@ -122,14 +122,9 @@ in
       internal = true;
       volumes = [ "/mnt/pve-backup:/backups" ];
     };
-    gitea = {
-      enable = true;
-      subdomain = "git";
-      auth = false;
-      internal = false;
-    };
     forgejo = {
       enable = true;
+      subdomain = "git";
       version = "17.0.0";
       auth = false;
     };
