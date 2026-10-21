@@ -44,6 +44,7 @@ in
           FORGEJO__server__DOMAIN = host;
           FORGEJO__server__SSH_DOMAIN = host;
           FORGEJO__server__ROOT_URL = "https://${host}/";
+          FORGEJO__server__SSH_ALLOW_UNEXPECTED_AUTHORIZED_KEYS = "true";
           FORGEJO__actions__DEFAULT_ACTIONS_URL = "https://github.com";
         };
         volumes = [
