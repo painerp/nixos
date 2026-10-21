@@ -61,6 +61,7 @@ in
     ./bazarr.nix
     ./dashboard.nix
     ./dawarich.nix
+    ./forgejo.nix
     ./gitea.nix
     ./gluetun.nix
     ./gotify.nix
