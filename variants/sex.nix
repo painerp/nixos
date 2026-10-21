@@ -41,6 +41,7 @@ in
   modules = {
     arion = {
       enable = true;
+      registry-login = true;
       tailscale-dependent = true;
     };
     borg.enable = true;
@@ -129,7 +130,6 @@ in
     };
     watchtower = {
       enable = true;
-      internal-services = true;
     };
   };
 

@@ -29,7 +29,10 @@ in
     inherit flake;
   };
   modules = {
-    arion.enable = true;
+    arion = {
+      enable = true;
+      registry-login = true;
+    };
     kodi.enable = false;
     tailscale.subnet-router = true;
   };
@@ -61,7 +64,6 @@ in
     };
     watchtower = {
       enable = true;
-      internal-services = true;
       schedule = "0 0 3 * * *";
     };
   };

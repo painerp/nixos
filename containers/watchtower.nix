@@ -16,7 +16,7 @@ in
     };
     internal-services = lib.mkOption {
       type = lib.types.bool;
-      default = false;
+      default = config.modules.arion.registry-login;
     };
     schedule = lib.mkOption {
       type = lib.types.str;

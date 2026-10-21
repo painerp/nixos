@@ -51,6 +51,7 @@ in
   modules = {
     arion = {
       enable = true;
+      registry-login = true;
       backend = "podman";
       tailscale-dependent = true;
     };
@@ -104,7 +105,6 @@ in
     };
     watchtower = {
       enable = true;
-      internal-services = true;
     };
   };
 
