@@ -59,7 +59,7 @@
   arr-gluetun-env = ./arr/gluetun.env.age;
   arr-rndlm-env = ./arr/rndlm.env.age;
 
-  run-act-runner-env = ./run/act-runner.env.age;
+  run-forgejo-runner-config = ./run/forgejo-runner.yml.age;
   run-renovate-env = ./run/renovate.env.age;
 
   log-authentik-proxy-env = ./log/authentik-proxy.env.age;

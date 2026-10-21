@@ -42,9 +42,10 @@ in
   server = {
     subdomain = "local";
     inherit tailscale-ip;
-    act-runner = {
+    forgejo-runner = {
       enable = true;
-      env-file = secrets.run-act-runner-env;
+      version = "13.2.0";
+      config-file = secrets.run-forgejo-runner-config;
     };
     renovate = {
       enable = true;
