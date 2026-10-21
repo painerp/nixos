@@ -46,6 +46,12 @@ in
   "pkgs/upload-file.age".publicKeys = users ++ main_systems;
 
   "extras/smtp.age".publicKeys = users ++ systems ++ external_systems ++ main_systems;
+  "extras/docker-config.json.age".publicKeys = users ++ [
+    fpi
+    inf
+    arr
+    sex
+  ];
 
   "jbx/wifi.age".publicKeys = users ++ [ jbx ];
 

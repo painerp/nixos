@@ -6,6 +6,7 @@
   pkgs-upload-file = ./pkgs/upload-file.age;
 
   extras-smtp = ./extras/smtp.age;
+  extras-docker-config = ./extras/docker-config.json.age;
 
   # variants
   fpi-wifi = ./fpi/wifi.age;

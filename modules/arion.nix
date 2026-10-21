@@ -2,6 +2,7 @@
   lib,
   inputs,
   config,
+  secrets,
   pkgs,
   ...
 }:
@@ -36,6 +37,11 @@ in
       ];
       default = "docker";
       description = "Container backend to use for arion";
+    };
+    registry-login = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Install /root/.docker/config.json from agenix, the login for images from the own registry";
     };
     tailscale-dependent = lib.mkOption {
       type = lib.types.bool;
@@ -114,6 +120,11 @@ in
     # tailscaled signals ready before tailscale0 has its IP, so ordering alone can't stop
     # "<tailscale-ip>:port" binds failing at boot (docker 29 then drops the container's networks)
     boot.kernel.sysctl."net.ipv4.ip_nonlocal_bind" = lib.mkIf cfg.tailscale-dependent 1;
+
+    age.secrets.docker-config = lib.mkIf cfg.registry-login {
+      file = secrets.extras-docker-config;
+      path = "/root/.docker/config.json";
+    };
 
     users.users."${config.system.username}".extraGroups = [ "${cfg.backend}" ];
   };
