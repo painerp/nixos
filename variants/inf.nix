@@ -70,7 +70,7 @@ in
     authentik = {
       enable = true;
       proxy = true;
-      version = "2026.8.4";
+      version = "2026.8.5";
       env-file = secrets.inf-authentik-proxy-env;
     };
     dashboard.enable = true;
