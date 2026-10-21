@@ -62,6 +62,7 @@ in
     ./dashboard.nix
     ./dawarich.nix
     ./forgejo.nix
+    ./forgejo-runner.nix
     ./gitea.nix
     ./gluetun.nix
     ./gotify.nix
