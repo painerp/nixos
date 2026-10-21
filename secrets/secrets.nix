@@ -98,7 +98,7 @@ in
   "arr/gluetun.env.age".publicKeys = users ++ [ arr ];
   "arr/rndlm.env.age".publicKeys = users ++ [ arr ];
 
-  "run/act-runner.env.age".publicKeys = users ++ [ run ];
+  "run/forgejo-runner.yml.age".publicKeys = users ++ [ run ];
   "run/renovate.env.age".publicKeys = users ++ [ run ];
 
   "log/authentik-proxy.env.age".publicKeys = users ++ [ log ];
