@@ -131,6 +131,7 @@ in
     forgejo = {
       enable = true;
       version = "17.0.0";
+      auth = false;
     };
     home-assistant = {
       enable = true;
