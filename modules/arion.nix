@@ -115,6 +115,18 @@ in
       # podman.service is socket-activated, so on change switch-to-configuration restarts podman.socket,
       # recreating podman.sock and leaving every container's docker.sock bind mount pointing at a dead inode
       (lib.mkIf (cfg.backend == "podman") { services.podman.stopIfChanged = false; })
+      # upstream's unit runs plain `arion up`, which leaves containers of services removed from a project running
+      {
+        services = lib.mapAttrs' (
+          _: project:
+          lib.nameValuePair project.serviceName {
+            script = lib.mkForce ''
+              echo 1>&2 "docker compose file: $ARION_PREBUILT"
+              arion --prebuilt-file "$ARION_PREBUILT" up --remove-orphans
+            '';
+          }
+        ) config.virtualisation.arion.projects;
+      }
     ];
 
     # tailscaled signals ready before tailscale0 has its IP, so ordering alone can't stop
