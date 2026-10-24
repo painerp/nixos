@@ -10,8 +10,9 @@ let
     DATABASE_USERNAME = "postgres";
     DATABASE_NAME = "dawarich";
     MIN_MINUTES_SPENT_IN_CITY = 60;
-    BACKGROUND_PROCESSING_CONCURRENCY = 3;
-    WEB_CONCURRENCY = 1;
+    BACKGROUND_PROCESSING_CONCURRENCY = 2;
+    SIDEKIQ_EMBEDDED = "true";
+    WEB_CONCURRENCY = 0;
     APPLICATION_HOSTS = "localhost,${cfg.subdomain}.${config.server.domain}";
     APPLICATION_PROTOCOL = "http";
     TIME_ZONE = config.time.timeZone;
@@ -127,43 +128,7 @@ in
               );
             };
           restart = "unless-stopped";
-        };
-      };
-
-      services.dawarich-sidekiq = {
-        service = {
-          image = "docker.io/freikin/dawarich:${cfg.version}";
-          container_name = "dawarich_sidekiq";
-          hostname = config.networking.hostName;
-          networks = [
-            "proxy"
-            "backend"
-          ];
-          entrypoint = "sidekiq-entrypoint.sh";
-          command = [
-            "sidekiq"
-          ];
-          tty = true;
-          environment = default-env // {
-            BACKGROUND_PROCESSING_CONCURRENCY = "10";
-          };
-          env_file = [ config.age.secrets.dawarich-env.path ];
-          volumes = [
-            "${config-dir}/public:/var/app/public"
-            "${config-dir}/watched:/var/app/tmp/imports/watched"
-            "${config-dir}/storage:/var/app/storage"
-          ];
-          depends_on = [
-            "database"
-            "redis"
-            "dawarich-server"
-          ];
-          labels = {
-            "com.centurylinklabs.watchtower.enable" = config.lib.server.boolToStr (
-              cfg.version == default-version
-            );
-          };
-          restart = "unless-stopped";
+          stop_grace_period = "60s";
         };
       };
 
