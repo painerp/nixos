@@ -1,12 +1,17 @@
 {
   lib,
   config,
+  pkgs,
   secrets,
   ...
 }:
 
 let
   cfg = config.server.tsmusicbot;
+  ytdlp-conf = pkgs.writeText "yt-dlp.conf" ''
+    --proxy socks5h://warp:1080
+    --extractor-args "youtubepot-bgutilhttp:base_url=http://bgutil:4416"
+  '';
 in
 {
   options.server.tsmusicbot = {
@@ -41,6 +46,7 @@ in
         hostname = config.networking.hostName;
         networks = [
           "proxy"
+          "default"
         ]
         ++ (if (config.server.teamspeak.enable) then [ "teamspeak" ] else [ ]);
         environment = {
@@ -48,7 +54,11 @@ in
         };
         volumes = [
           "${config.lib.server.mkConfigDir "tsmusicbot"}/config.json:/app/config.json"
-          "${config.lib.server.mkConfigDir "tsmusicbot"}/cookies.txt:/app/cookies.txt"
+          "${ytdlp-conf}:/etc/yt-dlp.conf:ro"
+        ];
+        depends_on = [
+          "warp"
+          "bgutil"
         ];
         labels =
           config.lib.server.mkTraefikLabels {
@@ -61,6 +71,39 @@ in
             "com.centurylinklabs.watchtower.enable" = "true";
           };
         restart = "unless-stopped";
+      };
+
+      services.warp = {
+        out.service.device_cgroup_rules = [ "c 10:200 rwm" ];
+        service = {
+          image = "docker.io/caomingjun/warp:latest";
+          container_name = "tsmusicbot_warp";
+          capabilities.NET_ADMIN = true;
+          sysctls = {
+            "net.ipv6.conf.all.disable_ipv6" = 0;
+            "net.ipv4.conf.all.src_valid_mark" = 1;
+          };
+          environment = {
+            WARP_SLEEP = 2;
+          };
+          volumes = [ "${config.lib.server.mkConfigDir "tsmusicbot"}/warp:/var/lib/cloudflare-warp" ];
+          labels = {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
+          restart = "unless-stopped";
+        };
+      };
+
+      services.bgutil = {
+        out.service.init = true;
+        service = {
+          image = "docker.io/brainicism/bgutil-ytdlp-pot-provider:latest";
+          container_name = "tsmusicbot_bgutil";
+          labels = {
+            "com.centurylinklabs.watchtower.enable" = "true";
+          };
+          restart = "unless-stopped";
+        };
       };
     };
   };
