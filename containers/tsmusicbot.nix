@@ -10,7 +10,6 @@ let
   cfg = config.server.tsmusicbot;
   ytdlp-conf = pkgs.writeText "yt-dlp.conf" ''
     --proxy socks5h://warp:1080
-    --extractor-args "youtubepot-bgutilhttp:base_url=http://bgutil:4416"
   '';
 in
 {
@@ -56,10 +55,7 @@ in
           "${config.lib.server.mkConfigDir "tsmusicbot"}/config.json:/app/config.json"
           "${ytdlp-conf}:/etc/yt-dlp.conf:ro"
         ];
-        depends_on = [
-          "warp"
-          "bgutil"
-        ];
+        depends_on = [ "warp" ];
         labels =
           config.lib.server.mkTraefikLabels {
             name = "tsmusicbot";
@@ -85,20 +81,9 @@ in
           };
           environment = {
             WARP_SLEEP = 2;
+            GOST_ARGS = "-L :1080?dns=1.1.1.1";
           };
           volumes = [ "${config.lib.server.mkConfigDir "tsmusicbot"}/warp:/var/lib/cloudflare-warp" ];
-          labels = {
-            "com.centurylinklabs.watchtower.enable" = "true";
-          };
-          restart = "unless-stopped";
-        };
-      };
-
-      services.bgutil = {
-        out.service.init = true;
-        service = {
-          image = "docker.io/brainicism/bgutil-ytdlp-pot-provider:latest";
-          container_name = "tsmusicbot_bgutil";
           labels = {
             "com.centurylinklabs.watchtower.enable" = "true";
           };
