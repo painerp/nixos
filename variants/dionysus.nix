@@ -117,6 +117,7 @@ in
     };
   };
   cpkgs = {
+    tsmusicbot-cookies.enable = true;
     brightness.enable = true;
     screenshot-upload.enable = true;
     upload-file = {
