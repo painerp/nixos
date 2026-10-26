@@ -10,7 +10,14 @@ let
   truenas-ip = "100.111.75.128";
 in
 {
-  age.secrets.artemis-pw.file = secrets.artemis-artemis-pw;
+  age.secrets = {
+    artemis-pw.file = secrets.artemis-artemis-pw;
+    deepseek-api-key = {
+      file = secrets.dev-deepseek-api-key;
+      owner = config.system.username;
+      mode = "0400";
+    };
+  };
 
   networking = {
     hostName = "${flake}";
