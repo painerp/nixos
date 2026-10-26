@@ -102,6 +102,7 @@ in
     packages.full = true;
   };
   cpkgs = {
+    tsmusicbot-cookies.enable = true;
     ice-connect.enable = true;
     toggle-refresh = {
       enable = true;
