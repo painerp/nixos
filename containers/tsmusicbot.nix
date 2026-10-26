@@ -29,6 +29,10 @@ in
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
+    systemd.tmpfiles.rules = [
+      "d ${config.lib.server.mkConfigDir "tsmusicbot"}/data 0700 2000 2000 -"
+    ];
+
     systemd.services.arion-tsmusicbot = {
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
@@ -51,8 +55,9 @@ in
         environment = {
           PRE_RESOLVE_HOST = "true";
         };
+        working_dir = "/data";
         volumes = [
-          "${config.lib.server.mkConfigDir "tsmusicbot"}/config.json:/app/config.json"
+          "${config.lib.server.mkConfigDir "tsmusicbot"}/data:/data"
           "${ytdlp-conf}:/etc/yt-dlp.conf:ro"
         ];
         depends_on = [ "warp" ];
