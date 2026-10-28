@@ -51,11 +51,6 @@ in
         type = lib.types.str;
         description = "The docker image to use for the nuxt app";
       };
-      environment = lib.mkOption {
-        type = with lib.types; attrsOf str;
-        default = { };
-        description = "Non-secret environment variables, secrets go in env-file";
-      };
       env-file = lib.mkOption { type = lib.types.path; };
     };
     g2g = {
@@ -179,7 +174,6 @@ in
               sysctls = {
                 "net.ipv6.conf.all.disable_ipv6" = 1;
               };
-              environment = cfg.app.environment;
               env_file = [ config.age.secrets.nuxt-pages-env.path ];
               volumes = [
                 "${config-dir}/nuxt-app/data:/srv/data"
