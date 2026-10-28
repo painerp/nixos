@@ -8,7 +8,7 @@
       "25569"
       "25575"
     ];
-    nixarr.routers = [ "prdl" ];
+    nixarr.routers = [ "rndlm" ];
     nixgra.ports = [
       "3478"
       "8096"
