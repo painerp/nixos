@@ -1,72 +1,11 @@
-{
-  config,
-  secrets,
-  ...
-}:
+{ secrets, ... }:
 
 let
-  flake = "gra";
-  tailscale-ip = (import ./tailnet.nix).ip;
   media = "/mnt/media";
 in
 {
-  networking = {
-    hostName = "nix${flake}";
-    interfaces.ens19.ipv4.addresses = [
-      {
-        address = "10.0.10.15";
-        prefixLength = 24;
-      }
-    ];
-  };
+  imports = [ ./hardware.nix ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/ae496939-fea4-4d31-a15e-08ca064478aa";
-    fsType = "ext4";
-  };
-
-  swapDevices = [ { device = "/dev/disk/by-uuid/0c680e6b-a520-4d4a-87e7-15d21b709e5b"; } ];
-
-  fileSystems."/mnt/backup" = {
-    device = "10.0.10.1:/mnt/hdd/backup/servers/nix${flake}";
-    fsType = "nfs";
-    options = [
-      "x-systemd.automount"
-      "x-systemd.idle-timeout=600"
-    ];
-  };
-
-  fileSystems."/mnt/nextcloud" = {
-    device = "10.0.10.1:/mnt/hdd/nextcloud";
-    fsType = "nfs";
-    options = [
-      "x-systemd.automount"
-      "x-systemd.idle-timeout=600"
-    ];
-  };
-
-  fileSystems."/mnt/immich" = {
-    device = "10.0.10.1:/mnt/hdd/immich";
-    fsType = "nfs";
-    options = [
-      "x-systemd.automount"
-      "x-systemd.idle-timeout=600"
-    ];
-  };
-
-  fileSystems."${media}" = {
-    device = "10.0.10.1:/mnt/hdd/media";
-    fsType = "nfs";
-    options = [
-      "x-systemd.automount"
-      "x-systemd.idle-timeout=600"
-    ];
-  };
-
-  # system
-  system = {
-    inherit flake;
-  };
   modules = {
     arion = {
       enable = true;
@@ -80,17 +19,15 @@ in
         "config/jellyfin/cache"
       ];
     };
-    nvidia = {
-      enable = true;
-      package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
-      patch = true;
+    nfs.mounts = {
+      "/mnt/nextcloud" = "nextcloud";
+      "/mnt/immich" = "immich";
+      ${media} = "media";
     };
   };
 
-  # services
   server = {
     subdomain = "local";
-    inherit tailscale-ip;
     authentik = {
       enable = true;
       proxy = true;
@@ -141,11 +78,7 @@ in
         env-file = secrets.gra-immich-pg-env;
       };
     };
-    monitoring.alloy = {
-      enable = true;
-      loki.address = "100.73.203.96";
-      prometheus.address = "100.73.203.96";
-    };
+    monitoring.alloy.enable = true;
     traefik = {
       enable = true;
       subdomain = "t-gra";
@@ -156,8 +89,4 @@ in
       schedule = "0 0 6 * * *";
     };
   };
-
-  # users
-  users.mutableUsers = false;
-  nix.settings.trusted-users = [ "@wheel" ];
 }

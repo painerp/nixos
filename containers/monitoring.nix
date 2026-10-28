@@ -2,6 +2,7 @@
 
 let
   cfg = config.server.monitoring;
+  nixlog = (import ../tailnet.nix).hosts.nixlog;
   alloyConfig = ''
     // Logs: systemd journal collection
     discovery.relabel "journal" {
@@ -311,7 +312,7 @@ in
       loki = {
         address = lib.mkOption {
           type = lib.types.str;
-          default = "127.0.0.1";
+          default = nixlog;
         };
         port = lib.mkOption {
           type = lib.types.str;
@@ -321,7 +322,7 @@ in
       prometheus = {
         address = lib.mkOption {
           type = lib.types.str;
-          default = "127.0.0.1";
+          default = nixlog;
         };
         port = lib.mkOption {
           type = lib.types.str;

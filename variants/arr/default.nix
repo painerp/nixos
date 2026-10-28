@@ -5,57 +5,13 @@
 }:
 
 let
-  flake = "arr";
-  tailscale-ip = (import ./tailnet.nix).ip;
   media = "/mnt/media";
   unprocessed = "${media}/temp/unprocessed";
   temp = "/tmp/unprocessed";
 in
 {
-  networking = {
-    hostName = "nix${flake}";
-    interfaces.ens19.ipv4.addresses = [
-      {
-        address = "10.0.10.80";
-        prefixLength = 24;
-      }
-    ];
-  };
+  imports = [ ./hardware.nix ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/5f9a25d7-4fd8-48ab-a510-3c00bdfd3edf";
-    fsType = "ext4";
-  };
-
-  swapDevices = [ { device = "/dev/disk/by-uuid/fe045a17-5b72-45fc-8e9f-1b55989734d0"; } ];
-
-  fileSystems."/tmp/unprocessed" = {
-    device = "/dev/disk/by-uuid/e98ab9e9-6add-4298-a78b-6bdb55cde4d5";
-    fsType = "ext4";
-  };
-
-  fileSystems."/mnt/backup" = {
-    device = "10.0.10.1:/mnt/hdd/backup/servers/nix${flake}";
-    fsType = "nfs";
-    options = [
-      "x-systemd.automount"
-      "x-systemd.idle-timeout=600"
-    ];
-  };
-
-  fileSystems."${media}" = {
-    device = "10.0.10.1:/mnt/hdd/media";
-    fsType = "nfs";
-    options = [
-      "x-systemd.automount"
-      "x-systemd.idle-timeout=600"
-    ];
-  };
-
-  # system
-  system = {
-    inherit flake;
-  };
   modules = {
     arion = {
       enable = true;
@@ -63,12 +19,11 @@ in
       tailscale-dependent = true;
     };
     borg.enable = true;
+    nfs.mounts.${media} = "media";
   };
 
-  # services
   server = {
     subdomain = "local";
-    inherit tailscale-ip;
     authentik = {
       enable = true;
       proxy = true;
@@ -90,7 +45,7 @@ in
     rndlm = {
       enable = true;
       auth = false;
-      image = inputs.nixos-private.hosts."${flake}".rndlm.image;
+      image = inputs.nixos-private.hosts.arr.rndlm.image;
       env-file = secrets.arr-rndlm-env;
       volumes = [
         "${unprocessed}/movies:/movies"
@@ -121,40 +76,16 @@ in
         "${media}/shows:/shows"
       ];
     };
-    lidarr = {
-      enable = false;
-      volumes = [
-        "${temp}/music:/temp/music"
-        "${media}/music:/music"
-      ];
-    };
-    readarr = {
-      enable = false;
-      volumes = [
-        "${temp}/books:/temp/books"
-        "${media}/books:/books"
-      ];
-    };
     stash = {
       enable = true;
       volumes = [ "${media}/xtra:/data" ];
     };
-    monitoring.alloy = {
-      enable = true;
-      loki.address = "100.73.203.96";
-      prometheus.address = "100.73.203.96";
-    };
+    monitoring.alloy.enable = true;
     traefik = {
       enable = true;
       subdomain = "t-arr";
       restrict-servers = true;
     };
-    watchtower = {
-      enable = true;
-    };
+    watchtower.enable = true;
   };
-
-  # users
-  users.mutableUsers = false;
-  nix.settings.trusted-users = [ "@wheel" ];
 }

@@ -4,50 +4,9 @@
   ...
 }:
 
-let
-  flake = "inf";
-  tailscale-ip = (import ./tailnet.nix).ip;
-in
 {
-  networking = {
-    hostName = "nix${flake}";
-    interfaces.ens19.ipv4.addresses = [
-      {
-        address = "10.0.10.20";
-        prefixLength = 24;
-      }
-    ];
-  };
+  imports = [ ./hardware.nix ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/84ccc144-81ac-471e-82e3-ca4ce6a5100e";
-    fsType = "ext4";
-  };
-
-  swapDevices = [ { device = "/dev/disk/by-uuid/2c3aafdb-cb5a-41bc-a2e6-99059466a03b"; } ];
-
-  fileSystems."/mnt/backup" = {
-    device = "10.0.10.1:/mnt/hdd/backup/servers/nix${flake}";
-    fsType = "nfs";
-    options = [
-      "x-systemd.automount"
-      "x-systemd.idle-timeout=600"
-    ];
-  };
-
-  fileSystems."/mnt/unknown" = {
-    device = "10.0.10.1:/mnt/hdd/unknown";
-    fsType = "nfs";
-    options = [
-      "x-systemd.automount"
-      "x-systemd.idle-timeout=600"
-    ];
-  };
-
-  # system
-  system = {
-    inherit flake;
-  };
   modules = {
     arion = {
       enable = true;
@@ -56,12 +15,11 @@ in
       tailscale-dependent = true;
     };
     borg.enable = true;
+    nfs.mounts."/mnt/unknown" = "unknown";
   };
 
-  # services
   server = {
     subdomain = "local";
-    inherit tailscale-ip;
     agentmemory = {
       enable = true;
       version = "0.9.30";
@@ -77,7 +35,7 @@ in
     dashboard.enable = true;
     unknown = {
       enable = true;
-      image = inputs.nixos-private.hosts."${flake}".unknown.image;
+      image = inputs.nixos-private.hosts.inf.unknown.image;
       extras-dir = "/mnt/unknown";
       env-file = secrets.inf-unknown-env;
       mysql.env-file = secrets.inf-unknown-mysql-env;
@@ -94,22 +52,12 @@ in
       env-file = secrets.inf-dawarich-env;
       postgres.env-file = secrets.inf-dawarich-pg-env;
     };
-    monitoring.alloy = {
-      enable = true;
-      loki.address = "100.73.203.96";
-      prometheus.address = "100.73.203.96";
-    };
+    monitoring.alloy.enable = true;
     traefik = {
       enable = true;
       subdomain = "t-inf";
       restrict-servers = true;
     };
-    watchtower = {
-      enable = true;
-    };
+    watchtower.enable = true;
   };
-
-  # users
-  users.mutableUsers = false;
-  nix.settings.trusted-users = [ "@wheel" ];
 }

@@ -7,39 +7,12 @@
 }:
 
 let
-  flake = "sex";
-  tailscale-ip = (import ./tailnet.nix).ip;
   hosts = (import ../../tailnet.nix).hosts;
-  truenas-ip = "100.111.75.128";
+  private = inputs.nixos-private.hosts.sex;
 in
 {
-  networking.hostName = "nix${flake}";
+  imports = [ ./hardware.nix ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/27f84bd7-9372-4254-ac51-ad7b0f2acffb";
-    fsType = "ext4";
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/DCCB-DD8F";
-    fsType = "vfat";
-  };
-
-  swapDevices = [ { device = "/dev/disk/by-uuid/4922412f-2a31-4239-8c30-ad2b0f0c94ca"; } ];
-
-  fileSystems."/mnt/backup" = {
-    device = "${truenas-ip}:/mnt/hdd/backup/servers/nix${flake}";
-    fsType = "nfs";
-    options = [
-      "x-systemd.automount"
-      "x-systemd.idle-timeout=600"
-    ];
-  };
-
-  # system
-  system = {
-    inherit flake;
-  };
   modules = {
     arion = {
       enable = true;
@@ -49,9 +22,7 @@ in
     borg.enable = true;
   };
 
-  # services
   server = {
-    inherit tailscale-ip;
     short-subdomain = true;
     adguardhome = {
       enable = true;
@@ -69,11 +40,7 @@ in
       subdomain = "got";
       auth = false;
     };
-    monitoring.alloy = {
-      enable = true;
-      loki.address = "100.73.203.96";
-      prometheus.address = "100.73.203.96";
-    };
+    monitoring.alloy.enable = true;
     nuxt-pages = {
       mysql.env-file = secrets.ext-nuxt-pages-mysql-env;
       pma = {
@@ -85,14 +52,14 @@ in
         root = true;
         auth = false;
         compress = true;
-        image = inputs.nixos-private.hosts."${flake}".nuxt-pages.app.image;
+        image = private.nuxt-pages.app.image;
         env-file = secrets.ext-nuxt-pages-env;
       };
     };
     minecraft-router = {
       enable = true;
       expose = true;
-      mapping = inputs.nixos-private.hosts."${flake}".minecraft-router.mapping;
+      mapping = private.minecraft-router.mapping;
     };
     teamspeak = {
       enable = true;
@@ -104,17 +71,7 @@ in
       enable = true;
       subdomain = "t";
       expose = true;
-      # extra-entrypoints = {
-      #   satisfactory-tcp1.address = ":7777/tcp";
-      #   satisfactory-udp.address = ":7777/udp";
-      #   satisfactory-tcp2.address = ":8888/tcp";
-      # };
-      # extra-ports = [
-      #   "7777:7777/tcp"
-      #   "7777:7777/udp"
-      #   "8888:8888/tcp"
-      # ];
-      aliases = inputs.nixos-private.hosts."${flake}".traefik.aliases;
+      aliases = private.traefik.aliases;
       dynamic = lib.mkMerge [
         (config.lib.server.mkTraefikRoute {
           name = "jellyfin";
@@ -147,12 +104,6 @@ in
       enable = true;
       subdomain = "st";
     };
-    watchtower = {
-      enable = true;
-    };
+    watchtower.enable = true;
   };
-
-  # users
-  users.mutableUsers = false;
-  nix.settings.trusted-users = [ "@wheel" ];
 }

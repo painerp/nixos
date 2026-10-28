@@ -26,6 +26,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    modules.nfs.mounts."/mnt/backup" = "backup/servers/${config.networking.hostName}";
+
     services.borgbackup.jobs.root = rec {
       paths = "/root";
       repo = "/mnt/backup";

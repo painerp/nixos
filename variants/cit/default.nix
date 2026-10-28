@@ -5,92 +5,25 @@
   ...
 }:
 
-let
-  flake = "cit";
-  tailscale-ip = (import ./tailnet.nix).ip;
-in
 {
+  imports = [ ./hardware.nix ];
+
   age.secrets.git-pw.file = secrets.cit-git-pw;
 
-  networking = {
-    hostName = "nix${flake}";
-    interfaces.ens19.ipv4.addresses = [
-      {
-        address = "10.0.10.10";
-        prefixLength = 24;
-      }
-    ];
-  };
-
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/1ca563af-ad9e-4629-8f43-4e8436dd6c6c";
-    fsType = "ext4";
-  };
-
-  swapDevices = [ { device = "/dev/disk/by-uuid/ab983818-1f80-49a0-9beb-0e5329843b83"; } ];
-
-  fileSystems."/mnt/attic" = {
-    device = "/dev/disk/by-uuid/ce10438b-ca74-46b3-8c88-2f20199eb3f0";
-    fsType = "ext4";
-    options = [
-      "defaults"
-      "noatime"
-    ];
-
-  };
-
-  fileSystems."/mnt/backup" = {
-    device = "10.0.10.1:/mnt/hdd/backup/servers/nix${flake}";
-    fsType = "nfs";
-    options = [
-      "x-systemd.automount"
-      "x-systemd.idle-timeout=600"
-    ];
-  };
-
-  fileSystems."/mnt/pve-backup" = {
-    device = "10.0.10.1:/mnt/hdd/backup/pve";
-    fsType = "nfs";
-    options = [
-      "x-systemd.automount"
-      "x-systemd.idle-timeout=600"
-    ];
-  };
-
-  fileSystems."/mnt/syncthing" = {
-    device = "10.0.10.1:/mnt/hdd/syncthing";
-    fsType = "nfs";
-    options = [
-      "x-systemd.automount"
-      "x-systemd.idle-timeout=600"
-    ];
-  };
-
-  fileSystems."/mnt/monero" = {
-    device = "10.0.10.1:/mnt/hdd/monero";
-    fsType = "nfs";
-    options = [
-      "x-systemd.automount"
-      "x-systemd.idle-timeout=600"
-    ];
-  };
-
-  # system
-  system = {
-    inherit flake;
-  };
   modules = {
     arion = {
       enable = true;
       tailscale-dependent = true;
     };
     borg.enable = true;
+    nfs.mounts = {
+      "/mnt/pve-backup" = "backup/pve";
+      "/mnt/syncthing" = "syncthing";
+    };
   };
 
-  # services
   server = {
     subdomain = "local";
-    inherit tailscale-ip;
     adguardhome = {
       enable = true;
       version = "v0.107.79";
@@ -142,15 +75,7 @@ in
       enable = true;
       env-file = secrets.cit-gluetun-env;
     };
-    monerod = {
-      enable = false;
-      volumes = [ "/mnt/monero:/home/monero/.bitmonero" ];
-    };
-    monitoring.alloy = {
-      enable = true;
-      loki.address = "100.73.203.96";
-      prometheus.address = "100.73.203.96";
-    };
+    monitoring.alloy.enable = true;
     traefik = {
       enable = true;
       subdomain = "t-cit";
@@ -171,16 +96,11 @@ in
     watchtower.enable = true;
   };
 
-  # users
-  users = {
-    mutableUsers = false;
-    users.git = {
-      isNormalUser = true;
-      home = "/home/git";
-      uid = 1050;
-      hashedPasswordFile = config.age.secrets.git-pw.path;
-      extraGroups = [ "docker" ];
-    };
+  users.users.git = {
+    isNormalUser = true;
+    home = "/home/git";
+    uid = 1050;
+    hashedPasswordFile = config.age.secrets.git-pw.path;
+    extraGroups = [ "docker" ];
   };
-  nix.settings.trusted-users = [ "@wheel" ];
 }

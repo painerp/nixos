@@ -22,7 +22,10 @@
       "nixos:k+0x+qgG8Mb1k7kMi+14QIEeJHzkmaWubDmPzZNOyas="
     ];
     builders-use-substitutes = true;
+    trusted-users = [ "@wheel" ];
   };
+
+  users.mutableUsers = false;
 
   programs.ssh = lib.mkIf config.system.github-trusted {
     extraConfig = ''

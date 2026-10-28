@@ -79,7 +79,6 @@
         {
           name,
           system ? "x86_64-linux",
-          hardware,
           pkgConfig ? { },
         }:
         nixpkgs.lib.nixosSystem {
@@ -87,12 +86,16 @@
           pkgs = (import nixpkgs) ({ inherit system; } // pkgConfig);
           modules = server-modules ++ [
             ./variants/${name}
-            hardware
+            {
+              system.flake = name;
+              networking.hostName = "nix${name}";
+              server.tailscale-ip = (import ./variants/${name}/tailnet.nix).ip;
+            }
           ];
         };
 
       mkDesktop =
-        { name, hardware }:
+        { name }:
         let
           system = "x86_64-linux";
           pkgs-unstable = (import nixpkgs-unstable) {
@@ -115,9 +118,13 @@
           };
           modules = desktop-modules ++ [
             ./variants/${name}
-            hardware
             home-manager.nixosModules.home-manager
             {
+              system = {
+                flake = name;
+                username = name;
+              };
+              networking.hostName = name;
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "bak";
@@ -135,69 +142,33 @@
         fpi = mkServer {
           name = "fpi";
           system = "aarch64-linux";
-          hardware = ./hardware/rpi.nix;
         };
-        sex = mkServer {
-          name = "sex";
-          hardware = ./hardware/vps.nix;
-        };
-        run = mkServer {
-          name = "run";
-          hardware = ./hardware/int-vps.nix;
-        };
-        log = mkServer {
-          name = "log";
-          hardware = ./hardware/int-vps.nix;
-        };
-        cit = mkServer {
-          name = "cit";
-          hardware = ./hardware/int-vps.nix;
-        };
-        inf = mkServer {
-          name = "inf";
-          hardware = ./hardware/int-vps.nix;
-        };
+        sex = mkServer { name = "sex"; };
+        run = mkServer { name = "run"; };
+        log = mkServer { name = "log"; };
+        cit = mkServer { name = "cit"; };
+        inf = mkServer { name = "inf"; };
         gra = mkServer {
           name = "gra";
-          hardware = ./hardware/int-vps.nix;
           pkgConfig = {
             overlays = [ inputs.nvidia-patch.overlays.default ];
             config.allowUnfree = true;
           };
         };
-        gam = mkServer {
-          name = "gam";
-          hardware = ./hardware/int-vps.nix;
-        };
-        arr = mkServer {
-          name = "arr";
-          hardware = ./hardware/int-vps.nix;
-        };
+        gam = mkServer { name = "gam"; };
+        arr = mkServer { name = "arr"; };
         jbx = mkServer {
           name = "jbx";
-          hardware = ./hardware/thinkcentre-m715q.nix;
           pkgConfig = {
             config.allowUnfree = true;
           };
         };
 
         # Desktops
-        kronos = mkDesktop {
-          name = "kronos";
-          hardware = ./hardware/lenovo-legion-15arh05h.nix;
-        };
-        demeter = mkDesktop {
-          name = "demeter";
-          hardware = ./hardware/lenovo-legion-15arh05h.nix;
-        };
-        dionysus = mkDesktop {
-          name = "dionysus";
-          hardware = ./hardware/amd-5800x3d.nix;
-        };
-        artemis = mkDesktop {
-          name = "artemis";
-          hardware = ./hardware/tuxedo-infinitybook-pro-14-gen10.nix;
-        };
+        kronos = mkDesktop { name = "kronos"; };
+        demeter = mkDesktop { name = "demeter"; };
+        dionysus = mkDesktop { name = "dionysus"; };
+        artemis = mkDesktop { name = "artemis"; };
       };
     };
 }

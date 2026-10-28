@@ -25,4 +25,7 @@
   boot.loader.grub.useOSProber = true;
 
   services.qemuGuest.enable = true;
+
+  # truenas over the proxmox internal bridge
+  modules.nfs.server = "10.0.10.1";
 }

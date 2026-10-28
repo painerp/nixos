@@ -53,6 +53,7 @@
     ./kodi.nix
     ./logitech.nix
     ./micro.nix
+    ./nfs.nix
     ./nvidia.nix
     ./packages.nix
     ./pipewire.nix
