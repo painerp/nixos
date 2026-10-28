@@ -133,6 +133,17 @@ in
     # "<tailscale-ip>:port" binds failing at boot (docker 29 then drops the container's networks)
     boot.kernel.sysctl."net.ipv4.ip_nonlocal_bind" = lib.mkIf cfg.tailscale-dependent 1;
 
+    # tailscale's snat hides client ips from podman containers, only subnet routers and exit nodes need it
+    services.tailscale.extraSetFlags = lib.mkIf (cfg.backend == "podman") [
+      "--snat-subnet-routes=false"
+    ];
+    assertions = [
+      {
+        assertion = cfg.backend != "podman" || !config.modules.tailscale.subnet-router;
+        message = "podman hosts disable tailscale snat (--snat-subnet-routes=false), subnet routes would break";
+      }
+    ];
+
     age.secrets.docker-config = lib.mkIf cfg.registry-login {
       file = secrets.extras-docker-config;
       path = "/root/.docker/config.json";
