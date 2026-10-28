@@ -130,7 +130,7 @@ in
     forgejo = {
       enable = true;
       subdomain = "git";
-      version = "17.0.0";
+      version = "17.0.1";
       auth = false;
     };
     home-assistant = {
