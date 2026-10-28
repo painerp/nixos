@@ -87,7 +87,7 @@
           inherit specialArgs system;
           pkgs = (import nixpkgs) ({ inherit system; } // pkgConfig);
           modules = server-modules ++ [
-            ./variants/${name}.nix
+            ./variants/${name}
             hardware
           ];
         };
@@ -115,7 +115,7 @@
             overlays = desktop-overlays;
           };
           modules = desktop-modules ++ [
-            ./variants/${name}.nix
+            ./variants/${name}
             hardware
             home-manager.nixosModules.home-manager
             {
