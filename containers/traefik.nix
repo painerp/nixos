@@ -195,6 +195,32 @@ in
         ) (cfg.dynamic.http.routers or { });
       };
     };
+    assertions =
+      let
+        services = lib.concatMap (p: lib.attrValues p.settings.services) (
+          lib.attrValues config.virtualisation.arion.projects
+        );
+        labelRouters = lib.concatMap (
+          s:
+          lib.concatMap (
+            k:
+            let
+              m = builtins.match "traefik\\.http\\.routers\\.([^.]+)\\.rule" k;
+            in
+            if m == null then [ ] else m
+          ) (lib.attrNames (s.service.labels or { }))
+        ) services;
+        routers = labelRouters ++ lib.attrNames (cfg.dynamic.http.routers or { });
+        missing = lib.subtractLists routers (
+          lib.attrNames (tn.incoming.${config.networking.hostName} or { })
+        );
+      in
+      [
+        {
+          assertion = missing == [ ];
+          message = "tailnet.nix grants routers that don't exist on ${config.networking.hostName}: ${lib.concatStringsSep ", " missing}";
+        }
+      ];
     server.traefik.dynamic.http = {
       serversTransports.skip-verify.insecureSkipVerify = true;
       middlewares.default-headers.headers = {
