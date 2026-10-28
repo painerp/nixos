@@ -45,7 +45,6 @@ in
       enable = true;
       version = "v0.107.79";
       expose = true;
-      traefik-network-ip = "172.19.0.0";
     };
     atvloadly.enable = true;
     yt2atv = {

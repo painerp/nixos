@@ -11,8 +11,9 @@ let
   config-dir = config.lib.server.mkConfigDir "adguardhome";
   tailnet = import ../tailnet.nix;
   domain = config.server.base-domain;
-  gateway = lib.concatStringsSep "." (
-    lib.take 3 (lib.splitString "." cfg.traefik-network-ip) ++ [ "1" ]
+  # docker0, where traefik's host-gateway points
+  docker0 = lib.head (
+    lib.splitString "/" (config.virtualisation.docker.daemon.settings.bip or "172.17.0.1/16")
   );
 
   local = name: "${name}.local.${domain}";
@@ -173,7 +174,7 @@ let
   };
 
   settings = (pkgs.formats.yaml { }).generate "AdGuardHome.yaml" {
-    http.address = "${if cfg.expose then "0.0.0.0" else gateway}:3000";
+    http.address = "${if cfg.expose then "0.0.0.0" else docker0}:3000";
     dns = {
       # loopback for the local zone upstream
       bind_hosts =
@@ -255,9 +256,6 @@ in
       type = lib.types.bool;
       default = false;
     };
-    traefik-network-ip = lib.mkOption {
-      type = lib.types.str;
-    };
     subdomain = lib.mkOption {
       type = lib.types.str;
       default = if config.server.short-subdomain then "ah" else "adguardhome";
@@ -273,15 +271,15 @@ in
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
-    # host network, reached through the proxy network's gateway
-    server.traefik.dynamic = lib.mkIf config.server.traefik.enable (
-      config.lib.server.mkTraefikRoute {
+    server.traefik = lib.mkIf config.server.traefik.enable {
+      extra-hosts = [ "host.docker.internal:host-gateway" ];
+      dynamic = config.lib.server.mkTraefikRoute {
         name = "adguardhome";
         inherit (cfg) subdomain;
-        url = "http://${gateway}:3000";
+        url = "http://host.docker.internal:3000";
         middlewares = lib.optional cfg.auth "authentik@docker";
-      }
-    );
+      };
+    };
 
     systemd.services.arion-adguardhome = {
       wants = [ "network-online.target" ];
@@ -318,12 +316,8 @@ in
     networking.firewall = {
       allowedTCPPorts = lib.mkIf (cfg.expose) ([ 53 ] ++ (if (cfg.dot) then [ 853 ] else [ ]));
       allowedUDPPorts = lib.mkIf (cfg.expose) [ 53 ];
-      extraCommands = ''
-        iptables -I nixos-fw -s ${cfg.traefik-network-ip}/16 -p tcp --dport 3000 -j nixos-fw-accept
-      '';
-      extraStopCommands = ''
-        iptables -D nixos-fw -s ${cfg.traefik-network-ip}/16 -p tcp --dport 3000 -j nixos-fw-accept 2>/dev/null || true
-      '';
+      # traefik on the proxy network, br-+ matches every compose network
+      interfaces."br-+".allowedTCPPorts = [ 3000 ];
     };
   };
 }

@@ -94,7 +94,6 @@ in
     adguardhome = {
       enable = true;
       version = "v0.107.79";
-      traefik-network-ip = "172.18.0.0";
     };
     attic = {
       enable = true;

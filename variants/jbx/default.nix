@@ -56,7 +56,6 @@ in
       enable = true;
       version = "v0.107.79";
       expose = true;
-      traefik-network-ip = "172.20.0.0";
     };
     traefik = {
       enable = true;
