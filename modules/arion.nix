@@ -166,7 +166,7 @@ in
     ];
 
     age.secrets.docker-config = lib.mkIf cfg.registry-login {
-      file = secrets.extras-docker-config;
+      file = secrets.extras-docker-config-json;
       path = "/root/.docker/config.json";
     };
 

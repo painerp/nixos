@@ -301,7 +301,7 @@ in
         [ "${host}" ]
       );
 
-    age.secrets.traefik-env.file = secrets.traefik-env;
+    age.secrets.traefik-env.file = secrets.containers-traefik-env;
 
     server.traefik.aliases = config.lib.server.mkTraefikAlias { subdomain = cfg.subdomain; };
 

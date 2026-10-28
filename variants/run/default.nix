@@ -20,7 +20,7 @@
     forgejo-runner = {
       enable = true;
       version = "13.2.0";
-      config-file = secrets.run-forgejo-runner-config;
+      config-file = secrets.run-forgejo-runner-yml;
     };
     renovate = {
       enable = true;

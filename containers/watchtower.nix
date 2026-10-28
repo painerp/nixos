@@ -45,7 +45,7 @@ in
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
-    age.secrets.watchtower-env.file = secrets.watchtower-env;
+    age.secrets.watchtower-env.file = secrets.containers-watchtower-env;
 
     systemd.services.arion-watchtower = {
       wants = [ "network-online.target" ];
