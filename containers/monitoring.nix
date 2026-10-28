@@ -221,6 +221,20 @@ let
       location / { return 404; }
     }
   '';
+  # tailnet entry for alloy, so monitoring hosts can't query or reach the admin api
+  prometheusWriteConfigFile = builtins.toFile "prometheus-write.conf" ''
+    server {
+      listen 80;
+      resolver ''${NGINX_LOCAL_RESOLVERS} valid=10s;
+      set $upstream prometheus:9090;
+      client_max_body_size 16m;
+      location = /api/v1/write {
+        limit_except POST { deny all; }
+        proxy_pass http://$upstream;
+      }
+      location / { return 404; }
+    }
+  '';
 in
 {
   options.server.monitoring = {
@@ -421,7 +435,6 @@ in
                 networks = [
                   "proxy"
                 ];
-                ports = [ "${config.server.tailscale-ip}:20101:9090/tcp" ];
                 volumes = [
                   "${config.lib.server.mkConfigDir "prometheus"}/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
                   "${config.lib.server.mkConfigDir "prometheus/rules"}:/etc/prometheus/rules:ro"
@@ -450,6 +463,18 @@ in
                 restart = "unless-stopped";
               };
 
+              prometheus-write.service = {
+                image = "docker.io/nginx:alpine";
+                container_name = "prometheus-write";
+                networks = [ "proxy" ];
+                ports = [ "${config.server.tailscale-ip}:20101:80/tcp" ];
+                environment.NGINX_ENTRYPOINT_LOCAL_RESOLVERS = "1";
+                volumes = [ "${prometheusWriteConfigFile}:/etc/nginx/templates/default.conf.template:ro" ];
+                labels = {
+                  "com.centurylinklabs.watchtower.enable" = "true";
+                };
+                restart = "unless-stopped";
+              };
             }
             // lib.attrsets.optionalAttrs (cfg.prometheus.enable && cfg.prometheus.public.queries != { }) {
               prometheus-public.service = {
