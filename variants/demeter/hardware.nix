@@ -16,6 +16,4 @@
   };
 
   swapDevices = [ { device = "/dev/disk/by-uuid/36361ec2-9a77-4002-9772-947f7054dd4c"; } ];
-
-  modules.nvidia.enable = true;
 }

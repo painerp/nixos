@@ -1,29 +1,19 @@
 {
   config,
   secrets,
-  lib,
   ...
 }:
 
 {
   imports = [ ./hardware.nix ];
 
-  age.secrets = {
-    artemis-pw.file = secrets.artemis-artemis-pw;
-    deepseek-api-key = {
-      file = secrets.dev-deepseek-api-key;
-      owner = config.system.username;
-      mode = "0400";
-    };
-  };
-
-  networking = {
-    useDHCP = lib.mkDefault true;
-    networkmanager.enable = true;
+  age.secrets.deepseek-api-key = {
+    file = secrets.dev-deepseek-api-key;
+    owner = config.system.username;
+    mode = "0400";
   };
 
   system = {
-    home-manager = true;
     latest-kernel = true;
     github-trusted = false;
   };
@@ -33,8 +23,6 @@
       enable = true;
       rewrite-bip = true;
     };
-    auto-upgrade.enable = false;
-    failure-monitor.enable = false;
     hyprland = {
       enable = true;
       monitors = [
@@ -51,7 +39,6 @@
     };
     packages.full = true;
     nfs.mounts = {
-      "/mnt/backup" = "backup/artemis";
       "/mnt/media" = "media";
       "/mnt/unknown" = "unknown";
     };
@@ -63,24 +50,5 @@
       enable = true;
       scale = "1.5";
     };
-    brightness.enable = true;
-    screenshot-upload.enable = true;
-    upload-file = {
-      enable = true;
-      key-file = secrets.pkgs-upload-file;
-    };
-  };
-
-  users.users.artemis = {
-    isNormalUser = true;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "audio"
-      "video"
-      "input"
-      "docker"
-    ];
-    hashedPasswordFile = config.age.secrets.artemis-pw.path;
   };
 }

@@ -33,7 +33,11 @@
   };
 
   security.rtkit.enable = true;
-  modules.pipewire.enable = true;
+  modules = {
+    nvidia.enable = true;
+    pipewire.enable = true;
+  };
+  cpkgs.legion-keyboard.enable = true;
   services.tlp = {
     enable = lib.mkIf (config.modules.hyprland.enable) true;
     settings = {

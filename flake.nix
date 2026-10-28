@@ -118,11 +118,13 @@
           };
           modules = desktop-modules ++ [
             ./variants/${name}
+            ./variants/desktop.nix
             home-manager.nixosModules.home-manager
             {
               system = {
                 flake = name;
                 username = name;
+                home-manager = true;
               };
               networking.hostName = name;
               home-manager.useGlobalPkgs = true;

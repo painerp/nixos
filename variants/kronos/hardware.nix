@@ -23,6 +23,4 @@
     "luks-97fed62b-bdc0-43b3-b670-ed83775644aa".device =
       "/dev/disk/by-uuid/97fed62b-bdc0-43b3-b670-ed83775644aa";
   };
-
-  modules.nvidia.enable = true;
 }
