@@ -1,4 +1,5 @@
 {
+  lib,
   config,
   secrets,
   inputs,
@@ -8,6 +9,7 @@
 let
   flake = "sex";
   tailscale-ip = (import ./tailnet.nix).ip;
+  hosts = (import ../../tailnet.nix).hosts;
   truenas-ip = "100.111.75.128";
 in
 {
@@ -113,6 +115,23 @@ in
       #   "8888:8888/tcp"
       # ];
       aliases = inputs.nixos-private.hosts."${flake}".traefik.aliases;
+      dynamic = lib.mkMerge [
+        (config.lib.server.mkTraefikRoute {
+          name = "jellyfin";
+          subdomain = "jf";
+          url = "http://${hosts.nixgra}:8096";
+        })
+        (config.lib.server.mkTraefikRoute {
+          name = "nextcloud";
+          subdomain = "nc";
+          url = "http://${hosts.nixgra}:11000";
+        })
+        (config.lib.server.mkTraefikRoute {
+          name = "bluemap";
+          subdomain = "mc";
+          url = "http://${hosts.nixgam}:25569";
+        })
+      ];
     };
     goaccess.enable = true;
     nginx = {

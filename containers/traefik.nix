@@ -32,10 +32,7 @@ let
         endpoint = "unix:///var/run/docker.sock";
         exposedByDefault = false;
       };
-      file = {
-        directory = "/dynamic";
-        watch = true;
-      };
+      file.filename = "/dynamic.yaml";
     };
     entrypoints = {
       http = {
@@ -76,6 +73,9 @@ let
     };
   };
   staticConfigFile = builtins.toFile "traefik.yaml" (builtins.toJSON staticConfig);
+  dynamicConfigFile = builtins.toFile "traefik-dynamic.yaml" (
+    builtins.toJSON config.lib.server.traefikDynamic
+  );
 in
 {
   options.server.traefik = {
@@ -129,6 +129,11 @@ in
       description = "add extra hosts to traefik service";
       default = [ ];
     };
+    dynamic = lib.mkOption {
+      type = (pkgs.formats.json { }).type;
+      description = "traefik dynamic config for the file provider (routes to non-container targets, shared middlewares)";
+      default = { };
+    };
     restrict-servers = lib.mkOption {
       type = lib.types.bool;
       description = "block the tailnet.nix hosts from every router they aren't granted in their outgoing";
@@ -154,6 +159,58 @@ in
         # traefik's default priority, so the guard doesn't reorder routers
         priority = lib.stringLength rule;
       };
+    lib.server.mkTraefikRoute =
+      {
+        name,
+        url,
+        subdomain ? name,
+        middlewares ? [ "default-headers" ],
+        transport ? null,
+      }:
+      {
+        http.routers.${name} = {
+          rule = "Host(`${subdomain}.${config.server.domain}`)";
+          entryPoints = [ "https" ];
+          tls.certResolver = "hetzner";
+          service = name;
+        }
+        // lib.optionalAttrs (middlewares != [ ]) { inherit middlewares; };
+        http.services.${name}.loadBalancer = {
+          servers = [ { inherit url; } ];
+        }
+        // lib.optionalAttrs (transport != null) { serversTransport = transport; };
+      };
+    lib.server.traefikDynamic = cfg.dynamic // {
+      http = (cfg.dynamic.http or { }) // {
+        routers = lib.mapAttrs (
+          name: router:
+          let
+            guarded = config.lib.server.mkTraefikRule name router.rule;
+          in
+          router
+          // {
+            inherit (guarded) rule;
+          }
+          // lib.optionalAttrs (guarded.rule != router.rule) { inherit (guarded) priority; }
+        ) (cfg.dynamic.http.routers or { });
+      };
+    };
+    server.traefik.dynamic.http = {
+      serversTransports.skip-verify.insecureSkipVerify = true;
+      middlewares.default-headers.headers = {
+        frameDeny = true;
+        browserXssFilter = true;
+        contentTypeNosniff = true;
+        forceSTSHeader = true;
+        stsIncludeSubdomains = true;
+        stsPreload = true;
+        stsSeconds = 15552000;
+        customFrameOptionsValue = "SAMEORIGIN";
+        customRequestHeaders.X-Forwarded-Proto = "https";
+        hostsProxyHeaders = [ "X-Forwarded-Host" ];
+        referrerPolicy = "same-origin";
+      };
+    };
     lib.server.mkTraefikLabels =
       options:
       (
@@ -286,7 +343,7 @@ in
           "${staticConfigFile}:/traefik.yaml"
           "${config.lib.server.mkConfigDir "traefik"}/acme.json:/acme.json"
           "${config.lib.server.mkConfigDir "traefik/logs"}:/var/log/traefik"
-          "${config.lib.server.mkConfigDir "traefik/dynamic"}:/dynamic"
+          "${dynamicConfigFile}:/dynamic.yaml:ro"
           "/var/run/docker.sock:/var/run/docker.sock:ro"
           "/etc/localtime:/etc/localtime:ro"
         ];

@@ -1,4 +1,9 @@
-{ config, secrets, ... }:
+{
+  lib,
+  config,
+  secrets,
+  ...
+}:
 
 let
   flake = "cit";
@@ -153,6 +158,18 @@ in
     traefik = {
       enable = true;
       subdomain = "t-cit";
+      dynamic = lib.mkMerge [
+        (config.lib.server.mkTraefikRoute {
+          name = "proxmox";
+          url = "https://192.168.178.100:8006";
+          transport = "skip-verify";
+        })
+        (config.lib.server.mkTraefikRoute {
+          name = "truenas";
+          url = "https://10.0.10.1";
+          transport = "skip-verify";
+        })
+      ];
     };
     watchtower.enable = true;
   };
