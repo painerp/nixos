@@ -49,70 +49,13 @@ in
     };
   };
 
-  imports = [
-    ./act-runner.nix
-    ./adguardhome.nix
-    ./agentmemory.nix
-    ./attic.nix
-    ./atvloadly.nix
-    ./authentik.nix
-    ./bachelor.nix
-    ./bazarr.nix
-    ./dashboard.nix
-    ./dawarich.nix
-    ./forgejo.nix
-    ./forgejo-runner.nix
-    ./gitea.nix
-    ./gluetun.nix
-    ./gotify.nix
-    ./goaccess.nix
-    ./home-assistant.nix
-    ./immich.nix
-    ./jellyfin.nix
-    ./jellyfin-vue.nix
-    ./jellystat.nix
-    ./lidarr.nix
-    ./linkwarden.nix
-    ./lubelogger.nix
-    ./mediathekarr.nix
-    ./minecraft.nix
-    ./minecraft-bluemap.nix
-    ./minecraft-router.nix
-    ./monerod.nix
-    ./monitoring.nix
-    ./n8n.nix
-    ./nextcloud.nix
-    ./nginx.nix
-    ./nuxt-pages.nix
-    ./ollama.nix
-    ./open-webui.nix
-    ./palworld.nix
-    ./paperless.nix
-    ./peanut.nix
-    ./pihole.nix
-    ./pledo.nix
-    ./prdl.nix
-    ./protonbridge.nix
-    ./prowlarr.nix
-    ./proxmox-backup.nix
-    ./radarr.nix
-    ./readarr.nix
-    ./renovate.nix
-    ./rndlm.nix
-    ./sabnzbd.nix
-    ./satisfactory.nix
-    ./sonarr.nix
-    ./stash.nix
-    ./syncthing.nix
-    ./teamspeak.nix
-    ./traefik.nix
-    ./tsmusicbot.nix
-    ./tdarr.nix
-    ./unknown.nix
-    ./uptime-kuma.nix
-    ./watchtower.nix
-    ./yt2atv.nix
-  ];
+  imports = map (n: ./${n}) (
+    lib.attrNames (
+      lib.filterAttrs (n: t: t == "regular" && n != "default.nix" && lib.hasSuffix ".nix" n) (
+        builtins.readDir ./.
+      )
+    )
+  );
 
   config = {
     lib.server.mkServiceSubdomain = subdomain: "${subdomain}.${config.server.domain}";

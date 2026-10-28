@@ -38,32 +38,13 @@
     };
   };
 
-  imports = [
-    ./agentmemory-client.nix
-    ./amd.nix
-    ./arion.nix
-    ./attic-builder.nix
-    ./auto-upgrade.nix
-    ./borg.nix
-    ./failure-monitor.nix
-    ./firewall.nix
-    ./gnome.nix
-    ./hyprland.nix
-    ./kde.nix
-    ./kodi.nix
-    ./logitech.nix
-    ./micro.nix
-    ./nfs.nix
-    ./nvidia.nix
-    ./packages.nix
-    ./pipewire.nix
-    ./private.nix
-    ./shell.nix
-    ./ssh-server.nix
-    ./system.nix
-    ./tailscale.nix
-    ./waydroid.nix
-  ];
+  imports = map (n: ./${n}) (
+    lib.attrNames (
+      lib.filterAttrs (n: t: t == "regular" && n != "default.nix" && lib.hasSuffix ".nix" n) (
+        builtins.readDir ./.
+      )
+    )
+  );
 
   config = {
     boot.kernelPackages = lib.mkIf (config.system.latest-kernel) (
