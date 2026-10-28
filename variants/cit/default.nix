@@ -93,11 +93,8 @@ in
     inherit tailscale-ip;
     adguardhome = {
       enable = true;
+      version = "v0.107.79";
       traefik-network-ip = "172.18.0.0";
-    };
-    adguardhome-sync = {
-      enable = true;
-      env-file = secrets.cit-adguardhome-sync-env;
     };
     attic = {
       enable = true;

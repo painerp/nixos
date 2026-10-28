@@ -52,7 +52,6 @@ in
   imports = [
     ./act-runner.nix
     ./adguardhome.nix
-    ./adguardhome-sync.nix
     ./agentmemory.nix
     ./attic.nix
     ./atvloadly.nix

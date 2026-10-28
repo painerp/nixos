@@ -84,7 +84,6 @@ in
   "inf/dawarich-pg.env.age".publicKeys = users ++ [ inf ];
 
   "cit/git-pw.age".publicKeys = users ++ [ cit ];
-  "cit/adguardhome-sync.env.age".publicKeys = users ++ [ cit ];
   "cit/attic.env.age".publicKeys = users ++ [ cit ];
   "cit/authentik.env.age".publicKeys = users ++ [ cit ];
   "cit/authentik-pg.env.age".publicKeys = users ++ [ cit ];

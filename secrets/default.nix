@@ -44,7 +44,6 @@
   gra-jellyfin-exporter-env = ./gra/jellyfin-exporter.env.age;
 
   cit-git-pw = ./cit/git-pw.age;
-  cit-adguardhome-sync-env = ./cit/adguardhome-sync.env.age;
   cit-attic-env = ./cit/attic.env.age;
   cit-authentik-env = ./cit/authentik.env.age;
   cit-authentik-pg-env = ./cit/authentik-pg.env.age;

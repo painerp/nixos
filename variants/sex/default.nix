@@ -55,6 +55,7 @@ in
     short-subdomain = true;
     adguardhome = {
       enable = true;
+      version = "v0.107.79";
       traefik-network-ip = "172.21.0.0";
     };
     authentik = {

@@ -146,6 +146,18 @@
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver",
       "depNameTemplate": "ghcr.io/immich-app/immich-server"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/variants/.+\\.nix$/"
+      ],
+      "matchStrings": [
+        "adguardhome\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver",
+      "depNameTemplate": "docker.io/adguard/adguardhome"
     }
   ]
 }

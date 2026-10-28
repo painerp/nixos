@@ -8,6 +8,16 @@ rec {
     proxmox.ip = "100.67.2.33";
   };
 
+  # adguard clients only, in hosts traefik would block them from every router
+  clients = {
+    artemis = "100.119.140.1";
+    dionysus = "100.77.58.57";
+    glkvm = "100.115.122.73";
+    nixext = "100.86.37.30";
+    nixjpi = "100.81.246.82";
+    pixel-9 = "100.100.88.22";
+  };
+
   # granted to every server
   common.outgoing = {
     nixcit.routers = [ "attic" ];
@@ -207,12 +217,6 @@ rec {
         src = [ "host:nixcit" ];
         dst = [ "192.168.10.240/29" ];
         ip = [ "tcp:80" ];
-      }
-      # lets the sync server at nixcit connect to all replicas
-      {
-        src = [ "host:nixcit" ];
-        dst = [ "tag:adguardhome-sync" ];
-        ip = [ "tcp:443" ];
       }
       # allow forgejo runners and users access to forgejo host
       {
