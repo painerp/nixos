@@ -3,5 +3,9 @@
   outgoing = {
     # tdarr api
     nixgra.ports = [ "8265" ];
+    nixcit.routers = [
+      "authentik"
+      "forgejo"
+    ];
   };
 }

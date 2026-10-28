@@ -8,13 +8,13 @@
       "25569"
       "25575"
     ];
-    nixarr.ports = [ "443" ];
+    nixarr.routers = [ "prdl" ];
     nixgra.ports = [
-      "443"
       "3478"
       "8096"
       "11000"
     ];
     nixlog.routers = [ "prometheus-public" ];
+    nixcit.routers = [ "forgejo" ];
   };
 }

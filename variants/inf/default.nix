@@ -102,6 +102,7 @@ in
     traefik = {
       enable = true;
       subdomain = "t-inf";
+      restrict-servers = true;
     };
     watchtower = {
       enable = true;

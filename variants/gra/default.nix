@@ -149,6 +149,7 @@ in
     traefik = {
       enable = true;
       subdomain = "t-gra";
+      restrict-servers = true;
     };
     watchtower = {
       enable = true;

@@ -9,7 +9,9 @@ rec {
   };
 
   # granted to every server
-  common.outgoing = { };
+  common.outgoing = {
+    nixcit.routers = [ "attic" ];
+  };
 
   servers =
     let
@@ -64,10 +66,15 @@ rec {
           builtins.attrNames outgoing.${src}
         )
       ) (builtins.attrNames outgoing);
+      result = builtins.mapAttrs (
+        _: ps: builtins.mapAttrs (_: rs: uniqSort (map (p: p.src) rs)) (builtins.groupBy (p: p.router) ps)
+      ) (builtins.groupBy (p: p.dst) pairs);
     in
-    builtins.mapAttrs (
-      _: ps: builtins.mapAttrs (_: rs: uniqSort (map (p: p.src) rs)) (builtins.groupBy (p: p.router) ps)
-    ) (builtins.groupBy (p: p.dst) pairs);
+    # policy tests can't see traefik grants
+    if !builtins.elem "nixrun" (result.nixcit.forgejo or [ ]) then
+      throw "tailnet: nixrun (CI runner) must keep the forgejo router on nixcit"
+    else
+      result;
 
   generatedGrants = builtins.concatMap (
     src:
@@ -77,7 +84,7 @@ rec {
         o = outgoing.${src}.${dst};
         ip = o.ports ++ (if o.routers != [ ] then [ "tcp:443" ] else [ ]);
       in
-      if ip == [ ] then
+      if ip == [ ] || src == dst then
         [ ]
       else
         [
@@ -90,7 +97,8 @@ rec {
     ) (builtins.attrNames outgoing.${src})
   ) (builtins.attrNames outgoing);
 
-  policy = {
+  # CI only evaluates policy
+  policy = builtins.seq incoming {
     groups = { };
 
     inherit hosts;

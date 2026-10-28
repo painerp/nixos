@@ -147,6 +147,7 @@ in
     traefik = {
       enable = true;
       subdomain = "t-arr";
+      restrict-servers = true;
     };
     watchtower = {
       enable = true;

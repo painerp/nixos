@@ -158,6 +158,7 @@ in
     traefik = {
       enable = true;
       subdomain = "t-cit";
+      restrict-servers = true;
       dynamic = lib.mkMerge [
         (config.lib.server.mkTraefikRoute {
           name = "proxmox";
