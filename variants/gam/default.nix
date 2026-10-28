@@ -67,7 +67,7 @@ in
     satisfactory.enable = false;
     minecraft = {
       enable = true;
-      version = "2026.10.0-java25";
+      version = "2026.10.1-java25";
       mc-version = "26.3";
       env-file = secrets.gam-minecraft-env;
       rcon.enable = true;
