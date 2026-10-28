@@ -51,6 +51,7 @@ in
     inf
     arr
     sex
+    run
   ];
 
   "jbx/wifi.age".publicKeys = users ++ [ jbx ];
