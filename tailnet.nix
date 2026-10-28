@@ -241,6 +241,10 @@ rec {
     tests = [
       # CI runner -> forgejo
       {
+        src = "nixrun";
+        accept = [ "nixcit:443" ];
+      }
+      {
         src = "tag:git-user";
         accept = [ "nixcit:443" ];
       }
