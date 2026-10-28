@@ -1,0 +1,37 @@
+name: Tailnet policy
+
+on:
+  pull_request:
+    paths:
+      - 'tailnet.nix'
+      - 'variants/*/tailnet.nix'
+      - '.gitea/workflows/tailnet.yaml'
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  policy:
+    runs-on: nix-latest
+    defaults:
+      run:
+        # for pipefail
+        shell: bash
+    env:
+      NIX_CONFIG: experimental-features = nix-command flakes
+      TS_TAILNET: "-"
+      TS_OAUTH_ID: ${{ secrets.TS_OAUTH_ID }}
+      TS_OAUTH_SECRET: ${{ secrets.TS_OAUTH_SECRET }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      # readable in the admin console: hand-written key order, short arrays inline
+      - name: Generate policy
+        run: |
+          nix eval --json -f tailnet.nix policy \
+            | jq '{groups, hosts, tagOwners, ssh: [.ssh[] | {action, src, dst} + .], grants: [.grants[] | {src, dst} + .], tests: [.tests[] | {src} + .]} + del(.groups, .hosts, .tagOwners, .ssh, .grants, .tests)' \
+            | nix run --inputs-from . nixpkgs#prettier -- --stdin-filepath policy.json > policy.json
+
+      - name: Push policy
+        run: nix run --inputs-from . nixpkgs#tailscale-gitops-pusher -- --policy-file policy.json ${{ (github.event_name != 'pull_request' && github.ref == 'refs/heads/main') && 'apply' || 'test' }}
