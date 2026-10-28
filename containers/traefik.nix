@@ -7,6 +7,7 @@
 }:
 let
   cfg = config.server.traefik;
+  tn = import ../tailnet.nix;
   staticConfig = {
     global = {
       checkNewVersion = false;
@@ -128,9 +129,31 @@ in
       description = "add extra hosts to traefik service";
       default = [ ];
     };
+    restrict-servers = lib.mkOption {
+      type = lib.types.bool;
+      description = "block the tailnet.nix hosts from every router they aren't granted in their outgoing";
+      default = false;
+    };
   };
 
   config = lib.mkIf (config.modules.arion.enable && cfg.enable) {
+    lib.server.mkTraefikRule =
+      name: rule:
+      let
+        hostName = config.networking.hostName;
+        granted = tn.incoming.${hostName}.${name} or [ ];
+        blocked = lib.attrValues (removeAttrs tn.hosts ([ hostName ] ++ granted));
+      in
+      {
+        # traefik rejects an empty `!()`
+        rule =
+          if !cfg.restrict-servers || blocked == [ ] then
+            rule
+          else
+            "(${rule}) && !(${lib.concatMapStringsSep " || " (ip: "ClientIP(`${ip}`)") blocked})";
+        # traefik's default priority, so the guard doesn't reorder routers
+        priority = lib.stringLength rule;
+      };
     lib.server.mkTraefikLabels =
       options:
       (
@@ -143,6 +166,7 @@ in
           host =
             if (builtins.hasAttr "root" options && options.root) then domain else "${subdomain}.${domain}";
           rule = if (builtins.hasAttr "rule" options) then options.rule else "Host(`${host}`)";
+          guarded = config.lib.server.mkTraefikRule name rule;
           forwardAuth = (builtins.hasAttr "forwardAuth" options && options.forwardAuth);
           compress = (builtins.hasAttr "compress" options && options.compress);
           middlewares = lib.filter (m: m != "") (
@@ -153,12 +177,15 @@ in
         in
         {
           "traefik.enable" = "true";
-          "traefik.http.routers.${name}.rule" = "${rule}";
+          "traefik.http.routers.${name}.rule" = guarded.rule;
           "traefik.http.routers.${name}.entrypoints" = "https";
           "traefik.http.routers.${name}.tls" = "true";
           "traefik.http.routers.${name}.tls.certresolver" = "hetzner";
           "traefik.http.routers.${name}.service" = service;
           "traefik.docker.network" = "proxy";
+        }
+        // lib.attrsets.optionalAttrs (guarded.rule != rule) {
+          "traefik.http.routers.${name}.priority" = toString guarded.priority;
         }
         // lib.attrsets.optionalAttrs (builtins.hasAttr "port" options) {
           "traefik.http.services.${service}.loadbalancer.server.port" = "${options.port}";
