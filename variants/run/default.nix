@@ -31,6 +31,7 @@ in
     arion = {
       enable = true;
       backend = "podman";
+      registry-login = true;
     };
     attic-builder = {
       enable = true;
