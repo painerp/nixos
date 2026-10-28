@@ -5,7 +5,7 @@
 
 let
   flake = "run";
-  tailscale-ip = "100.113.149.64";
+  tailscale-ip = (import ./tailnet.nix).ip;
 in
 {
   networking.hostName = "nix${flake}";

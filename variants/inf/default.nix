@@ -6,7 +6,7 @@
 
 let
   flake = "inf";
-  tailscale-ip = "100.115.5.117";
+  tailscale-ip = (import ./tailnet.nix).ip;
 in
 {
   networking = {

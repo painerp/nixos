@@ -6,7 +6,7 @@
 
 let
   flake = "gra";
-  tailscale-ip = "100.118.176.61";
+  tailscale-ip = (import ./tailnet.nix).ip;
   media = "/mnt/media";
 in
 {

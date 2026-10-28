@@ -6,7 +6,7 @@
 
 let
   flake = "arr";
-  tailscale-ip = "100.95.215.11";
+  tailscale-ip = (import ./tailnet.nix).ip;
   media = "/mnt/media";
   unprocessed = "${media}/temp/unprocessed";
   temp = "/tmp/unprocessed";

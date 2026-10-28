@@ -7,7 +7,7 @@
 
 let
   flake = "jbx";
-  tailscale-ip = "100.103.104.35";
+  tailscale-ip = (import ./tailnet.nix).ip;
 in
 {
   age.secrets.wifi.file = secrets.jbx-wifi;

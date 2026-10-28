@@ -2,7 +2,7 @@
 
 let
   flake = "cit";
-  tailscale-ip = "100.77.215.64";
+  tailscale-ip = (import ./tailnet.nix).ip;
 in
 {
   age.secrets.git-pw.file = secrets.cit-git-pw;

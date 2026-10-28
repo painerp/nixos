@@ -7,7 +7,7 @@
 
 let
   flake = "sex";
-  tailscale-ip = "100.82.15.66";
+  tailscale-ip = (import ./tailnet.nix).ip;
   truenas-ip = "100.111.75.128";
 in
 {

@@ -5,7 +5,7 @@
 
 let
   flake = "log";
-  tailscale-ip = "100.73.203.96";
+  tailscale-ip = (import ./tailnet.nix).ip;
 in
 {
   networking = {

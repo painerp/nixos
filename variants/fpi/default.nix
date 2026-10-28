@@ -7,7 +7,7 @@
 
 let
   flake = "fpi";
-  tailscale-ip = "100.85.123.26";
+  tailscale-ip = (import ./tailnet.nix).ip;
 in
 {
   age.secrets.wifi.file = secrets.fpi-wifi;

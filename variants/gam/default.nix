@@ -5,7 +5,7 @@
 
 let
   flake = "gam";
-  tailscale-ip = "100.114.234.126";
+  tailscale-ip = (import ./tailnet.nix).ip;
   minecraft-path = "/root/config/minecraft";
 in
 {
