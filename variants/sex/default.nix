@@ -86,6 +86,7 @@ in
         auth = false;
         compress = true;
         image = inputs.nixos-private.hosts."${flake}".nuxt-pages.app.image;
+        environment.NUXT_JELLYFIN_METRICS_URL = "https://metrics.local.${config.server.base-domain}";
         env-file = secrets.ext-nuxt-pages-env;
       };
     };

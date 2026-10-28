@@ -63,7 +63,17 @@ in
         auth = false;
         env-file = secrets.log-grafana-env;
       };
-      prometheus.enable = true;
+      prometheus = {
+        enable = true;
+        public = {
+          queries = rec {
+            play_time = ''jellyfin_activity_play_time_seconds{job="jellyfin"}'';
+            play_time_30d = "${play_time} - min_over_time(${play_time}[30d])";
+            play_time_total = "sum(${play_time})";
+            play_time_30d_total = "sum(${play_time_30d})";
+          };
+        };
+      };
       loki = {
         enable = true;
         internal = true;
@@ -82,6 +92,7 @@ in
     traefik = {
       enable = true;
       subdomain = "t-log";
+      restrict-servers = true;
     };
     watchtower.enable = true;
   };

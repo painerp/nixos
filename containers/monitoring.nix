@@ -203,6 +203,24 @@ let
     }
   '';
   alloyConfigFile = builtins.toFile "config.alloy" alloyConfig;
+  # a variable upstream makes nginx re-resolve prometheus after it's recreated
+  prometheusPublicConfigFile = builtins.toFile "prometheus-public.conf" ''
+    server {
+      listen 80;
+      resolver ''${NGINX_LOCAL_RESOLVERS} valid=10s;
+      set $upstream prometheus:9090;
+      ${lib.concatStrings (
+        lib.mapAttrsToList (name: query: ''
+          location = /${name} {
+            limit_except GET { deny all; }
+            rewrite ^ /api/v1/query?query=${lib.escapeURL query}? break;
+            proxy_pass http://$upstream;
+          }
+        '') cfg.prometheus.public.queries
+      )}
+      location / { return 404; }
+    }
+  '';
 in
 {
   options.server.monitoring = {
@@ -233,6 +251,17 @@ in
       auth = lib.mkOption {
         type = lib.types.bool;
         default = config.server.authentik.enable;
+      };
+      public = {
+        subdomain = lib.mkOption {
+          type = lib.types.str;
+          default = "metrics";
+        };
+        queries = lib.mkOption {
+          type = with lib.types; attrsOf str;
+          default = { };
+          description = "Fixed PromQL queries served without auth as GET /<name>";
+        };
       };
     };
     loki = {
@@ -329,8 +358,12 @@ in
         server.traefik.aliases =
           with config.lib.server;
           (if cfg.grafana.enable then mkTraefikAlias { subdomain = cfg.grafana.subdomain; } else [ ])
+          ++ (if cfg.prometheus.enable then mkTraefikAlias { subdomain = cfg.prometheus.subdomain; } else [ ])
           ++ (
-            if cfg.prometheus.enable then mkTraefikAlias { subdomain = cfg.prometheus.subdomain; } else [ ]
+            if cfg.prometheus.enable && cfg.prometheus.public.queries != { } then
+              mkTraefikAlias { subdomain = cfg.prometheus.public.subdomain; }
+            else
+              [ ]
           );
 
         virtualisation.arion.projects.monitoring.settings = {
@@ -380,7 +413,7 @@ in
                   "--web.enable-admin-api"
                   "--config.file=/etc/prometheus/prometheus.yml"
                   "--storage.tsdb.path=/prometheus"
-                  "--storage.tsdb.retention.time=90d"
+                  "--storage.tsdb.retention.time=1y"
                   "--web.console.libraries=/usr/share/prometheus/console_libraries"
                   "--web.console.templates=/usr/share/prometheus/consoles"
                   "--web.enable-remote-write-receiver"
@@ -417,6 +450,25 @@ in
                 restart = "unless-stopped";
               };
 
+            }
+            // lib.attrsets.optionalAttrs (cfg.prometheus.enable && cfg.prometheus.public.queries != { }) {
+              prometheus-public.service = {
+                image = "docker.io/nginx:alpine";
+                container_name = "prometheus-public";
+                networks = [ "proxy" ];
+                environment.NGINX_ENTRYPOINT_LOCAL_RESOLVERS = "1";
+                volumes = [ "${prometheusPublicConfigFile}:/etc/nginx/templates/default.conf.template:ro" ];
+                labels =
+                  config.lib.server.mkTraefikLabels {
+                    name = "prometheus-public";
+                    subdomain = cfg.prometheus.public.subdomain;
+                    port = "80";
+                  }
+                  // {
+                    "com.centurylinklabs.watchtower.enable" = "true";
+                  };
+                restart = "unless-stopped";
+              };
             }
             // lib.attrsets.optionalAttrs (cfg.loki.enable) {
               loki.service = {

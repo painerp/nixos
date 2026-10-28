@@ -15,5 +15,6 @@
       "8096"
       "11000"
     ];
+    nixlog.routers = [ "prometheus-public" ];
   };
 }
