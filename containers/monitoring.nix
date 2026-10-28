@@ -415,7 +415,6 @@ in
                   // {
                     "com.centurylinklabs.watchtower.enable" = "true";
                   };
-                restart = "unless-stopped";
               };
 
             }
@@ -461,7 +460,6 @@ in
                   // {
                     "com.centurylinklabs.watchtower.enable" = "true";
                   };
-                restart = "unless-stopped";
               };
 
               prometheus-write.service = {
@@ -474,7 +472,6 @@ in
                 labels = {
                   "com.centurylinklabs.watchtower.enable" = "true";
                 };
-                restart = "unless-stopped";
               };
             }
             // lib.attrsets.optionalAttrs (cfg.prometheus.enable && cfg.prometheus.public.queries != { }) {
@@ -493,7 +490,6 @@ in
                   // {
                     "com.centurylinklabs.watchtower.enable" = "true";
                   };
-                restart = "unless-stopped";
               };
             }
             // lib.attrsets.optionalAttrs (cfg.loki.enable) {
@@ -525,7 +521,6 @@ in
                 labels = {
                   "com.centurylinklabs.watchtower.enable" = "true";
                 };
-                restart = "unless-stopped";
               };
 
             }
@@ -539,7 +534,6 @@ in
                 };
                 ports = [ "127.0.0.1:20002:9221/tcp" ];
                 env_file = [ config.age.secrets.pve-exporter-env.path ];
-                restart = "unless-stopped";
               };
 
             }
@@ -585,7 +579,6 @@ in
                 };
                 devices = [ "/dev/kmsg" ];
                 privileged = true;
-                restart = "unless-stopped";
               };
 
             }
@@ -605,7 +598,6 @@ in
                   // {
                     "com.centurylinklabs.watchtower.enable" = "true";
                   };
-                restart = "unless-stopped";
               };
             };
         };

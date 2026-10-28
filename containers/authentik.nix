@@ -103,7 +103,6 @@ in
               };
               env_file = [ config.age.secrets.authentik-proxy-env.path ];
               inherit labels;
-              restart = "unless-stopped";
             };
           }
         else
@@ -131,7 +130,6 @@ in
               labels = {
                 "com.centurylinklabs.watchtower.enable" = "true";
               };
-              restart = "unless-stopped";
             };
 
             server.service = {
@@ -152,7 +150,6 @@ in
                 "authentik-internal"
               ];
               inherit labels;
-              restart = "unless-stopped";
             };
 
             worker.service = {
@@ -180,7 +177,6 @@ in
               depends_on = [
                 "postgresql"
               ];
-              restart = "unless-stopped";
             };
           };
     };

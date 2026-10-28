@@ -50,6 +50,27 @@ in
     };
   };
 
+  # default restart policy for every compose service
+  options.virtualisation.arion.projects = lib.mkOption {
+    type = lib.types.attrsOf (
+      lib.types.submoduleWith {
+        modules = [
+          {
+            settings.imports = [
+              {
+                options.services = lib.mkOption {
+                  type = lib.types.attrsOf (
+                    lib.types.submodule { service.restart = lib.mkDefault "unless-stopped"; }
+                  );
+                };
+              }
+            ];
+          }
+        ];
+      }
+    );
+  };
+
   imports = [
     inputs.arion.nixosModules.arion
     ../containers

@@ -187,7 +187,6 @@ in
             // {
               "com.centurylinklabs.watchtower.enable" = "false";
             };
-          restart = "unless-stopped";
         };
 
         worker.service = {
@@ -222,7 +221,6 @@ in
           labels = {
             "com.centurylinklabs.watchtower.enable" = "false";
           };
-          restart = "unless-stopped";
         };
       };
     };

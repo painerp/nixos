@@ -128,7 +128,6 @@ in
         labels = {
           "com.centurylinklabs.watchtower.enable" = "false";
         };
-        restart = "unless-stopped";
       };
 
       services.minecraft-backup.service = lib.mkIf (cfg.backup.enable) {
@@ -149,7 +148,6 @@ in
         labels = {
           "com.centurylinklabs.watchtower.enable" = "true";
         };
-        restart = "unless-stopped";
       };
     };
 

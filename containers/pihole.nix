@@ -87,7 +87,6 @@ in
           // {
             "com.centurylinklabs.watchtower.enable" = "true";
           };
-        restart = "unless-stopped";
       };
 
       services.dnscrypt.service = {
@@ -101,7 +100,6 @@ in
         labels = {
           "com.centurylinklabs.watchtower.enable" = "true";
         };
-        restart = "unless-stopped";
       };
     };
 

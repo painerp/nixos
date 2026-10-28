@@ -73,7 +73,6 @@ in
             "com.centurylinklabs.watchtower.enable" = "true";
           }
           // cfg.labels;
-        restart = "unless-stopped";
       };
     };
   };

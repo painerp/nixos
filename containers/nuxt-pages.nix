@@ -126,7 +126,6 @@ in
               labels = {
                 "com.centurylinklabs.watchtower.enable" = "true";
               };
-              restart = "unless-stopped";
             };
 
           }
@@ -157,7 +156,6 @@ in
                 // {
                   "com.centurylinklabs.watchtower.enable" = "true";
                 };
-              restart = "unless-stopped";
             };
 
           }
@@ -190,7 +188,6 @@ in
                 // {
                   "com.centurylinklabs.watchtower.enable" = "true";
                 };
-              restart = "unless-stopped";
             };
 
           }
@@ -214,7 +211,6 @@ in
                 // {
                   "com.centurylinklabs.watchtower.enable" = "true";
                 };
-              restart = "unless-stopped";
             };
           };
         };

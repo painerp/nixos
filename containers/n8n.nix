@@ -65,7 +65,6 @@ in
               cfg.version == default-version
             );
           };
-        restart = "unless-stopped";
       };
     };
   };

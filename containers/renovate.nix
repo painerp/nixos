@@ -52,6 +52,7 @@ in
       services.renovate.service = {
         image = "docker.io/renovate/renovate:latest";
         container_name = "renovate";
+        restart = "no";
         hostname = config.networking.hostName;
         environment = {
           RENOVATE_PLATFORM = cfg.platform;

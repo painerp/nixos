@@ -69,7 +69,6 @@ in
         };
         env_file = [ config.age.secrets.paperless-pg-env.path ];
         volumes = [ "${config-dir}/postgres:/var/lib/postgresql" ];
-        restart = "unless-stopped";
       };
 
       services.paperless-broker.service = {
@@ -78,7 +77,6 @@ in
         hostname = config.networking.hostName;
         networks = [ "internal" ];
         volumes = [ "${config-dir}/broker:/data" ];
-        restart = "unless-stopped";
       };
 
       services.paperless.service = {
@@ -125,7 +123,6 @@ in
               cfg.version == default-version
             );
           };
-        restart = "unless-stopped";
       };
     };
   };

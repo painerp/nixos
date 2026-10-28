@@ -108,7 +108,6 @@ in
                 cfg.version == default-version
               );
             };
-          restart = "unless-stopped";
         };
       };
 
@@ -136,7 +135,6 @@ in
               cfg.version == default-version
             );
           };
-          restart = "unless-stopped";
         };
       };
 
@@ -150,7 +148,6 @@ in
             cfg.redis.image == default-redis-image
           );
         };
-        restart = "unless-stopped";
       };
 
       services.database.service = {
@@ -170,7 +167,6 @@ in
             cfg.version == default-version
           );
         };
-        restart = "unless-stopped";
       };
     };
   };

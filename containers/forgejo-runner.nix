@@ -46,7 +46,6 @@ in
         labels = {
           "com.centurylinklabs.watchtower.enable" = "false";
         };
-        restart = "unless-stopped";
       };
     };
   };

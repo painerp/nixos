@@ -38,7 +38,6 @@ in
           "--prune-blockchain"
         ];
         volumes = cfg.volumes;
-        restart = "unless-stopped";
       };
     };
   };

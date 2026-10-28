@@ -59,7 +59,6 @@ in
           subdomain = "${cfg.subdomain}";
           forwardAuth = cfg.auth;
         };
-        restart = "unless-stopped";
       };
     };
   };

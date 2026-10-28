@@ -61,7 +61,6 @@ in
         };
         env_file = [ config.age.secrets.jellystat-pg-env.path ];
         volumes = [ "${config.lib.server.mkConfigDir "jellystat/database"}:/var/lib/postgresql/data" ];
-        restart = "unless-stopped";
       };
 
       services.jellystat = {
@@ -99,7 +98,6 @@ in
             // {
               "com.centurylinklabs.watchtower.enable" = "true";
             };
-          restart = "unless-stopped";
         };
       };
     };

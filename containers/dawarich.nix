@@ -127,7 +127,6 @@ in
                 cfg.version == default-version
               );
             };
-          restart = "unless-stopped";
           stop_grace_period = "60s";
         };
       };
@@ -143,7 +142,6 @@ in
             cfg.redis.image == default-redis-image
           );
         };
-        restart = "unless-stopped";
       };
 
       services.database.service = {
@@ -165,7 +163,6 @@ in
             cfg.postgres.image == default-postgres-image
           );
         };
-        restart = "unless-stopped";
       };
     };
   };

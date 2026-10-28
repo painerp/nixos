@@ -90,7 +90,6 @@ in
                 cfg.version == default-version
               );
             };
-          restart = "unless-stopped";
         };
       };
 
@@ -104,7 +103,6 @@ in
         ];
         ports = [ "127.0.0.1:20010:9594" ];
         env_file = [ config.age.secrets.jellyfin-exporter-env.path ];
-        restart = "unless-stopped";
       };
     };
   };

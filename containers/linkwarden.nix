@@ -57,7 +57,6 @@ in
         };
         env_file = [ config.age.secrets.linkwarden-pg-env.path ];
         volumes = [ "${config.lib.server.mkConfigDir "linkwarden/postgres"}:/var/lib/postgresql/data" ];
-        restart = "unless-stopped";
       };
 
       services.linkwarden.service = {
@@ -85,7 +84,6 @@ in
           // {
             "com.centurylinklabs.watchtower.enable" = "true";
           };
-        restart = "unless-stopped";
       };
     };
   };

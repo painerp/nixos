@@ -53,7 +53,6 @@ in
           // {
             "com.centurylinklabs.watchtower.enable" = "true";
           };
-        restart = "unless-stopped";
       };
 
       services.goaccess.service = {
@@ -89,7 +88,6 @@ in
           // {
             "com.centurylinklabs.watchtower.enable" = "true";
           };
-        restart = "unless-stopped";
       };
     };
   };

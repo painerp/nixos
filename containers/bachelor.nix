@@ -76,7 +76,6 @@ in
         };
         env_file = [ config.age.secrets.bachelor-pg-env.path ];
         volumes = [ "${config-dir}/postgres:/var/lib/postgresql/data" ];
-        restart = "unless-stopped";
       };
 
       services.redis.service = {
@@ -84,7 +83,6 @@ in
         container_name = "bachelor-redis";
         networks = [ "backend" ];
         volumes = [ "${config-dir}/redis:/data" ];
-        restart = "unless-stopped";
       };
 
       services.inventurpro.service = {
@@ -104,7 +102,6 @@ in
           forwardAuth = cfg.auth;
           root = cfg.root;
         };
-        restart = "unless-stopped";
       };
     };
   };

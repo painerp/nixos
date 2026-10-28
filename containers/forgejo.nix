@@ -64,7 +64,6 @@ in
           // {
             "com.centurylinklabs.watchtower.enable" = "false";
           };
-        restart = "unless-stopped";
       };
     };
   };

@@ -71,7 +71,6 @@ in
           // {
             "com.centurylinklabs.watchtower.enable" = "true";
           };
-        restart = "unless-stopped";
       };
 
       services.warp = {
@@ -92,7 +91,6 @@ in
           labels = {
             "com.centurylinklabs.watchtower.enable" = "true";
           };
-          restart = "unless-stopped";
         };
       };
     };
