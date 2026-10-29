@@ -3,6 +3,8 @@
 let
   cfg = config.server.forgejo;
   host = "${cfg.subdomain}.${config.server.domain}";
+  # empty title line keeps the default title, the body replaces the default "Reviewed-on: <url>"
+  mergeMessageTemplate = builtins.toFile "MERGE_TEMPLATE.md" "\n\${ClosingIssues}\n";
 in
 {
   options.server.forgejo = {
@@ -46,9 +48,12 @@ in
           FORGEJO__server__ROOT_URL = "https://${host}/";
           FORGEJO__server__SSH_ALLOW_UNEXPECTED_AUTHORIZED_KEYS = "true";
           FORGEJO__actions__DEFAULT_ACTIONS_URL = "https://github.com";
+          # with "Hide email" on, web merges commit as <user>@users.noreply.github.com
+          FORGEJO__service__NO_REPLY_ADDRESS = "users.noreply.github.com";
         };
         volumes = [
           "${config.lib.server.mkConfigDir "forgejo"}:/data"
+          "${mergeMessageTemplate}:/data/gitea/default_merge_message/MERGE_TEMPLATE.md:ro"
           "/home/git/.ssh/:/data/git/.ssh"
           "/etc/timezone:/etc/timezone:ro"
           "/etc/localtime:/etc/localtime:ro"
