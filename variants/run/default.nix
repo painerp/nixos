@@ -1,4 +1,4 @@
-{ secrets, ... }:
+{ secrets, pkgs, ... }:
 
 {
   imports = [ ./hardware.nix ];
@@ -14,6 +14,17 @@
       max-memory-per-worker = 8192;
     };
   };
+
+  # podman > 5.8.4 breaks the forgejo runner's action copy: "statat ...: path escapes from parent"
+  virtualisation.podman.package = pkgs.podman.overrideAttrs (_: rec {
+    version = "5.8.4";
+    src = pkgs.fetchFromGitHub {
+      owner = "containers";
+      repo = "podman";
+      tag = "v${version}";
+      hash = "sha256-zhEtMZVKiv1L72EMlwgz8sHpmvhejGp98oW63aPj+rQ=";
+    };
+  });
 
   server = {
     subdomain = "local";
