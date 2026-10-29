@@ -42,7 +42,7 @@ in
       enable = true;
       internal = true;
       auth = false;
-      version = "12.3";
+      version = "12.4";
       volumes = [
         "${media}/shows:/shows"
         "${media}/movies:/movies"
