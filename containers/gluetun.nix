@@ -56,6 +56,8 @@ in
           PUID = 1050;
           GUID = 1050;
           UPDATER_PERIOD = "24h";
+          VPN_PORT_FORWARDING = "off";
+          HEALTH_VPN_DURATION_INITIAL = "120s";
         };
         env_file = [ config.age.secrets.gluetun-env.path ];
         volumes = [ "${config.lib.server.mkConfigDir "gluetun"}:/gluetun" ];
