@@ -35,12 +35,18 @@
       prometheus = {
         enable = true;
         public = {
-          queries = rec {
-            play_time = ''jellyfin_activity_play_time_seconds{job="jellyfin"}'';
-            play_time_30d = "${play_time} - min_over_time(${play_time}[30d])";
-            play_time_total = "sum(${play_time})";
-            play_time_30d_total = "sum(${play_time_30d})";
-          };
+          queries =
+            let
+              play_time = ''jellyfin_activity_play_time_seconds{job="jellyfin"}'';
+              play_time_30d = "${play_time} - min_over_time(${play_time}[30d])";
+            in
+            {
+              # max_over_time, because the archive serves last_over_time as an hourly average
+              play_time = "max by (username) (max_over_time(${play_time}[7d]))";
+              inherit play_time_30d;
+              play_time_total = "sum(${play_time})";
+              play_time_30d_total = "sum(${play_time_30d})";
+            };
         };
       };
       loki = {

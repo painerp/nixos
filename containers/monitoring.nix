@@ -358,17 +358,19 @@ let
       ruler.alertmanager_url = "http://alertmanager:9093";
     }
   );
-  # a variable upstream makes nginx re-resolve prometheus after it's recreated
+  # a variable upstream makes nginx re-resolve thanos-query after it's recreated.
+  # without max_source_resolution instant queries only see raw data (90d)
   prometheusPublicConfigFile = builtins.toFile "prometheus-public.conf" ''
     server {
       listen 80;
       resolver ''${NGINX_LOCAL_RESOLVERS} valid=10s;
-      set $upstream prometheus:9090;
+      set $upstream thanos-query:10902;
+      if ($arg_time !~ "^([0-9]{9,10}(\.[0-9]{1,3})?)?$") { return 400; }
       ${lib.concatStrings (
         lib.mapAttrsToList (name: query: ''
           location = /${name} {
             limit_except GET { deny all; }
-            rewrite ^ /api/v1/query?query=${lib.escapeURL query}? break;
+            rewrite ^ /api/v1/query?query=${lib.escapeURL query}&time=$arg_time&max_source_resolution=1h&partial_response=false? break;
             proxy_pass http://$upstream;
           }
         '') cfg.prometheus.public.queries
@@ -429,7 +431,7 @@ in
         queries = lib.mkOption {
           type = with lib.types; attrsOf str;
           default = { };
-          description = "Fixed PromQL queries served without auth as GET /<name>";
+          description = "Fixed PromQL queries served without auth as GET /<name>[?time=<unix seconds>]";
         };
       };
     };
