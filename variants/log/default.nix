@@ -14,6 +14,7 @@
       exclude = [
         "config/prometheus/data"
         "config/loki/data"
+        "config/thanos"
       ];
     };
   };
