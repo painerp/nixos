@@ -227,6 +227,7 @@ let
               targets = map (n: "thanos-${n}:10902") [
                 "sidecar"
                 "store"
+                "compact"
                 "query"
               ];
             }
@@ -502,7 +503,8 @@ in
                   "--web.enable-admin-api"
                   "--config.file=/etc/prometheus/prometheus.yml"
                   "--storage.tsdb.path=/prometheus"
-                  "--storage.tsdb.retention.time=1y"
+                  "--storage.tsdb.retention.time=90d"
+                  "--storage.tsdb.retention.size=20GB"
                   "--storage.tsdb.min-block-duration=2h"
                   "--storage.tsdb.max-block-duration=2h"
                   "--web.console.libraries=/usr/share/prometheus/console_libraries"

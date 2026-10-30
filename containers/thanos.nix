@@ -45,7 +45,6 @@ in
             "--tsdb.path=/prometheus"
             "--prometheus.url=http://prometheus:9090"
             "--objstore.config-file=/etc/thanos/objstore.yml"
-            "--shipper.upload-compacted"
           ]
           {
             env_file = [ config.age.secrets.monitoring-s3-env.path ];
@@ -68,6 +67,25 @@ in
             env_file = [ config.age.secrets.monitoring-s3-env.path ];
             volumes = [
               "${config.lib.server.mkConfigDir "thanos/store"}:/data"
+              "${objstoreConfigFile}:/etc/thanos/objstore.yml:ro"
+            ];
+          };
+
+      thanos-compact =
+        mkService "compact" "1g"
+          [
+            "--wait"
+            "--data-dir=/data"
+            "--objstore.config-file=/etc/thanos/objstore.yml"
+            "--retention.resolution-raw=90d"
+            "--retention.resolution-5m=365d"
+            "--retention.resolution-1h=1095d"
+            "--compact.enable-vertical-compaction"
+          ]
+          {
+            env_file = [ config.age.secrets.monitoring-s3-env.path ];
+            volumes = [
+              "${config.lib.server.mkConfigDir "thanos/compact"}:/data"
               "${objstoreConfigFile}:/etc/thanos/objstore.yml:ro"
             ];
           };
