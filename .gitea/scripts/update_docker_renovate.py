@@ -8,7 +8,7 @@ def update_renovate_config():
     containers_dir = 'containers'
     custom_managers = []
 
-    for file in os.listdir(containers_dir):
+    for file in sorted(os.listdir(containers_dir)):
         if not file.endswith('.nix'):
             continue
 
