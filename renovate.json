@@ -45,11 +45,11 @@
         "/variants/.+\\.nix$/"
       ],
       "matchStrings": [
-        "minecraft\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+        "adguardhome\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
-      "versioningTemplate": "docker",
-      "depNameTemplate": "docker.io/itzg/minecraft-server"
+      "versioningTemplate": "semver",
+      "depNameTemplate": "docker.io/adguard/adguardhome"
     },
     {
       "customType": "regex",
@@ -69,35 +69,23 @@
         "/variants/.+\\.nix$/"
       ],
       "matchStrings": [
-        "forgejo-runner\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
-      ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "semver",
-      "depNameTemplate": "data.forgejo.org/forgejo/runner"
-    },
-    {
-      "customType": "regex",
-      "managerFilePatterns": [
-        "/variants/.+\\.nix$/"
-      ],
-      "matchStrings": [
-        "n8n\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
-      ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "semver",
-      "depNameTemplate": "docker.n8n.io/n8nio/n8n"
-    },
-    {
-      "customType": "regex",
-      "managerFilePatterns": [
-        "/variants/.+\\.nix$/"
-      ],
-      "matchStrings": [
         "dawarich\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver",
       "depNameTemplate": "docker.io/freikin/dawarich"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/variants/.+\\.nix$/"
+      ],
+      "matchStrings": [
+        "forgejo-runner\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver",
+      "depNameTemplate": "data.forgejo.org/forgejo/runner"
     },
     {
       "customType": "regex",
@@ -117,11 +105,47 @@
         "/variants/.+\\.nix$/"
       ],
       "matchStrings": [
+        "immich\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver",
+      "depNameTemplate": "ghcr.io/immich-app/immich-server"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/variants/.+\\.nix$/"
+      ],
+      "matchStrings": [
         "jellyfin\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker",
       "depNameTemplate": "ghcr.io/jellyfin/jellyfin"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/variants/.+\\.nix$/"
+      ],
+      "matchStrings": [
+        "minecraft\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker",
+      "depNameTemplate": "docker.io/itzg/minecraft-server"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/variants/.+\\.nix$/"
+      ],
+      "matchStrings": [
+        "n8n\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver",
+      "depNameTemplate": "docker.n8n.io/n8nio/n8n"
     },
     {
       "customType": "regex",
@@ -141,23 +165,11 @@
         "/variants/.+\\.nix$/"
       ],
       "matchStrings": [
-        "immich\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+        "thanos\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver",
-      "depNameTemplate": "ghcr.io/immich-app/immich-server"
-    },
-    {
-      "customType": "regex",
-      "managerFilePatterns": [
-        "/variants/.+\\.nix$/"
-      ],
-      "matchStrings": [
-        "adguardhome\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
-      ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "semver",
-      "depNameTemplate": "docker.io/adguard/adguardhome"
+      "depNameTemplate": "quay.io/thanos/thanos"
     }
   ]
 }
