@@ -54,6 +54,10 @@ in
         compress = true;
         image = private.nuxt-pages.app.image;
         env-file = secrets.ext-nuxt-pages-env;
+        metrics = {
+          enable = true;
+          env-file = secrets.ext-nuxt-pages-metrics-env;
+        };
       };
     };
     minecraft-router = {

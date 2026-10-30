@@ -52,6 +52,13 @@ in
         description = "The docker image to use for the nuxt app";
       };
       env-file = lib.mkOption { type = lib.types.path; };
+      metrics = {
+        enable = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+        };
+        env-file = lib.mkOption { type = lib.types.path; };
+      };
     };
     g2g = {
       enable = lib.mkOption {
@@ -82,6 +89,12 @@ in
           nuxt-pages-mysql-env.file = cfg.mysql.env-file;
         }
         // (if (cfg.app.enable) then { nuxt-pages-env.file = cfg.app.env-file; } else { })
+        // (
+          if (cfg.app.enable && cfg.app.metrics.enable) then
+            { nuxt-pages-metrics-env.file = cfg.app.metrics.env-file; }
+          else
+            { }
+        )
         // (if (cfg.pma.enable) then { nuxt-pages-pma-env.file = cfg.pma.env-file; } else { })
         // (if (cfg.g2g.enable) then { nuxt-pages-g2g-env.file = cfg.g2g.env-file; } else { });
 
@@ -172,7 +185,11 @@ in
               sysctls = {
                 "net.ipv6.conf.all.disable_ipv6" = 1;
               };
-              env_file = [ config.age.secrets.nuxt-pages-env.path ];
+              env_file = [
+                config.age.secrets.nuxt-pages-env.path
+              ]
+              ++ lib.optional cfg.app.metrics.enable config.age.secrets.nuxt-pages-metrics-env.path;
+              ports = lib.optional cfg.app.metrics.enable "127.0.0.1:20005:3000/tcp";
               volumes = [
                 "${config-dir}/nuxt-app/data:/srv/data"
               ];

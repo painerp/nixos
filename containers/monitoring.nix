@@ -178,6 +178,24 @@ let
       }
     ''}
 
+    ${lib.optionalString
+      (config.server.nuxt-pages.app.enable && config.server.nuxt-pages.app.metrics.enable)
+      ''
+        // Metrics: nuxt-pages app, fixed instance so moving hosts doesn't split the series
+        prometheus.scrape "nuxt_pages" {
+          targets = [{
+            __address__ = "127.0.0.1:20005",
+            instance    = "nuxt-pages",
+          }]
+          forward_to = [prometheus.remote_write.default.receiver]
+          scrape_interval = "60s"
+          scrape_timeout = "10s"
+          job_name = "nuxt-pages"
+          bearer_token = sys.env("NUXT_METRICS_TOKEN")
+        }
+      ''
+    }
+
     ${lib.optionalString (config.server.peanut.enable) ''
       // Metrics: Peanut (local port, traefik puts it behind authentik)
       prometheus.scrape "peanut" {
@@ -683,7 +701,11 @@ in
                 image = "docker.io/grafana/alloy:latest";
                 container_name = "alloy";
                 network_mode = "host";
-                env_file = lib.optional config.server.peanut.enable config.age.secrets.peanut-env.path;
+                env_file =
+                  lib.optional config.server.peanut.enable config.age.secrets.peanut-env.path
+                  ++ lib.optional (
+                    config.server.nuxt-pages.app.enable && config.server.nuxt-pages.app.metrics.enable
+                  ) config.age.secrets.nuxt-pages-metrics-env.path;
                 command = [
                   "run"
                   "--server.http.listen-addr=127.0.0.1:12345"

@@ -67,6 +67,7 @@ in
   "ext/nuxt-pages-pma.env.age".publicKeys = users ++ external_systems;
   "ext/nuxt-pages-mysql.env.age".publicKeys = users ++ external_systems;
   "ext/nuxt-pages-g2g.env.age".publicKeys = users ++ external_systems;
+  "ext/nuxt-pages-metrics.env.age".publicKeys = users ++ external_systems;
   "ext/open-webui.env.age".publicKeys = users ++ external_systems;
   "ext/teamspeak.env.age".publicKeys = users ++ external_systems;
 
