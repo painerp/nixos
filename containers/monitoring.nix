@@ -233,7 +233,11 @@ let
             }
           ];
         }
-      ];
+      ]
+      ++ lib.optional cfg.loki.enable {
+        job_name = "loki";
+        static_configs = [ { targets = [ "loki:3100" ]; } ];
+      };
     }
   );
   monitoringRulesFile = builtins.toFile "monitoring.yml" (
@@ -263,9 +267,77 @@ let
               labels.severity = "warning";
               annotations.summary = "Thanos sidecar fails to upload blocks to the NAS";
             }
+            {
+              alert = "LokiDown";
+              expr = ''up{job="loki"} == 0'';
+              for = "5m";
+              labels.severity = "critical";
+              annotations.summary = "Loki is down";
+            }
+            {
+              alert = "LokiFlushFailing";
+              expr = "increase(loki_ingester_chunks_flush_failures_total[1h]) > 0";
+              for = "5m";
+              labels.severity = "warning";
+              annotations.summary = "Loki fails to flush chunks to the NAS";
+            }
           ];
         }
       ];
+    }
+  );
+  lokiConfigFile = builtins.toFile "loki.yml" (
+    builtins.toJSON {
+      auth_enabled = false;
+      server.http_listen_port = 3100;
+      analytics.reporting_enabled = false;
+      common = {
+        path_prefix = "/loki";
+        replication_factor = 1;
+        ring = {
+          instance_addr = "127.0.0.1";
+          kvstore.store = "inmemory";
+        };
+        storage.s3 = {
+          inherit (cfg.s3) endpoint region;
+          bucketnames = "loki";
+          access_key_id = "\${AWS_ACCESS_KEY_ID}";
+          secret_access_key = "\${AWS_SECRET_ACCESS_KEY}";
+          insecure = true;
+          s3forcepathstyle = true;
+        };
+      };
+      schema_config.configs = [
+        {
+          from = "2020-10-24";
+          store = "tsdb";
+          object_store = "s3";
+          schema = "v13";
+          index = {
+            prefix = "index_";
+            period = "24h";
+          };
+        }
+      ];
+      ingester.chunk_encoding = "zstd";
+      limits_config.retention_period = "26280h";
+      compactor = {
+        working_directory = "/loki/compactor";
+        retention_enabled = true;
+        delete_request_store = "s3";
+      };
+      chunk_store_config.chunk_cache_config.embedded_cache = {
+        enabled = true;
+        max_size_mb = 128;
+      };
+      query_range = {
+        cache_results = true;
+        results_cache.cache.embedded_cache = {
+          enabled = true;
+          max_size_mb = 64;
+        };
+      };
+      ruler.alertmanager_url = "http://alertmanager:9093";
     }
   );
   # a variable upstream makes nginx re-resolve prometheus after it's recreated
@@ -511,9 +583,7 @@ in
                   "--web.console.templates=/usr/share/prometheus/consoles"
                   "--web.enable-remote-write-receiver"
                 ];
-                networks = [
-                  "proxy"
-                ];
+                networks = [ "proxy" ] ++ lib.optional cfg.loki.enable "exporter";
                 volumes = [
                   "${prometheusConfigFile}:/etc/prometheus/prometheus.yml:ro"
                   "${config.lib.server.mkConfigDir "prometheus/rules"}:/etc/prometheus/rules:ro"
@@ -582,22 +652,11 @@ in
                 ports = (if (cfg.loki.internal) then [ "${config.server.tailscale-ip}:20100:3100/tcp" ] else [ ]);
                 command = [
                   "-config.file=/etc/loki/config.yml"
-                  "-auth.enabled=false"
-                  "-server.http-listen-port=3100"
-                  "-store.retention=360d"
-                  "-compactor.retention-enabled=true"
-                  "-compactor.delete-request-store=filesystem"
-                  "-common.path-prefix=/loki"
-                  "-common.storage.filesystem.chunk-directory=/loki/chunks"
-                  "-common.storage.filesystem.rules-directory=/loki/rules"
-                  "-common.storage.ring.instance-addr=127.0.0.1"
-                  "-common.storage.ring.store=inmemory"
-                  "-local.chunk-directory=/loki/storage"
-                  "-ruler.alertmanager-url=http://alertmanager:9093"
-                  "-reporting.enabled=false"
+                  "-config.expand-env=true"
                 ];
+                env_file = [ config.age.secrets.monitoring-s3-env.path ];
                 volumes = [
-                  "${config.lib.server.mkConfigDir "loki/config"}:/etc/loki"
+                  "${lokiConfigFile}:/etc/loki/config.yml:ro"
                   "${config.lib.server.mkConfigDir "loki/data"}:/loki"
                 ];
                 labels = {
