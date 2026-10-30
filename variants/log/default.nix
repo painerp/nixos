@@ -43,6 +43,13 @@
       };
       alloy.enable = true;
       alertmanager.enable = true;
+      s3 = {
+        endpoint = "10.0.10.1:3900";
+        env-file = secrets.log-s3-env;
+      };
+    };
+    thanos = {
+      version = "v0.42.5";
     };
     traefik = {
       enable = true;

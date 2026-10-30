@@ -210,12 +210,59 @@ let
         scrape_interval = "15s";
         external_labels.prometheus = config.networking.hostName;
       };
-      rule_files = [ "rules/*.yml" ];
+      rule_files = [
+        "rules/*.yml"
+        "rules-nix/*.yml"
+      ];
       alerting.alertmanagers = [ { static_configs = [ { targets = [ "alertmanager:9093" ]; } ]; } ];
       scrape_configs = [
         {
           job_name = "prometheus";
           static_configs = [ { targets = [ "localhost:9090" ]; } ];
+        }
+        {
+          job_name = "thanos";
+          static_configs = [
+            {
+              targets = map (n: "thanos-${n}:10902") [
+                "sidecar"
+                "store"
+                "query"
+              ];
+            }
+          ];
+        }
+      ];
+    }
+  );
+  monitoringRulesFile = builtins.toFile "monitoring.yml" (
+    builtins.toJSON {
+      groups = [
+        {
+          name = "monitoring";
+          rules = [
+            {
+              alert = "ThanosDown";
+              expr = ''up{job="thanos"} == 0'';
+              for = "5m";
+              labels.severity = "critical";
+              annotations.summary = "{{ $labels.instance }} is down";
+            }
+            {
+              alert = "ThanosCompactHalted";
+              expr = "thanos_compact_halted == 1";
+              for = "5m";
+              labels.severity = "critical";
+              annotations.summary = "Thanos compactor halted, archive is no longer compacted or pruned";
+            }
+            {
+              alert = "ThanosUploadFailing";
+              expr = "increase(thanos_shipper_dir_sync_failures_total[1h]) > 0";
+              for = "5m";
+              labels.severity = "warning";
+              annotations.summary = "Thanos sidecar fails to upload blocks to the NAS";
+            }
+          ];
         }
       ];
     }
@@ -360,6 +407,14 @@ in
         default = config.server.authentik.enable;
       };
     };
+    s3 = {
+      endpoint = lib.mkOption { type = lib.types.str; };
+      region = lib.mkOption {
+        type = lib.types.str;
+        default = "garage";
+      };
+      env-file = lib.mkOption { type = lib.types.path; };
+    };
   };
 
   config =
@@ -377,8 +432,12 @@ in
       {
         age.secrets =
           (if cfg.grafana.enable then { grafana-env.file = cfg.grafana.env-file; } else { })
+          // (if cfg.pve-exporter.enable then { pve-exporter-env.file = cfg.pve-exporter.env-file; } else { })
           // (
-            if cfg.pve-exporter.enable then { pve-exporter-env.file = cfg.pve-exporter.env-file; } else { }
+            if cfg.prometheus.enable || cfg.loki.enable then
+              { monitoring-s3-env.file = cfg.s3.env-file; }
+            else
+              { }
           );
 
         systemd.services.arion-monitoring = {
@@ -444,6 +503,8 @@ in
                   "--config.file=/etc/prometheus/prometheus.yml"
                   "--storage.tsdb.path=/prometheus"
                   "--storage.tsdb.retention.time=1y"
+                  "--storage.tsdb.min-block-duration=2h"
+                  "--storage.tsdb.max-block-duration=2h"
                   "--web.console.libraries=/usr/share/prometheus/console_libraries"
                   "--web.console.templates=/usr/share/prometheus/consoles"
                   "--web.enable-remote-write-receiver"
@@ -454,6 +515,7 @@ in
                 volumes = [
                   "${prometheusConfigFile}:/etc/prometheus/prometheus.yml:ro"
                   "${config.lib.server.mkConfigDir "prometheus/rules"}:/etc/prometheus/rules:ro"
+                  "${monitoringRulesFile}:/etc/prometheus/rules-nix/monitoring.yml:ro"
                   "${config.lib.server.mkConfigDir "prometheus/data"}:/prometheus"
                 ];
                 healthcheck = {
@@ -477,6 +539,8 @@ in
                     "com.centurylinklabs.watchtower.enable" = "true";
                   };
               };
+
+              prometheus.out.service.oom_score_adj = -500;
 
               prometheus-write.service = {
                 image = "docker.io/nginx:alpine";
