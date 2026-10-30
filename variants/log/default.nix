@@ -9,7 +9,13 @@
       backend = "podman";
       tailscale-dependent = true;
     };
-    borg.enable = true;
+    borg = {
+      enable = true;
+      exclude = [
+        "config/prometheus/data"
+        "config/loki/data"
+      ];
+    };
   };
 
   server = {
