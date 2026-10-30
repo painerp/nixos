@@ -301,6 +301,51 @@ let
             }
           ];
         }
+        {
+          name = "nuxt-pages";
+          rules = [
+            {
+              alert = "NuxtPagesMetricsDown";
+              expr = ''up{job="nuxt-pages"} == 0'';
+              for = "10m";
+              labels.severity = "warning";
+              annotations.summary = "nuxt-pages /metrics can't be scraped";
+            }
+            {
+              alert = "TeamspeakCountStale";
+              expr = ''time() - teamspeak_last_count_timestamp_seconds{job="nuxt-pages"} > 600'';
+              labels.severity = "critical";
+              annotations.summary = "TeamSpeak time wasn't counted for {{ $value | humanizeDuration }}";
+            }
+            {
+              alert = "StreamCheckStale";
+              expr = ''time() - stream_last_check_timestamp_seconds{job="nuxt-pages"} > 600'';
+              labels.severity = "critical";
+              annotations.summary = "{{ $labels.platform }} live check didn't succeed for {{ $value | humanizeDuration }}";
+            }
+            # the stale rules return nothing for a job that never counted since a start
+            {
+              alert = "TeamspeakCountMissing";
+              expr = ''absent(teamspeak_last_count_timestamp_seconds{job="nuxt-pages"})'';
+              for = "15m";
+              labels.severity = "critical";
+              annotations.summary = "TeamSpeak time isn't counted";
+            }
+            {
+              alert = "StreamCheckMissing";
+              expr =
+                lib.concatMapStringsSep " or "
+                  (p: ''absent(stream_last_check_timestamp_seconds{job="nuxt-pages",platform="${p}"})'')
+                  [
+                    "twitch"
+                    "youtube"
+                  ];
+              for = "15m";
+              labels.severity = "critical";
+              annotations.summary = "{{ $labels.platform }} live check doesn't run";
+            }
+          ];
+        }
       ];
     }
   );
