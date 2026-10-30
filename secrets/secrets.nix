@@ -109,6 +109,7 @@ in
 
   "log/authentik-proxy.env.age".publicKeys = users ++ [ log ];
   "log/grafana.env.age".publicKeys = users ++ [ log ];
+  "log/s3.env.age".publicKeys = users ++ [ log ];
 
   "dionysus/dionysus-pw.age".publicKeys = users ++ [ dionysus ];
 
