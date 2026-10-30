@@ -204,6 +204,22 @@ let
     }
   '';
   alloyConfigFile = builtins.toFile "config.alloy" alloyConfig;
+  prometheusConfigFile = builtins.toFile "prometheus.yml" (
+    builtins.toJSON {
+      global = {
+        scrape_interval = "15s";
+        external_labels.prometheus = config.networking.hostName;
+      };
+      rule_files = [ "rules/*.yml" ];
+      alerting.alertmanagers = [ { static_configs = [ { targets = [ "alertmanager:9093" ]; } ]; } ];
+      scrape_configs = [
+        {
+          job_name = "prometheus";
+          static_configs = [ { targets = [ "localhost:9090" ]; } ];
+        }
+      ];
+    }
+  );
   # a variable upstream makes nginx re-resolve prometheus after it's recreated
   prometheusPublicConfigFile = builtins.toFile "prometheus-public.conf" ''
     server {
@@ -436,7 +452,7 @@ in
                   "proxy"
                 ];
                 volumes = [
-                  "${config.lib.server.mkConfigDir "prometheus"}/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+                  "${prometheusConfigFile}:/etc/prometheus/prometheus.yml:ro"
                   "${config.lib.server.mkConfigDir "prometheus/rules"}:/etc/prometheus/rules:ro"
                   "${config.lib.server.mkConfigDir "prometheus/data"}:/prometheus"
                 ];
