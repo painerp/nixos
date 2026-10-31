@@ -1,6 +1,6 @@
 FROM docker.io/iiidev/iii:@iii-version@ AS engine
 
-FROM docker.io/library/node:24-bookworm-slim
+FROM docker.io/library/node:26-bookworm-slim
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates libgomp1 tini \
