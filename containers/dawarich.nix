@@ -23,7 +23,7 @@ let
     SELF_HOSTED = "true";
   };
   default-version = "latest";
-  default-redis-image = "docker.io/redis:7.4-alpine";
+  default-redis-image = "docker.io/redis:8-alpine";
   default-postgres-image = "docker.io/postgis/postgis:17-3.5-alpine";
 in
 {
