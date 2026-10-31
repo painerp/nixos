@@ -24,6 +24,12 @@
         "/nixos-private/",
         "/git\\+ssh://.*nixos-private/"
       ]
+    },
+    {
+      "matchPackageNames": [
+        "docker.io/iiidev/iii"
+      ],
+      "enabled": false
     }
   ],
   "customManagers": [

@@ -22,7 +22,7 @@
     subdomain = "local";
     agentmemory = {
       enable = true;
-      version = "0.9.30";
+      version = "0.9.31";
       env-file = secrets.inf-agentmemory-env;
       provider.env-file = secrets.inf-agentmemory-provider-env;
     };
