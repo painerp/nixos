@@ -17,6 +17,7 @@ let
     APPLICATION_PROTOCOL = "http";
     TIME_ZONE = config.time.timeZone;
     RAILS_LOG_TO_STDOUT = "true";
+    RAILS_LOG_LEVEL = "info";
     PROMETHEUS_EXPORTER_ENABLED = "false";
     STORE_GEODATA = "true";
     DISABLE_TELEMETRY = "true";
