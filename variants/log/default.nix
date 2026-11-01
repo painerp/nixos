@@ -50,6 +50,7 @@
               teamspeak_online = ''max by (dbid) (max_over_time(teamspeak_online_seconds_total{job="nuxt-pages"}[7d]))'';
               teamspeak_active = ''max by (dbid) (max_over_time(teamspeak_active_seconds_total{job="nuxt-pages"}[7d]))'';
               stream_live = ''max by (name, platform) (max_over_time(stream_live_seconds_total{job="nuxt-pages"}[7d]))'';
+              minecraft_playtime = ''max by (name) (max_over_time(minecraft_play_seconds_total{job="nuxt-pages"}[7d]))'';
             };
         };
       };
