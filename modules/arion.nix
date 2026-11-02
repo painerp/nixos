@@ -128,9 +128,10 @@ in
             requires = [ "tailscaled.service" ];
           };
         };
+        # wants: requires would pass a tailscaled restart on and recreate podman.sock under the containers
         sockets.podman = lib.attrsets.optionalAttrs (cfg.backend == "podman") {
           after = [ "tailscaled.service" ];
-          requires = [ "tailscaled.service" ];
+          wants = [ "tailscaled.service" ];
         };
       })
       # podman.service is socket-activated, so on change switch-to-configuration restarts podman.socket,
