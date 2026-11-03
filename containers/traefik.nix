@@ -181,19 +181,22 @@ in
         // lib.optionalAttrs (transport != null) { serversTransport = transport; };
       };
     lib.server.traefikDynamic = cfg.dynamic // {
-      http = (cfg.dynamic.http or { }) // {
-        routers = lib.mapAttrs (
-          name: router:
-          let
-            guarded = config.lib.server.mkTraefikRule name router.rule;
-          in
-          router
-          // {
-            inherit (guarded) rule;
-          }
-          // lib.optionalAttrs (guarded.rule != router.rule) { inherit (guarded) priority; }
-        ) (cfg.dynamic.http.routers or { });
-      };
+      # traefik rejects the whole file on an empty `routers` map
+      http =
+        (cfg.dynamic.http or { })
+        // lib.optionalAttrs ((cfg.dynamic.http.routers or { }) != { }) {
+          routers = lib.mapAttrs (
+            name: router:
+            let
+              guarded = config.lib.server.mkTraefikRule name router.rule;
+            in
+            router
+            // {
+              inherit (guarded) rule;
+            }
+            // lib.optionalAttrs (guarded.rule != router.rule) { inherit (guarded) priority; }
+          ) cfg.dynamic.http.routers;
+        };
     };
     assertions =
       let
