@@ -26,7 +26,7 @@
     subdomain = "local";
     adguardhome = {
       enable = true;
-      version = "v0.107.79";
+      version = "v0.107.80";
     };
     attic = {
       enable = true;

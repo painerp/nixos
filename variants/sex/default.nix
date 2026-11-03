@@ -26,7 +26,7 @@ in
     short-subdomain = true;
     adguardhome = {
       enable = true;
-      version = "v0.107.79";
+      version = "v0.107.80";
     };
     authentik = {
       enable = true;

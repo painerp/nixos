@@ -28,7 +28,7 @@
     subdomain = "ju";
     adguardhome = {
       enable = true;
-      version = "v0.107.79";
+      version = "v0.107.80";
       expose = true;
     };
     traefik = {

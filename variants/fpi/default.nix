@@ -19,7 +19,7 @@
     subdomain = "f";
     adguardhome = {
       enable = true;
-      version = "v0.107.79";
+      version = "v0.107.80";
       expose = true;
     };
     atvloadly.enable = true;
