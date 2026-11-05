@@ -118,6 +118,43 @@ in
           RestartSec = 30;
         };
       };
+
+      crowdsec-tailnet-allowlist = {
+        description = "Allowlist the public endpoints of tailnet devices in crowdsec";
+        after = [
+          "crowdsec.service"
+          "tailscaled.service"
+        ];
+        requires = [ "crowdsec.service" ];
+        path = [
+          config.services.tailscale.package
+          pkgs.jq
+          pkgs.util-linux
+        ];
+        serviceConfig.Type = "oneshot";
+        script = ''
+          want=$(tailscale debug netmap | jq -r '[.Peers[].Endpoints[]? | sub(":[0-9]+$"; "") | ltrimstr("[") | rtrimstr("]")] | unique | .[]')
+          if [ -z "$want" ]; then
+            echo "no endpoints in the tailscale netmap, leaving the allowlist untouched" >&2
+            exit 1
+          fi
+          cs() { runuser -u crowdsec -- ${cscli} "$@"; }
+          cs allowlists inspect tailnet >/dev/null 2>&1 || cs allowlists create tailnet -d "public endpoints of tailnet devices"
+          have=$(cs allowlists inspect tailnet -o json | jq -r '.items[]?.value')
+          add=$(comm -13 <(sort -u <<<"$have") <(sort -u <<<"$want"))
+          del=$(comm -23 <(sort -u <<<"$have") <(sort -u <<<"$want"))
+          [ -z "$add" ] || cs allowlists add tailnet $add -d "tailnet endpoint"
+          [ -z "$del" ] || cs allowlists remove tailnet $del
+        '';
+      };
+    };
+
+    systemd.timers.crowdsec-tailnet-allowlist = {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnBootSec = "2min";
+        OnUnitActiveSec = "5min";
+      };
     };
   };
 }
