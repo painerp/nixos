@@ -7,6 +7,7 @@
 
 let
   cfg = config.modules.crowdsec;
+  docker = config.virtualisation.docker.enable;
   traefik = config.modules.arion.enable && config.server.traefik.enable;
 in
 {
@@ -72,17 +73,40 @@ in
       };
     };
 
+    services.crowdsec-firewall-bouncer = {
+      enable = true;
+      # docker-published ports bypass INPUT
+      settings.iptables_chains = [ "INPUT" ] ++ lib.optional docker "DOCKER-USER";
+    };
+
     # cscli defaults to this path, nixpkgs only passes it to its own units via -c
     environment.etc."crowdsec/config.yaml".source =
       (pkgs.formats.yaml { }).generate "crowdsec.yaml"
         config.services.crowdsec.settings.general;
 
-    systemd.services.crowdsec = {
-      # nixpkgs clears the unit path, the journalctl datasource needs journalctl
-      path = lib.mkForce [ config.systemd.package ];
-      serviceConfig.BindReadOnlyPaths = lib.mkIf traefik [
-        "-${config.lib.server.mkConfigDir "traefik/logs"}:/var/log/traefik"
-      ];
+    systemd.services = {
+      crowdsec = {
+        # nixpkgs clears the unit path, the journalctl datasource needs journalctl
+        path = lib.mkForce [ config.systemd.package ];
+        serviceConfig.BindReadOnlyPaths = lib.mkIf traefik [
+          "-${config.lib.server.mkConfigDir "traefik/logs"}:/var/log/traefik"
+        ];
+      };
+
+      crowdsec-firewall-bouncer-register.serviceConfig = {
+        # upstream also lists crowdsec, which DynamicUser would move to /var/lib/private
+        StateDirectory = lib.mkForce "crowdsec-firewall-bouncer-register";
+        ReadWritePaths = [ "/var/lib/crowdsec" ];
+      };
+
+      crowdsec-firewall-bouncer = {
+        after = [ "crowdsec-firewall-bouncer-register.service" ] ++ lib.optional docker "docker.service";
+        partOf = lib.optional docker "docker.service";
+        serviceConfig = {
+          Restart = "on-failure";
+          RestartSec = 30;
+        };
+      };
     };
   };
 }
