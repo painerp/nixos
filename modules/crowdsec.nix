@@ -7,6 +7,7 @@
 
 let
   cfg = config.modules.crowdsec;
+  cscli = lib.getExe' config.services.crowdsec.package "cscli";
   docker = config.virtualisation.docker.enable;
   traefik = config.modules.arion.enable && config.server.traefik.enable;
 in
@@ -21,6 +22,7 @@ in
   config = lib.mkIf cfg.enable {
     services.crowdsec = {
       enable = true;
+      autoUpdateService = true;
       hub = {
         collections = [
           "crowdsecurity/linux"
@@ -91,6 +93,15 @@ in
         serviceConfig.BindReadOnlyPaths = lib.mkIf traefik [
           "-${config.lib.server.mkConfigDir "traefik/logs"}:/var/log/traefik"
         ];
+      };
+
+      crowdsec-update-hub.serviceConfig = {
+        ExecStart = lib.mkForce [
+          "${cscli} --error hub update"
+          "${cscli} --error hub upgrade"
+        ];
+        # upstream reloads, but the crowdsec unit has no ExecReload and this unit is unprivileged
+        ExecStartPost = lib.mkForce "+${config.systemd.package}/bin/systemctl try-restart crowdsec.service";
       };
 
       crowdsec-firewall-bouncer-register.serviceConfig = {
