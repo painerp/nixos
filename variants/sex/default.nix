@@ -13,6 +13,8 @@ in
 {
   imports = [ ./hardware.nix ];
 
+  networking.interfaces.ens3.ipv6.addresses = private.ens3.ipv6.addresses;
+
   modules = {
     arion = {
       enable = true;

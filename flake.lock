@@ -340,11 +340,11 @@
     },
     "nixos-private": {
       "locked": {
-        "lastModified": 1793215444,
-        "narHash": "sha256-dCooo0SlfrguG0MoQfggeI6S9TPh5VS2eSN233go2aQ=",
+        "lastModified": 1793912751,
+        "narHash": "sha256-kpVlErVwj3luW3Mv4NR2W2Rmh3IuNwuOI0KugUO5Qiw=",
         "ref": "refs/heads/main",
-        "rev": "299477aa83524f512cae020f7d41ba1f89290105",
-        "revCount": 10,
+        "rev": "1b03b0a2903392d948f10df2aebad329677d6657",
+        "revCount": 12,
         "type": "git",
         "url": "ssh://git@github.com/painerp/nixos-private.git"
       },
