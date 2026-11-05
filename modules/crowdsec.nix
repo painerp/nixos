@@ -77,8 +77,15 @@ in
 
     services.crowdsec-firewall-bouncer = {
       enable = true;
-      # docker-published ports bypass INPUT
-      settings.iptables_chains = [ "INPUT" ] ++ lib.optional docker "DOCKER-USER";
+      settings = {
+        # docker-published ports bypass INPUT
+        iptables_chains = [ "INPUT" ] ++ lib.optional docker "DOCKER-USER";
+        prometheus = {
+          enabled = true;
+          listen_addr = "127.0.0.1";
+          listen_port = "60601";
+        };
+      };
     };
 
     # cscli defaults to this path, nixpkgs only passes it to its own units via -c

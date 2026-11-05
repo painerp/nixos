@@ -3,6 +3,8 @@
 let
   cfg = config.server.monitoring;
   nixlog = (import ../tailnet.nix).hosts.nixlog;
+  crowdsecMetrics = config.services.crowdsec.settings.general.prometheus;
+  bouncerMetrics = config.services.crowdsec-firewall-bouncer.settings.prometheus;
   alloyConfig = ''
     // Logs: systemd journal collection
     discovery.relabel "journal" {
@@ -122,6 +124,29 @@ let
         forward_to = [prometheus.remote_write.default.receiver]
         scrape_interval = "30s"
         job_name = "traefik"
+      }
+    ''}
+
+    ${lib.optionalString config.modules.crowdsec.enable ''
+      // Metrics: CrowdSec engine and firewall bouncer
+      prometheus.scrape "crowdsec" {
+        targets = [{
+          __address__ = "${crowdsecMetrics.listen_addr}:${toString crowdsecMetrics.listen_port}",
+          instance    = "${config.networking.hostName}",
+        }]
+        forward_to = [prometheus.remote_write.default.receiver]
+        scrape_interval = "30s"
+        job_name = "crowdsec"
+      }
+
+      prometheus.scrape "crowdsec_firewall_bouncer" {
+        targets = [{
+          __address__ = "${bouncerMetrics.listen_addr}:${bouncerMetrics.listen_port}",
+          instance    = "${config.networking.hostName}",
+        }]
+        forward_to = [prometheus.remote_write.default.receiver]
+        scrape_interval = "30s"
+        job_name = "crowdsec-firewall-bouncer"
       }
     ''}
 
