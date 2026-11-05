@@ -113,6 +113,7 @@ in
       crowdsec-firewall-bouncer = {
         after = [ "crowdsec-firewall-bouncer-register.service" ] ++ lib.optional docker "docker.service";
         partOf = lib.optional docker "docker.service";
+        wantedBy = lib.optional docker "docker.service";
         serviceConfig = {
           Restart = "on-failure";
           RestartSec = 30;
@@ -136,6 +137,10 @@ in
           want=$(tailscale debug netmap | jq -r '[.Peers[].Endpoints[]? | sub(":[0-9]+$"; "") | ltrimstr("[") | rtrimstr("]")] | unique | .[]')
           if [ -z "$want" ]; then
             echo "no endpoints in the tailscale netmap, leaving the allowlist untouched" >&2
+            exit 1
+          fi
+          if grep -qvE '^[0-9a-fA-F.:]+$' <<<"$want"; then
+            echo "unexpected endpoint format in the tailscale netmap, leaving the allowlist untouched" >&2
             exit 1
           fi
           cs() { runuser -u crowdsec -- ${cscli} "$@"; }
