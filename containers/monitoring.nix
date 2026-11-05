@@ -203,6 +203,19 @@ let
       }
     ''}
 
+    ${lib.optionalString config.modules.tailscale.enable ''
+      // Metrics: Tailscale client metrics, traffic by path (direct, DERP)
+      prometheus.scrape "tailscale" {
+        targets = [{
+          __address__ = "100.100.100.100:80",
+          instance    = "${config.networking.hostName}",
+        }]
+        forward_to = [prometheus.remote_write.default.receiver]
+        scrape_interval = "30s"
+        job_name = "tailscale"
+      }
+    ''}
+
     ${lib.optionalString
       (config.server.nuxt-pages.app.enable && config.server.nuxt-pages.app.metrics.enable)
       ''
@@ -368,6 +381,23 @@ let
               for = "15m";
               labels.severity = "critical";
               annotations.summary = "{{ $labels.platform }} live check doesn't run";
+            }
+          ];
+        }
+        {
+          name = "tailscale";
+          rules = [
+            {
+              alert = "TailscaleRelayedTraffic";
+              expr =
+                let
+                  rate =
+                    dir: ''rate(tailscaled_${dir}_bytes_total{job="tailscale",instance="nixsex",path="derp"}[5m])'';
+                in
+                "(${rate "inbound"} + ${rate "outbound"}) * 8 > 1e6";
+              for = "5m";
+              labels.severity = "critical";
+              annotations.summary = "nixsex moves {{ $value | humanize }}bit/s over a Tailscale relay, a direct path is likely down";
             }
           ];
         }
