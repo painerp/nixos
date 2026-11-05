@@ -20,6 +20,7 @@ in
       tailscale-dependent = true;
     };
     borg.enable = true;
+    crowdsec.enable = true;
   };
 
   server = {
