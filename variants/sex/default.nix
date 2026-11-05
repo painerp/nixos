@@ -13,7 +13,14 @@ in
 {
   imports = [ ./hardware.nix ];
 
-  networking.interfaces.ens3.ipv6.addresses = private.ens3.ipv6.addresses;
+  networking = {
+    interfaces.ens3.ipv6.addresses = private.ens3.ipv6.addresses;
+    # a static address makes dhcpcd ignore router advertisements on this interface
+    defaultGateway6 = {
+      address = "fe80::1";
+      interface = "ens3";
+    };
+  };
 
   modules = {
     arion = {
