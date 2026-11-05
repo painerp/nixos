@@ -104,6 +104,22 @@ in
         ExecStartPost = lib.mkForce "+${config.systemd.package}/bin/systemctl try-restart crowdsec.service";
       };
 
+      # upstream's setup runs `machines add` before `capi register`, which fails while these credentials don't exist yet
+      crowdsec-capi-register = {
+        description = "Register crowdsec with the central API";
+        wantedBy = [ "crowdsec.service" ];
+        before = [ "crowdsec.service" ];
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        unitConfig.ConditionPathExists = "!${config.services.crowdsec.settings.capi.credentialsFile}";
+        serviceConfig = {
+          Type = "oneshot";
+          User = config.services.crowdsec.user;
+          Group = config.services.crowdsec.group;
+          ExecStart = "${cscli} capi register";
+        };
+      };
+
       crowdsec-firewall-bouncer-register.serviceConfig = {
         # upstream also lists crowdsec, which DynamicUser would move to /var/lib/private
         StateDirectory = lib.mkForce "crowdsec-firewall-bouncer-register";
