@@ -115,7 +115,7 @@ in
     };
     version = lib.mkOption {
       type = lib.types.str;
-      default = "0.9.31";
+      default = "0.9.32";
       description = "AgentMemory version; must remain compatible with iii-engine and iii-sdk ${iii-version}.";
     };
     subdomain = lib.mkOption {
