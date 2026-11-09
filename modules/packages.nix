@@ -89,6 +89,7 @@ in
             easyeffects
             nextcloud-client
             keepassxc
+            bitwarden-desktop
           ]
         else
           [ ]
