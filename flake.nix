@@ -71,6 +71,7 @@
         (import ./overlays/btop.nix { })
         (import ./overlays/hyprpanel.nix { })
         (import ./overlays/tailscale-patch.nix { })
+        (import ./overlays/tuxedo-drivers.nix { })
         inputs.llm-agents.overlays.shared-nixpkgs
       ];
       desktop-insecure-packages = [ ];
