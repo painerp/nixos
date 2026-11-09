@@ -176,6 +176,18 @@
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver",
       "depNameTemplate": "quay.io/thanos/thanos"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/variants/.+\\.nix$/"
+      ],
+      "matchStrings": [
+        "vaultwarden\\s*=\\s*\\{[^}]*?\\sversion\\s*=\\s*\"(?<currentValue>[^\"]+)\"[^}]*?\\}"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver",
+      "depNameTemplate": "docker.io/vaultwarden/server"
     }
   ]
 }
