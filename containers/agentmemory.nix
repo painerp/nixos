@@ -10,7 +10,7 @@ let
   config-dir = config.lib.server.mkConfigDir "agentmemory";
   viewer-host = "${cfg.subdomain}.${config.server.domain}";
   api-host = "${cfg.api-subdomain}.${config.server.domain}";
-  iii-version = "0.25.0";
+  iii-version = "0.25.1";
   dockerfile =
     lib.replaceStrings [ "@agentmemory-version@" "@iii-version@" ] [ cfg.version iii-version ]
       (builtins.readFile ./agentmemory/Dockerfile);
@@ -38,7 +38,7 @@ let
       containers = {
         state = {
           worker = "package://api.workers.iii.dev/state";
-          version = "0.22.20";
+          version = "0.22.22";
           config_name = "state";
           restart = "on-failure";
           config_override.adapter = {
@@ -52,7 +52,7 @@ let
         };
         http = {
           worker = "package://api.workers.iii.dev/http";
-          version = "0.22.7";
+          version = "0.22.8";
           config_name = "http";
           restart = "on-failure";
           config_override = {
@@ -115,7 +115,7 @@ in
     };
     version = lib.mkOption {
       type = lib.types.str;
-      default = "0.9.32";
+      default = "0.9.33";
       description = "AgentMemory version; must remain compatible with iii-engine and iii-sdk ${iii-version}.";
     };
     subdomain = lib.mkOption {
