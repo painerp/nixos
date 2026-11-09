@@ -47,6 +47,7 @@ let
         "sync"
         "t-cit"
         "truenas"
+        "vaultwarden"
       ]
     )
     // cname "nixgam" [ (local "t-gam") ]

@@ -93,6 +93,11 @@
         })
       ];
     };
+    vaultwarden = {
+      enable = true;
+      version = "1.37.5";
+      env-file = secrets.cit-vaultwarden-env;
+    };
     watchtower.enable = true;
   };
 

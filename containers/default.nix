@@ -72,8 +72,10 @@ in
           {
             mysql = ''MYSQL_PWD="''${MARIADB_ROOT_PASSWORD:-$MYSQL_ROOT_PASSWORD}" exec mariadb-dump -uroot --all-databases --single-transaction --routines --events'';
             postgres = ''exec pg_dumpall --clean --if-exists -U "$POSTGRES_USER"'';
+            vaultwarden = "rm -f /data/db_*.sqlite3 && /vaultwarden backup >&2 && cat /data/db_*.sqlite3 && rm /data/db_*.sqlite3";
           }
           .${type};
+        ext = if type == "vaultwarden" then "sqlite3.gz" else "sql.gz";
       in
       {
         startAt = "*-*-* 23:30:00";
@@ -86,8 +88,8 @@ in
           set -o pipefail
           mkdir -p ${dir}
           docker exec ${container} sh -c '${dump}' | gzip > ${dir}/.dump.tmp
-          mv ${dir}/.dump.tmp "${dir}/$(date +%F).sql.gz"
-          find ${dir} -name '*.sql.gz' -mtime +6 -delete
+          mv ${dir}/.dump.tmp "${dir}/$(date +%F).${ext}"
+          find ${dir} -name '*.${ext}' -mtime +6 -delete
         '';
       };
   };

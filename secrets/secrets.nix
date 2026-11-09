@@ -92,6 +92,7 @@ in
   "cit/peanut.env.age".publicKeys = users ++ [ cit ];
   "cit/paperless.env.age".publicKeys = users ++ [ cit ];
   "cit/paperless-pg.env.age".publicKeys = users ++ [ cit ];
+  "cit/vaultwarden.env.age".publicKeys = users ++ [ cit ];
 
   "gra/authentik-proxy.env.age".publicKeys = users ++ [ gra ];
   "gra/immich.env.age".publicKeys = users ++ [ gra ];
