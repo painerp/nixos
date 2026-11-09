@@ -6,6 +6,10 @@ rec {
   devices = {
     truenas.ip = "100.111.75.128";
     proxmox.ip = "100.67.2.33";
+    demeter = {
+      ip = "100.93.215.44";
+      outgoing.nixcit.routers = [ "attic" ];
+    };
   };
 
   # adguard clients only, in hosts traefik would block them from every router
