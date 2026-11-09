@@ -13,4 +13,5 @@
     portalPackage = null;
   };
   services.awww.enable = true;
+  services.hyprpolkitagent.enable = true;
 }
