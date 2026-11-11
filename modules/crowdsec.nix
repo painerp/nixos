@@ -71,7 +71,6 @@ in
         };
         lapi.credentialsFile = "/var/lib/crowdsec/state/local_api_credentials.yaml";
         capi.credentialsFile = "/var/lib/crowdsec/state/online_api_credentials.yaml";
-        simulation.simulation = true;
       };
     };
 

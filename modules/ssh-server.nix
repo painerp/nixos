@@ -29,7 +29,7 @@ in
         '';
       };
       fail2ban = {
-        enable = true;
+        enable = !config.modules.crowdsec.enable;
         maxretry = 10;
         bantime-increment.enable = true;
       };
