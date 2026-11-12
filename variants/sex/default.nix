@@ -48,7 +48,6 @@ in
     gotify = {
       enable = true;
       subdomain = "got";
-      auth = false;
     };
     monitoring.alloy.enable = true;
     nuxt-pages = {

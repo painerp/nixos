@@ -2,6 +2,20 @@
 
 let
   cfg = config.server.gotify;
+  publicPaths = lib.concatStringsSep " || " (
+    map (p: "PathPrefix(`${p}`)") [
+      "/message"
+      "/stream"
+      "/application"
+      "/image"
+      "/client"
+    ]
+    ++ map (p: "Path(`${p}`)") [
+      "/current/user"
+      "/version"
+      "/health"
+    ]
+  );
 in
 {
   options.server.gotify = {
@@ -47,6 +61,13 @@ in
             subdomain = "${cfg.subdomain}";
             forwardAuth = cfg.auth;
           }
+          // lib.optionalAttrs cfg.auth (
+            config.lib.server.mkTraefikLabels {
+              name = "gotify-public";
+              service = "gotify";
+              rule = "Host(`${cfg.subdomain}.${config.server.domain}`) && (${publicPaths})";
+            }
+          )
           // {
             "com.centurylinklabs.watchtower.enable" = "true";
           };
