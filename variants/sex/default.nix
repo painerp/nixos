@@ -105,15 +105,6 @@ in
       ];
     };
     goaccess.enable = true;
-    nginx = {
-      enable = true;
-      rule = "Host(`jf.${config.server.domain}`) && PathPrefix(`/extras`)";
-      middleware = "strip-extras-prefix";
-      labels = {
-        "traefik.http.middlewares.strip-extras-prefix.stripPrefix.prefixes" = "/extras";
-      };
-      auth = false;
-    };
     uptime-kuma = {
       enable = true;
       subdomain = "st";
