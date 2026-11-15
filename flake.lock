@@ -285,11 +285,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1794697722,
-        "narHash": "sha256-kLUWR2G8oUYuciZVazof7fZ+M/baRaemoNjmwXH9Pic=",
+        "lastModified": 1794721493,
+        "narHash": "sha256-7extb+ld6xPCzcVuhVdvcvGPLu/qtDRrhFJmH68jXfM=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "db5b3ff7fca0005b0162c3c417fb98e369534e5c",
+        "rev": "aeb1afe1529c5dc7dcdc54d644a8aed212d99dd0",
         "type": "github"
       },
       "original": {
@@ -406,11 +406,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1794647350,
-        "narHash": "sha256-NOxzYUt8GIeS3APRR7Aed3msSCRWsczoYYpIRYVRvyc=",
+        "lastModified": 1794719437,
+        "narHash": "sha256-B0Ny9wVrCeOk2OcuQ2xlGEFyS+c1VBBLkfpcIQ2jU8E=",
         "owner": "icewind1991",
         "repo": "nvidia-patch-nixos",
-        "rev": "e9417321076015fd7c24ad7d415ceb60cbcf48fc",
+        "rev": "06623f4cad39d6ab6e51d3102d064a125c1c3456",
         "type": "github"
       },
       "original": {
