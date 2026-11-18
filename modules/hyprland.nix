@@ -105,6 +105,7 @@ in
       ];
       sessionVariables = {
         NIXOS_OZONE_WL = "1";
+        SSH_AUTH_SOCK = "$HOME/.bitwarden-ssh-agent.sock";
         GI_TYPELIB_PATH = "${libgtop}/lib/girepository-1.0:${glib}/lib/girepository-1.0";
       };
     };
@@ -127,7 +128,6 @@ in
         portalPackage = pkgs-unstable.xdg-desktop-portal-hyprland;
       };
       hyprlock.enable = if hm then false else true;
-      ssh.startAgent = true;
     };
 
     services = {
