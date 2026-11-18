@@ -1,49 +1,9 @@
 { osConfig, lib, ... }:
 let
+  inherit (lib.generators) mkLuaInline;
   cfg = osConfig.modules.hyprland;
 
   splitTrim = sep: str: builtins.map lib.trim (lib.splitString sep str);
-
-  # Translate hyprlang property keys (with hyphens) to Lua attribute names
-  # (with underscores). Also coerces a couple of known-typed values.
-  luaKey = lib.replaceStrings [ "-" ] [ "_" ];
-
-  parseValue =
-    raw:
-    if raw == "true" then
-      true
-    else if raw == "false" then
-      false
-    else
-      raw;
-
-  # "<num>, key:val, flag, ..." -> { workspace = "<num>"; <key> = <val>; ... }
-  parseWorkspaceRule =
-    rule:
-    let
-      parts = splitTrim "," rule;
-      ws = builtins.head parts;
-      props = builtins.tail parts;
-      kv = lib.listToAttrs (
-        builtins.map (
-          p:
-          let
-            seg = lib.splitString ":" p;
-          in
-          if builtins.length seg == 1 then
-            {
-              name = luaKey (lib.trim (builtins.head seg));
-              value = true;
-            }
-          else
-            {
-              name = luaKey (lib.trim (builtins.head seg));
-              value = parseValue (lib.trim (lib.concatStringsSep ":" (builtins.tail seg)));
-            }
-        ) props
-      );
-    in
-    { workspace = ws; } // kv;
 
   # "<output>,<mode>,<position>,<scale>[,mirror,<target>]"
   # An empty output (legacy ",preferred,auto,1,...") becomes the catch-all rule.
@@ -100,50 +60,32 @@ let
         // lib.optionalAttrs isFirst { default = true; }
       ) 10;
 
-  customParsed = builtins.map parseWorkspaceRule cfg.workspaces.custom;
+  baseByWorkspace = lib.listToAttrs (builtins.map (r: lib.nameValuePair r.workspace r) baseRules);
+  customByWorkspace = lib.mapAttrs (
+    name: ws: { workspace = name; } // builtins.removeAttrs ws [ "openWhenEmpty" ]
+  ) cfg.workspaces;
 
-  # Auto-assign a monitor for custom workspaces 1-10 that didn't specify one.
-  fillMonitor =
-    rule:
-    if rule ? monitor || monitorCount == 0 then
-      rule
-    else
-      let
-        n = lib.toIntBase10 rule.workspace;
-      in
-      if n >= 1 && n <= 10 then
-        rule // { monitor = builtins.elemAt physicalNames (lib.mod (n - 1) monitorCount); }
-      else
-        rule;
+  # Custom attributes win over the round-robin base rule for the same workspace.
+  workspaceRules = builtins.attrValues (lib.recursiveUpdate baseByWorkspace customByWorkspace);
 
-  customRules = builtins.map fillMonitor customParsed;
-
-  # Merge by workspace number; custom rules win, but we keep the `default` flag
-  # from the base rule unless the custom one explicitly sets it.
-  mergeRules =
-    base: custom:
-    let
-      m = lib.listToAttrs (
-        builtins.map (r: {
-          name = r.workspace;
-          value = r;
-        }) base
-      );
-      withCustom = builtins.foldl' (
-        acc: r:
-        acc
-        // {
-          ${r.workspace} = (acc.${r.workspace} or { }) // r;
-        }
-      ) m custom;
-    in
-    builtins.attrValues withCustom;
-
-  workspaceRules = mergeRules baseRules customRules;
+  openWhenEmpty = name: cmd: {
+    _args = [
+      "workspace.created"
+      (mkLuaInline ''
+        function(ws)
+          if ws.name == "${lib.removePrefix "name:" name}" and ws.is_empty then
+            hl.exec_cmd([[${cmd}]], { workspace = "${name}" })
+          end
+        end'')
+    ];
+  };
 in
 {
   wayland.windowManager.hyprland.settings = {
     monitor = monitors;
     workspace_rule = workspaceRules;
+    on = lib.mapAttrsToList (name: ws: openWhenEmpty name ws.openWhenEmpty) (
+      lib.filterAttrs (_: ws: ws.openWhenEmpty != null) cfg.workspaces
+    );
   };
 }

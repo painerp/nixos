@@ -30,9 +30,7 @@
         "DP-2,1920x1080@120,1920x0,1"
         ",preferred,auto,1,mirror,HDMI-A-1"
       ];
-      workspaces.custom = [
-        "6, on-created-empty:keepassxc"
-      ];
+      workspaces."6".openWhenEmpty = "bitwarden";
       wayle = {
         enable = true;
         main-monitor = "HDMI-A-1";

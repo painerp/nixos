@@ -11,13 +11,15 @@ let
   startupBody = lib.concatMapStringsSep "\n" (cmd: "hl.exec_cmd([[${cmd}]])") startupCommands;
 in
 {
-  wayland.windowManager.hyprland.settings.on = {
-    _args = [
-      "hyprland.start"
-      (mkLuaInline ''
-        function()
-        ${startupBody}
-        end'')
-    ];
-  };
+  wayland.windowManager.hyprland.settings.on = [
+    {
+      _args = [
+        "hyprland.start"
+        (mkLuaInline ''
+          function()
+          ${startupBody}
+          end'')
+      ];
+    }
+  ];
 }

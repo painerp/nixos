@@ -14,9 +14,7 @@
         "eDP-1,highrr,0x0,1"
         ",preferred,auto,1,mirror,eDP-1"
       ];
-      workspaces.custom = [
-        "6, on-created-empty:keepassxc"
-      ];
+      workspaces."6".openWhenEmpty = "bitwarden";
       wayle = {
         enable = true;
         main-monitor = "eDP-1";

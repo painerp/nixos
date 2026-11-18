@@ -20,16 +20,22 @@ in
       type = lib.types.listOf lib.types.str;
       default = [ ];
     };
-    workspaces = {
-      custom = lib.mkOption {
-        type = lib.types.listOf lib.types.str;
-        default = [ ];
-        description = ''
-          Custom workspace rules. Workspace number must be at the start of the string.
-          If no monitor is specified, it will be automatically assigned based on round-robin distribution.
-          Example: "5, on-created-empty:[float] firefox"
-        '';
-      };
+    workspaces = lib.mkOption {
+      type = lib.types.attrsOf (
+        lib.types.submodule {
+          freeformType = lib.types.attrsOf lib.types.anything;
+          options.openWhenEmpty = lib.mkOption {
+            type = lib.types.nullOr lib.types.str;
+            default = null;
+            description = "Command to run whenever this workspace is created empty.";
+          };
+        }
+      );
+      default = { };
+      description = ''
+        Workspace rules keyed by selector, passed to hl.workspace_rule as-is.
+        See https://wiki.hypr.land/configuring/core/rules/workspace-rules/
+      '';
     };
     hyprpanel = {
       enable = lib.mkOption {
