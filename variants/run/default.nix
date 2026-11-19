@@ -30,7 +30,7 @@
     subdomain = "local";
     forgejo-runner = {
       enable = true;
-      version = "13.2.1";
+      version = "13.2.2";
       config-file = secrets.run-forgejo-runner-yml;
     };
     renovate = {
