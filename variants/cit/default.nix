@@ -59,7 +59,7 @@
     forgejo = {
       enable = true;
       subdomain = "git";
-      version = "17.0.1";
+      version = "17.0.2";
       auth = false;
     };
     home-assistant = {
