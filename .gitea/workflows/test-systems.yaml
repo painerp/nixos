@@ -37,7 +37,7 @@ jobs:
             fi
           
             echo "::group::Testing $system"
-            if nix build ".#nixosConfigurations.$system.config.system.build.toplevel" --dry-run --extra-experimental-features 'nix-command flakes' --accept-flake-config; then
+            if nix build ".#nixosConfigurations.$system.config.system.build.toplevel" --dry-run --extra-experimental-features 'nix-command flakes' --accept-flake-config 2>&1; then
               echo "::endgroup::"
               echo "✓ $system: OK"
             else
