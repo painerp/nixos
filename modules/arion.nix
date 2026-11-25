@@ -60,7 +60,10 @@ in
               {
                 options.services = lib.mkOption {
                   type = lib.types.attrsOf (
-                    lib.types.submodule { service.restart = lib.mkDefault "unless-stopped"; }
+                    lib.types.submoduleWith {
+                      class = "arionService";
+                      modules = [ { service.restart = lib.mkDefault "unless-stopped"; } ];
+                    }
                   );
                 };
               }
