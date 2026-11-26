@@ -51,6 +51,11 @@
       env-file = secrets.cit-paperless-env;
       postgres.env-file = secrets.cit-paperless-pg-env;
     };
+    mailflow = {
+      enable = true;
+      env-file = secrets.cit-mailflow-env;
+      postgres.env-file = secrets.cit-mailflow-pg-env;
+    };
     proxmox-backup = {
       enable = true;
       internal = true;
