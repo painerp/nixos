@@ -40,6 +40,7 @@ let
         "auth"
         "git"
         "home-assistant"
+        "mailflow"
         "paperless"
         "peanut"
         "proxmox"
