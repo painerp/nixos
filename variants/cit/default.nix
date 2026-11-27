@@ -53,6 +53,7 @@
     };
     mailflow = {
       enable = true;
+      auth = false;
       env-file = secrets.cit-mailflow-env;
       postgres.env-file = secrets.cit-mailflow-pg-env;
     };
